@@ -1,6 +1,6 @@
 # M0 implementation evidence
 
-Current result: local implementation checks and initial pure Git-checkout reproduction passed. Final checkout reproduction including the browser-tool probe is pending. No M1 application or physical acceptance is claimed.
+Current result: **M0 complete**. Local checks and all 14 final fresh-checkout steps passed at source commit `3c6ded1197962045def0b029bc759d0dba748b7c`. The result manifest records evidence/source hashes and scope. No M1 application or physical acceptance is claimed.
 
 ## Executed checks
 
@@ -16,6 +16,7 @@ Current result: local implementation checks and initial pure Git-checkout reprod
 | Protected-file primitives | One exclusive-create winner; 0600/0700; symlink refusal; file/directory fsync | filesystem.json |
 | Pinned esbuild | 0.25.12, throwaway JS/CSS bundle and metadata | assets.json |
 | Fresh bootstrap | Hex 2.2.1 and checksum-pinned Rebar 3.28.0 installed into a new local cache | environment.json and tools/bootstrap-elixir |
+| Final fresh checkout | All 14 steps passed with empty local caches, unchanged Mix/npm locks and clean Git state | clean-checkout.json, clean-checkout.log, result.json |
 | Browser-tool compatibility | Pinned Playwright/Chromium launch, keyboard input and separate-context storage passed; an earlier pointer-click timeout remains unresolved for M1 | browser.json, browser.log, tools/browser/package-lock.json |
 
 ## Required commands
@@ -39,6 +40,6 @@ The native dependency/filesystem/assets probes are separate processes with dispo
 
 Integration corrected the coordinator’s initial message-name and after-suite guard mistakes and the model’s strict-boolean, first-step challenge, duplicate completion, queue and patch-validation defects. Required regressions are in the committed tests; successful final logs supersede intermediate runs.
 
-The initial pure fresh-checkout verification covered 11 setup/check commands at source commit `04170b1763dad5a85beac812a2a23d7685f606bb`; its report and log are preserved as `pure-clean-checkout.json` and `pure-clean-checkout.log`. Final source reproduction additionally checks the browser lock and probe. The browser probe is isolated from the application and does not satisfy M1 gameplay/input acceptance; retain its original pointer timeout when investigating that gate.
+The initial pure fresh-checkout verification covered 11 setup/check commands at source commit `04170b1763dad5a85beac812a2a23d7685f606bb`; its report and log are preserved as `pure-clean-checkout.json` and `pure-clean-checkout.log`. The final successful source reproduction additionally checks the browser lock and probe in `clean-checkout.json` and `clean-checkout.log`. The browser probe is isolated from the application and does not satisfy M1 gameplay/input acceptance; retain its original pointer timeout when investigating that gate.
 
-No Phoenix game, authorization/session runtime, actual Store migration, transport, browser input, firmware parser, target build, flash or physical mechanism has been validated. Those remain M1–M5. M0’s hardware audit passes its documentary scope while real profiles/measurements and later executable build guards remain unavailable/unrun.
+No Phoenix game, authorization/session runtime, actual Store migration, transport, game browser input, firmware parser, target build, flash or physical mechanism has been validated. Those remain M1–M5. M0’s hardware audit passes its documentary scope while real profiles/measurements and later executable build guards remain unavailable/unrun.

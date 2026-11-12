@@ -2,7 +2,7 @@
 
 A local cooperative puzzle for two players: complementary maze views, exchanged seal clues, and one controlled release request. The finalized [design](docs/designs/watchmakers-vault.md) and [specification package](docs/specs/README.md) define the behavior.
 
-M0 implements deterministic rules, role projections, bounded JSON handling and the pure simulated-box model. The complete Phoenix browser game is M1. There is no web server, credential initializer, asset entry point or hardware executable yet. The box model produces effects for future adapters; it does not drive hardware.
+**M0 is complete:** deterministic rules, role projections, bounded JSON handling and the pure simulated-box model passed 51 tests and fresh-checkout verification. The complete Phoenix browser game is M1. There is no web server, credential initializer, asset entry point or hardware executable yet. The box model produces effects for future adapters; it does not drive hardware.
 
 ## M0 setup
 

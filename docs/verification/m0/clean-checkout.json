@@ -1,0 +1,182 @@
+{
+  "checked_at_utc": "2026-11-12T23:46:34.236970+00:00",
+  "status": "passed",
+  "verified_source_commit": "3c6ded1197962045def0b029bc759d0dba748b7c",
+  "checkout": "/example/local",
+  "fresh_dependency_and_python_caches": true,
+  "global_archives_not_used": true,
+  "fresh_browser_and_npm_caches": true,
+  "checkout_clean_after_checks": true,
+  "locks_unchanged": true,
+  "steps": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--quiet",
+        "--no-hardlinks",
+        "/workspace/watchmaker_vault",
+        "/example/local"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "seconds": 0.332
+    },
+    {
+      "command": [
+        "python3.13",
+        "-m",
+        "venv",
+        ".venv"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 3.067
+    },
+    {
+      "command": [
+        "/example/local",
+        "-m",
+        "pip",
+        "install",
+        "-r",
+        "tools/requirements-checks.lock"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 2.26
+    },
+    {
+      "command": [
+        "tools/bootstrap-elixir"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 3.65
+    },
+    {
+      "command": [
+        "mix",
+        "deps.get",
+        "--check-locked"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 2.528
+    },
+    {
+      "command": [
+        "mix",
+        "deps.compile"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 29.139
+    },
+    {
+      "command": [
+        "mix",
+        "compile",
+        "--force",
+        "--warnings-as-errors"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 2.577
+    },
+    {
+      "command": [
+        "mix",
+        "format",
+        "--check-formatted"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 1.008
+    },
+    {
+      "command": [
+        "/example/local",
+        "docs/specs/verify_contracts.py"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 1.222
+    },
+    {
+      "command": [
+        "tools/check-contracts"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 1.307
+    },
+    {
+      "command": [
+        "mix",
+        "test",
+        "--no-start",
+        "--only",
+        "m0",
+        "test/vault/puzzle_test.exs",
+        "test/vault/projections_test.exs",
+        "test/vault/contract_test.exs",
+        "test/vault/json_test.exs",
+        "test/vault/simulated_box/model_test.exs"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 2.635
+    },
+    {
+      "command": [
+        "asdf",
+        "exec",
+        "npm",
+        "--prefix",
+        "tools/browser",
+        "ci",
+        "--ignore-scripts",
+        "--no-audit",
+        "--no-fund",
+        "--registry=https://registry.npmjs.org",
+        "--cache",
+        "/example/local"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 1.907
+    },
+    {
+      "command": [
+        "asdf",
+        "exec",
+        "node",
+        "tools/browser/node_modules/@playwright/test/cli.js",
+        "install",
+        "chromium"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 13.551
+    },
+    {
+      "command": [
+        "asdf",
+        "exec",
+        "npm",
+        "--prefix",
+        "tools/browser",
+        "--silent",
+        "run",
+        "probe"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 5.234
+    }
+  ],
+  "log": "docs/verification/m0/clean-checkout.log",
+  "log_sha256": "ee36989c5899d8c69667a77c4cf29db999d2e29af23336a708eca11fda749950",
+  "runtime_or_physical_acceptance": "not_claimed"
+}

@@ -1,6 +1,6 @@
 # The Watchmaker's Vault implementation and verification status
 
-Recorded 12 November 2026. Current phase: **M0 implemented; local checks passed; final fresh-checkout verification pending**. The finalized design remains the baseline. Pure rules, role projections, exact JSON handling, pure box/service/durable logic, clock seams, shared contract copies and locked host dependencies now exist. The Phoenix application/runtime and firmware remain M1+ work. A local Git repository on `main` is initialized with no remote.
+Recorded 12 November 2026. Current phase: **M0 complete — implemented and verified within its host-software/documentary scope**. The finalized design remains the baseline. Pure rules, role projections, exact JSON handling, pure box/service/durable logic, clock seams, shared contract copies and locked host dependencies now exist. The Phoenix application/runtime and firmware remain M1+ work. A local Git repository on `main` is initialized with no remote.
 
 ## Design review history
 
@@ -30,9 +30,9 @@ The full no-start M0 command passed **51 tests, 0 failures** on Elixir 1.18.4/OT
 
 Source validation passed 51 accepted/15 rejected examples, 15 wire types, 16 protocol JSON blocks, maze invariants and 40 unchanged acceptance IDs. Four shared/private copies are byte-identical. The ten supplied timing vectors remain source-only structural checks; pure-rule/model timing assertions do not claim the later session/transport cases. Independent dependency probes observed SQLite WAL/FULL/foreign_keys/100ms busy timeout, exclusive-create/protected-file fsync primitives and pinned esbuild JS/CSS compilation. Those probes do not implement the application store, maintenance guard or asset pipeline.
 
-M0 clarified internal historical record IDs to avoid a self-referential store digest, represented a pending local-service travel deadline without allowing motion, and specified same-batch refusal diagnostic/status handling. These are recorded in IMPLEMENTATION_CONTRACTS.md and model tests; protocol v1, schema, all fixtures and the finalized design remain unchanged. No hardware identity, GPIO, physical reference, flash or bench acceptance was invented. Rafa will be told which verified board/port is needed when its firmware and test procedure are ready; no board connection is required now.
+M0 clarified internal historical record IDs to avoid a self-referential store digest, represented a pending local-service travel deadline without allowing motion, and specified same-batch refusal diagnostic/status handling. These are recorded in IMPLEMENTATION_CONTRACTS.md and model tests; protocol v1, schema, all fixtures and the finalized design remain unchanged. No hardware identity, GPIO, physical reference, flash or bench acceptance was invented. Rafa will be told which board and power setup to connect when its firmware and test procedure are ready; identity and the explicit serial port will be checked after connection. No board connection is required now.
 
-Fresh-checkout setup/build/test verification passed all 11 steps at source commit `04170b1763dad5a85beac812a2a23d7685f606bb`, with empty local dependency/Python caches, an unchanged Mix lock and a clean checkout afterward. The M0 Playwright/Chromium launch, keyboard-input and context-isolation check also passed; its original pointer-click timeout remains an unresolved M1 input check. The final source checkout is being checked with the browser package included. M1 has not started.
+Final fresh-checkout verification passed **all 14 steps** at source commit `3c6ded1197962045def0b029bc759d0dba748b7c` using empty Mix, Python, npm and browser caches. Both lockfiles remained unchanged and the checkout stayed clean. The Playwright/Chromium launch, keyboard-input and context-isolation probe passed; its original pointer-click timeout remains an unresolved M1 input check. See the [final result](verification/m0/result.json), [checkout report](verification/m0/clean-checkout.json) and [execution log](verification/m0/clean-checkout.log). M0 is complete; M1 has not started.
 
 ## Hardware correction pass
 
@@ -89,7 +89,7 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 
 | Case | Status | Current evidence or specific next requirement |
 | --- | --- | --- |
-| M0-01 | Not run | Host runtime/dependency locks, compilation, native/tool probes and the initial pure fresh-checkout reproduction passed. Final reproduction including the browser-tool probe is pending. ESP-IDF/CMake unavailable; firmware versions and verified target profiles remain later gates. |
+| M0-01 | Passed | Final clean checkout: all 14 setup/check steps passed with empty local caches, unchanged locks and clean Git state; host compilation, native primitives and scoped browser probe passed. The original pointer timeout remains a named M1 input gap. ESP-IDF/CMake unavailable; firmware locks and verified target profiles remain later gates. |
 | M0-02 | Passed | Executed pure fixture/rules/projection assertions for 16 cells, 15 passages, golden route, dead end, exact role walls/axes/clues/selections, plus byte-identical shared/private copies. |
 | M0-03 | Passed | M0 audit scope: supplied identities/candidate profiles and unknown facts are recorded; no GPIOs or physical target is selected. Hardware acceptance remains blocked. Incomplete-profile build rejection is Not run until the planned firmware wrapper exists in M3. |
 | M0-04 | Passed | Required no-start gate: 51 tests/0 failures; explicit monotonic clock and queued stale timers, literal pure box effects/persistence completions, strict JSON/durable regressions; no application/runtime startup. Real storage/transport/touch/actuator adapters remain later milestones. |
@@ -132,4 +132,4 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 
 ## Next work
 
-Finish fresh-checkout M0-01 verification and record its source commit. Then implement M1’s complete Phoenix browser game and explicitly labeled simulated box using the finalized contracts. Continue independent software work while hardware identification remains pending. Notify Rafa before a ready firmware flash/test step, naming the verified board and explicit port. No boards are needed for M0/M1 software verification.
+Implement M1’s complete Phoenix browser game and explicitly labeled simulated box using the finalized contracts and tested M0 providers. Add the real storage/session/runtime adapters, generated-key authentication, scoped LiveViews and input hooks, then execute application and browser acceptance, including investigation of the retained pointer-click timeout. Continue independent software work while hardware identification remains pending. Notify Rafa which board and power setup to connect when firmware and its test procedure are ready; rediscover identity and the explicit serial port after connection and before flashing. No boards are needed for M1 software verification.

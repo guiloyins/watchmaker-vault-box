@@ -1,0 +1,298 @@
+
+$ git clone --quiet --no-hardlinks /workspace/watchmaker_vault /example/local
+
+$ python3.13 -m venv .venv
+
+$ /example/local -m pip install -r tools/requirements-checks.lock
+Collecting attrs==26.1.0 (from -r tools/requirements-checks.lock (line 2))
+  Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+Collecting jsonschema==4.26.0 (from -r tools/requirements-checks.lock (line 3))
+  Downloading jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+Collecting jsonschema-specifications==2025.9.1 (from -r tools/requirements-checks.lock (line 4))
+  Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+Collecting referencing==0.37.0 (from -r tools/requirements-checks.lock (line 5))
+  Downloading referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+Collecting rpds-py==2026.9.1 (from -r tools/requirements-checks.lock (line 6))
+  Downloading rpds_py-2026.9.1-cp313-cp313-macosx_10_12_x86_64.whl.metadata (4.1 kB)
+Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+Downloading jsonschema-4.26.0-py3-none-any.whl (90 kB)
+Downloading jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+Downloading referencing-0.37.0-py3-none-any.whl (26 kB)
+Downloading rpds_py-2026.9.1-cp313-cp313-macosx_10_12_x86_64.whl (346 kB)
+Installing collected packages: rpds-py, attrs, referencing, jsonschema-specifications, jsonschema
+
+Successfully installed attrs-26.1.0 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 referencing-0.37.0 rpds-py-2026.9.1
+
+[notice] A new release of pip is available: 26.0 -> 26.3
+[notice] To update, run: /example/local -m pip install --upgrade pip
+
+$ tools/bootstrap-elixir
+* creating .cache/mix/archives/hex-2.2.1
+* creating .cache/mix/elixir/1-18-otp-28/rebar3
+
+$ mix deps.get --check-locked
+Resolving Hex dependencies...
+Resolution completed in 0.247s
+Unchanged:
+  bandit 1.14.1
+  cc_precompiler 0.1.11
+  db_connection 2.10.2
+  decimal 3.2.0
+  ecto 3.14.3
+  ecto_sql 3.14.0
+  ecto_sqlite3 0.26.0
+  elixir_make 0.10.1
+  esbuild 0.10.1
+  exqlite 0.43.0
+  hpax 1.1.0
+  jason 1.4.5
+  mime 2.0.7
+  mint 1.11.0
+  mint_web_socket 1.0.6
+  phoenix 1.8.16
+  phoenix_html 4.4.0
+  phoenix_live_view 1.2.13
+  phoenix_pubsub 2.4.1
+  phoenix_template 1.1.0
+  plug 1.20.3
+  plug_crypto 2.2.1
+  telemetry 1.4.2
+  thousand_island 1.6.0
+  websock 0.5.3
+  websock_adapter 0.7.2
+* Getting phoenix (Hex package)
+* Getting phoenix_live_view (Hex package)
+* Getting phoenix_html (Hex package)
+* Getting jason (Hex package)
+* Getting ecto_sql (Hex package)
+* Getting ecto_sqlite3 (Hex package)
+* Getting exqlite (Hex package)
+* Getting websock_adapter (Hex package)
+* Getting bandit (Hex package)
+* Getting esbuild (Hex package)
+* Getting mint (Hex package)
+* Getting mint_web_socket (Hex package)
+* Getting hpax (Hex package)
+* Getting plug (Hex package)
+* Getting telemetry (Hex package)
+* Getting thousand_island (Hex package)
+* Getting websock (Hex package)
+* Getting mime (Hex package)
+* Getting plug_crypto (Hex package)
+* Getting cc_precompiler (Hex package)
+* Getting db_connection (Hex package)
+* Getting elixir_make (Hex package)
+* Getting decimal (Hex package)
+* Getting ecto (Hex package)
+* Getting phoenix_template (Hex package)
+* Getting phoenix_pubsub (Hex package)
+
+$ mix deps.compile
+==> mime
+Compiling 1 file (.ex)
+Generated mime app
+==> plug_crypto
+Compiling 5 files (.ex)
+Generated plug_crypto app
+==> hpax
+Compiling 4 files (.ex)
+Generated hpax app
+==> mint
+Compiling 1 file (.erl)
+Compiling 21 files (.ex)
+Generated mint app
+==> mint_web_socket
+Compiling 7 files (.ex)
+Generated mint_web_socket app
+==> elixir_make
+Compiling 8 files (.ex)
+Generated elixir_make app
+==> decimal
+Compiling 4 files (.ex)
+Generated decimal app
+==> jason
+Compiling 10 files (.ex)
+Generated jason app
+==> esbuild
+Compiling 4 files (.ex)
+Generated esbuild app
+==> vault
+===> Analyzing applications...
+===> Compiling telemetry
+==> thousand_island
+Compiling 18 files (.ex)
+Generated thousand_island app
+==> db_connection
+Compiling 18 files (.ex)
+Generated db_connection app
+==> ecto
+Compiling 56 files (.ex)
+Generated ecto app
+==> ecto_sql
+Compiling 25 files (.ex)
+Generated ecto_sql app
+==> phoenix_html
+Compiling 6 files (.ex)
+Generated phoenix_html app
+==> phoenix_template
+Compiling 4 files (.ex)
+Generated phoenix_template app
+==> phoenix_pubsub
+Compiling 13 files (.ex)
+Generated phoenix_pubsub app
+==> plug
+Compiling 1 file (.erl)
+Compiling 42 files (.ex)
+Generated plug app
+==> cc_precompiler
+Compiling 3 files (.ex)
+Generated cc_precompiler app
+==> exqlite
+Downloading precompiled NIF to /example/local/exqlite-nif-2.17-x86_64-apple-darwin-0.43.0.tar.gz
+
+18:45:56.855 [notice] Invalid option {max_header_size,65536} ignored 
+
+Compiling 12 files (.ex)
+Generated exqlite app
+==> ecto_sqlite3
+Compiling 5 files (.ex)
+Generated ecto_sqlite3 app
+==> websock
+Compiling 1 file (.ex)
+Generated websock app
+==> bandit
+Compiling 54 files (.ex)
+Generated bandit app
+==> websock_adapter
+Compiling 5 files (.ex)
+Generated websock_adapter app
+==> phoenix
+Compiling 75 files (.ex)
+Generated phoenix app
+==> phoenix_live_view
+Compiling 55 files (.ex)
+Generated phoenix_live_view app
+
+$ mix compile --force --warnings-as-errors
+Compiling 9 files (.ex)
+Generated vault app
+
+$ mix format --check-formatted
+
+$ /example/local docs/specs/verify_contracts.py
+# Specification validation
+
+Checked 2026-11-12 23:46 UTC using `python verify_contracts.py`.
+
+| Check | Result |
+| --- | --- |
+| JSON Schema Draft 2020-12 | Valid |
+| Valid wire examples | 51 accepted |
+| Deliberately invalid examples | 15 rejected |
+| Wire message types represented | 15 |
+| Protocol Markdown JSON blocks | 16 parsed and schema-valid |
+| Largest compact valid example | 975 UTF-8 bytes |
+| Maze graph | 16 connected cells, 15 edges, unique 12-move solution |
+| Partial wall maps and partner clues | Match the private fixture |
+| Timing vectors | 10 structurally checked; not run against an implementation |
+| Acceptance case IDs | 40 unique, covering M0–M5 |
+
+These checks validate the handoff files and puzzle data. They do not demonstrate a running Phoenix application, compiled firmware, browser input behavior, timing behavior on real networks, or physical latch operation. Those require the implementation acceptance cases.
+
+
+$ tools/check-contracts
+Four authoritative contract/fixture copies are byte-identical; private fixture is outside public/client trees.
+# Specification validation
+
+Checked 2026-11-12 23:46 UTC using `python verify_contracts.py`.
+
+| Check | Result |
+| --- | --- |
+| JSON Schema Draft 2020-12 | Valid |
+| Valid wire examples | 51 accepted |
+| Deliberately invalid examples | 15 rejected |
+| Wire message types represented | 15 |
+| Protocol Markdown JSON blocks | 16 parsed and schema-valid |
+| Largest compact valid example | 975 UTF-8 bytes |
+| Maze graph | 16 connected cells, 15 edges, unique 12-move solution |
+| Partial wall maps and partner clues | Match the private fixture |
+| Timing vectors | 10 structurally checked; not run against an implementation |
+| Acceptance case IDs | 40 unique, covering M0–M5 |
+
+These checks validate the handoff files and puzzle data. They do not demonstrate a running Phoenix application, compiled firmware, browser input behavior, timing behavior on real networks, or physical latch operation. Those require the implementation acceptance cases.
+
+
+$ mix test --no-start --only m0 test/vault/puzzle_test.exs test/vault/projections_test.exs test/vault/contract_test.exs test/vault/json_test.exs test/vault/simulated_box/model_test.exs
+Running ExUnit with seed: 913283, max_cases: 32
+Excluding tags: [:test]
+Including tags: [:m0]
+
+...................................................
+Finished in 1.5 seconds (1.5s async, 0.01s sync)
+51 tests, 0 failures
+M0 runtime guard passed: started applications unchanged; no named Vault resources.
+
+$ asdf exec npm --prefix tools/browser ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org --cache /example/local
+
+added 3 packages in 1s
+
+$ asdf exec node tools/browser/node_modules/@playwright/test/cli.js install chromium
+Downloading Chrome for Testing 156.0.8078.4 (playwright chromium v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/mac-x64/chrome-mac-x64.zip
+|                                                                                |   0% of 195.8 MiB
+|■■■■■■■■                                                                        |  10% of 195.8 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 195.8 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 195.8 MiB
+Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to /example/local
+Downloading FFmpeg (playwright ffmpeg v1013) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1013/ffmpeg-mac.zip
+|                                                                                |   0% of 1.5 MiB
+|■■■■■■■■                                                                        |  10% of 1.5 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 1.5 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 1.5 MiB
+FFmpeg (playwright ffmpeg v1013) downloaded to /example/local
+Downloading Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) from https://cdn.playwright.dev/builds/cft/156.0.8078.4/mac-x64/chrome-headless-shell-mac-x64.zip
+|                                                                                |   0% of 104.1 MiB
+|■■■■■■■■                                                                        |  10% of 104.1 MiB
+|■■■■■■■■■■■■■■■■                                                                |  20% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 104.1 MiB
+|■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 104.1 MiB
+Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to /example/local
+
+$ asdf exec npm --prefix tools/browser --silent run probe
+{
+  "status": "passed",
+  "node": "20.17.0",
+  "npm": "11.4.2",
+  "playwright": "1.64.1",
+  "browser": {
+    "product": "Chrome Headless Shell",
+    "version": "156.0.8078.4",
+    "revision": "1248",
+    "platform": "darwin",
+    "architecture": "x64"
+  },
+  "checks": [
+    "bundled headless Chromium version matches Playwright manifest",
+    "keyboard entry and button activation on a locally fulfilled offline page",
+    "cookies and localStorage isolated across two browser contexts"
+  ]
+}

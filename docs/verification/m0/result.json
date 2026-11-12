@@ -1,0 +1,152 @@
+{
+  "milestone": "M0",
+  "status": "complete",
+  "recorded_at_utc": "2026-11-12T23:47:50.331123+00:00",
+  "verified_source_commit": "3c6ded1197962045def0b029bc759d0dba748b7c",
+  "source_unchanged_since_clean_checkout": true,
+  "implementation": [
+    "pure puzzle rules and role projections",
+    "bounded exact JSON decoder/comparison/canonical encoder",
+    "pure simulated-box motion, local service and durable patch model",
+    "injected clocks and deterministic timer tests",
+    "shared schema/public fixtures and server-private fixture",
+    "locked Mix and browser toolchains, setup commands and source checks"
+  ],
+  "acceptance": {
+    "M0-01": "Passed",
+    "M0-02": "Passed",
+    "M0-03": "Passed",
+    "M0-04": "Passed"
+  },
+  "verification": {
+    "pure_suite": {
+      "tests": 51,
+      "failures": 0,
+      "startup_guard": "passed",
+      "evidence": "docs/verification/m0/tests.log"
+    },
+    "forced_warning_free_compile": "passed",
+    "format": "passed",
+    "clean_checkout": {
+      "steps": 14,
+      "result": "passed",
+      "fresh_caches": [
+        "Mix",
+        "Hex",
+        "native archive",
+        "Python",
+        "npm",
+        "Chromium"
+      ],
+      "locks_unchanged": true,
+      "git_clean_after_checks": true,
+      "evidence": "docs/verification/m0/clean-checkout.json"
+    },
+    "source_contracts": {
+      "valid_examples": 51,
+      "invalid_examples": 15,
+      "wire_types": 15,
+      "markdown_json_blocks": 16,
+      "unchanged_acceptance_ids": 40,
+      "byte_identical_copies": 4,
+      "timing_vectors": "10 structurally checked; no session/protocol acceptance"
+    },
+    "dependency_probes": [
+      "SQLite WAL/FULL/foreign keys/100ms busy timeout and committed row readback",
+      "exclusive-create race, protected modes, existing/symlink refusal and file/directory fsync",
+      "pinned esbuild temporary JS/CSS bundle",
+      "pinned Chromium headless launch, keyboard input and context isolation"
+    ],
+    "document_checks": [
+      "local links and paired fences",
+      "40 unique acceptance rows",
+      "source unchanged from verified commit",
+      "baseline preservation except declared internal-contract clarifications"
+    ]
+  },
+  "baseline_changes": {
+    "docs/specs/IMPLEMENTATION_CONTRACTS.md": {
+      "before_sha256": "feca08a268842f6628c11039c79bc4c573f4cb9e786eb3681a87783569968c90",
+      "after_sha256": "384516983f9b362d00b2dccc8714000402815f233bee73d56af9960f26dce49f"
+    }
+  },
+  "contract_clarifications": [
+    "historical operation IDs are distinct from containing store patch IDs",
+    "reserved local-service timeline remains inactive until committed and retains original travel deadline",
+    "immediate refusal diagnostic/status effects are paired in one event batch",
+    "execution status belongs to the milestone ledger"
+  ],
+  "limits": [
+    "M1 application, credentials, real stores, transport and browser gameplay are not implemented",
+    "Original elevated pointer click timed out; pointer/native lifecycle checks remain unresolved for M1",
+    "Ten source timing vectors are not executed session/transport acceptance",
+    "No firmware target, GPIO profile, board flash, calibration or physical acceptance",
+    "ESP-IDF/CMake unavailable on inspected PATH; firmware locks and build guard checks remain later milestones",
+    "Single macOS x86_64 host; native dependency/protected-file probes do not establish power-loss durability"
+  ],
+  "hardware_notification": "Notify Rafa which board/power setup to connect when the firmware and test procedure are ready; rediscover identity and explicit port before flashing.",
+  "next_milestone": "M1 complete Phoenix browser game and labeled simulated box",
+  "source_sha256": {
+    ".env.example": "9de55e4e1bb6fb6654ba81f79c7e10903218cb89388dc4311d575605c43e47c6",
+    ".gitignore": "cc2c47ec23a9e02a58a2c1199bc391338a84f80d8fb3f4eabf366ac074ac423e",
+    ".tool-versions": "343e972bf1314dba308b7a43585c016e71b99903ca5186e46540c57b7e3f99d0",
+    "contracts/fixtures/protocol-examples.json": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+    "contracts/fixtures/timing-cases.json": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d",
+    "contracts/protocol-v1.schema.json": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+    "server/.formatter.exs": "7d65c5ecd0c0392ca2311bf0617103703cbc657c221d50d8212f1b1dc56fc54f",
+    "server/config/config.exs": "844741110ccb2c2d92e4665ae19bf0863720bb3c8a74b319888bf3a5c310259f",
+    "server/config/dev.exs": "f4351eab27dc9eb4f3e17099d756098f99526144e042b016939029a834e6a34a",
+    "server/config/prod.exs": "ccaccf1cf63a937e457fdfce98d7f5d92e50fd7ab60d5b939b012a68bce85f9a",
+    "server/config/runtime.exs": "31ed1635c97c1391ac823a4cba3c94007072d3bb0632f500cc08cfd3c6280719",
+    "server/config/test.exs": "79690a6c6dd2667416d6addf6b41158196d0fb2af5d2e397bfdf3e697407e06c",
+    "server/lib/vault/clock.ex": "9438d4b23aa130b445d365c0e801b08e3a62d6953f9209a4fd48ea69a2f7289b",
+    "server/lib/vault/json.ex": "77dbb0b063f1806f48efbcb220cb1995e3db4fa62decda307b0fefe4cb96c53b",
+    "server/lib/vault/json/number.ex": "6c114e823f9ab40ffa7ca1dc79f463acc8c7155940caf699523c9f32f7786c61",
+    "server/lib/vault/projections.ex": "e5c8c320d29c1cba49c50d0198a4af489e80ad6bf2625c4c1cbade5890c90a4b",
+    "server/lib/vault/puzzle.ex": "95e7dcd478c4933894f7fcefdb56910f30aff06f13087a688ba17ef5d979b301",
+    "server/lib/vault/simulated_box/durable.ex": "f2171a8bf51a530e08bbef88766a8145e53c2103cbad1bedf847a216019745d1",
+    "server/lib/vault/simulated_box/model.ex": "edf0532bea11f003df57b45e8ad071e753509645ba595824e6691c79927f2c87",
+    "server/lib/vault/simulated_box/service.ex": "7464509061820f4c0fbacb18f5d00320577223c7f3db0fb3370f94baf4836179",
+    "server/mix.exs": "4a700c034c565074ac0caf528c8ccb98d5c7267c7f1d5a8d73560aa1b2fd83e7",
+    "server/mix.lock": "61d2c237caf6d61387afccf55e49662cd8893bb0907a07e46266992eb2341748",
+    "server/priv/puzzles/maze-v1.private.json": "d81ad5c348811bb323006c7a1c71683550dc5946d8aa070d7dc90c79792e073d",
+    "server/test/support/fake_clock.ex": "9efc6034ad9ea0aadbd30ecb7135d58f92c6552d5b62f6883eabc383e1ebb263",
+    "server/test/test_helper.exs": "b086ec47f0c6c7aaeb4cffca5ae5243dd05e0dc96ab761ced93325d5315f4b12",
+    "server/test/vault/contract_test.exs": "a737fcab398b30492cd926ee4f64fc2f2f33febec7794f697d8ace12f198a7d7",
+    "server/test/vault/json_test.exs": "9c857a208b6941c085d35a9ae5e7aa70a1464b5cbc8628a7f5f708b6a78819f5",
+    "server/test/vault/projections_test.exs": "2b2e1aeeeba8edfe82f064fe7fb124cfb5ca89c8e60c8d77703d01f230de151b",
+    "server/test/vault/puzzle_test.exs": "d6f84a583330337ce78bbe7f55aad05c7da1c31e4beaf002e5cc9e1ef3278b5f",
+    "server/test/vault/simulated_box/durable_cases.exs": "9ef874c935d109627b484723cc273aea5e32a9ba029df58ce29a593800d564d3",
+    "server/test/vault/simulated_box/model_test.exs": "e35a1f1285ceef50e7d5c3a1691383b271ceaf7671eea883dc9d6be810d15937",
+    "tools/bootstrap-elixir": "cf3bd8f46d18f05f1c61295dc4899bf054775fe8c9925e6281ef69e2c4f8b0da",
+    "tools/browser/package-lock.json": "f9aa3d355a9a3c8ea32022930cae990a86daed187e596eb41714f93ba66389cc",
+    "tools/browser/package.json": "85cec4ee92740f651e49d4852ef7495a2bcebef1872f1258be08bd92f6460d4e",
+    "tools/browser/probe.mjs": "cdfb6a7b382035d8c3111110a6afd121efb1550b48b9cddfccfcc8a44ef6dbed",
+    "tools/check-contracts": "2782030e25e38162cd51b6c6ffcd9deb5748e9a471ac3aad2256a06001beaca6",
+    "tools/probes/assets.exs": "66b06044d99472098a28d8517a779a485eed3134af3f177028ec58bbae54b986",
+    "tools/probes/filesystem.py": "742410672ff20eb211969c5fdc04fd64c7598184a528de9200c97f29d9042cdc",
+    "tools/probes/sqlite.exs": "a52082f7366917672b1bc07daf30fb04ed1d3349ead28220e35d2222024530f2",
+    "tools/requirements-checks.lock": "12d768c9c0789a558fb6e9fe8b615e539b0a434ed4fb1ef90a705a03bcef0fea",
+    "docs/specs/IMPLEMENTATION_CONTRACTS.md": "384516983f9b362d00b2dccc8714000402815f233bee73d56af9960f26dce49f"
+  },
+  "evidence_sha256": {
+    "docs/verification/m0/README.md": "cb4b2eaa00a7ee7d915e6e4d7ea9c7319ba350020db512a907070429188d9dc8",
+    "docs/verification/m0/agent-support.md": "1962c78769a84479dbc91faea15c9034fcc3d600c05c108bbcfdc21487e4bcf6",
+    "docs/verification/m0/assets.json": "b864c81a0835d1dc2d53a7837b0fad63f09aad65b13daf8f6c9e5c95d902ceca",
+    "docs/verification/m0/baseline.json": "2be79b0e473c782e5607cd0033216efd5ae24c448c2e9f87d65102ae6f3a9359",
+    "docs/verification/m0/browser.json": "b06c7d7c5a7007943b1ea1c648052290e18fac950a83d777071ffcaf0527d094",
+    "docs/verification/m0/browser.log": "a266c4933b7c5d991773eff998a326912306e3d6e274e91487d1baca6f820f7b",
+    "docs/verification/m0/clean-checkout.json": "c24ee94d08b77171886229d31b4dca77709514da13d9495a31cfabaf5959f6d3",
+    "docs/verification/m0/clean-checkout.log": "ee36989c5899d8c69667a77c4cf29db999d2e29af23336a708eca11fda749950",
+    "docs/verification/m0/compile.log": "985717b0baff4f6e8ac7f0632b52096829126308ae8013877fb03c0a80b6bc76",
+    "docs/verification/m0/contracts.log": "4999e499b6fa6efafaa6d2bbe42fb9a57dd3be2542a60c1df4790997611890c7",
+    "docs/verification/m0/environment.json": "6549b5d76a13bf2ee3462213f02ea7179c7bce26394d645dd10e82846901a264",
+    "docs/verification/m0/filesystem.json": "0d99a63d427fe4a05723e46ccd8775ac0b3f54f06b19cbe193d28173f98d17db",
+    "docs/verification/m0/format.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "docs/verification/m0/pure-clean-checkout.json": "660e3ec5f2148a5631fdd3cd03292e68e390209b3c85885b8c8e1460d560a260",
+    "docs/verification/m0/pure-clean-checkout.log": "23fbe5de9c07354066f4f8276f06dda1accaf36d61675c92ba424a7e25778fab",
+    "docs/verification/m0/spec-validation.md": "2984bc3e13b6573f559a67109cc9faf5a690ebe2759e255839d8e85d65eaf767",
+    "docs/verification/m0/sqlite-probe.json": "faf6d8d546488b374b0bed3f22a4988a953dc8f9c8152f998ea634e6aed66765",
+    "docs/verification/m0/tests.log": "dc13dc22be79ef7678af02d451363088ff1163828ebcfed57af5113d976fcb5b"
+  }
+}

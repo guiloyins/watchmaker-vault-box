@@ -1,6 +1,6 @@
 # Toolchain and compatibility evidence
 
-M0 records executed compatibility separately from later application and hardware acceptance. This is a single macOS x86_64 development host; it does not certify another OS or board.
+M0 records executed compatibility separately from later application and hardware acceptance. This is a single macOS x86_64 development host; it does not certify another OS or board. The final [fresh-checkout reproduction](verification/m0/clean-checkout.json) passed all 14 setup/check steps with empty local caches and unchanged lockfiles.
 
 | Component | Selected / observed | Evidence and boundary |
 | --- | --- | --- |
