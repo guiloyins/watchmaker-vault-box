@@ -6,7 +6,7 @@ M0 implements deterministic rules, role projections, bounded JSON handling and t
 
 ## M0 setup
 
-Use the versions in [.tool-versions](.tool-versions): Erlang 28.0.1 and Elixir 1.18.4 compiled for OTP 28. Python 3.13.12 was tested for the development-only specification checker. Node 20.17.0 is selected for future browser tooling; M0 and Mix-managed esbuild do not invoke npm. Run `asdf install` if using asdf, or supply those exact runtimes through your version manager.
+Use the versions in [.tool-versions](.tool-versions): Erlang 28.0.1, Elixir 1.18.4 compiled for OTP 28, and Node 20.17.0. Python 3.13.12 was tested for the development-only specification checker. npm 11.4.2 runs the separate browser-tool compatibility probe; Mix manages application assets. Run `asdf install` if using asdf, or supply those exact runtimes through your version manager.
 
 From the repository root:
 
@@ -24,6 +24,16 @@ MIX_ENV=test mix deps.compile
 ```
 
 Dependencies are locked in [server/mix.lock](server/mix.lock). The setup downloads them once; later checks can use the local caches without internet. Configuration loads without credentials, databases or a running application. Mix 1.18 uses a local TCP socket for its build lock, so restricted runners must permit that socket even for `--no-start` tests.
+
+For the M0 browser-tool compatibility check, return to the repository root and use the pinned Node runtime explicitly:
+
+```sh
+asdf exec npm --prefix tools/browser ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org --cache "$PWD/.cache/npm"
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" CI=1 asdf exec node tools/browser/node_modules/@playwright/test/cli.js install chromium
+PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm_config_cache="$PWD/.cache/npm" asdf exec npm --prefix tools/browser --silent run probe
+```
+
+The probe launches the pinned Chromium headless shell and checks keyboard input plus separate browser-context storage without a game server or external page requests. A prior pointer-click attempt timed out on this host; pointer/native lifecycle and gameplay acceptance remain M1 checks. Browser launch may need permission outside a restricted runner. See the retained [browser evidence](docs/verification/m0/browser.json).
 
 ## Required M0 checks
 
@@ -47,6 +57,6 @@ The test suite checks rules, information boundaries, raw JSON edge cases, box tr
 
 M1 adds one authoritative GameSession, two browser controllers, an authenticated host console and a labeled simulated box. M2 adds the raw `/device/v1` transport and failure conformance. CYD and C5 builds follow verified board profiles in M3/M4, then installed-box acceptance in M5.
 
-No boards need to be connected for M0. Before flashing, identify the exact board, verified profile and explicit serial port; notify Rafa which board to connect when its build and test procedure are ready. The [board audit](docs/hardware/board-audit.md) records the existing evidence and missing hardware facts. Missing physical evidence does not stop independent software work.
+No boards need to be connected for M0/M1 software work. Notify Rafa which board to connect and the required power setup when its build and test procedure are ready. After connection, rediscover the exact board, verified profile and explicit serial port before flashing. The [board audit](docs/hardware/board-audit.md) records the existing evidence and missing hardware facts. Missing physical evidence does not stop independent software work.
 
 See [implementation status](docs/implementation-status.md) for actual outcomes and [toolchain evidence](docs/toolchain.md) for installed, compiled and unverified combinations. Ignore rules exclude runtime databases, generated assets, secrets, caches and device images. No Git remote or deployment is configured.

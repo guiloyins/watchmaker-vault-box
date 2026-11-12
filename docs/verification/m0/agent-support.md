@@ -15,3 +15,5 @@ Integration found concrete defects before milestone closure: incorrect literal m
 Pure helpers `simulated_box/durable.ex` and `simulated_box/service.ex` keep the model implementation manageable without adding processes, I/O or future M1/M2 dependencies. `model_test.exs` explicitly loads `durable_cases.exs`, so the exact required M0 command executes the adversarial durable assertions.
 
 The internal contract clarifies deterministic historical outcome IDs separately from store mutation IDs to avoid hashing a patch that contains its own digest. Wire schemas, fixtures and physical identity rules are unchanged. No agent identified, flashed or exercised a board. This work is implementation and bounded verification support, not a new EGM review round.
+
+At closure, the coordinator identified the design's explicit M0 Playwright compatibility requirement. The JSON agent then owned the separate browser package/lock and a small offline probe. Actual Chromium launch, keyboard input and context isolation passed; its original pointer-click timeout is retained as an unresolved M1 input check. No game harness or browser acceptance case was implemented in this follow-up.

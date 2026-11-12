@@ -1,6 +1,10 @@
 # The Watchmaker's Vault implementation and verification status
 
-Recorded 12 November 2026. Current phase: **M0 implemented; local checks passed; fresh-checkout verification pending**. The finalized design remains the baseline. Pure rules, role projections, exact JSON handling, pure box/service/durable logic, clock seams, shared contract copies and locked host dependencies now exist. The Phoenix application/runtime and firmware remain M1+ work. A local Git repository on `main` is initialized with no remote.
+Recorded 12 November 2026. Current phase: **M0 implemented; local checks passed; final fresh-checkout verification pending**. The finalized design remains the baseline. Pure rules, role projections, exact JSON handling, pure box/service/durable logic, clock seams, shared contract copies and locked host dependencies now exist. The Phoenix application/runtime and firmware remain M1+ work. A local Git repository on `main` is initialized with no remote.
+
+## Design review history
+
+The following checkpoints describe the design before implementation. Their statements about pending work and unexecuted checks apply to those historical stages; the M0 section and acceptance matrix below record current implementation evidence.
 
 The user approved all design sections and **D1: audience-specific PubSub snapshots**, **D2: generated firmware configuration from reviewed board profiles**, **D3: generated host access key**, **D4: automated browser checks with Playwright**, **D5: Phoenix-managed asset builds** and **D6: Mint.WebSocket simulator clients**. The approved [Detailed Implementation Plan](./designs/watchmakers-vault.md#detailed-implementation-plan) is saved at the requested path. Stage 5 used all 17 approved local files and all 12 saved external pages. Both fresh-context reviewers completed: **0 Blocker, 3 Major, 0 Nit**. The original findings concerned the operator reconciliation exit, live key-rotation complexity and the boundary between box simulators. Stage 6 then reviewed the target alone and completed with **no comprehension findings**; its complete paraphrase and receipt are saved. S5-01 is now resolved by the accepted Stage 7 recovery edits; S5-02 and S5-03 were open at that checkpoint and are now resolved through Stage 8. See the [Stage 5 report](../zoom_out_report.md), [Stage 6 report](../comprehension_report.md) and [review state](../egm_review_state.md).
 
@@ -16,7 +20,7 @@ Stage 9 completed with three fresh reviewer roles on lines 486–861. The first 
 
 Stage 9 resolution is complete: the user auto accepted all ten fixes and requested finalization. Three agents supplied the API/storage, USB service and JSON/M0 contracts; the parent integrated five wording fixes. All 80 approved operations across nine documents were applied and matched their previews. Two subsequent editorial changes marked the design approved and updated its introductory lifecycle wording. The [resolved report](../goldfish_review_report.md), [application evidence](./reviews/stage9-resolution/application.json) and [review conclusion](./reviews/design-finalization.md) record zero remaining review actions. No formal re-audit or clean-round convergence is claimed.
 
-The [drafting-history archive](./reviews/stage9-resolution/drafting-history.md) retains the paragraphs removed from the detailed plan. Decisions and verification gates remain beside the applicable tasks. Original raw findings, frozen review inputs and prior resolved reports remain preserved. The finalized design is the implementation baseline; actual M0–M5 implementation and acceptance remain pending.
+The [drafting-history archive](./reviews/stage9-resolution/drafting-history.md) retains the paragraphs removed from the detailed plan. Decisions and verification gates remain beside the applicable tasks. Original raw findings, frozen review inputs and prior resolved reports remain preserved. The finalized design is the implementation baseline; all delivery milestones were pending at design finalization.
 
 ## M0 implementation and verification
 
@@ -28,7 +32,7 @@ Source validation passed 51 accepted/15 rejected examples, 15 wire types, 16 pro
 
 M0 clarified internal historical record IDs to avoid a self-referential store digest, represented a pending local-service travel deadline without allowing motion, and specified same-batch refusal diagnostic/status handling. These are recorded in IMPLEMENTATION_CONTRACTS.md and model tests; protocol v1, schema, all fixtures and the finalized design remain unchanged. No hardware identity, GPIO, physical reference, flash or bench acceptance was invented. Rafa will be told which verified board/port is needed when its firmware and test procedure are ready; no board connection is required now.
 
-Fresh-checkout setup/build/test verification remains the last M0-01 check before closure. M1 has not started.
+Fresh-checkout setup/build/test verification passed all 11 steps at source commit `04170b1763dad5a85beac812a2a23d7685f606bb`, with empty local dependency/Python caches, an unchanged Mix lock and a clean checkout afterward. The M0 Playwright/Chromium launch, keyboard-input and context-isolation check also passed; its original pointer-click timeout remains an unresolved M1 input check. The final source checkout is being checked with the browser package included. M1 has not started.
 
 ## Hardware correction pass
 
@@ -38,7 +42,7 @@ Updated the [master implementation specification](./specs/WATCHMAKERS_VAULT_SPEC
 
 The active enclosure is the green PASCAL hinged cardboard box with user-reported nominal interior **90 mm W × 85 mm D × 70 mm H**. ULN2003AN/TI and Freenove eight-pixel identification, the selected normal 5 V Samsung supply mode, individual CYD power banks and the observed dual-USB yellow board are recorded. Rv3/ST7789/XPT2046 remains a candidate. Exact C5 identity, per-unit profiles, electrical checks, mechanism calibration and installed fit remain unverified. Optional lid contact sensing adds no version 1 field or automatic motor action.
 
-## Executed checks
+## Historical design and hardware-document checks
 
 | Check | Actual result | Evidence class |
 | --- | --- | --- |
@@ -65,7 +69,7 @@ The active enclosure is the green PASCAL hinged cardboard box with user-reported
 
 Evidence bookkeeping correction during Stage 8: the validator prints to stdout unless `--report` is supplied. The candidate/applied evidence copies initially contained the original 14:45 source report; they now retain the actual observed 21:04/21:10 results. The original copy is archived and the correction is recorded in `reviews/stage7-resolution/application.json`. Reviewed source `specs/SPEC_VALIDATION.md` remains unchanged; no validator was rerun.
 
-No application tests, browser interaction tests, firmware host tests, builds, flashing or bench checks were executed. The validator's timing-fixture result does not satisfy M2 timing acceptance. Pure-rule engine tests have not been implemented, so fixture validation alone does not satisfy M0-02.
+At those design-review checkpoints, no application tests or builds had run. M0 has since compiled and tested the pure providers as recorded above; its executed rules and projection assertions satisfy M0-02. The validator's timing-fixture result remains structural only and does not satisfy M2 timing acceptance. Application integration, browser gameplay, firmware host tests, target builds, flashing and bench checks remain pending.
 
 ### Preserved contract baseline
 
@@ -85,24 +89,24 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 
 | Case | Status | Current evidence or specific next requirement |
 | --- | --- | --- |
-| M0-01 | Not run | Host runtime/dependency locks, compilation and native/tool probes passed. Fresh-checkout reproduction pending. ESP-IDF/CMake unavailable; firmware versions and verified target profiles remain later gates. |
+| M0-01 | Not run | Host runtime/dependency locks, compilation, native/tool probes and the initial pure fresh-checkout reproduction passed. Final reproduction including the browser-tool probe is pending. ESP-IDF/CMake unavailable; firmware versions and verified target profiles remain later gates. |
 | M0-02 | Passed | Executed pure fixture/rules/projection assertions for 16 cells, 15 passages, golden route, dead end, exact role walls/axes/clues/selections, plus byte-identical shared/private copies. |
 | M0-03 | Passed | M0 audit scope: supplied identities/candidate profiles and unknown facts are recorded; no GPIOs or physical target is selected. Hardware acceptance remains blocked. Incomplete-profile build rejection is Not run until the planned firmware wrapper exists in M3. |
 | M0-04 | Passed | Required no-start gate: 51 tests/0 failures; explicit monotonic clock and queued stale timers, literal pure box effects/persistence completions, strict JSON/durable regressions; no application/runtime startup. Real storage/transport/touch/actuator adapters remain later milestones. |
 | M1-01 | Not run | Implement browser A/B/host sessions and simulated readiness. |
-| M1-02 | Not run | Implement movement and role/phase/version rejection tests. |
-| M1-03 | Not run | Implement allowlisted projections and inspect real served surfaces, including Mix/esbuild input metadata, bundles and development maps. No asset build or privacy test has run. |
+| M1-02 | Not run | Integrate the tested pure movement and role/phase/version rejection behavior with the application and real browser controls. |
+| M1-03 | Not run | Expand the tested pure projections and inspect real served surfaces, including Mix/esbuild input metadata, bundles and development maps. No game asset build or served-surface privacy test has run. |
 | M1-04 | Not run | Generated host access key selected; implement provisioning/login/rotation/revocation and adversarial authorization checks. Drafting review is not executed security verification. |
 | M1-05 | Not run | Implement explicit ownership/takeover and separate demonstration actors. |
-| M1-06 | Not run | Implement seal selection and overlapping hold qualification. |
+| M1-06 | Not run | Integrate the tested pure seal/hold rules with authenticated session leases, persistence and browser controls. |
 | M1-07 | Not run | Playwright selected; implement automated lifecycle checks and observe named native blur/visibility/cancellation cases. Synthetic events or headless checks cannot stand in for missing native evidence. |
-| M2-T1 | Not run | Execute deterministic 1,999/2,000 ms qualification boundary. |
-| M2-T2 | Not run | Execute 399/400 ms challenge boundary. |
+| M2-T1 | Not run | Integrate the pure 1,999/2,000 ms boundary proof with session leases, committed solve and dispatch. |
+| M2-T2 | Not run | Execute the session/protocol 399/400 ms challenge boundary; the pure reducer deadline is tested in M0. |
 | M2-T3 | Not run | Execute expired/reordered/duplicate input cases. |
 | M2-T4 | Not run | Execute lease expiry and 1,500 ms silence recovery. |
-| M2-T5 | Not run | Execute canceled-attempt queued completion cases. |
+| M2-T5 | Not run | Execute canceled-attempt queued completion through the real session; the M0 reducer/fake-clock case passes. |
 | M2-T6 | Not run | Prove heartbeats do not create full snapshots or visible-state revisions. |
-| M2-T7 | Not run | Prove active zero-time hold is distinct from inactivity. |
+| M2-T7 | Not run | Verify active zero-time hold through session/protocol/UI; the M0 pure projection distinguishes it. |
 | M2-01 | Not run | Implement sequence/result-cache and stale board-version tests. |
 | M2-02 | Not run | Implement session fencing and restart-to-paused tests. |
 | M2-03 | Not run | Audience-specific snapshots selected; implement and test authorized subscribe/bootstrap/revision ordering and scope fencing. |
@@ -119,7 +123,7 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 | M4-02 | Blocked | Actual mechanism calibration/current reference missing; permission logic can be implemented with fakes. |
 | M4-03 | Not run | Implement host fault injection for journal/freshness and bounded-step invariants; physical counterpart still needs M4-01 evidence. |
 | M4-04 | Not run | Implement specified capacity, duplicate and crash-safe clear tests with retained versioned authorization outside erased entries. |
-| M4-05 | Blocked | Verified powered/calibrated mechanism missing for physical interruption checks; fake interruption tests not run. |
+| M4-05 | Blocked | Verified powered/calibrated mechanism missing for physical interruption checks; firmware host-fake interruption tests not run; M0 Elixir model checks do not establish firmware behavior. |
 | M4-06 | Blocked | Measured release travel/rate/timeout and reference missing. Homing tests apply only if a verified home sensor is installed and enabled. |
 | M5-01 | Blocked | Full installed dry-fit, rigid mounts, calibrated clearance, manual release, power and closed-lid radio evidence missing; ten cycles not run. |
 | M5-02 | Not run | No running system for the 30-minute connected observation; later physical evidence must name exact devices. |

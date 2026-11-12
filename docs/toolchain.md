@@ -9,7 +9,7 @@ M0 records executed compatibility separately from later application and hardware
 | Hex | 2.2.1 | Used for resolution/fetch; repository-local MIX_HOME/HEX_HOME. |
 | Rebar3 | 3.28.0 | Used for telemetry compilation on OTP 28. `tools/bootstrap-elixir` pins the official OTP-28 download URL and SHA-512, verified against Hex’s signed-manifest-selected initial download. |
 | Python | 3.13.12 | Repository venv; `jsonschema==4.26.0` and transitives locked in `tools/requirements-checks.lock`. The initial system Python 3.9.6/jsonschema 4.25.1 was replaced for checks by this explicit venv. |
-| Node | 20.17.0 via `asdf exec node` | Installed, selected by local `.tool-versions`. Shell PATH also exposes Node 22.22.0; use the explicit version-manager executable. No M0 Node/npm dependency install or browser run. |
+| Node / npm | 20.17.0 / 11.4.2 via `asdf exec` | Selected by local `.tool-versions` and browser package metadata; used for locked browser dependency installation and the actual Chromium probe. Shell PATH also exposes Node 22.22.0; use the explicit version-manager executable. |
 | Phoenix / LiveView | 1.8.16 / 1.2.13 | Locked and compiled; HTTP/LiveView behavior remains M1. |
 | Phoenix HTML / Jason | 4.4.0 / 1.4.5 | Locked and compiled; Jason remains the Phoenix codec. Raw input uses `Vault.JSON`. |
 | Ecto / Ecto SQL / SQLite adapter | 3.14.3 / 3.14.0 / 0.26.0 | Locked and compiled; application migrations and constraints remain M1. Decimal is an Ecto transitive dependency, not the exact-number implementation. |
@@ -17,7 +17,7 @@ M0 records executed compatibility separately from later application and hardware
 | Bandit / WebSockAdapter | 1.14.1 / 0.7.2 | Locked and compiled; request/upgrade behavior remains M1/M2. |
 | Mint / Mint.WebSocket | 1.11.0 / 1.0.6 | Development/test dependencies locked and compiled. TLS, raw-protocol timing and bounded-write behavior remain M2. |
 | Mix esbuild wrapper / executable | 0.10.1 / 0.25.12 | Executable downloaded by `mix esbuild.install --if-missing`; temporary JS/CSS bundle and metadata probe. Game entry points and build/deploy aliases are M1. |
-| Playwright / Chromium | Not installed or locked | M1 owns actual browser tooling and its lock/browser revision. No browser acceptance in M0. |
+| Playwright / Chromium | 1.64.1 / 156.0.8078.4, revision 1248 | Exact npm lock in `tools/browser/`; actual headless launch, keyboard input and context-isolation probe passed. An earlier pointer-click attempt timed out; no pointer/native lifecycle or game acceptance is claimed. M1 adds the application harness and scenarios. See [browser evidence](verification/m0/browser.json). |
 | yyjson | Selected, not yet vendored | Portable firmware phase after M2 owns exact upstream revision, license/hashes, native/IDF wiring and conformance tests. No firmware parser compatibility claim. |
 | ESP-IDF / CMake / components | Not selected, installed or tested in M0 | `idf.py` and `cmake` were absent on the inspected initial PATH. Verified CYD/C5 targets and component/driver locks remain physical-target gates. No guessed GPIOs or flash images. |
 

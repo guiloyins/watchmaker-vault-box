@@ -1,0 +1,65 @@
+M0 D4 browser compatibility, recorded 2026-11-12
+Platform: macOS 26.6.2 (25G83), x86_64
+Commands run from the repository root.
+
+$ asdf exec node --version
+v20.17.0
+$ asdf exec npm --version
+11.4.2
+
+npm package metadata and lock
+  @playwright/test, playwright and playwright-core: 1.64.1
+  Package engines: Node >=20
+  Lock format: 3
+  Lock SHA-256: f9aa3d355a9a3c8ea32022930cae990a86daed187e596eb41714f93ba66389cc
+
+$ npm_config_update_notifier=false asdf exec npm --prefix tools/browser ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org --cache "$PWD/.cache/npm" --fetch-retries=1 --fetch-timeout=15000
+added 3 packages in 1s
+
+$ PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" PLAYWRIGHT_DOWNLOAD_CONNECTION_TIMEOUT=30000 CI=1 asdf exec node tools/browser/node_modules/@playwright/test/cli.js install chromium
+Chrome for Testing 156.0.8078.4 (playwright chromium v1248) downloaded to .cache/ms-playwright/chromium-1248
+FFmpeg (playwright ffmpeg v1013) downloaded to .cache/ms-playwright/ffmpeg-1013
+Chrome Headless Shell 156.0.8078.4 (playwright chromium-headless-shell v1248) downloaded to .cache/ms-playwright/chromium_headless_shell-1248
+
+Initial probe iterations, retained from the terminal output:
+  Manifest lookup through the unexported playwright-core/browsers.json subpath
+  failed with ERR_PACKAGE_PATH_NOT_EXPORTED. The probe now reads the browser
+  manifest relative to the package's exported package.json.
+
+  The default shell sandbox denied Chromium process registration:
+  FATAL:base/apple/mach_port_rendezvous_mac.cc:159
+  bootstrap_check_in org.chromium.Chromium.MachPortRendezvousServer.<pid>: Permission denied (1100)
+  Chromium exited with SIGTRAP. The subsequent runs used shell escalation.
+
+  The elevated pointer attempt resolved the Save button but timed out:
+  locator.click: Timeout 5000ms exceeded.
+  waiting for element to be visible, enabled and stable
+  Pointer and native lifecycle compatibility remain unresolved for M1.
+
+$ npm_config_update_notifier=false asdf exec npm --prefix tools/browser ci --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org --cache "$PWD/.cache/npm" --offline
+added 3 packages in 788ms
+
+$ asdf exec node --check tools/browser/probe.mjs
+Exit 0.
+
+$ PLAYWRIGHT_BROWSERS_PATH="$PWD/.cache/ms-playwright" npm_config_cache="$PWD/.cache/npm" npm_config_update_notifier=false asdf exec npm --prefix tools/browser --silent run probe
+{
+  "status": "passed",
+  "node": "20.17.0",
+  "npm": "11.4.2",
+  "playwright": "1.64.1",
+  "browser": {
+    "product": "Chrome Headless Shell",
+    "version": "156.0.8078.4",
+    "revision": "1248",
+    "platform": "darwin",
+    "architecture": "x64"
+  },
+  "checks": [
+    "bundled headless Chromium version matches Playwright manifest",
+    "keyboard entry and button activation on a locally fulfilled offline page",
+    "cookies and localStorage isolated across two browser contexts"
+  ]
+}
+
+Exit 0. Both browser contexts were offline and used an in-memory route response.

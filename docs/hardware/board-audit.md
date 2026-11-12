@@ -131,4 +131,4 @@ No additional general drawer photographs are required for software work. Request
 
 The repository now has host-only pure rules/model tests and locked host dependencies. No physical device was connected, identified further, flashed or exercised during M0; all evidence and unresolved facts above remain unchanged. No GPIO profile was generated. The finalized M0 boundary defers executable incomplete-profile rejection until the firmware build wrapper exists; this check remains Not run, and no hardware target is eligible to build/flash from guessed data.
 
-Rafa asked to be notified when boards are needed. Before that step, name the verified board/profile, explicit serial port, inactive-output/power setup and ready flash/test procedure. Browser/simulator and portable software work continue independently.
+Rafa asked to be notified when boards are needed. When a ready flash/test procedure needs hardware, name the board/profile to connect and the inactive-output/power setup. After connection, rediscover the board identity and explicit serial port before flashing. Browser/simulator and portable software work continue independently.

@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "node": "20.17.0",
+  "npm": "11.4.2",
+  "playwright": "1.64.1",
+  "browser": {
+    "product": "Chrome Headless Shell",
+    "version": "156.0.8078.4",
+    "revision": "1248",
+    "platform": "darwin",
+    "architecture": "x64"
+  },
+  "checks": [
+    "bundled headless Chromium version matches Playwright manifest",
+    "keyboard entry and button activation on a locally fulfilled offline page",
+    "cookies and localStorage isolated across two browser contexts"
+  ],
+  "recorded_at_utc": "2026-11-12T23:43:58.472395+00:00",
+  "os_version": "26.6.2",
+  "os_build": "25G83",
+  "scope": "D4 dependency and headless launch/input compatibility on the tested host",
+  "npm_lock_sha256": "f9aa3d355a9a3c8ea32022930cae990a86daed187e596eb41714f93ba66389cc",
+  "sources": {
+    "package_manifest": "https://raw.githubusercontent.com/microsoft/playwright/v1.64.1/packages/playwright-test/package.json",
+    "npm_release": "https://www.npmjs.com/package/@playwright/test/v/1.64.1",
+    "browser_manifest": "https://raw.githubusercontent.com/microsoft/playwright/v1.64.1/packages/playwright-core/browsers.json",
+    "release_notes": "https://playwright.dev/docs/release-notes#version-165"
+  },
+  "observations": [
+    "Playwright 1.64.1 declares Node >=20. The official 1.65 release notes announce that Playwright no longer tests on Node.js 20.",
+    "The initial default-sandbox browser launch failed at macOS Mach port bootstrap_check_in with Permission denied (1100). The successful runs used shell escalation for browser launch.",
+    "An initial elevated probe resolved the Save button but pointer click timed out at 5,000 ms while waiting for the element to be visible, enabled and stable. The passing probe used keyboard entry and Enter activation."
+  ],
+  "pending": [
+    "Pointer and native lifecycle compatibility",
+    "Vault gameplay, hooks, authentication and reconnect browser checks"
+  ]
+}

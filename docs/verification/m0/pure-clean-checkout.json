@@ -1,0 +1,132 @@
+{
+  "checked_at_utc": "2026-11-12T23:36:43.812865+00:00",
+  "status": "passed",
+  "verified_source_commit": "04170b1763dad5a85beac812a2a23d7685f606bb",
+  "checkout": "/example/local",
+  "fresh_dependency_and_python_caches": true,
+  "global_archives_not_used": true,
+  "steps": [
+    {
+      "command": [
+        "git",
+        "clone",
+        "--quiet",
+        "--no-hardlinks",
+        "/workspace/watchmaker_vault",
+        "/example/local"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "seconds": 0.246
+    },
+    {
+      "command": [
+        "python3.13",
+        "-m",
+        "venv",
+        ".venv"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 3.251
+    },
+    {
+      "command": [
+        "/example/local",
+        "-m",
+        "pip",
+        "install",
+        "-r",
+        "tools/requirements-checks.lock"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 2.456
+    },
+    {
+      "command": [
+        "tools/bootstrap-elixir"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 3.343
+    },
+    {
+      "command": [
+        "mix",
+        "deps.get",
+        "--check-locked"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 2.649
+    },
+    {
+      "command": [
+        "mix",
+        "deps.compile"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 28.398
+    },
+    {
+      "command": [
+        "mix",
+        "compile",
+        "--force",
+        "--warnings-as-errors"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 2.723
+    },
+    {
+      "command": [
+        "mix",
+        "format",
+        "--check-formatted"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 1.11
+    },
+    {
+      "command": [
+        "/example/local",
+        "docs/specs/verify_contracts.py"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 1.269
+    },
+    {
+      "command": [
+        "tools/check-contracts"
+      ],
+      "cwd": "checkout",
+      "exit_code": 0,
+      "seconds": 1.315
+    },
+    {
+      "command": [
+        "mix",
+        "test",
+        "--no-start",
+        "--only",
+        "m0",
+        "test/vault/puzzle_test.exs",
+        "test/vault/projections_test.exs",
+        "test/vault/contract_test.exs",
+        "test/vault/json_test.exs",
+        "test/vault/simulated_box/model_test.exs"
+      ],
+      "cwd": "checkout/server",
+      "exit_code": 0,
+      "seconds": 2.634
+    }
+  ],
+  "log": "docs/verification/m0/pure-clean-checkout.log",
+  "log_sha256": "23fbe5de9c07354066f4f8276f06dda1accaf36d61675c92ba424a7e25778fab",
+  "runtime_or_physical_acceptance": "not_claimed"
+}
