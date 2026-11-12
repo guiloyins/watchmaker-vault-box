@@ -1,0 +1,1 @@
+{"output":"\n  out/probe.js   51b \n  out/probe.css  43b \n\n⚡ Done in 10ms\n","metadata":true,"result":"passed","esbuild":"0.25.12","entries":["JS","CSS"],"evidence":"throwaway toolchain entries; no game assets or deploy alias"}

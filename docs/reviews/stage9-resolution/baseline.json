@@ -1,0 +1,42 @@
+{
+  "prepared_at_utc": "2026-11-12T22:23:53.975780+00:00",
+  "status": "proposal_preparation",
+  "files": {
+    "docs/designs/watchmakers-vault.md": {
+      "sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "lines": 861
+    },
+    "docs/specs/WATCHMAKERS_VAULT_SPEC.md": {
+      "sha256": "d90c341dc991a8dad8560e57453366ef9d1c7d676ee38f039bb33dfb757d8c36",
+      "lines": 729
+    },
+    "docs/specs/PROTOCOL_V1.md": {
+      "sha256": "c75ed1c7cc0b51ae4acd9006b924fb88bdef5b01ec73ccbba7b1e47817324444",
+      "lines": 270
+    },
+    "docs/specs/ACCEPTANCE.md": {
+      "sha256": "4fa93bbdf6fee493ff8db98f151bcd6185decce427301edad16c4f26d8eecfbd",
+      "lines": 109
+    },
+    "docs/specs/HARDWARE_AUDIT.md": {
+      "sha256": "13c846be1033402ee3d511a14d625fa2b54de580c1857a03bf7e75987481123b",
+      "lines": 170
+    },
+    "docs/specs/contracts/protocol-v1.schema.json": {
+      "sha256": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+      "lines": 2710
+    },
+    "docs/specs/fixtures/maze-v1.private.json": {
+      "sha256": "d81ad5c348811bb323006c7a1c71683550dc5946d8aa070d7dc90c79792e073d",
+      "lines": 235
+    },
+    "docs/specs/fixtures/protocol-examples.json": {
+      "sha256": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+      "lines": 1970
+    },
+    "docs/specs/fixtures/timing-cases.json": {
+      "sha256": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d",
+      "lines": 392
+    }
+  }
+}

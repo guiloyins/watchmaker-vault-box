@@ -1,0 +1,543 @@
+Source: https://hexdocs.pm/websockex/WebSockex.html
+Final URL: https://websockex.hexdocs.pm/WebSockex.html
+Retrieved UTC: 2026-11-12T19:30:54.122930+00:00
+Raw snapshot: /workspace/watchmaker_vault/docs/reviews/stage5-context/09-websockex-api.html
+Raw SHA-256: e617aba15b97b95749be72e2575efcedc659b7b326df95aad60c4cc65f555312
+Extraction: Unabridged main text; scripts, styles and SVG omitted; no model summary
+
+Search documentation of WebSockex
+
+Default
+
+Default
+In-browser search
+
+Settings
+
+WebSockex behaviour
+(WebSockex v0.5.1)
+
+View Source
+
+A client handles negotiating the connection, then sending frames, receiving
+frames, closing, and reconnecting that connection.
+
+A simple client implementation would be:
+
+defmodule WsClient do
+use WebSockex
+
+def start_link(url, state) do
+WebSockex.start_link(url, __MODULE__, state)
+end
+
+def handle_frame({:text, msg}, state) do
+IO.puts "Received a message: #{msg}"
+{:ok, state}
+end
+
+def handle_cast({:send, {type, msg} = frame}, state) do
+IO.puts "Sending #{type} frame with payload: #{msg}"
+{:reply, frame, state}
+end
+end
+
+Closing Connections
+
+WebSockex connections can be closed gracefully by returning close tuples from
+callback functions. The following callbacks support close returns:
+
+handle_frame/2
+
+handle_cast/2
+
+handle_info/2
+
+handle_ping/2
+
+handle_pong/2
+
+Basic Close
+
+Return {:close, state} to close with the default close code (1000):
+
+def handle_frame({:text, "quit"}, state) do
+{:close, state}
+end
+
+Close with Custom Code
+
+Return {:close, {close_code, message}, state} to specify a close code and reason:
+
+def handle_frame({:text, "error"}, state) do
+{:close, {4000, "Application error"}, state}
+end
+
+Close codes are integers in specific ranges:
+
+1000-1015 - Standard protocol codes (e.g., 1000 = normal, 1001 = going away, 1002 = protocol error, 1003 = unsupported data)
+
+3000-3999 - Reserved for use by libraries, frameworks, and applications (registered with IANA)
+
+4000-4999 - Private use for applications
+
+Common standard codes include:
+
+1000 - Normal closure
+
+1001 - Going away
+
+1002 - Protocol error
+
+1003 - Unsupported data
+
+Supervision
+
+WebSockex is implemented as an OTP Special Process and as a result will fit
+into supervision trees.
+
+WebSockex also supports the Supervisor children format introduced in Elixir
+1.5. Meaning that a child specification could be {ClientModule, [state]}.
+
+However, since there is a possibility that you would like to provide a
+t:WebSockex.Conn/0 or a url as well as the state, there are two versions of
+the child_spec function. If you need functionality beyond that it is
+recommended that you override the function or define your own.
+
+Just remember to use the version that corresponds with your start_link's
+arity.
+
+Summary
+
+Types
+
+client()
+
+close_code()
+
+An integer between 1000 and 4999 that specifies the reason for closing the connection.
+
+close_error()
+
+The error returned when a connection fails to be established.
+
+close_frame()
+
+The frame sent when the negotiating a connection closure.
+
+close_reason()
+
+The reason a connection was closed.
+
+connection_status_map()
+
+A map that contains information about the failure to connect.
+
+debug_opts()
+
+Debug options to be parsed by :sys.debug_options/1.
+
+frame()
+
+option()
+
+Options values for start_link.
+
+options()
+
+Callbacks
+
+code_change(old_vsn, state, extra)
+
+Invoked when a new version the module is loaded during runtime.
+
+format_status(atom, list)
+
+Invoked to retrieve a formatted status of the state in a WebSockex process.
+
+handle_cast(msg, state)
+
+Invoked to handle asynchronous cast/2 messages.
+
+handle_connect(conn, state)
+
+Invoked after a connection is established.
+
+handle_disconnect(connection_status_map, state)
+
+Invoked when the WebSocket disconnects from the server.
+
+handle_frame(frame, state)
+
+Invoked on the reception of a frame on the socket.
+
+handle_info(msg, state)
+
+Invoked to handle all other non-WebSocket messages.
+
+handle_ping(ping_frame, state)
+
+Invoked when the Websocket receives a ping frame
+
+handle_pong(pong_frame, state)
+
+Invoked when the Websocket receives a pong frame.
+
+terminate(close_reason, state)
+
+Invoked when the process is terminating.
+
+Functions
+
+cast(client, message)
+
+Asynchronously sends a message to a client that is handled by handle_cast/2.
+
+handle_terminate_close(reason, parent, debug, state)
+
+init(parent, name, conn, module, module_state, opts)
+
+send_frame(client, frame, timeout \\ 5000)
+
+Sends a frame through the WebSocket.
+
+start(conn_info, module, state, opts \\ [])
+
+Starts a WebSockex process.
+
+start_link(conn_info, module, state, opts \\ [])
+
+Starts a WebSockex process linked to the current process.
+
+Types
+
+client()
+
+@type client() :: pid() | atom() | {:via, module(), term()} | {:global, term()}
+
+close_code()
+
+@type close_code() :: integer()
+
+An integer between 1000 and 4999 that specifies the reason for closing the connection.
+
+close_error()
+
+@type close_error() ::
+%WebSockex.RequestError{__exception__: true, code: term(), message: term()}
+| %WebSockex.ConnError{__exception__: true, original: term()}
+| %WebSockex.InvalidFrameError{__exception__: true, frame: term()}
+| %WebSockex.FrameEncodeError{
+__exception__: true,
+close_code: term(),
+frame_payload: term(),
+frame_type: term(),
+reason: term()
+}
+
+The error returned when a connection fails to be established.
+
+close_frame()
+
+@type close_frame() :: {close_code(), message :: binary()}
+
+The frame sent when the negotiating a connection closure.
+
+close_reason()
+
+@type close_reason() ::
+{:remote | :local, :normal}
+| {:remote | :local, close_code(), message :: binary()}
+| {:remote, :closed}
+| {:error, term()}
+
+The reason a connection was closed.
+
+A :normal reason is the same as a 1000 reason with no payload.
+
+If the peer closes the connection abruptly without a close frame then the
+close reason is {:remote, :closed}.
+
+connection_status_map()
+
+@type connection_status_map() :: %{
+reason: close_reason() | close_error(),
+attempt_number: integer(),
+conn: WebSockex.Conn.t()
+}
+
+A map that contains information about the failure to connect.
+
+This map contains the error, attempt number, and the WebSockex.Conn.t/0
+that was used to attempt the connection.
+
+debug_opts()
+
+@type debug_opts() :: [
+:trace
+| :log
+| {:log, log_depth :: pos_integer()}
+| :statistics
+| {:log_to_file, Path.t()}
+]
+
+Debug options to be parsed by :sys.debug_options/1.
+
+These options can also be set after the process is running using the functions in
+the Erlang :sys module.
+
+frame()
+
+@type frame() ::
+:ping
+| :pong
+| {:ping | :pong, nil | (message :: binary())}
+| {:text | :binary, message :: binary()}
+
+option()
+
+@type option() ::
+WebSockex.Conn.connection_option()
+| {:async, boolean()}
+| {:debug, debug_opts()}
+| {:name, atom() | {:global, term()} | {:via, module(), term()}}
+| {:handle_initial_conn_failure, boolean()}
+
+Options values for start_link.
+
+:async - Replies with {:ok, pid} before establishing the connection.
+This is useful for when attempting to connect indefinitely, this way the
+process doesn't block trying to establish a connection.
+
+:handle_initial_conn_failure - When set to true a connection failure
+while establishing the initial connection won't immediately return an error
+and instead will invoke the handle_disconnect/2 callback. This option
+only matters during process initialization. The handle_disconnect
+callback is always invoked if an established connection is lost.
+
+:debug - Options to set the debug options for :sys.handle_debug.
+
+:name - An atom that the registers the process with name locally.
+Can also be a {:via, module, term} or {:global, term} tuple.
+
+Other possible option values include: WebSockex.Conn.connection_option/0
+
+options()
+
+@type options() :: [option()]
+
+Callbacks
+
+code_change(old_vsn, state, extra)
+
+@callback code_change(
+old_vsn :: term() | {:down, term()},
+state :: term(),
+extra :: term()
+) ::
+{:ok, new_state :: term()} | {:error, reason :: term()}
+
+Invoked when a new version the module is loaded during runtime.
+
+format_status(atom, list)
+
+(optional)
+
+@callback format_status(:normal, [process_dictionary | state]) :: status :: term()
+when process_dictionary: [{key :: term(), val :: term()}], state: term()
+
+Invoked to retrieve a formatted status of the state in a WebSockex process.
+
+This optional callback is used when you want to edit the values returned when
+invoking :sys.get_status.
+
+The second argument is a two-element list with the order of [pdict, state].
+
+handle_cast(msg, state)
+
+@callback handle_cast(msg :: term(), state :: term()) ::
+{:ok, new_state}
+| {:reply, frame(), new_state}
+| {:close, new_state}
+| {:close, close_frame(), new_state}
+when new_state: term()
+
+Invoked to handle asynchronous cast/2 messages.
+
+handle_connect(conn, state)
+
+@callback handle_connect(conn :: WebSockex.Conn.t(), state :: term()) ::
+{:ok, new_state :: term()}
+
+Invoked after a connection is established.
+
+This is invoked after both the initial connection and a reconnect.
+
+handle_disconnect(connection_status_map, state)
+
+@callback handle_disconnect(connection_status_map(), state :: term()) ::
+{:ok, new_state}
+| {:reconnect, new_state}
+| {:reconnect, new_conn :: WebSockex.Conn.t(), new_state}
+when new_state: term()
+
+Invoked when the WebSocket disconnects from the server.
+
+This callback is only invoked in the event of a connection failure. In cases
+of crashes or other errors the process will terminate immediately
+skipping this callback.
+
+If the handle_initial_conn_failure: true option is provided during process
+startup, then this callback will be invoked if the process fails to establish
+an initial connection.
+
+If a connection is established by reconnecting, the handle_connect/2
+callback will be invoked.
+
+The possible returns for this callback are:
+
+{:ok, state} will continue the process termination.
+
+{:reconnect, state} will attempt to reconnect instead of terminating.
+
+{:reconnect, conn, state} will attempt to reconnect with the connection
+data in conn. conn is expected to be a WebSockex.Conn.t/0.
+
+handle_frame(frame, state)
+
+@callback handle_frame(frame(), state :: term()) ::
+{:ok, new_state}
+| {:reply, frame(), new_state}
+| {:close, new_state}
+| {:close, close_frame(), new_state}
+when new_state: term()
+
+Invoked on the reception of a frame on the socket.
+
+The control frames have possible payloads, when they don't have a payload
+then the frame will have nil as the payload. e.g. {:ping, nil}
+
+handle_info(msg, state)
+
+@callback handle_info(msg :: term(), state :: term()) ::
+{:ok, new_state}
+| {:reply, frame(), new_state}
+| {:close, new_state}
+| {:close, close_frame(), new_state}
+when new_state: term()
+
+Invoked to handle all other non-WebSocket messages.
+
+handle_ping(ping_frame, state)
+
+@callback handle_ping(ping_frame :: :ping | {:ping, binary()}, state :: term()) ::
+{:ok, new_state}
+| {:reply, frame(), new_state}
+| {:close, new_state}
+| {:close, close_frame(), new_state}
+when new_state: term()
+
+Invoked when the Websocket receives a ping frame
+
+handle_pong(pong_frame, state)
+
+@callback handle_pong(pong_frame :: :pong | {:pong, binary()}, state :: term()) ::
+{:ok, new_state}
+| {:reply, frame(), new_state}
+| {:close, new_state}
+| {:close, close_frame(), new_state}
+when new_state: term()
+
+Invoked when the Websocket receives a pong frame.
+
+terminate(close_reason, state)
+
+@callback terminate(close_reason(), state :: term()) :: any()
+
+Invoked when the process is terminating.
+
+Functions
+
+cast(client, message)
+
+@spec cast(client(), term()) :: :ok
+
+Asynchronously sends a message to a client that is handled by handle_cast/2.
+
+handle_terminate_close(reason, parent, debug, state)
+
+@spec handle_terminate_close(any(), pid(), any(), any()) :: no_return()
+
+init(parent, name, conn, module, module_state, opts)
+
+@spec init(pid(), atom(), WebSockex.Conn.t(), module(), term(), options()) ::
+{:ok, pid()} | {:error, term()}
+
+send_frame(client, frame, timeout \\ 5000)
+
+@spec send_frame(client(), frame(), timeout()) ::
+:ok
+| {:error,
+%WebSockex.FrameEncodeError{
+__exception__: true,
+close_code: term(),
+frame_payload: term(),
+frame_type: term(),
+reason: term()
+}
+| %WebSockex.ConnError{__exception__: true, original: term()}
+| %WebSockex.NotConnectedError{
+__exception__: true,
+connection_state: term()
+}
+| %WebSockex.InvalidFrameError{__exception__: true, frame: term()}}
+| none()
+
+Sends a frame through the WebSocket.
+
+If the connection is either connecting or closing then this will return an
+error tuple with a WebSockex.NotConnectedError exception struct as the
+second element.
+
+If a connection failure is discovered while sending then it will return an
+error tuple with a WebSockex.ConnError exception struct as the second
+element.
+
+start(conn_info, module, state, opts \\ [])
+
+@spec start(url :: String.t() | WebSockex.Conn.t(), module(), term(), options()) ::
+{:ok, pid()} | {:error, term()}
+
+Starts a WebSockex process.
+
+Acts like start_link/4, except doesn't link the current process.
+
+See start_link/4 for more information.
+
+start_link(conn_info, module, state, opts \\ [])
+
+@spec start_link(url :: String.t() | WebSockex.Conn.t(), module(), term(), options()) ::
+{:ok, pid()} | {:error, term()}
+
+Starts a WebSockex process linked to the current process.
+
+For available option values see option/0.
+
+If a WebSockex.Conn.t is used in place of a url string, then the options
+available in WebSockex.Conn.connection_option/0 have effect.
+
+The callback handle_connect/2 is invoked after the connection is
+established.
+
+Hex Package
+
+Hex Preview
+
+Search HexDocs
+
+Download ePub version
+
+Built using
+ExDoc (v0.39.1) for the
+
+Elixir programming language

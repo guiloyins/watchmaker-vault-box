@@ -1,0 +1,116 @@
+{
+  "edits": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `docs/specs/HARDWARE_AUDIT.md` | Update | Retain the local service procedure and applicable evidence gates from Hardware Update 1. |",
+      "new": "| `docs/specs/HARDWARE_AUDIT.md` | Update | Retain the local service procedure and applicable evidence gates from Hardware Update 1. |\n| `docs/specs/LOCAL_SERVICE_V1.md` | Preserve accepted contract; implement against it | Freeze the local-only serial framing, exact command/receipt and protected-file shapes, durable operation IDs, paged readback, recovery/clear records and operator procedure independently of protocol v1. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_device/include/vault_service.hpp` | Create | Define typed local provisioning, recovery-entry/inspection, host-disposition attestation, service-exit and history-clear operations separately from remote gameplay. |",
+      "new": "| `firmware/components/vault_device/include/vault_service.hpp` | Create | Define the exact typed LOCAL_SERVICE_V1 requests/results, provision file, bounded inspect pages and durable service receipt/control records; USB metadata grants no remote authority. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_device/vault_service.cpp` | Create | Implement bounded USB/serial parsing and provisioning without echoing secrets. |",
+      "new": "| `firmware/components/vault_device/vault_service.cpp` | Create | Implement LOCAL_SERVICE_V1 framing and strict bounded decoding through vault_json, redacted provision transfer, serialized operation-ID/revision admission and readback, with stop independent of ordinary queued work. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `tools/fw-provision` | Create | Transfer operator-supplied protected provision data to an explicitly selected device without credential logging. |",
+      "new": "| `tools/fw-provision` | Create | Implement the exact LOCAL_SERVICE_V1 provisioning syntax through tools/firmware/local_service.py; require explicit device/port and protected source/operation files, preserve identity/history, and never log credentials or silently replay an uncertain write. |\n| `tools/box-service` | Create | Expose every LOCAL_SERVICE_V1 inspect, stop, reboot, recovery/seal/attestation, clear/fence, preparation/reference/calibration/motion and exit command with its exact documented args-file and operation-file syntax. |\n| `tools/firmware/local_service.py` | Create | Share strict serial framing, identity/boot/revision checks, protected-file handling and bounded readback between both wrappers; never automatically retry motion. |\n| `tools/firmware/requirements.txt` | Create and lock after verification | Select pyserial for the shared Python serial helper and record its tested exact version; this does not establish actual adapter/reset-line behavior. |\n| `tools/firmware/tests/local_service_test.py` | Create | Exercise exact wrapper mappings, frame limits, redaction, protected files, paged inspection, durable operation files and ambiguous-commit/no-motion-retry handling against a serial fake. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_actuator/box_service.cpp` | Create | Implement bounded service, durable recovery entry, inspect/reboot and Seal recovery evidence that freezes gameplay and USB motion. Unfreeze only after locally verifying committed host closure or replacement preparation; failed writes remain inhibited. Preserve historical uncertainty. |",
+      "new": "| `firmware/components/vault_actuator/box_service.cpp` | Create | Implement LOCAL_SERVICE_V1 operations and durable ServiceControl/Reconciliation/Clear records through the single actuator owner: stop/inhibit, exact-ID inspection, reboot, seal, operator-attested host closure/replacement, fenced clearing and deliberate exit. Preserve historical outcomes and all network recovery invariants. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/tests/service_test.cpp` | Create | Test queued/reserved/moving commands at entry/seal, persistent inhibit/freeze across reboot, rejected local motion while sealed, Close versus preparation-restart races, wrong-record attestations and deliberate exit. Reset/reconnect never move or clear history; no-sensor homing remains unavailable. |",
+      "new": "| `firmware/tests/service_test.cpp` | Create | Implement LOCAL_SERVICE_V1 exact request/result and framing tests, persistent receipt aging/CAS/readback, provision redaction, queued/reserved/moving stop/seal, reboot/session reseal, attestation races, lost-host-key stop, interrupted clear and deliberate exit. Assert no motion replay, no invented absent command, unchanged historical uncertainty and no-sensor homing refusal. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `docs/hardware/box-service.md` | Create | Document exact recovery-entry/inspect/reboot/host-close/local-attest operations and operator-attestation limits; then Reset/new session, local reference/locked verification, deliberate service exit, arm and ready report. Separate history clearing from Reset. |",
+      "new": "| `docs/hardware/box-service.md` | Create | Publish LOCAL_SERVICE_V1 exact wrapper commands and operator args-file examples with measured per-device values and protected-file handling. Show Begin/readback, stopped entry/reboot/restoration/seal, fresh host query/Close, local attestation and replacement/readback; separately show clear/new-boot/new-session/preparation/exit, final locked verification and explicit host arm. Retain operator-attestation evidence limits. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "- A serial provisioning tool or interactive menu for Wi-Fi, endpoint and per-device credentials, without credential echo/logging.",
+      "new": "- `tools/fw-provision --port PORT --device-id ID --file /PRIVATE/provision.json --operation-file /PRIVATE/provision-op.json`: implement the strict protected-file, local serial and durable readback contract in [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md), without credential echo/logging.",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "- A local box service menu for inspect, bounded jog, calibration, manual position confirmation and rearming preparation; offer bounded home only with an installed, verified home sensor and enabled homing. Gameplay remains disarmed in service mode. Include recovery entry, exact-identity inspection, reboot, Seal recovery evidence, local verification of host disposition or replacement preparation, deliberate exit and separately gated history clearing, following protocol v1.",
+      "new": "- `tools/box-service --port PORT --device-id ID COMMAND ...`: implement the exact local command names, args files, results, bounded inspection and operation readback in [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md). It includes lost-host-key stop, recovery entry/seal/disposition and replacement attestations, reboot/clear fences, bounded measured calibration/reference/motion, deliberate exit and current locked verification. Gameplay stays inhibited in service; homing is unavailable without the installed verified home sensor. Operator attestations supply no cryptographic host proof and cannot rewrite historical uncertainty.",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "old": "Calibration, bounded jogging, homing, manual confirmation and relocking use **local USB/serial maintenance**. Document implemented commands; none are presumed to exist here. Remote arming grants permission without moving the motor.",
+      "new": "Calibration, bounded jogging, homing, manual confirmation and relocking use **local USB/serial maintenance**. Implement the exact [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md) command/file/readback contract through `tools/box-service`; the interface is specified, but no wrapper or physical operation is claimed implemented here. Use its finite commissioning jog budget after electrical/profile checks, then measured validated travel for gameplay. Remote arming grants permission without moving the motor.",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "old": "Use the [protocol v1 recovery procedure](PROTOCOL_V1.md#administrative-release-recovery) for exact invariants.",
+      "new": "Use the [protocol v1 recovery procedure](PROTOCOL_V1.md#administrative-release-recovery) for exact invariants and [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md) for exact serial command names, operator args/operation files, sealed record comparison and bounded readback. Host receipt fields come from [Implementation contracts](IMPLEMENTATION_CONTRACTS.md); this is an operator attestation, not machine authentication of that receipt.",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/README.md",
+      "old": "| `PROTOCOL_V1.md` | Normative raw WebSocket message contract, ownership, freshness, ordering, actuator acknowledgements and recovery. |",
+      "new": "| `PROTOCOL_V1.md` | Normative raw WebSocket message contract, ownership, freshness, ordering, actuator acknowledgements and recovery. |\n| `LOCAL_SERVICE_V1.md` | Normative local-only USB serial framing, provision files, operator commands, idempotent readback and recovery/clear records; no network protocol extension. |",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M3-01 — Build and flash evidence.** Build each selected, verified profile with pinned dependencies. Preserve build manifest and binary checksums. Attempt a mismatched chip/profile flash through the wrapper; it must refuse. Select serial ports explicitly. Record which binaries were compiled versus actually flashed.",
+      "new": "**M3-01 — Build and flash evidence.** Build each selected, verified profile with pinned dependencies. Preserve build manifest and binary checksums. Attempt a mismatched chip/profile flash through the wrapper; it must refuse. Select serial ports explicitly. Record which binaries were compiled versus actually flashed. Exercise the LOCAL_SERVICE_V1 provisioning wrapper against a serial fake: exact identity/port selection, strict frames/files, protected-source refusal, credential redaction, lost reply and same-operation readback. Actual USB adapter/reset-line behavior and provisioning remain separate named-device observations.",
+      "findings": [
+        "S9-03"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M4-02 — Arming is permission.** With an unverified position, reject arming/release. Perform USB service calibration/reference and current locked-position verification; arm explicitly from the authorized host. Arm/disarm alone produces no steps. Reboot, disconnect, pause/session change, fault, and accepted actuation invalidate permission as specified. Retired arm IDs cannot be revived. Enter recovery with queued and reserved-before-first-step commands; persistent service inhibition rejects both. Seal recovery evidence and prove gameplay and USB jog/example/local stay blocked until the matching durable host disposition or replacement preparation is verified locally. Reboot preserves inhibition/freeze but invalidates old evidence bindings.",
+      "new": "**M4-02 — Arming is permission.** With an unverified position, reject arming/release. Perform USB service calibration/reference and current locked-position verification; arm explicitly from the authorized host. Arm/disarm alone produces no steps. Reboot, disconnect, pause/session change, fault, and accepted actuation invalidate permission as specified. Retired arm IDs cannot be revived. Enter recovery with queued and reserved-before-first-step commands; persistent service inhibition rejects both. Seal recovery evidence and prove gameplay and USB jog/example/local stay blocked until the matching durable host disposition or replacement preparation is verified locally. Reboot preserves inhibition/freeze but invalidates old evidence bindings.\n\n**Local service contract checks for M4-02.** Implement [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md) through the shared firmware decoder and both wrappers. Test every exact command/args/result shape; request/response byte, depth, member, string and page limits; duplicate keys; retained receipt/sequence/CAS behavior and receipt expiry without reexecution. Inject lost replies/crashes at provision, entry, seal, acknowledgement, replacement, clear authorization/erase/fence and exit. Retain operation IDs and complete clear authorization through erasure; inspect all 32 entries one page at a time and the separate absent-ID record. Exercise lost-host-key stop with unavailable host authorization, current-session refresh/reseal after GameSession restart, and terminal observations after recovery begins. Reject direct service exit while frozen or before fresh post-preparation verification; require deliberate authorized unfreeze, fresh reference/locked readiness, then a durable exit that retains the false freeze. Apply the same gate to labeled simulated preparation without physical-position claims. Never automatically retry motion or treat local present position as historical execution proof. Verify all physical profile/electrical/calibration gates independently; no-sensor homing produces zero steps. Record host-fake and physical results separately.",
+      "findings": [
+        "S9-03"
+      ]
+    }
+  ]
+}

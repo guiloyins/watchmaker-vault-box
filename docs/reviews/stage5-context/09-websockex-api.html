@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.39.1">
+    <meta name="project" content="WebSockex v0.5.1">
+
+
+    <title>WebSockex — WebSockex v0.5.1</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-ZFNMEJKT.css" />
+
+    <script defer src="dist/sidebar_items-A97E768D.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-HBZYRXZS.js"></script>
+
+  <script async defer src="https://s.hexdocs.pm/js/script.js"></script><script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({endpoint:"https://s.hexdocs.pm/api/event"})</script></head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="readme.html" class="sidebar-projectName" translate="no">
+WebSockex
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.5.1
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-behaviour" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of WebSockex</span>
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
+          </label>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">WebSockex</span> <small>behaviour</small>
+      <small class="app-vsn" translate="no">(WebSockex v0.5.1)</small>
+
+    </h1>
+
+      <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>A client handles negotiating the connection, then sending frames, receiving
+frames, closing, and reconnecting that connection.</p><p>A simple client implementation would be:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">WsClient</span><span class="w"> </span><span class="k" data-group-id="7291240344-1">do</span><span class="w">
+  </span><span class="kn">use</span><span class="w"> </span><span class="nc">WebSockex</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="7291240344-2">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7291240344-2">)</span><span class="w"> </span><span class="k" data-group-id="7291240344-3">do</span><span class="w">
+    </span><span class="nc">WebSockex</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="7291240344-4">(</span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7291240344-4">)</span><span class="w">
+  </span><span class="k" data-group-id="7291240344-3">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_frame</span><span class="p" data-group-id="7291240344-5">(</span><span class="p" data-group-id="7291240344-6">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p" data-group-id="7291240344-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7291240344-5">)</span><span class="w"> </span><span class="k" data-group-id="7291240344-7">do</span><span class="w">
+    </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="w"> </span><span class="s">&quot;Received a message: </span><span class="si" data-group-id="7291240344-8">#{</span><span class="n">msg</span><span class="si" data-group-id="7291240344-8">}</span><span class="s">&quot;</span><span class="w">
+    </span><span class="p" data-group-id="7291240344-9">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7291240344-9">}</span><span class="w">
+  </span><span class="k" data-group-id="7291240344-7">end</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_cast</span><span class="p" data-group-id="7291240344-10">(</span><span class="p" data-group-id="7291240344-11">{</span><span class="ss">:send</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7291240344-12">{</span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p" data-group-id="7291240344-12">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frame</span><span class="p" data-group-id="7291240344-11">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7291240344-10">)</span><span class="w"> </span><span class="k" data-group-id="7291240344-13">do</span><span class="w">
+    </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="w"> </span><span class="s">&quot;Sending </span><span class="si" data-group-id="7291240344-14">#{</span><span class="n">type</span><span class="si" data-group-id="7291240344-14">}</span><span class="s"> frame with payload: </span><span class="si" data-group-id="7291240344-15">#{</span><span class="n">msg</span><span class="si" data-group-id="7291240344-15">}</span><span class="s">&quot;</span><span class="w">
+    </span><span class="p" data-group-id="7291240344-16">{</span><span class="ss">:reply</span><span class="p">,</span><span class="w"> </span><span class="n">frame</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7291240344-16">}</span><span class="w">
+  </span><span class="k" data-group-id="7291240344-13">end</span><span class="w">
+</span><span class="k" data-group-id="7291240344-1">end</span></code></pre><h2 id="module-closing-connections" class="section-heading"><a href="#module-closing-connections" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Closing Connections</span></h2><p>WebSockex connections can be closed gracefully by returning close tuples from
+callback functions. The following callbacks support close returns:</p><ul><li><a href="#c:handle_frame/2"><code class="inline">handle_frame/2</code></a></li><li><a href="#c:handle_cast/2"><code class="inline">handle_cast/2</code></a></li><li><a href="#c:handle_info/2"><code class="inline">handle_info/2</code></a></li><li><a href="#c:handle_ping/2"><code class="inline">handle_ping/2</code></a></li><li><a href="#c:handle_pong/2"><code class="inline">handle_pong/2</code></a></li></ul><h3 id="module-basic-close" class="section-heading"><a href="#module-basic-close" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Basic Close</span></h3><p>Return <code class="inline">{:close, state}</code> to close with the default close code (1000):</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">handle_frame</span><span class="p" data-group-id="7244798637-1">(</span><span class="p" data-group-id="7244798637-2">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;quit&quot;</span><span class="p" data-group-id="7244798637-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7244798637-1">)</span><span class="w"> </span><span class="k" data-group-id="7244798637-3">do</span><span class="w">
+  </span><span class="p" data-group-id="7244798637-4">{</span><span class="ss">:close</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="7244798637-4">}</span><span class="w">
+</span><span class="k" data-group-id="7244798637-3">end</span></code></pre><h3 id="module-close-with-custom-code" class="section-heading"><a href="#module-close-with-custom-code" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Close with Custom Code</span></h3><p>Return <code class="inline">{:close, {close_code, message}, state}</code> to specify a close code and reason:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">handle_frame</span><span class="p" data-group-id="9311821766-1">(</span><span class="p" data-group-id="9311821766-2">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;error&quot;</span><span class="p" data-group-id="9311821766-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="9311821766-1">)</span><span class="w"> </span><span class="k" data-group-id="9311821766-3">do</span><span class="w">
+  </span><span class="p" data-group-id="9311821766-4">{</span><span class="ss">:close</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9311821766-5">{</span><span class="mi">4000</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Application error&quot;</span><span class="p" data-group-id="9311821766-5">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="9311821766-4">}</span><span class="w">
+</span><span class="k" data-group-id="9311821766-3">end</span></code></pre><p>Close codes are integers in specific ranges:</p><ul><li><code class="inline">1000-1015</code> - Standard protocol codes (e.g., 1000 = normal, 1001 = going away, 1002 = protocol error, 1003 = unsupported data)</li><li><code class="inline">3000-3999</code> - Reserved for use by libraries, frameworks, and applications (registered with IANA)</li><li><code class="inline">4000-4999</code> - Private use for applications</li></ul><p>Common standard codes include:</p><ul><li><code class="inline">1000</code> - Normal closure</li><li><code class="inline">1001</code> - Going away</li><li><code class="inline">1002</code> - Protocol error</li><li><code class="inline">1003</code> - Unsupported data</li></ul><h2 id="module-supervision" class="section-heading"><a href="#module-supervision" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Supervision</span></h2><p>WebSockex is implemented as an OTP Special Process and as a result will fit
+into supervision trees.</p><p>WebSockex also supports the Supervisor children format introduced in Elixir
+1.5. Meaning that a child specification could be <code class="inline">{ClientModule, [state]}</code>.</p><p>However, since there is a possibility that you would like to provide a
+<code class="inline">t:WebSockex.Conn/0</code> or a url as well as the state, there are two versions of
+the <code class="inline">child_spec</code> function. If you need functionality beyond that it is
+recommended that you override the function or define your own.</p><p>Just remember to use the version that corresponds with your <code class="inline">start_link</code>'s
+arity.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:client/0" data-no-tooltip="" translate="no">client()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:close_code/0" data-no-tooltip="" translate="no">close_code()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>An integer between 1000 and 4999 that specifies the reason for closing the connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:close_error/0" data-no-tooltip="" translate="no">close_error()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The error returned when a connection fails to be established.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:close_frame/0" data-no-tooltip="" translate="no">close_frame()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The frame sent when the negotiating a connection closure.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:close_reason/0" data-no-tooltip="" translate="no">close_reason()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The reason a connection was closed.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:connection_status_map/0" data-no-tooltip="" translate="no">connection_status_map()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A map that contains information about the failure to connect.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:debug_opts/0" data-no-tooltip="" translate="no">debug_opts()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Debug options to be parsed by <a><code class="inline">:sys.debug_options/1</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:frame/0" data-no-tooltip="" translate="no">frame()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:option/0" data-no-tooltip="" translate="no">option()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Options values for <code class="inline">start_link</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:options/0" data-no-tooltip="" translate="no">options()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-callbacks summary">
+  <h2>
+    <a href="#callbacks">Callbacks</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:code_change/3" data-no-tooltip="" translate="no">code_change(old_vsn, state, extra)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked when a new version the module is loaded during runtime.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:format_status/2" data-no-tooltip="" translate="no">format_status(atom, list)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked to retrieve a formatted status of the state in a WebSockex process.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_cast/2" data-no-tooltip="" translate="no">handle_cast(msg, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked to handle asynchronous <a><code class="inline">cast/2</code></a> messages.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_connect/2" data-no-tooltip="" translate="no">handle_connect(conn, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked after a connection is established.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_disconnect/2" data-no-tooltip="" translate="no">handle_disconnect(connection_status_map, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked when the WebSocket disconnects from the server.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_frame/2" data-no-tooltip="" translate="no">handle_frame(frame, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked on the reception of a frame on the socket.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_info/2" data-no-tooltip="" translate="no">handle_info(msg, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked to handle all other non-WebSocket messages.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_ping/2" data-no-tooltip="" translate="no">handle_ping(ping_frame, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked when the Websocket receives a ping frame</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:handle_pong/2" data-no-tooltip="" translate="no">handle_pong(pong_frame, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked when the Websocket receives a pong frame.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:terminate/2" data-no-tooltip="" translate="no">terminate(close_reason, state)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Invoked when the process is terminating.</p></div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cast/2" data-no-tooltip="" translate="no">cast(client, message)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Asynchronously sends a message to a client that is handled by <a><code class="inline">handle_cast/2</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#handle_terminate_close/4" data-no-tooltip="" translate="no">handle_terminate_close(reason, parent, debug, state)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init/6" data-no-tooltip="" translate="no">init(parent, name, conn, module, module_state, opts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#send_frame/3" data-no-tooltip="" translate="no">send_frame(client, frame, timeout \\ 5000)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Sends a frame through the WebSocket.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start/4" data-no-tooltip="" translate="no">start(conn_info, module, state, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Starts a <a><code class="inline">WebSockex</code></a> process.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/4" data-no-tooltip="" translate="no">start_link(conn_info, module, state, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Starts a <a><code class="inline">WebSockex</code></a> process linked to the current process.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+
+    <div class="types-list">
+<section class="detail" id="t:client/0">
+
+  <div class="detail-header">
+    <a href="#t:client/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">client()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L90" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> client() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | {:via, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()} | {:global, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:close_code/0">
+
+  <div class="detail-header">
+    <a href="#t:close_code/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">close_code()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L106" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> close_code() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+
+      </div>
+
+<p>An integer between 1000 and 4999 that specifies the reason for closing the connection.</p>
+  </section>
+</section>
+<section class="detail" id="t:close_error/0">
+
+  <div class="detail-header">
+    <a href="#t:close_error/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">close_error()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L165" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> close_error() ::
+  %WebSockex.RequestError{__exception__: true, code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), message: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}
+  | %WebSockex.ConnError{__exception__: true, original: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}
+  | %WebSockex.InvalidFrameError{__exception__: true, frame: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}
+  | %WebSockex.FrameEncodeError{
+      __exception__: true,
+      close_code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+      frame_payload: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+      frame_type: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+      reason: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+    }</pre>
+
+      </div>
+
+<p>The error returned when a connection fails to be established.</p>
+  </section>
+</section>
+<section class="detail" id="t:close_frame/0">
+
+  <div class="detail-header">
+    <a href="#t:close_frame/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">close_frame()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L101" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> close_frame() :: {<a href="#t:close_code/0">close_code</a>(), message :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}</pre>
+
+      </div>
+
+<p>The frame sent when the negotiating a connection closure.</p>
+  </section>
+</section>
+<section class="detail" id="t:close_reason/0">
+
+  <div class="detail-header">
+    <a href="#t:close_reason/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">close_reason()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L156" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> close_reason() ::
+  {:remote | :local, :normal}
+  | {:remote | :local, <a href="#t:close_code/0">close_code</a>(), message :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}
+  | {:remote, :closed}
+  | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>The reason a connection was closed.</p><p>A <code class="inline">:normal</code> reason is the same as a <code class="inline">1000</code> reason with no payload.</p><p>If the peer closes the connection abruptly without a close frame then the
+close reason is <code class="inline">{:remote, :closed}</code>.</p>
+  </section>
+</section>
+<section class="detail" id="t:connection_status_map/0">
+
+  <div class="detail-header">
+    <a href="#t:connection_status_map/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connection_status_map()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L177" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> connection_status_map() :: %{
+  reason: <a href="#t:close_reason/0">close_reason</a>() | <a href="#t:close_error/0">close_error</a>(),
+  attempt_number: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  conn: <a href="WebSockex.Conn.html#t:t/0">WebSockex.Conn.t</a>()
+}</pre>
+
+      </div>
+
+<p>A map that contains information about the failure to connect.</p><p>This map contains the error, attempt number, and the <a href="WebSockex.Conn.html#t:t/0"><code class="inline">WebSockex.Conn.t/0</code></a>
+that was used to attempt the connection.</p>
+  </section>
+</section>
+<section class="detail" id="t:debug_opts/0">
+
+  <div class="detail-header">
+    <a href="#t:debug_opts/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">debug_opts()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L114" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> debug_opts() :: [
+  :trace
+  | :log
+  | {:log, log_depth :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()}
+  | :statistics
+  | {:log_to_file, <a href="https://hexdocs.pm/elixir/Path.html#t:t/0">Path.t</a>()}
+]</pre>
+
+      </div>
+
+<p>Debug options to be parsed by <a href="https://www.erlang.org/doc/apps/stdlib/sys.html#debug_options/1"><code class="inline">:sys.debug_options/1</code></a>.</p><p>These options can also be set after the process is running using the functions in
+the Erlang <code class="inline">:sys</code> module.</p>
+  </section>
+</section>
+<section class="detail" id="t:frame/0">
+
+  <div class="detail-header">
+    <a href="#t:frame/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">frame()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L92" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> frame() ::
+  :ping
+  | :pong
+  | {:ping | :pong, nil | (message :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>())}
+  | {:text | :binary, message :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:option/0">
+
+  <div class="detail-header">
+    <a href="#t:option/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">option()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L141" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> option() ::
+  <a href="WebSockex.Conn.html#t:connection_option/0">WebSockex.Conn.connection_option</a>()
+  | {:async, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()}
+  | {:debug, <a href="#t:debug_opts/0">debug_opts</a>()}
+  | {:name, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | {:global, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()} | {:via, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}}
+  | {:handle_initial_conn_failure, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()}</pre>
+
+      </div>
+
+<p>Options values for <code class="inline">start_link</code>.</p><ul><li><code class="inline">:async</code> - Replies with <code class="inline">{:ok, pid}</code> before establishing the connection.
+This is useful for when attempting to connect indefinitely, this way the
+process doesn't block trying to establish a connection.</li><li><code class="inline">:handle_initial_conn_failure</code> - When set to <code class="inline">true</code> a connection failure
+while establishing the initial connection won't immediately return an error
+and instead will invoke the <a href="#c:handle_disconnect/2"><code class="inline">handle_disconnect/2</code></a> callback. This option
+only matters during process initialization. The <code class="inline">handle_disconnect</code>
+callback is always invoked if an established connection is lost.</li><li><code class="inline">:debug</code> - Options to set the debug options for <code class="inline">:sys.handle_debug</code>.</li><li><code class="inline">:name</code> - An atom that the registers the process with name locally.
+Can also be a <code class="inline">{:via, module, term}</code> or <code class="inline">{:global, term}</code> tuple.</li></ul><p>Other possible option values include: <a href="WebSockex.Conn.html#t:connection_option/0"><code class="inline">WebSockex.Conn.connection_option/0</code></a></p>
+  </section>
+</section>
+<section class="detail" id="t:options/0">
+
+  <div class="detail-header">
+    <a href="#t:options/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">options()</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L122" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> options() :: [<a href="#t:option/0">option</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="callbacks" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#callbacks">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Callbacks</span>
+    </h1>
+
+    <div class="callbacks-list">
+<section class="detail" id="c:code_change/3">
+
+  <div class="detail-header">
+    <a href="#c:code_change/3" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">code_change(old_vsn, state, extra)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L278" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> code_change(
+  old_vsn :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>() | {:down, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()},
+  state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  extra :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+) ::
+  {:ok, new_state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()} | {:error, reason :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Invoked when a new version the module is loaded during runtime.</p>
+  </section>
+</section>
+<section class="detail" id="c:format_status/2">
+
+  <div class="detail-header">
+    <a href="#c:format_status/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">format_status(atom, list)</h1>
+
+        <span class="note">(optional)</span>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L290" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> format_status(:normal, [process_dictionary | state]) :: status :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+when process_dictionary: [{key :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), val :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}], state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked to retrieve a formatted status of the state in a WebSockex process.</p><p>This optional callback is used when you want to edit the values returned when
+invoking <code class="inline">:sys.get_status</code>.</p><p>The second argument is a two-element list with the order of <code class="inline">[pdict, state]</code>.</p>
+  </section>
+</section>
+<section class="detail" id="c:handle_cast/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_cast/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_cast(msg, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L206" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_cast(msg :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state}
+  | {:reply, <a href="#t:frame/0">frame</a>(), new_state}
+  | {:close, new_state}
+  | {:close, <a href="#t:close_frame/0">close_frame</a>(), new_state}
+when new_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked to handle asynchronous <a href="#cast/2"><code class="inline">cast/2</code></a> messages.</p>
+  </section>
+</section>
+<section class="detail" id="c:handle_connect/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_connect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_connect(conn, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L188" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_connect(conn :: <a href="WebSockex.Conn.html#t:t/0">WebSockex.Conn.t</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Invoked after a connection is established.</p><p>This is invoked after both the initial connection and a reconnect.</p>
+  </section>
+</section>
+<section class="detail" id="c:handle_disconnect/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_disconnect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_disconnect(connection_status_map, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L244" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_disconnect(<a href="#t:connection_status_map/0">connection_status_map</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state}
+  | {:reconnect, new_state}
+  | {:reconnect, new_conn :: <a href="WebSockex.Conn.html#t:t/0">WebSockex.Conn.t</a>(), new_state}
+when new_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked when the WebSocket disconnects from the server.</p><p>This callback is only invoked in the event of a connection failure. In cases
+of crashes or other errors the process will terminate immediately
+skipping this callback.</p><p>If the <code class="inline">handle_initial_conn_failure: true</code> option is provided during process
+startup, then this callback will be invoked if the process fails to establish
+an initial connection.</p><p>If a connection is established by reconnecting, the <a href="#c:handle_connect/2"><code class="inline">handle_connect/2</code></a>
+callback will be invoked.</p><p>The possible returns for this callback are:</p><ul><li><code class="inline">{:ok, state}</code> will continue the process termination.</li><li><code class="inline">{:reconnect, state}</code> will attempt to reconnect instead of terminating.</li><li><code class="inline">{:reconnect, conn, state}</code> will attempt to reconnect with the connection
+data in <code class="inline">conn</code>. <code class="inline">conn</code> is expected to be a <a href="WebSockex.Conn.html#t:t/0"><code class="inline">WebSockex.Conn.t/0</code></a>.</li></ul>
+  </section>
+</section>
+<section class="detail" id="c:handle_frame/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_frame/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_frame(frame, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L196" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_frame(<a href="#t:frame/0">frame</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state}
+  | {:reply, <a href="#t:frame/0">frame</a>(), new_state}
+  | {:close, new_state}
+  | {:close, <a href="#t:close_frame/0">close_frame</a>(), new_state}
+when new_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked on the reception of a frame on the socket.</p><p>The control frames have possible payloads, when they don't have a payload
+then the frame will have <code class="inline">nil</code> as the payload. e.g. <code class="inline">{:ping, nil}</code></p>
+  </section>
+</section>
+<section class="detail" id="c:handle_info/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_info/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_info(msg, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L216" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_info(msg :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state}
+  | {:reply, <a href="#t:frame/0">frame</a>(), new_state}
+  | {:close, new_state}
+  | {:close, <a href="#t:close_frame/0">close_frame</a>(), new_state}
+when new_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked to handle all other non-WebSocket messages.</p>
+  </section>
+</section>
+<section class="detail" id="c:handle_ping/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_ping/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_ping(ping_frame, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L253" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_ping(ping_frame :: :ping | {:ping, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}, state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state}
+  | {:reply, <a href="#t:frame/0">frame</a>(), new_state}
+  | {:close, new_state}
+  | {:close, <a href="#t:close_frame/0">close_frame</a>(), new_state}
+when new_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked when the Websocket receives a ping frame</p>
+  </section>
+</section>
+<section class="detail" id="c:handle_pong/2">
+
+  <div class="detail-header">
+    <a href="#c:handle_pong/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_pong(pong_frame, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L263" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> handle_pong(pong_frame :: :pong | {:pong, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}, state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, new_state}
+  | {:reply, <a href="#t:frame/0">frame</a>(), new_state}
+  | {:close, new_state}
+  | {:close, <a href="#t:close_frame/0">close_frame</a>(), new_state}
+when new_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Invoked when the Websocket receives a pong frame.</p>
+  </section>
+</section>
+<section class="detail" id="c:terminate/2">
+
+  <div class="detail-header">
+    <a href="#c:terminate/2" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">terminate(close_reason, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L273" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> terminate(<a href="#t:close_reason/0">close_reason</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+
+      </div>
+
+<p>Invoked when the process is terminating.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+
+    <div class="functions-list">
+<section class="detail" id="cast/2">
+
+  <div class="detail-header">
+    <a href="#cast/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cast(client, message)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L439" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cast(<a href="#t:client/0">client</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Asynchronously sends a message to a client that is handled by <a href="#c:handle_cast/2"><code class="inline">handle_cast/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="handle_terminate_close/4">
+
+  <div class="detail-header">
+    <a href="#handle_terminate_close/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">handle_terminate_close(reason, parent, debug, state)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L947" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> handle_terminate_close(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="init/6">
+
+  <div class="detail-header">
+    <a href="#init/6" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init(parent, name, conn, module, module_state, opts)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L486" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> init(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="WebSockex.Conn.html#t:t/0">WebSockex.Conn.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), <a href="#t:options/0">options</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="send_frame/3">
+
+    <span id="send_frame/2"></span>
+
+  <div class="detail-header">
+    <a href="#send_frame/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">send_frame(client, frame, timeout \\ 5000)</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L463" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> send_frame(<a href="#t:client/0">client</a>(), <a href="#t:frame/0">frame</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">timeout</a>()) ::
+  :ok
+  | {:error,
+     %WebSockex.FrameEncodeError{
+       __exception__: true,
+       close_code: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+       frame_payload: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+       frame_type: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+       reason: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+     }
+     | %WebSockex.ConnError{__exception__: true, original: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}
+     | %WebSockex.NotConnectedError{
+         __exception__: true,
+         connection_state: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+       }
+     | %WebSockex.InvalidFrameError{__exception__: true, frame: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}}
+  | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">none</a>()</pre>
+
+      </div>
+
+<p>Sends a frame through the WebSocket.</p><p>If the connection is either connecting or closing then this will return an
+error tuple with a <a href="WebSockex.NotConnectedError.html"><code class="inline">WebSockex.NotConnectedError</code></a> exception struct as the
+second element.</p><p>If a connection failure is discovered while sending then it will return an
+error tuple with a <code class="inline">WebSockex.ConnError</code> exception struct as the second
+element.</p>
+  </section>
+</section>
+<section class="detail" id="start/4">
+
+    <span id="start/3"></span>
+
+  <div class="detail-header">
+    <a href="#start/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start(conn_info, module, state, opts \\ [])</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L388" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start(url :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="WebSockex.Conn.html#t:t/0">WebSockex.Conn.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), <a href="#t:options/0">options</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Starts a <a href="WebSockex.html"><code class="inline">WebSockex</code></a> process.</p><p>Acts like <a href="#start_link/4"><code class="inline">start_link/4</code></a>, except doesn't link the current process.</p><p>See <a href="#start_link/4"><code class="inline">start_link/4</code></a> for more information.</p>
+  </section>
+</section>
+<section class="detail" id="start_link/4">
+
+    <span id="start_link/3"></span>
+
+  <div class="detail-header">
+    <a href="#start_link/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link(conn_info, module, state, opts \\ [])</h1>
+
+
+        <a href="https://github.com/Azolo/websockex/blob/main/lib/websockex.ex#L418" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start_link(url :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="WebSockex.Conn.html#t:t/0">WebSockex.Conn.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(), <a href="#t:options/0">options</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Starts a <a href="WebSockex.html"><code class="inline">WebSockex</code></a> process linked to the current process.</p><p>For available option values see <a href="#t:option/0"><code class="inline">option/0</code></a>.</p><p>If a <code class="inline">WebSockex.Conn.t</code> is used in place of a url string, then the options
+available in <a href="WebSockex.Conn.html#t:connection_option/0"><code class="inline">WebSockex.Conn.connection_option/0</code></a> have effect.</p><p>The callback <a href="#c:handle_connect/2"><code class="inline">handle_connect/2</code></a> is invoked after the connection is
+established.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/websockex/0.5.1" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/websockex/0.5.1">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="WebSockex.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.39.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

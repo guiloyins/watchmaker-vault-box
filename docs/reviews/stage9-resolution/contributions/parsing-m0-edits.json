@@ -1,0 +1,286 @@
+{
+  "edits": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "Share the public schema and conformance examples between server, protocol simulator and firmware host tests.",
+      "new": "Use the selected bounded OTP `:json`/yyjson parsing and finite hand-written v1 validators in [JSON validation](../specs/JSON_VALIDATION.md). Phoenix retains Jason for its framework codec. Preserve exact mathematical-integer checks, UTF-8 and decoded-key uniqueness, top-level extensions and the schema's capability-object extension exceptions; use independent schema-oracle and literal boundary tests without adding a runtime schema engine. Share the public schema and conformance examples between server, protocol simulator and firmware host tests.",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "First inspect available runtimes and initialize the project structure and source-control ignore rules.",
+      "new": "First inspect available runtimes and initialize the project structure and source-control ignore rules. M0 is a standalone pure checkpoint under [JSON validation and M0 startup](../specs/JSON_VALIDATION.md#m0-checkpoint-and-later-startup): create the initial pure projections and JSON adapter with their tests, keep model types in M0 source, and run the specified no-start file set. Do not reference M1 stores/schemas/runtime adapters or M2 validators to make M0 compile. Source schema/fixture checks are distinct from future production-output conformance.",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `docs/toolchain.md` | Create | Record installed versus tested versions, Mix/esbuild setup/build/deploy commands, wrapper/executable pins, Playwright/Chromium locks, simulator transport, tested Exqlite/SQLite versions and effective durability settings, firmware component locks and blocked hardware combinations; record local-filesystem exclusive-create and protected-file durability checks. |",
+      "new": "| `docs/toolchain.md` | Create | Record installed versus tested versions, Mix/esbuild setup/build/deploy commands, wrapper/executable pins, Playwright/Chromium locks, simulator transport, tested Exqlite/SQLite versions and effective durability settings, OTP `:json` behavior, framework Jason lock and the vendored yyjson revision/hashes, firmware component locks and blocked hardware combinations; record local-filesystem exclusive-create and protected-file durability checks. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `tools/check-contracts` | Create | Check schema/examples, golden puzzle and copy/version consistency; initially reuse the supplied validator logic rather than creating another set of puzzle truths. |",
+      "new": "| `tools/check-contracts` | Create in M0; extend in M1 | M0 checks supplied schema/examples, golden puzzle and exact public/private copy consistency using the existing specification validator; it calls no absent production validator. M1 adds schema-fragment checks of actual produced maze/seal/hold/box projection parts via `tools/conformance/json_oracle.py`; full production wire envelopes belong to M2. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/mix.exs` | Create | Define Phoenix/LiveView, Ecto SQLite, an explicit compatible Exqlite dependency for direct simulator storage, raw WebSocket and esbuild-wrapper dependencies plus development/test-only Mint and Mint.WebSocket tooling with explicit simulator startup. Configure compilation and setup/test/asset aliases; deploy cleans scoped generated outputs, minifies and digests. |",
+      "new": "| `server/mix.exs` | Create in M0; extend in M1 | Lock compatible Phoenix/LiveView, explicit Jason framework codec, Ecto SQLite, Exqlite, WebSockAdapter and esbuild dependencies plus development/test Mint tooling. Require OTP >=27 for the selected stdlib `:json` adapter; add no JSON-schema/numeric runtime dependency. M0 uses normal Mix compilers and no application `:mod` or aliases invoking absent migrations/assets/setup providers. M1 adds the real application callback and functioning setup/assets aliases. Keep `mix test` unaliased; pure no-start and isolated integration preparation follow JSON_VALIDATION.md. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/config/config.exs` | Create | Centralize application defaults, independent simulator database paths and runtime selection; pin the tested esbuild executable and configure explicit JS/CSS entries, generated output and input-metadata paths using locked Mix browser dependencies. |",
+      "new": "| `server/config/config.exs` | Create | Centralize inert defaults and independent simulator paths; retain `config :phoenix, :json_library, Jason`, with device/store JSON decoded through Vault.JSON separately. Pin the tested esbuild executable and configure explicit JS/CSS entries, generated output and metadata using locked Mix browser dependencies; invoke build aliases only once their M1 entries exist. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/config/test.exs` | Create | Isolate test storage, actors and injectable timing from development data. |",
+      "new": "| `server/config/test.exs` | Create | Define isolated test configuration without starting resources. M0 no-start tests load it without a test root; actual M1 application/task startup requires a wrapper-owned VAULT_TEST_ROOT and prepared fixture databases/credentials, with no fallback to development data. |",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/config/runtime.exs` | Create | Validate environment, mode, origin, canonical owned local data directory, database and secret-file configuration; every supported Vault startup/credential task derives the same guard path. |",
+      "new": "| `server/config/runtime.exs` | Create | Parse environment/mode/origin/data-path defaults without I/O or startup. Enforce required operational configuration, canonical owned directory and shared guard path at actual application/credential-task resource admission. M1 test startup additionally validates its owned test root/preparation marker; M0 compilation/no-start tests need neither credentials nor a marker. |",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/puzzle.ex` | Create | Implement pure maze/seal/phase rules against the private fixture; take explicit validated action/state inputs and produce proposed state/effects. |",
+      "new": "| `server/lib/vault/puzzle.ex` | Create | Implement pure maze/seal/phase rules against the private fixture; take explicit validated action/state inputs and produce proposed state/effects. |\n| `server/lib/vault/projections.ex` | Create in M0; expand in M1 | Implement pure role-maze and role-seal projections over explicit puzzle/state inputs, including exact walls/axes, partner clue and own selection. No GameSession, Repo or protocol module is needed in M0. |\n| `server/lib/vault/json.ex` | Create | Wrap OTP `:json.decode/3` with selected bounds, duplicate/UTF-8 checks, exact-number tokens, complete decoded comparison encoding and a separate canonical durable encoder; map JSON null to nil and never create input atoms. |\n| `server/lib/vault/json/number.ex` | Create | Validate mathematical integer tokens exactly within field bounds before conversion; handle decimal/exponent spellings without floating-point rounding or exponent-sized allocation. |\n| `server/test/vault/json_test.exs` | Create | Tag pure cases :m0; check raw malformed/duplicate/UTF-8 inputs, exact numbers, resource limits and canonical encoding against literal expected bytes. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/test_helper.exs` | Create | Start only the test dependencies needed by each test category and configure isolated state. |",
+      "new": "| `server/test/test_helper.exs` | Create | Start ExUnit only; never implicitly start :vault, Repo, endpoint, simulator runtime or storage. Integration databases/credentials are prepared by tools/test-server before ordinary Mix application startup; selected M0 files run with --no-start. |",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/vault/projections_test.exs` | Create, expand in M1 | Check exact permitted walls and public clue/selection structures, then all projection audiences. |",
+      "new": "| `server/test/vault/projections_test.exs` | Create; expand in M1 | Tag M0 cases :m0 and test the real M0 pure projections against literal permitted walls/axes and clue/selection structures. Add complete audience/phase/privacy tests and produced schema-fragment checks in M1. |",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/vault/contract_test.exs` | Create | Load the shared schema/examples and verify server-produced wire data uses their exact shapes. |",
+      "new": "| `server/test/vault/contract_test.exs` | Create; expand in M2 | M0-tagged cases check only schema/example metadata, 15-message example coverage, unique IDs and exact source/copy bytes, including private-copy consistency. Source schema validity remains the supplied Python validator. M2 adds actual production encoder/validator envelopes; no M0 call to a future protocol provider. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "**Verification and exit:** Run the supplied specification validator and pure ExUnit tests without network or hardware. Verify that private data is not under any public asset tree. Record unresolved board/driver facts in the audit and prove that the planned physical build gate rejects them once the wrapper exists. M0's software gate can pass while named physical verification remains blocked; no untested firmware version is described as locked and verified.",
+      "new": "**Verification and exit:** Run `python3 docs/specs/verify_contracts.py` and `tools/check-contracts`. From `server/`, run `MIX_ENV=test mix test --no-start --only m0 test/vault/puzzle_test.exs test/vault/projections_test.exs test/vault/contract_test.exs test/vault/json_test.exs test/vault/simulated_box/model_test.exs`. These are implemented pure files tagged :m0, with no Phoenix/Repo/runtime startup, network or hardware. Check the before/after started applications/registrations to detect accidental startup. Verify private data is outside public asset trees. Record unresolved board/driver facts; physical build rejection and firmware host checks become executed gates when their later wrappers/providers exist. M0 may pass while named physical evidence remains blocked; no untested dependency/firmware version is called verified.",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/projections.ex` | Create | Build allowlisted A/B/public/box/host views. Host-only recovery disposition/evidence must not change v1 box DTO fields or convert uncertain execution into physical confirmation. |",
+      "new": "| `server/lib/vault/projections.ex` | Expand the M0 implementation | Build complete allowlisted A/B/public/box/host views from the existing pure projection functions. Host-only recovery disposition/evidence must not change v1 box DTO fields or convert uncertain execution into physical confirmation. |",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/support/data_case.ex` | Create | Isolate Ecto tests and their databases/transactions. |",
+      "new": "| `tools/test-server` | Create | Create a protected per-run temporary root, export explicit test/simulated/loopback settings, run mix vault.test.prepare before ordinary mix test, and clean only its own processes/root while preserving sanitized evidence. |\n| `server/lib/mix/tasks/vault.test.prepare.ex` | Create | Test-only guarded fixture initialization: validate owned root, start only required dependencies/task-owned stores, migrate and initialize scoped credentials/game/simulator state through production APIs, close resources and release the guard, then write a nonsecret preparation marker. Never start :vault or endpoint. |\n| `tools/conformance/json_oracle.py` | Create | Use existing development-only Python jsonschema for actual M1 projection fragments; extend in M2 with exact-decimal/raw-case structural comparison independent of production validators. |\n| `server/test/support/data_case.ex` | Create | Isolate Ecto tests and their databases/transactions. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "**Verification and exit:** Run formatter checks and `mix test`, then the Playwright suite",
+      "new": "**Verification and exit:** Run formatter checks and `tools/test-server` from the repository root (it prepares isolated stores before invoking ordinary `mix test`), then the Playwright suite",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/protocol.ex` | Create | Validate bounded v1 envelopes/strict nested objects and convert to fixed internal actions without dynamic atoms. |",
+      "new": "| `server/lib/vault/protocol.ex` | Create | Compose Vault.JSON bounded decode, Vault.Protocol.V1 structural validation and fixed action conversion without dynamic atoms; preserve a bounded complete decoded comparison value including extensions before creating routed allowlists. Build typed outbound objects and validate encoded size. |\n| `server/lib/vault/protocol/v1.ex` | Create | Implement the finite hand-written validator for every schema branch/conditional in JSON_VALIDATION.md, preserving extension locations, strict nested DTOs, mathematical integer semantics and null-vs-missing. |\n| `tools/check-json-conformance` | Create | Compare actual Elixir and later firmware validators with the independent oracle over unchanged shared fixtures and bounded additional raw cases. |\n| `tools/conformance/json_cases.py` | Create | Supply literal raw-byte and bounded schema-branch mutations, including duplicate keys/UTF-8 and exact integer boundary spellings that parsed fixtures cannot represent. |\n| `tools/conformance/elixir_runner.exs` | Create | Load the locked compiled production JSON/v1 validator with mix run --no-start; emit bounded acceptance/normalized observations for public test cases only. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_protocol/CMakeLists.txt` | Create | Register only the shared protocol sources for applicable ESP-IDF/host builds. |",
+      "new": "| `firmware/components/vault_protocol/CMakeLists.txt` | Create | Register shared protocol sources and require the local vault_json component for both ESP-IDF and native builds. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_protocol/idf_component.yml` | Create | Declare tested managed dependencies with bounded versions once verified. |",
+      "new": "| `firmware/components/vault_protocol/idf_component.yml` | Create | Declare tested ESP-IDF compatibility. The JSON choice is the separately vendored yyjson-backed local vault_json component wired by CMake, not an unresolved managed parser dependency. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_protocol/include/vault_protocol.hpp` | Create | Define typed envelopes, bounded fields and validation results for v1 without puzzle answers. |",
+      "new": "| `firmware/third_party/yyjson/yyjson.c`, `yyjson.h`, `LICENSE`, `UPSTREAM.json` in that directory | Vendor and record | Preserve selected upstream C parser/header/license; record reviewed revision/hashes and actual native/target compatibility. Builds never fetch a floating parser. |\n| `firmware/components/vault_json/CMakeLists.txt` | Create | Compile the same vendored yyjson and wrapper once for native/IDF, with strict UTF-8 and disabled nonstandard/file/utility features; publish the shared local dependency. |\n| `firmware/components/vault_json/include/vault_json.hpp` | Create | Define bounded parse/encode/complete-comparison/canonical interfaces, caller-owned workspace and typed failures without board/IDF dependencies; keep arbitrary-extension comparison separate from the integer-only durable codec. |\n| `firmware/components/vault_json/vault_json.cpp` | Create | Implement byte/depth preflight, exact-length raw-number parsing, duplicate decoded-key rejection, fixed pool ownership and bounded encoding shared by protocol and USB service. |\n| `firmware/components/vault_json/json_number.cpp` | Create | Implement exact decimal/exponent mathematical-integer validation without double conversion or exponent expansion. |\n| `firmware/components/vault_protocol/include/vault_protocol.hpp` | Create | Define typed envelopes, bounded fields and validation results for v1 without puzzle answers. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_protocol/vault_protocol.cpp` | Create | Parse/serialize strict protocol objects, enforce size/depth/context semantics and consume shared conformance cases. |",
+      "new": "| `firmware/components/vault_protocol/vault_protocol.cpp` | Create | Apply the finite hand-written v1 structural validator after vault_json decode, serialize typed validated objects, and run unchanged fixtures plus independent schema/boundary cases. All schema conditionals and capability-extension exceptions are required. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/components/vault_device/CMakeLists.txt` | Create | Register device state and provisioning sources. |",
+      "new": "| `firmware/components/vault_device/CMakeLists.txt` | Create | Register device/provisioning sources and require vault_json for the same bounded local-service parser; do not introduce a second JSON library. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `firmware/tests/protocol_test.cpp` | Create | Run shared wire fixtures and malformed/fragmented/oversized boundary cases. |",
+      "new": "| `firmware/tests/json_test.cpp` | Create | Test actual shared parser on raw malformed/duplicate/UTF-8, exact integer, complete typed comparison including arbitrary extension numbers, byte/depth, canonical and fixed-pool exhaustion cases. |\n| `firmware/tests/json_conformance_runner.cpp` | Create | Native-only runner for actual production JSON/v1 validation against the independent oracle; never bundle it or fixtures into target runtime images. |\n| `firmware/tests/protocol_test.cpp` | Create | Run shared wire fixtures and malformed/fragmented/oversized boundary cases. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `tools/firmware/build_manifest.py` | Create | Record source revision/dirty state, profile/generator/generated-output/resolved-config/toolchain/lock hashes, target, memory/partitions, protocol version and binary checksums. |",
+      "new": "| `tools/firmware/build_manifest.py` | Create | Record source/dirty state, profile/generator/generated/resolved-config/toolchain/managed-lock hashes, vendored yyjson revision/source hashes, target, memory/partitions, protocol version and binary checksums. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| Server static/behavior checks | From `server/`: `mix format --check-formatted`, `mix test` | Run the selected dependency stack and all relevant ExUnit/LiveView/timing/storage/protocol assertions. |",
+      "new": "| M0 pure checks | From `server/`: `MIX_ENV=test mix test --no-start --only m0 test/vault/puzzle_test.exs test/vault/projections_test.exs test/vault/contract_test.exs test/vault/json_test.exs test/vault/simulated_box/model_test.exs` | Actual M0 modules compile and literal pure cases pass with no :vault/Repo/endpoint/store startup; source fixture validation is separate. |\n| Server static/behavior checks | From `server/`: `mix format --check-formatted`; from repository root: `tools/test-server` | The wrapper prepares owned isolated test stores/credentials before ordinary mix test starts :vault. Run all relevant ExUnit/LiveView/timing/storage/protocol cases; no implicit developer-data setup. |",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "Build one Phoenix application running on Rafa’s computer, on one Elixir node, with Phoenix LiveView, Phoenix PubSub, Ecto, the SQLite adapter, and WebSockAdapter. Use compatible stable versions, commit `mix.lock`, and document the tested Elixir/OTP versions. The first working milestone must be playable with two browser participant pages and a simulated box. It must not require an ESP32, cloud account, MQTT broker, or internet connection after dependencies are installed.",
+      "new": "Build one Phoenix application running on Rafa’s computer, on one Elixir node, with Phoenix LiveView, Phoenix PubSub, Ecto, the SQLite adapter, and WebSockAdapter. Use compatible stable versions, commit `mix.lock`, and document the tested Elixir/OTP versions. The first working milestone must be playable with two browser participant pages and a simulated box. It must not require an ESP32, cloud account, MQTT broker, or internet connection after dependencies are installed.\n\nUse the concrete parser, structural-validation, canonical-encoding and M0 startup contract in [JSON_VALIDATION.md](JSON_VALIDATION.md): OTP stdlib `:json` through Vault.JSON for project data, yyjson through the common portable firmware wrapper, and hand-written v1 validators checked against the supplied schema and independent fixtures/oracle. Require OTP >=27 and lock tested versions. Phoenix retains explicitly locked Jason for its framework codec; do not configure OTP :json as a Phoenix-compatible codec.",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "Implement one bounded receive-assembly buffer: server messages may contain up to 8192 UTF-8 bytes; device messages sent to the server may contain up to 4096 bytes. Enforce protocol nesting/string limits.",
+      "new": "Implement one bounded receive-assembly buffer: server messages may contain up to 8192 UTF-8 bytes; device messages sent to the server may contain up to 4096 bytes. Enforce protocol nesting/string limits. Parse only complete bounded messages through the shared yyjson wrapper and finite v1 validator in JSON_VALIDATION.md, used identically by native tests and ESP-IDF. Reject duplicate decoded keys and invalid UTF-8; preserve mathematical integer precision and the accepted top-level/capability extension locations. The separately bounded local USB service uses the same parser with its own shape/limit profile.",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "- `mix test`: server behavior/contract tests, with documented separate real-browser tests.",
+      "new": "- `tools/test-server`: prepare owned isolated test databases/credentials with `mix vault.test.prepare`, close preparation resources, then invoke ordinary `mix test`; never use development data or require prior manual setup. M0 uses the explicit `mix test --no-start --only m0` file list in JSON_VALIDATION.md. Keep separate documented real-browser checks.",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "`ACCEPTANCE.md` is the execution checklist. Complete M0 contracts/audit, M1 browser game, M2 protocol/recovery, M3 CYDs, M4 box bench work and M5 integration in that order. M1 includes the entire playable puzzle and simulated release. M2 hardens persistence and device conformance before separate firmware work expands.",
+      "new": "`ACCEPTANCE.md` is the execution checklist. Complete M0 contracts/audit, M1 browser game, M2 protocol/recovery, M3 CYDs, M4 box bench work and M5 integration in that order. M1 includes the entire playable puzzle and simulated release. M2 hardens persistence and device conformance before separate firmware work expands.\n\nM0 creates initial pure projections alongside Puzzle, Clock, JSON helpers and the shared pure box model, with no dependency on M1 runtime/store structs or M2 protocol providers. Its contract tests cover existing schema/fixtures and exact copy consistency only. Run the no-start command and inert configuration policy in JSON_VALIDATION.md; M1 adds complete produced-projection checks and the real application callback, and M2 adds production wire-envelope conformance. Firmware execution checks begin when their host-test providers exist; missing hardware cannot block this independent M0 checkpoint.",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M0-02 — Golden fixture integrity.** Load the private fixture through the pure rules module. Assert 16 connected cells, 15 passages, and the unique route `12,8,9,5,4,0,1,2,6,10,11,7,3`. The branch `9,13,14,15` has no exit shortcut. Assert A’s right-wall indices `[2,5,6,9,12]` and B’s bottom-wall indices `[1,4,10,11]`.",
+      "new": "**M0-02 — Golden fixture integrity.** Load the private fixture through the pure rules module. Assert 16 connected cells, 15 passages, and the unique route `12,8,9,5,4,0,1,2,6,10,11,7,3`. The branch `9,13,14,15` has no exit shortcut. Assert A’s right-wall indices `[2,5,6,9,12]` and B’s bottom-wall indices `[1,4,10,11]`. Exercise the real initial pure Vault.Projections in M0 for exact role axes, partner clue and own selection; do not require M1 session/runtime or M2 protocol providers. Source schema/fixture validation and byte-for-byte public/private copy consistency are the M0 contract-test scope.",
+      "findings": [
+        "S9-04"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M0-04 — Test seams.** Pure puzzle tests run without Phoenix, a database, network, or hardware. Timing tests control monotonic time and scheduled messages deterministically. Firmware host tests substitute transport, touch, nonvolatile storage, clock, and actuator interfaces. Do not use multi-second sleeps to prove deadline boundaries. Exercise the shared pure box model without Phoenix, database or network.",
+      "new": "**M0-04 — Test seams.** From server/, run `MIX_ENV=test mix test --no-start --only m0 test/vault/puzzle_test.exs test/vault/projections_test.exs test/vault/contract_test.exs test/vault/json_test.exs test/vault/simulated_box/model_test.exs`. All selected :m0 cases exercise real M0 pure providers and require no :vault, Phoenix endpoint, Repo, database, network or hardware; test_helper starts ExUnit only. Confirm no application/runtime resource starts accidentally. Pure model state/event/effect types exist in M0 and literal persistence-completion events require no store. Timing seams control monotonic time/scheduled messages without multi-second sleeps; execute full session/protocol timing and firmware host-fake cases when their later production providers exist. JSON_VALIDATION.md defines exact parser cases, source-only M0 contract scope and isolated M1 pre-start test preparation.",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M2-07 — Transport boundaries.** Exercise missing credentials, spoofed class/identity, invalid enums/types/JSON, excessive nesting/strings, unsupported versions, fragmented messages, binary application frames, and size-limit plus-one cases. Enforce assembled-message limits of 4,096 bytes inbound/8,192 outbound, depth eight, and the documented 30-message/second rate with burst ten. Fail boundedly without crashing the game or creating atoms from received text.",
+      "new": "**M2-07 — Transport boundaries.** Exercise missing credentials, spoofed class/identity, invalid enums/types/JSON, excessive nesting/strings, unsupported versions, fragmented messages, binary application frames, and size-limit plus-one cases. Enforce assembled-message limits of 4,096 bytes inbound/8,192 outbound, depth eight, and the documented 30-message/second rate with burst ten. Fail boundedly without crashing the game or creating atoms from received text. Run the production Elixir validator and later the identical native/ESP-IDF C++ parser/validator sources against the unchanged golden examples plus independent raw-byte/schema-branch cases in JSON_VALIDATION.md. Cover decoded duplicate keys (including escaped aliases/extensions), malformed UTF-8/surrogates, trailing roots, null-vs-missing, pool failure, exact safe-integer min/max/plus-one, integral decimal/exponent spellings and fractional precision traps such as 9007199254740990.5. Accept permitted top-level/capability extensions while rejecting strict nested additions. Reuse command/status sequences with changed extension content and reject the changed decoded message; object order, equivalent escapes and mathematically equal numeric spellings retain identical decoded comparison. Compare arbitrary extension numbers exactly without floats or the integer-only durable codec. Check outputs against the independent Draft 2020-12 oracle with exact numeric handling; agreement between production validators alone is insufficient.",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/protocol/command_window.ex` | Create | Maintain 128 decoded command/result pairs, consume expected domain rejections, distinguish identical/changed duplicates and handle gaps/expired results. |",
+      "new": "| `server/lib/vault/protocol/command_window.ex` | Create | Retain 128 complete decoded comparison/result pairs including permitted extensions, with bounded typed comparison bytes from Vault.JSON; consume expected domain rejections, reject changed content (including extensions), preserve mathematical number equality, and handle gaps/expired results without replay. |",
+      "findings": [
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/protocol/status_window.ex` | Create | Maintain 16 status/ack pairs, accept allowed gaps, deduplicate exact retries and reject changed/stale reports. |",
+      "new": "| `server/lib/vault/protocol/status_window.ex` | Create | Retain 16 complete decoded status-comparison/ack pairs including permitted extensions; use the same bounded exact typed comparison, allow permitted gaps, replay identical acknowledgements and reject changed/stale reports. |",
+      "findings": [
+        "S9-05"
+      ]
+    }
+  ]
+}

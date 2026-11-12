@@ -1,0 +1,1 @@
+{"result": "passed", "exclusive_create_contenders": [0, 17], "file_mode": "0600", "directory_mode": "0700", "file_fsync": true, "directory_fsync": true, "existing_symlink_refused": true, "evidence": "local syscall observations; not power-loss durability or implemented maintenance guard"}

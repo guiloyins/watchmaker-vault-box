@@ -1,0 +1,8 @@
+Running ExUnit with seed: 353661, max_cases: 32
+Excluding tags: [:test]
+Including tags: [:m0]
+
+...................................................
+Finished in 1.5 seconds (1.4s async, 0.01s sync)
+51 tests, 0 failures
+M0 runtime guard passed: started applications unchanged; no named Vault resources.

@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.40.3">
+    <meta name="project" content="Mint v1.11.0">
+
+
+    <title>Mint.HTTP — Mint v1.11.0</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-NHQLCD6Y.css" />
+
+    <script defer src="dist/sidebar_items-94BCE984.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-Y2MUTVIN.js"></script>
+
+  <script async defer src="https://s.hexdocs.pm/js/script.js"></script><script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({endpoint:"https://s.hexdocs.pm/api/event"})</script></head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="api-reference.html" class="sidebar-projectName" translate="no">
+Mint
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v1.11.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras="Pages"></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Mint</span>
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
+          </label>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Mint.<wbr />HTTP</span> 
+      <small class="app-vsn" translate="no">(Mint v1.11.0)</small>
+
+    </h1>
+
+<a href="Mint.HTTP.md" title="Copy Markdown (hold Ctrl/Cmd and click it to open as Markdown)" class="copy-markdown icon-action" rel="help">
+  <i class="ri-markdown-line" aria-hidden="true"></i>
+  <span class="sr-only">Copy Markdown</span>
+</a>
+
+
+
+      <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1" title="View Source" class="icon-action" rel="help nofollow">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>Process-less HTTP connection data structure and functions.</p><p>Single interface for <a href="Mint.HTTP1.html"><code class="inline">Mint.HTTP1</code></a> and <a href="Mint.HTTP2.html"><code class="inline">Mint.HTTP2</code></a> with support for version
+negotiation and proxies.</p><h2 id="module-usage" class="section-heading"><a href="#module-usage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Usage</span></h2><p>To establish a connection with a given server, use <a href="#connect/4"><code class="inline">connect/4</code></a>. This will
+return an opaque data structure that represents the connection
+to the server. To send a request, you can use <a href="#request/5"><code class="inline">request/5</code></a>. Sending a request
+does not take care of the response to that request, instead we use <a href="#stream/2"><code class="inline">Mint.HTTP.stream/2</code></a>
+to process the response, which we will look at in just a bit. The connection is a
+wrapper around a TCP (<code class="inline">:gen_tcp</code> module) or SSL (<code class="inline">:ssl</code> module) socket that is
+set in <strong>active mode</strong> (with <code class="inline">active: :once</code>). This means that TCP/SSL messages
+will be delivered to the process that started the connection.</p><p>The process that owns the connection is responsible for receiving the messages
+(for example, a GenServer is responsible for defining <code class="inline">handle_info/2</code>). However,
+<a href="Mint.HTTP.html"><code class="inline">Mint.HTTP</code></a> makes it easy to identify TCP/SSL messages that are coming from the
+connection with the server with the <a href="#stream/2"><code class="inline">stream/2</code></a> function. This function takes the
+connection and a term and returns <code class="inline">:unknown</code> if the term is not a TCP/SSL message
+belonging to the connection. If the term <em>is</em> a message for the connection, then
+a response and a new connection are returned. It's important to store the new
+returned connection data structure over the old one since the connection is an
+immutable data structure.</p><p>Let's see an example of a common workflow of connecting to a server, sending a
+request, and processing the response. We start by using <a href="#connect/3"><code class="inline">connect/3</code></a> to connect
+to a server.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0010921878-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="0010921878-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="0010921878-2">(</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p" data-group-id="0010921878-2">)</span></code></pre><p><code class="inline">conn</code> is a data structure that represents the connection.</p><p>To send a request, we use <a href="#request/5"><code class="inline">request/5</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5120380615-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p" data-group-id="5120380615-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="5120380615-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5120380615-3">[</span><span class="p" data-group-id="5120380615-3">]</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="5120380615-2">)</span></code></pre><p>As you can see, sending a request returns a new updated <code class="inline">conn</code> struct and a
+<code class="inline">request_ref</code>. The updated connection struct is returned because the connection
+is an immutable structure keeping the connection state, so every action we do on it must return a new,
+possibly updated, connection that we're responsible for storing over the old
+one. <code class="inline">request_ref</code> is a unique reference that can be used to identify which
+request a given response belongs to.</p><p>Now that we sent our request, we're responsible for receiving the messages that
+the TCP/SSL socket will send to our process. For example, in a GenServer
+we would do that with a <code class="inline">handle_info/2</code> callback. In our case, we're going to
+use a simple <code class="inline">receive</code>. <a href="Mint.HTTP.html"><code class="inline">Mint.HTTP</code></a> provides a way to tell if a message comes
+from the socket wrapped by our connection or not: the <a href="#stream/2"><code class="inline">stream/2</code></a> function. If
+the message we pass to it is not destined for our connection, this function returns
+<code class="inline">:unknown</code>. Otherwise, it returns an updated connection and one or more responses.</p><pre><code class="makeup elixir" translate="no"><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="2073210371-1">do</span><span class="w">
+  </span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="2073210371-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="2073210371-2">)</span><span class="w"> </span><span class="k" data-group-id="2073210371-3">do</span><span class="w">
+      </span><span class="ss">:unknown</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">handle_normal_message</span><span class="p" data-group-id="2073210371-4">(</span><span class="n">message</span><span class="p" data-group-id="2073210371-4">)</span><span class="w">
+      </span><span class="p" data-group-id="2073210371-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">responses</span><span class="p" data-group-id="2073210371-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">handle_responses</span><span class="p" data-group-id="2073210371-6">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">responses</span><span class="p" data-group-id="2073210371-6">)</span><span class="w">
+    </span><span class="k" data-group-id="2073210371-3">end</span><span class="w">
+</span><span class="k" data-group-id="2073210371-1">end</span></code></pre><p><code class="inline">responses</code> is a list of possible responses. The most common responses are:</p><ul><li><code class="inline">{:status, request_ref, status_code}</code> for the status code</li><li><code class="inline">{:headers, request_ref, headers}</code> for the response headers</li><li><code class="inline">{:data, request_ref, binary}</code> for pieces of the response body</li><li><code class="inline">{:done, request_ref}</code> for the end of the response</li></ul><p>As you can see, all responses have the unique request reference as the second
+element of the tuple, so that we know which request the response belongs to.
+See <a href="Mint.Types.html#t:response/0"><code class="inline">Mint.Types.response/0</code></a> for the full list of responses returned by <a href="#stream/2"><code class="inline">Mint.HTTP.stream/2</code></a>.</p><h2 id="module-architecture" class="section-heading"><a href="#module-architecture" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Architecture</span></h2><p>A processless architecture like the one here requires a few modifications to how
+we use this HTTP client. Usually, you will want to create this data structure
+in a process that acts as <em>connection manager</em>. Sometimes, you might want to
+have a single process responsible for multiple connections, either to just one
+host or multiple hosts. For more discussion on architectures based off of this
+HTTP client, see the <a href="architecture.html"><em>Architecture</em></a> page in the docs.</p><h2 id="module-ssl-certificates" class="section-heading"><a href="#module-ssl-certificates" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">SSL certificates</span></h2><p>When using SSL, you can pass in your own CA certificate store or use one provided by Mint. Mint
+doesn't ship with the certificate store itself, but it has an optional dependency on
+<a rel="nofollow" href="https://github.com/elixir-mint/castore">CAStore</a>, which provides an up-to-date certificate store. If
+you don't want to use your own certificate store, just add <code class="inline">:castore</code> to your dependencies.</p><p>Starting <a href="https://www.erlang.org/blog/my-otp-25-highlights/#ca-certificates-can-be-fetched-from-the-os-standard-place">from OTP
+25</a>,
+you can also load certificates from a file
+(<a href="https://www.erlang.org/doc/man/public_key.html#cacerts_load-1"><code class="inline">:public_key.cacerts_load/1</code></a>).
+You can also get certificate from the OS trust store using
+<a href="https://www.erlang.org/doc/man/public_key.html#cacerts_get-0"><code class="inline">:public_key.cacerts_get/0</code></a>.
+If you are using OTP 25+ it is recommended to set this option.</p><pre><code class="makeup elixir" translate="no"><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="2707254039-1">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="n">host</span><span class="p">,</span><span class="w"> </span><span class="n">port</span><span class="p">,</span><span class="w"> </span><span class="ss">transport_opts</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2707254039-2">[</span><span class="ss">cacerts</span><span class="p">:</span><span class="w"> </span><span class="nc">:public_key</span><span class="o">.</span><span class="n">cacerts_get</span><span class="p" data-group-id="2707254039-3">(</span><span class="p" data-group-id="2707254039-3">)</span><span class="p" data-group-id="2707254039-2">]</span><span class="p" data-group-id="2707254039-1">)</span></code></pre><h2 id="module-mode" class="section-heading"><a href="#module-mode" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Mode</span></h2><p>By default Mint operates in <strong>active mode</strong> meaning that the process that started the
+connection receives socket messages. Mint also supports <strong>passive mode</strong>, where no messages
+are sent to the process and the process needs to fetch data out of the socket manually.
+The mode can be controlled at connection time through the <code class="inline">:mode</code> option in <a href="#connect/4"><code class="inline">connect/4</code></a>
+or changed dynamically through <a href="#set_mode/2"><code class="inline">set_mode/2</code></a>. Passive mode is generally only recommended
+for special use cases.</p><h2 id="module-logging" class="section-heading"><a href="#module-logging" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Logging</span></h2><p>Mint uses the <a href="https://hexdocs.pm/logger/Logger.html"><code class="inline">Logger</code></a> module to log information about the connection. Most logs are
+emitted <em>since version 1.5.0</em>. The logs are not emitted by default, since we consider
+Mint to be too low level. However, you can enable logging by passing <code class="inline">log: true</code> to
+<a href="#connect/4"><code class="inline">connect/4</code></a>.</p><section role="note" class="admonition warning"><h4 class="admonition-title warning">Changes to the Format of Logs</h4><p>The format of logs emitted by Mint might change without notice between any versions,
+without it being considered a breaking change. You are only meant to control what
+gets logged by using the <a href="https://hexdocs.pm/logger/Logger.html"><code class="inline">Logger</code></a> API and Erlang's <code class="inline">:logger</code> module.</p></section>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h2>
+<div class="summary-types summary">
+  <h3>
+    <a href="#types">Types</a>
+  </h3>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h3>
+    <a href="#functions">Functions</a>
+  </h3>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#close/1" data-no-tooltip="" translate="no">close(conn)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Closes the given connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connect/4" data-no-tooltip="" translate="no">connect(scheme, address, port, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new connection to a given server.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#controlling_process/2" data-no-tooltip="" translate="no">controlling_process(conn, new_pid)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Changes the <em>controlling process</em> of the given connection to <code class="inline">new_pid</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_private/2" data-no-tooltip="" translate="no">delete_private(conn, key)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes a value in the private store.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_private/3" data-no-tooltip="" translate="no">get_private(conn, key, default \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a private value from the connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_proxy_headers/1" data-no-tooltip="" translate="no">get_proxy_headers(conn)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the proxy headers associated with the connection in the <code class="inline">CONNECT</code> method.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_socket/1" data-no-tooltip="" translate="no">get_socket(conn)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the socket associated with the connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#is_connection_message/2" data-no-tooltip="" translate="no">is_connection_message(conn, message)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Macro to check that a given received <code class="inline">message</code> is intended for the given connection <code class="inline">conn</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#open?/2" data-no-tooltip="" translate="no">open?(conn, type \\ :write)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Checks whether the connection is open.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#open_request_count/1" data-no-tooltip="" translate="no">open_request_count(conn)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns the number of open requests.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#protocol/1" data-no-tooltip="" translate="no">protocol(conn)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns the protocol used by the current connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put_log/2" data-no-tooltip="" translate="no">put_log(conn, log?)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Sets whether the connection should log information or not.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put_private/3" data-no-tooltip="" translate="no">put_private(conn, key, value)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Assigns a new private key and value in the connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#recv/3" data-no-tooltip="" translate="no">recv(conn, byte_count, timeout)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Receives data from the socket in a blocking way.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#request/5" data-no-tooltip="" translate="no">request(conn, method, path, headers, body)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Sends a request to the connected server.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#request_body_window/2" data-no-tooltip="" translate="no">request_body_window(conn, ref)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns the request body flow-control window for the streaming request
+identified by <code class="inline">request_ref</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_mode/2" data-no-tooltip="" translate="no">set_mode(conn, mode)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Changes the mode of the underlying socket.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stream/2" data-no-tooltip="" translate="no">stream(conn, message)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Streams the next batch of responses from the given <code class="inline">message</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stream_request_body/3" data-no-tooltip="" translate="no">stream_request_body(conn, ref, body)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Streams a chunk of the request body on the connection or signals the end of the body.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h2>
+
+    <div class="types-list">
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L129" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> t() :: <a href="Mint.HTTP1.html#t:t/0">Mint.HTTP1.t</a>() | <a href="Mint.HTTP2.html#t:t/0">Mint.HTTP2.t</a>() | Mint.UnsafeProxy.t()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h2 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h2>
+
+    <div class="functions-list">
+<section class="detail" id="close/1">
+
+  <div class="detail-header">
+    <a href="#close/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">close(conn)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L563" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> close(<a href="#t:t/0">t</a>()) :: {:ok, <a href="#t:t/0">t</a>()}</pre>
+
+      </div>
+
+<p>Closes the given connection.</p><p>This function closes the socket wrapped by the given connection. Once the socket
+is closed, the connection goes into the &quot;closed&quot; state and <a href="#open?/1"><code class="inline">open?/1</code></a> returns <code class="inline">false</code>.
+You can throw away a closed connection.</p><p>Closing a connection does not guarantee that data that is in flight gets delivered
+to the server.</p><p>Always returns <code class="inline">{:ok, conn}</code> where <code class="inline">conn</code> is the updated connection.</p><h2 id="close/1-examples" class="section-heading"><a href="#close/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="1901999527-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="1901999527-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">close</span><span class="p" data-group-id="1901999527-2">(</span><span class="n">conn</span><span class="p" data-group-id="1901999527-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="connect/4">
+
+    <span id="connect/3"></span>
+
+  <div class="detail-header">
+    <a href="#connect/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connect(scheme, address, port, opts \\ [])</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L480" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> connect(
+  <a href="Mint.Types.html#t:scheme/0">Mint.Types.scheme</a>(),
+  <a href="Mint.Types.html#t:address/0">Mint.Types.address</a>(),
+  <a href="https://www.erlang.org/doc/apps/kernel/inet.html#t:port_number/0">:inet.port_number</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()
+) ::
+  {:ok, <a href="#t:t/0">t</a>()} | {:error, <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>()}</pre>
+
+      </div>
+
+<p>Creates a new connection to a given server.</p><p>Creates a new connection struct and establishes the connection to the given server,
+identified by the given <code class="inline">host</code> and <code class="inline">port</code> combination. Both HTTP and HTTPS are supported
+by passing respectively <code class="inline">:http</code> and <code class="inline">:https</code> as the <code class="inline">scheme</code>.</p><p>The connection struct wraps a socket, which is created once the connection
+is established inside this function. If HTTP is used, then the created socket is a TCP
+socket and the <code class="inline">:gen_tcp</code> module is used to create that socket. If HTTPS is used, then
+the created socket is an SSL socket and the <code class="inline">:ssl</code> module is used to create that socket.
+The socket is created in active mode (with <code class="inline">active: :once</code>), which is why it is important
+to know the type of the socket: messages from the socket will be delivered directly to the
+process that creates the connection and tagged appropriately by the socket module (see the
+<code class="inline">:gen_tcp</code> and <code class="inline">:ssl</code> modules). See <a href="#stream/2"><code class="inline">stream/2</code></a> for more information on the messages and
+how to process them and on the socket mode.</p><h2 id="connect/4-options" class="section-heading"><a href="#connect/4-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Options</span></h2><ul><li><p><code class="inline">:hostname</code> - (string) explicitly provide the hostname used for the <code class="inline">Host</code> header,
+hostname verification, SNI, and so on. <strong>Required when <code class="inline">address</code> is not a string.</strong></p></li><li><p><code class="inline">:transport_opts</code> - (keyword) options to be given to the transport being used.
+These options will be merged with some default options that cannot be overridden.
+For more details, refer to the &quot;Transport options&quot; section below.</p></li><li><p><code class="inline">:mode</code> - (<code class="inline">:active</code> or <code class="inline">:passive</code>) whether to set the socket to active or
+passive mode. See the &quot;Mode&quot; section in the module documentation and <a href="#set_mode/2"><code class="inline">set_mode/2</code></a>.</p></li><li><p><code class="inline">:protocols</code> - (list of atoms) a list of protocols to try when connecting to the
+server. The possible values in the list are <code class="inline">:http1</code> for HTTP/1 and HTTP/1.1 and
+<code class="inline">:http2</code> for HTTP/2. If only one protocol is present in the list, then the connection
+will be forced to use that protocol. If both <code class="inline">:http1</code> and <code class="inline">:http2</code> are present in the
+list, then Mint will negotiate the protocol. See the section &quot;Protocol negotiation&quot;
+below for more information. Defaults to <code class="inline">[:http1, :http2]</code>.</p></li><li><p><code class="inline">:proxy_headers</code> - a list of headers (<a href="Mint.Types.html#t:headers/0"><code class="inline">Mint.Types.headers/0</code></a>) to pass when using
+a proxy. They will be used for the <code class="inline">CONNECT</code> request in tunnel proxies or merged
+with every request for forward proxies.</p></li><li><p><code class="inline">:log</code> - (boolean) whether this connection logs or not. See the <a href="#module-logging">&quot;Logging&quot;
+section</a> in the module documentation. Defaults to <code class="inline">false</code>.
+<em>Available since v1.5.0</em>.</p></li><li><p><code class="inline">:max_header_list_size</code> - (positive integer or <code class="inline">:infinity</code>) the maximum size, in
+<strong>bytes</strong>, of an HTTP/1 response line, header section, or chunked trailer section.
+Defaults to 256 KiB. This option is only used for HTTP/1 connections.
+<em>Available since 1.9.2</em>.</p></li><li><p><code class="inline">:proxy</code> - a <code class="inline">{scheme, address, port, opts}</code> tuple that identifies a proxy to
+connect to. See the &quot;Proxying&quot; section below for more information.</p></li></ul><p>The following options are HTTP/2-specific and will only be used on HTTP/2 connections.</p><ul><li><p><code class="inline">:client_settings</code> - (keyword) a list of client HTTP/2 settings to send to the
+server. See <a href="Mint.HTTP2.html#put_settings/2"><code class="inline">Mint.HTTP2.put_settings/2</code></a> for more information. This is only used
+in HTTP/2 connections.</p></li><li><p><code class="inline">:connection_window_size</code> - (integer) the initial size of the connection-level
+HTTP/2 receive window, in bytes. Sent to the server as a <code class="inline">WINDOW_UPDATE</code> frame
+on stream 0 as part of the connection preface. Defaults to 16 MB. Can be
+raised later with <a href="Mint.HTTP2.html#set_window_size/3"><code class="inline">Mint.HTTP2.set_window_size/3</code></a>. <em>Available since v1.8.0</em>.</p></li><li><p><code class="inline">:receive_window_update_threshold</code> - (integer) the minimum number of bytes of receive
+window that must remain on a connection or stream before a <code class="inline">WINDOW_UPDATE</code>
+frame is sent to refill it. Lower values send more frequent, smaller updates;
+higher values batch updates into fewer, larger ones. Defaults to 160_000
+(approximately 10× the default max frame size). The same threshold applies
+to both the connection and per-stream windows; when a window's peak size is
+at or below the threshold, the client refills after every DATA frame on
+that window. <em>Available since v1.8.0</em>.</p></li></ul><p>There may be further protocol specific options that only take effect when the corresponding
+connection is established. Check <a href="Mint.HTTP1.html#connect/4"><code class="inline">Mint.HTTP1.connect/4</code></a> and <a href="Mint.HTTP2.html#connect/4"><code class="inline">Mint.HTTP2.connect/4</code></a> for
+details.</p><h2 id="connect/4-protocol-negotiation" class="section-heading"><a href="#connect/4-protocol-negotiation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Protocol negotiation</span></h2><p>If both <code class="inline">:http1</code> and <code class="inline">:http2</code> are present in the list passed in the <code class="inline">:protocols</code> option,
+the protocol negotiation happens in the following way:</p><ul><li><p>If the scheme used to connect to the server is <code class="inline">:http</code>, then HTTP/1 or HTTP/1.1 is used.</p></li><li><p>If the scheme is <code class="inline">:https</code>, then ALPN negotiation is used to determine the right
+protocol. This means that the server will decide whether to use HTTP/1 or
+HTTP/2. If the server doesn't support protocol negotiation, we will fall back to
+HTTP/1. If the server negotiates a protocol that we don't know how to handle,
+<code class="inline">{:error, {:bad_alpn_protocol, protocol}}</code> is returned.</p></li></ul><h2 id="connect/4-proxying" class="section-heading"><a href="#connect/4-proxying" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Proxying</span></h2><p>You can set up proxying through the <code class="inline">:proxy</code> option, which is a tuple
+<code class="inline">{scheme, address, port, opts}</code> that identifies the proxy to connect to.
+Once a proxied connection is returned, the proxy is transparent to you and you
+can use the connection like a normal connection.</p><p>If the connection scheme is <code class="inline">:http</code>, requests are forwarded through the proxy
+in the most compatible way, supporting older proxy servers. Data will be sent
+in clear text.</p><p>If the connection scheme is <code class="inline">:https</code>, a tunnel through the proxy is established
+with the <code class="inline">CONNECT</code> method. If the proxy <code class="inline">scheme</code> is <code class="inline">:http</code>, the <code class="inline">CONNECT</code>
+request is sent in clear text; if it is <code class="inline">:https</code>, the connection to the proxy
+uses TLS and the TLS session to the host is nested inside it. <em>HTTPS proxies
+for HTTPS connections are available since v1.10.0</em>.</p><p>The <code class="inline">opts</code> in the <code class="inline">:proxy</code> tuple are the options of the connection to the proxy
+itself and support the same options as <a href="#connect/4"><code class="inline">connect/4</code></a>. Tunnel proxies additionally
+support:</p><ul><li><code class="inline">:tunnel_timeout</code> - the maximum time (in milliseconds) to wait for the proxy
+to reply to the <code class="inline">CONNECT</code> request. If the tunnel is not established within
+this time, <a href="#connect/4"><code class="inline">connect/4</code></a> returns a <a href="Mint.HTTPError.html"><code class="inline">Mint.HTTPError</code></a> with reason
+<code class="inline">{:proxy, :tunnel_timeout}</code>. Defaults to <code class="inline">30_000</code> (30 seconds).</li></ul><h3 id="connect/4-proxying-over-http-2" class="section-heading"><a href="#connect/4-proxying-over-http-2" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Proxying over HTTP/2</span></h3><p>The <code class="inline">:proxy</code> option always speaks HTTP/1 to the proxy. The connection tunneled
+<em>through</em> the proxy can still be HTTP/2 (negotiated via ALPN), but the <code class="inline">CONNECT</code>
+exchange with the proxy itself is HTTP/1. Mint doesn't drive an HTTP/2 connection
+to the proxy from <a href="#connect/4"><code class="inline">connect/4</code></a> on purpose: the benefit of HTTP/2 <code class="inline">CONNECT</code> is
+multiplexing many tunnels over a single proxy connection, which means sharing that
+connection across Mint connections. That is the job of a connection pool built on
+top of Mint, not of a single connection.</p><p>To tunnel through a proxy over HTTP/2, connect to the proxy with <a href="Mint.HTTP2.html"><code class="inline">Mint.HTTP2</code></a> and
+open one <code class="inline">CONNECT</code> stream per tunnel (see the &quot;CONNECT requests&quot; section in
+<a href="Mint.HTTP2.html#request/5"><code class="inline">Mint.HTTP2.request/5</code></a>):</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0138469828-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="0138469828-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP2</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="0138469828-2">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="n">proxy_host</span><span class="p">,</span><span class="w"> </span><span class="n">proxy_port</span><span class="p" data-group-id="0138469828-2">)</span><span class="w">
+</span><span class="p" data-group-id="0138469828-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="0138469828-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP2</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="0138469828-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;CONNECT&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;example.com:443&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0138469828-5">[</span><span class="p" data-group-id="0138469828-5">]</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="0138469828-4">)</span></code></pre><p>Once the proxy replies with a <code class="inline">{:status, ref, 200}</code> response, the stream is a byte
+tunnel: send bytes to the target with <a href="Mint.HTTP2.html#stream_request_body/3"><code class="inline">Mint.HTTP2.stream_request_body/3</code></a> and receive
+bytes from the target as <code class="inline">{:data, ref, data}</code> responses.</p><p>To run TLS (or a whole Mint connection) <em>inside</em> such a tunnel, you need a relay:
+<code class="inline">:ssl</code> can't run over an arbitrary byte stream, so a process has to own the proxy
+connection and relay bytes between the <code class="inline">CONNECT</code> stream and a local TCP socket. The
+inner connection then dials the relay while keeping the identity of the real host
+through the <code class="inline">:hostname</code> option:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="7778139790-1">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="n">relay_address</span><span class="p">,</span><span class="w"> </span><span class="n">relay_port</span><span class="p">,</span><span class="w"> </span><span class="ss">hostname</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example.com&quot;</span><span class="p" data-group-id="7778139790-1">)</span></code></pre><p>so that SNI and certificate verification target the real host. Note that the default
+request <code class="inline">Host</code> header (HTTP/1) and <code class="inline">:authority</code> pseudo-header (HTTP/2) contain the
+port of the connection, which is the relay's port: either make the relay listen on
+the target's port, or (on HTTP/1) pass an explicit <code class="inline">host</code> header with each request.
+This is the natural shape for pooling libraries, which can multiplex many tunnels
+over one proxy connection.</p><h2 id="connect/4-transport-options" class="section-heading"><a href="#connect/4-transport-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Transport options</span></h2><p>The options specified in <code class="inline">:transport_opts</code> are passed to the module that
+implements the socket interface: <code class="inline">:gen_tcp</code> when the scheme is <code class="inline">:http</code>, and
+<code class="inline">:ssl</code> when the scheme is <code class="inline">:https</code>. Please refer to the documentation for those
+modules, as well as for <a href="https://www.erlang.org/doc/apps/kernel/inet.html#setopts/2"><code class="inline">:inet.setopts/2</code></a>, for a detailed description of all
+available options.</p><p>The behaviour of some options is modified by Mint, as described below.</p><p>A special case is the <code class="inline">:timeout</code> option, which is passed to the transport
+module's <code class="inline">connect</code> function to limit the amount of time to wait for the
+network connection to be established.</p><p>Common options for <code class="inline">:http</code> and <code class="inline">:https</code>:</p><ul><li><p><code class="inline">:active</code> - controlled by the <code class="inline">:mode</code> option. Cannot be overridden.</p></li><li><p><code class="inline">:mode</code> - set to <code class="inline">:binary</code>. Cannot be overridden.</p></li><li><p><code class="inline">:packet</code> - set to <code class="inline">:raw</code>. Cannot be overridden.</p></li><li><p><code class="inline">:timeout</code> - connect timeout in milliseconds. Defaults to <code class="inline">30_000</code> (30
+seconds), and may be overridden by the caller. Set to <code class="inline">:infinity</code> to
+disable the connect timeout.</p></li><li><p><code class="inline">:inet6</code> - if set to <code class="inline">true</code> enables IPv6 connection. Defaults to <code class="inline">false</code>
+and may be overridden by the caller.</p></li><li><p><code class="inline">:inet4</code> - if set to <code class="inline">true</code> falls back to IPv4 if IPv6 connection fails.
+Defaults to <code class="inline">true</code> and may be overridden by the caller. <em>Available since
+v1.6.0</em>.</p></li></ul><p>Options for <code class="inline">:https</code> only:</p><ul><li><p><code class="inline">:alpn_advertised_protocols</code> - managed by Mint. Cannot be overridden.</p></li><li><p><code class="inline">:cacerts</code> - certificates of types <code class="inline">:ssl.client_cacerts()</code>.
+If <code class="inline">:verify</code> is set to <code class="inline">:verify_peer</code> (the default) and
+no CA trust store is specified using the <code class="inline">:cacertfile</code> or <code class="inline">:cacerts</code>
+option, Mint will attempt to use the trust store from the
+<a rel="nofollow" href="https://github.com/elixir-mint/castore">CAStore</a> package or raise an
+exception if this package is not available. It is recommended to set this
+option to <code class="inline">:public_key.cacerts_get()</code>.</p></li><li><p><code class="inline">:cacertfile</code> - path to a file containing PEM-encoded CA certificates.
+See the <code class="inline">:cacerts</code> option for the defaults to this value.</p></li><li><p><code class="inline">:ciphers</code> - defaults to the lists returned by
+<code class="inline">:ssl.filter_cipher_suites(:ssl.cipher_suites(:all, version), [])</code>
+where <code class="inline">version</code> is each value in the <code class="inline">:versions</code> setting. This list is
+then filtered according to the blocklist in
+<a rel="nofollow" href="https://tools.ietf.org/html/rfc7540#appendix-A">RFC7540 appendix A</a>;
+May be overridden by the caller. See the &quot;Supporting older cipher suites&quot;
+section below for some examples.</p></li><li><p><code class="inline">:depth</code> - defaults to <code class="inline">4</code>. May be overridden by the caller.</p></li><li><p><code class="inline">:partial_chain</code> - unless a custom <code class="inline">:partial_chain</code> function is specified,
+Mint will enable its own partial chain handler, which accepts server
+certificate chains containing a certificate that was issued by a
+CA certificate in the CA trust store, even if that certificate is not
+last in the chain. This improves interoperability with some servers
+(for example, with a cross-signed intermediate CA or some misconfigured servers),
+but is a less strict interpretation of the TLS specification than the
+Erlang/OTP default behaviour.</p></li><li><p><code class="inline">:reuse_sessions</code> - defaults to <code class="inline">true</code>. May be overridden by the caller. If
+<code class="inline">:&quot;tlsv1.3&quot;</code> is the only TLS version specified, <code class="inline">:reuse_sessions</code> will be
+removed from the options.</p></li><li><p><code class="inline">:secure_renegotiate</code> - defaults to <code class="inline">true</code>. May be overridden by the
+caller. If <code class="inline">:&quot;tlsv1.3&quot;</code> is the only TLS version specified, <code class="inline">:secure_renegotiate</code>
+will be removed from the options.</p></li><li><p><code class="inline">:server_name_indication</code> - defaults to specified destination hostname.
+May be overridden by the caller.</p></li><li><p><code class="inline">:verify</code> - defaults to <code class="inline">:verify_peer</code>. May be overridden by the caller.</p></li><li><p><code class="inline">:verify_fun</code> - unless a custom <code class="inline">:verify_fun</code> is specified, or <code class="inline">:verify</code>
+is set to <code class="inline">:verify_none</code>, Mint will enable hostname verification with
+support for wildcards in the server's 'SubjectAltName' extension, similar
+to the behaviour implemented in
+<code class="inline">:public_key.pkix_verify_hostname_match_fun(:https)</code> in recent Erlang/OTP
+releases. This improves compatibility with recently issued wildcard
+certificates also on older Erlang/OTP releases.</p></li><li><p><code class="inline">:versions</code> - defaults to <code class="inline">[:&quot;tlsv1.2&quot;]</code> (TLS v1.2 only). May be
+overridden by the caller.</p></li></ul><h3 id="connect/4-supporting-older-cipher-suites" class="section-heading"><a href="#connect/4-supporting-older-cipher-suites" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Supporting older cipher suites</span></h3><p>By default only a small list of modern cipher suites is enabled, in compliance
+with the HTTP/2 specification. Some servers, in particular HTTP/1 servers, may
+not support any of these cipher suites, resulting in TLS handshake failures or
+closed connections.</p><p>To select the default cipher suites of Erlang/OTP (including for example
+AES-CBC), use the following <code class="inline">:transport_opts</code>:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Erlang/OTP 20.3 or later:</span><span class="w">
+</span><span class="ss">transport_opts</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2834926322-1">[</span><span class="ss">ciphers</span><span class="p">:</span><span class="w"> </span><span class="nc">:ssl</span><span class="o">.</span><span class="n">cipher_suites</span><span class="p" data-group-id="2834926322-2">(</span><span class="ss">:default</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;tlsv1.2&quot;</span><span class="p" data-group-id="2834926322-2">)</span><span class="p" data-group-id="2834926322-1">]</span><span class="w">
+</span><span class="c1"># Older versions:</span><span class="w">
+</span><span class="ss">transport_opts</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2834926322-3">[</span><span class="ss">ciphers</span><span class="p">:</span><span class="w"> </span><span class="nc">:ssl</span><span class="o">.</span><span class="n">cipher_suites</span><span class="p" data-group-id="2834926322-4">(</span><span class="p" data-group-id="2834926322-4">)</span><span class="p" data-group-id="2834926322-3">]</span></code></pre><p>Recent Erlang/OTP releases do not enable RSA key exchange by default, due to
+known weaknesses. If necessary, you can build a cipher list with RSA exchange
+and use it in <code class="inline">:transport_opts</code>:</p><pre><code class="makeup elixir" translate="no"><span class="n">ciphers</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">:ssl</span><span class="o">.</span><span class="n">cipher_suites</span><span class="p" data-group-id="3147525662-1">(</span><span class="ss">:all</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;tlsv1.2&quot;</span><span class="p" data-group-id="3147525662-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:ssl</span><span class="o">.</span><span class="n">filter_cipher_suites</span><span class="p" data-group-id="3147525662-2">(</span><span class="w">
+    </span><span class="ss">key_exchange</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p" data-group-id="3147525662-3">(</span><span class="ni">&amp;1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">:rsa</span><span class="p" data-group-id="3147525662-3">)</span><span class="p">,</span><span class="w">
+    </span><span class="ss">cipher</span><span class="p">:</span><span class="w"> </span><span class="o">&amp;</span><span class="p" data-group-id="3147525662-4">(</span><span class="ni">&amp;1</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="p" data-group-id="3147525662-5">[</span><span class="ss">:aes_256_gcm</span><span class="p">,</span><span class="w"> </span><span class="ss">:aes_128_gcm</span><span class="p">,</span><span class="w"> </span><span class="ss">:aes_256_cbc</span><span class="p">,</span><span class="w"> </span><span class="ss">:aes_128_cbc</span><span class="p" data-group-id="3147525662-5">]</span><span class="p" data-group-id="3147525662-4">)</span><span class="w">
+  </span><span class="p" data-group-id="3147525662-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:ssl</span><span class="o">.</span><span class="n">append_cipher_suites</span><span class="p" data-group-id="3147525662-6">(</span><span class="nc">:ssl</span><span class="o">.</span><span class="n">cipher_suites</span><span class="p" data-group-id="3147525662-7">(</span><span class="ss">:default</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;tlsv1.2&quot;</span><span class="p" data-group-id="3147525662-7">)</span><span class="p" data-group-id="3147525662-6">)</span></code></pre><h2 id="connect/4-examples" class="section-heading"><a href="#connect/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6228038111-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6228038111-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="6228038111-2">(</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p" data-group-id="6228038111-2">)</span></code></pre><p>Using a proxy:</p><pre><code class="makeup elixir" translate="no"><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5309121787-1">{</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;myproxy.example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5309121787-2">[</span><span class="p" data-group-id="5309121787-2">]</span><span class="p" data-group-id="5309121787-1">}</span><span class="w">
+</span><span class="p" data-group-id="5309121787-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="5309121787-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="5309121787-4">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="ss">proxy</span><span class="p">:</span><span class="w"> </span><span class="n">proxy</span><span class="p" data-group-id="5309121787-4">)</span></code></pre><p>Using an HTTPS proxy:</p><pre><code class="makeup elixir" translate="no"><span class="n">proxy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8604508683-1">{</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;myproxy.example.com&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8604508683-2">[</span><span class="p" data-group-id="8604508683-2">]</span><span class="p" data-group-id="8604508683-1">}</span><span class="w">
+</span><span class="p" data-group-id="8604508683-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="8604508683-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="8604508683-4">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="ss">proxy</span><span class="p">:</span><span class="w"> </span><span class="n">proxy</span><span class="p" data-group-id="8604508683-4">)</span></code></pre><p>Forcing the connection to be an HTTP/2 connection:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0093061468-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="0093061468-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="0093061468-2">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="ss">protocols</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0093061468-3">[</span><span class="ss">:http2</span><span class="p" data-group-id="0093061468-3">]</span><span class="p" data-group-id="0093061468-2">)</span></code></pre><p>Enable all default cipher suites of Erlang/OTP (release 20.3 or later):</p><pre><code class="makeup elixir" translate="no"><span class="n">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3270103922-1">[</span><span class="ss">transport_opts</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3270103922-2">[</span><span class="ss">ciphers</span><span class="p">:</span><span class="w"> </span><span class="nc">:ssl</span><span class="o">.</span><span class="n">cipher_suites</span><span class="p" data-group-id="3270103922-3">(</span><span class="ss">:default</span><span class="p">,</span><span class="w"> </span><span class="ss">:&quot;tlsv1.2&quot;</span><span class="p" data-group-id="3270103922-3">)</span><span class="p" data-group-id="3270103922-2">]</span><span class="p" data-group-id="3270103922-1">]</span><span class="w">
+</span><span class="p" data-group-id="3270103922-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="3270103922-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="3270103922-5">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="3270103922-5">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="controlling_process/2">
+
+  <div class="detail-header">
+    <a href="#controlling_process/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">controlling_process(conn, new_pid)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1043" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> controlling_process(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: {:ok, <a href="#t:t/0">t</a>()} | {:error, <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>()}</pre>
+
+      </div>
+
+<p>Changes the <em>controlling process</em> of the given connection to <code class="inline">new_pid</code>.</p><p>The <strong>controlling process</strong> is a concept that comes from the Erlang TCP and
+SSL implementations. The controlling process of a connection is the process
+that started the connection and that receives the messages for that connection.
+You can change the controlling process of a connection through this function.</p><p>This function also takes care of &quot;transferring&quot; all the connection messages
+that are in the mailbox of the current controlling process to the new
+controlling process.</p><p>Remember that the connection is a data structure, so if you
+change the controlling process it doesn't mean you &quot;transferred&quot; the
+connection data structure itself to the other process, which you have
+to do manually (for example by sending the connection data structure to the
+new controlling process). If you do that, be careful of race conditions
+and be sure to retrieve the connection in the new controlling process
+before accepting connection messages in the new controlling process.
+In fact, this function is guaranteed to return the connection unchanged,
+so you are free to ignore the connection entry returned in <code class="inline">{:ok, conn}</code>.</p><h2 id="controlling_process/2-examples" class="section-heading"><a href="#controlling_process/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">send</span><span class="p" data-group-id="6312029006-1">(</span><span class="n">new_pid</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6312029006-2">{</span><span class="ss">:conn</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6312029006-2">}</span><span class="p" data-group-id="6312029006-1">)</span><span class="w">
+</span><span class="p" data-group-id="6312029006-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6312029006-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">controlling_process</span><span class="p" data-group-id="6312029006-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">new_pid</span><span class="p" data-group-id="6312029006-4">)</span><span class="w">
+
+</span><span class="c1"># In the &quot;new_pid&quot; process</span><span class="w">
+</span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="6312029006-5">do</span><span class="w">
+  </span><span class="p" data-group-id="6312029006-6">{</span><span class="ss">:conn</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6312029006-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="c1"># Will receive connection messages.</span><span class="w">
+</span><span class="k" data-group-id="6312029006-5">end</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete_private/2">
+
+  <div class="detail-header">
+    <a href="#delete_private/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete_private(conn, key)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1117" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_private(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()) :: <a href="#t:t/0">t</a>()</pre>
+
+      </div>
+
+<p>Deletes a value in the private store.</p><p>Deletes the private value stored under <code class="inline">key</code> in the connection. Returns the
+updated connection.</p><p>See also <a href="#put_private/3"><code class="inline">put_private/3</code></a> and <a href="#get_private/3"><code class="inline">get_private/3</code></a>.</p><h2 id="delete_private/2-examples" class="section-heading"><a href="#delete_private/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">put_private</span><span class="p" data-group-id="9100038623-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mint&quot;</span><span class="p" data-group-id="9100038623-1">)</span><span class="w">
+
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">get_private</span><span class="p" data-group-id="9100038623-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p" data-group-id="9100038623-2">)</span><span class="w">
+</span><span class="c1">#=&gt; &quot;Mint&quot;</span><span class="w">
+
+</span><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">delete_private</span><span class="p" data-group-id="9100038623-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p" data-group-id="9100038623-3">)</span><span class="w">
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">get_private</span><span class="p" data-group-id="9100038623-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p" data-group-id="9100038623-4">)</span><span class="w">
+</span><span class="c1">#=&gt; nil</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get_private/3">
+
+    <span id="get_private/2"></span>
+
+  <div class="detail-header">
+    <a href="#get_private/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_private(conn, key, default \\ nil)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1092" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_private(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Gets a private value from the connection.</p><p>Retrieves a private value previously set with <a href="#put_private/3"><code class="inline">put_private/3</code></a> from the connection.
+<code class="inline">key</code> is the key under which the value to retrieve is stored. <code class="inline">default</code> is a default
+value returned in case there's no value under the given key.</p><p>See also <a href="#put_private/3"><code class="inline">put_private/3</code></a> and <a href="#delete_private/2"><code class="inline">delete_private/2</code></a>.</p><h2 id="get_private/3-examples" class="section-heading"><a href="#get_private/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">put_private</span><span class="p" data-group-id="3782997257-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mint&quot;</span><span class="p" data-group-id="3782997257-1">)</span><span class="w">
+
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">get_private</span><span class="p" data-group-id="3782997257-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p" data-group-id="3782997257-2">)</span><span class="w">
+</span><span class="c1">#=&gt; &quot;Mint&quot;</span><span class="w">
+
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">get_private</span><span class="p" data-group-id="3782997257-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:non_existent</span><span class="p" data-group-id="3782997257-3">)</span><span class="w">
+</span><span class="c1">#=&gt; nil</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get_proxy_headers/1">
+
+  <div class="detail-header">
+    <a href="#get_proxy_headers/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_proxy_headers(conn)</h1>
+
+        <span class="note">(since 1.4.0)</span>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1149" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_proxy_headers(<a href="#t:t/0">t</a>()) :: <a href="Mint.Types.html#t:headers/0">Mint.Types.headers</a>()</pre>
+
+      </div>
+
+<p>Gets the proxy headers associated with the connection in the <code class="inline">CONNECT</code> method.</p><p>When using tunnel proxy and HTTPs, the only way to exchange data with
+the proxy is through headers in the <code class="inline">CONNECT</code> method.</p>
+  </section>
+</section>
+<section class="detail" id="get_socket/1">
+
+  <div class="detail-header">
+    <a href="#get_socket/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_socket(conn)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1128" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_socket(<a href="#t:t/0">t</a>()) :: <a href="Mint.Types.html#t:socket/0">Mint.Types.socket</a>()</pre>
+
+      </div>
+
+<p>Gets the socket associated with the connection.</p><p>Do not use the returned socket to change its internal state. Only read information from the socket.
+For instance, use <a href="https://www.erlang.org/doc/apps/ssl/ssl.html#connection_information/2"><code class="inline">:ssl.connection_information/2</code></a> to retrieve TLS-specific information from the
+socket.</p>
+  </section>
+</section>
+<section class="detail" id="is_connection_message/2">
+
+  <div class="detail-header">
+    <a href="#is_connection_message/2" class="detail-link" data-no-tooltip="" aria-label="Link to this macro">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">is_connection_message(conn, message)</h1>
+
+        <span class="note">(since 1.1.0)</span>
+
+        <span class="note">(macro)</span>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L178" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Macro to check that a given received <code class="inline">message</code> is intended for the given connection <code class="inline">conn</code>.</p><p>This guard is useful in <code class="inline">receive</code> loops or in callbacks that handle generic messages (such as a
+<a href="https://hexdocs.pm/elixir/GenServer.html#c:handle_info/2"><code class="inline">GenServer.handle_info/2</code></a> callback) so that you don't have to hand the <code class="inline">message</code> to
+<a href="#stream/2"><code class="inline">Mint.HTTP.stream/2</code></a> and check for the <code class="inline">:unknown</code> return value.</p><p>This macro can be used in guards.</p><p><strong>Note</strong>: this macro is only available if you compile Mint with Elixir 1.10.0 or greater (and
+OTP 21+, which is required by Elixir 1.10.0 and on).</p><h2 id="is_connection_message/2-examples" class="section-heading"><a href="#is_connection_message/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="kn">require</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="w">
+
+</span><span class="p" data-group-id="3058137023-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p" data-group-id="3058137023-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3058137023-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;POST&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p" data-group-id="3058137023-2">)</span><span class="w">
+
+</span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="3058137023-3">do</span><span class="w">
+  </span><span class="n">message</span><span class="w"> </span><span class="ow">when</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">is_connection_message</span><span class="p" data-group-id="3058137023-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="3058137023-4">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="3058137023-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="3058137023-5">)</span><span class="w">
+
+  </span><span class="n">other</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="c1"># This message is related to something else or to some other connection</span><span class="w">
+</span><span class="k" data-group-id="3058137023-3">end</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="open?/2">
+
+    <span id="open?/1"></span>
+
+  <div class="detail-header">
+    <a href="#open?/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">open?(conn, type \\ :write)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L600" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> open?(<a href="#t:t/0">t</a>(), :read | :write) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Checks whether the connection is open.</p><p>This function returns <code class="inline">true</code> if the connection is open for the given <code class="inline">type</code>,
+<code class="inline">false</code> otherwise. It should be used to check that a connection is open before
+sending requests or performing operations that involve talking to the server.</p><p>The <code class="inline">type</code> argument can be used to tell whether the connection is open for both reading
+and writing, only open for reading, or closed for both. In HTTP/1, a connection is always
+either open, or closed (for both reading and writing). In HTTP/2, the connection can be closed only
+for writing but not for reading, meaning that you cannot send any more data to the
+server but you can still receive data from the server. In this case, <code class="inline">Mint.HTTP.open?(conn, :read)</code>
+would return <code class="inline">true</code> but <code class="inline">Mint.HTTP.open?(conn, :write)</code> would return <code class="inline">false</code>.
+See the &quot;Closed connection&quot; section in the module documentation of <a href="Mint.HTTP2.html"><code class="inline">Mint.HTTP2</code></a>.</p><p>If a connection is <em>completely closed</em> (that is, <code class="inline">Mint.HTTP.open?(conn, :read)</code> returns <code class="inline">false</code>),
+it has become useless and you should get rid of it. If you still need a connection
+to the server, start a new connection with <a href="#connect/4"><code class="inline">connect/4</code></a>.</p><section role="note" class="admonition warning"><h4 class="admonition-title warning">The default value of <code class="inline">type</code> is <code class="inline">:write</code></h4><p>With the default value of <code class="inline">type</code> being <code class="inline">:write</code>, a call to
+<code class="inline">Mint.HTTP.open?(conn)</code> will return <code class="inline">false</code> if <code class="inline">conn</code> was closed for writing
+but is still open for reading. If you need to make sure the connection is
+completely closed, check that <code class="inline">Mint.HTTP.open?(conn, :read)</code> returns <code class="inline">false</code>.</p></section><h2 id="open?/2-examples" class="section-heading"><a href="#open?/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="7272756193-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="7272756193-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="7272756193-2">(</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;httpbin.org&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p" data-group-id="7272756193-2">)</span><span class="w">
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">open?</span><span class="p" data-group-id="7272756193-3">(</span><span class="n">conn</span><span class="p" data-group-id="7272756193-3">)</span><span class="w">
+</span><span class="c1">#=&gt; true</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="open_request_count/1">
+
+  <div class="detail-header">
+    <a href="#open_request_count/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">open_request_count(conn)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L937" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> open_request_count(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>Returns the number of open requests.</p><p>Open requests are requests that have not yet received a <code class="inline">:done</code> response.
+This function returns the number of open requests for both HTTP/1 and HTTP/2,
+but for HTTP/2 only client-initiated requests are considered as open requests.
+See <a href="Mint.HTTP2.html#open_request_count/1"><code class="inline">Mint.HTTP2.open_request_count/1</code></a> for more information.</p><h2 id="open_request_count/1-examples" class="section-heading"><a href="#open_request_count/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6696103321-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="c">_ref</span><span class="p" data-group-id="6696103321-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="6696103321-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6696103321-3">[</span><span class="p" data-group-id="6696103321-3">]</span><span class="p" data-group-id="6696103321-2">)</span><span class="w">
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">open_request_count</span><span class="p" data-group-id="6696103321-4">(</span><span class="n">conn</span><span class="p" data-group-id="6696103321-4">)</span><span class="w">
+</span><span class="c1">#=&gt; 1</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="protocol/1">
+
+  <div class="detail-header">
+    <a href="#protocol/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">protocol(conn)</h1>
+
+        <span class="note">(since 1.4.0)</span>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L526" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> protocol(<a href="#t:t/0">t</a>()) :: :http1 | :http2</pre>
+
+      </div>
+
+<p>Returns the protocol used by the current connection.</p><h2 id="protocol/1-examples" class="section-heading"><a href="#protocol/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">protocol</span><span class="p" data-group-id="0098358972-1">(</span><span class="p" data-group-id="0098358972-2">%</span><span class="nc" data-group-id="0098358972-2">Mint.HTTP1</span><span class="p" data-group-id="0098358972-2">{</span><span class="p" data-group-id="0098358972-2">}</span><span class="p" data-group-id="0098358972-1">)</span><span class="w">
+</span><span class="ss">:http1</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">protocol</span><span class="p" data-group-id="0098358972-3">(</span><span class="p" data-group-id="0098358972-4">%</span><span class="nc" data-group-id="0098358972-4">Mint.HTTP2</span><span class="p" data-group-id="0098358972-4">{</span><span class="p" data-group-id="0098358972-4">}</span><span class="p" data-group-id="0098358972-3">)</span><span class="w">
+</span><span class="ss">:http2</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="put_log/2">
+
+  <div class="detail-header">
+    <a href="#put_log/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_log(conn, log?)</h1>
+
+        <span class="note">(since 1.5.0)</span>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1138" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> put_log(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()) :: <a href="#t:t/0">t</a>()</pre>
+
+      </div>
+
+<p>Sets whether the connection should log information or not.</p><p>See the <a href="#module-logging">&quot;Logging&quot; section</a> in the module documentation for more information.</p>
+  </section>
+</section>
+<section class="detail" id="put_private/3">
+
+  <div class="detail-header">
+    <a href="#put_private/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_private(conn, key, value)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1068" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> put_private(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="#t:t/0">t</a>()</pre>
+
+      </div>
+
+<p>Assigns a new private key and value in the connection.</p><p>This storage is meant to be used to associate metadata with the connection and
+it can be useful when handling multiple connections.</p><p>The given <code class="inline">key</code> must be an atom, while the given <code class="inline">value</code> can be an arbitrary
+term. The return value of this function is an updated connection.</p><p>See also <a href="#get_private/3"><code class="inline">get_private/3</code></a> and <a href="#delete_private/2"><code class="inline">delete_private/2</code></a>.</p><h2 id="put_private/3-examples" class="section-heading"><a href="#put_private/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><p>Let's see an example of putting a value and then getting it:</p><pre><code class="makeup elixir" translate="no"><span class="n">conn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">put_private</span><span class="p" data-group-id="2776204782-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Mint&quot;</span><span class="p" data-group-id="2776204782-1">)</span><span class="w">
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">get_private</span><span class="p" data-group-id="2776204782-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:client_name</span><span class="p" data-group-id="2776204782-2">)</span><span class="w">
+</span><span class="c1">#=&gt; &quot;Mint&quot;</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="recv/3">
+
+  <div class="detail-header">
+    <a href="#recv/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">recv(conn, byte_count, timeout)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L979" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> recv(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">timeout</a>()) ::
+  {:ok, <a href="#t:t/0">t</a>(), [<a href="Mint.Types.html#t:response/0">Mint.Types.response</a>()]}
+  | {:error, <a href="#t:t/0">t</a>(), <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>(), [<a href="Mint.Types.html#t:response/0">Mint.Types.response</a>()]}</pre>
+
+      </div>
+
+<p>Receives data from the socket in a blocking way.</p><p>By default Mint operates in active mode, meaning that messages are delivered
+to the process that started the connection. However, Mint also supports passive
+mode (see the &quot;Mode&quot; section in the module documentation).</p><p>In passive mode, you'll need to manually get bytes out of the socket. You can
+do that with this function.</p><p><code class="inline">byte_count</code> is the number of bytes you want out of the socket. If <code class="inline">byte_count</code>
+is <code class="inline">0</code>, all available bytes will be returned.</p><p><code class="inline">timeout</code> is the maximum time to wait before returning an error.</p><p>If no data arrives within <code class="inline">timeout</code>, this function returns
+<code class="inline">{:error, conn, %Mint.TransportError{reason: :timeout}, []}</code> and the connection
+<strong>stays open</strong>, so you can call <a href="#recv/3"><code class="inline">recv/3</code></a> again to keep waiting for the response.
+Other errors can close the connection. Use <a href="#open?/1"><code class="inline">open?/1</code></a> to check whether the
+connection is still open after an error.</p><p>This function will raise an error if the socket is in active mode.</p><section role="note" class="admonition warning"><h4 class="admonition-title warning">Hanging Waiting for Bytes</h4><p>If <code class="inline">byte_count</code> is greater than <code class="inline">0</code> and the socket doesn't receive
+<em>at least</em> <code class="inline">byte_count</code> bytes within the <code class="inline">timeout</code>, then the function
+will block for the duration of <code class="inline">timeout</code> and then return a timeout error.
+This behavior is the same as the <code class="inline">recv</code> function in <a href="https://www.erlang.org/doc/apps/kernel/gen_tcp.html"><code class="inline">:gen_tcp</code></a>
+and <a href="https://www.erlang.org/doc/apps/ssl/ssl.html"><code class="inline">:ssl</code></a>.</p></section><h2 id="recv/3-examples" class="section-heading"><a href="#recv/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2946521401-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">responses</span><span class="p" data-group-id="2946521401-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">recv</span><span class="p" data-group-id="2946521401-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5000</span><span class="p" data-group-id="2946521401-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="request/5">
+
+  <div class="detail-header">
+    <a href="#request/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">request(conn, method, path, headers, body)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L674" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> request(
+  <a href="#t:t/0">t</a>(),
+  method :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  path :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  <a href="Mint.Types.html#t:headers/0">Mint.Types.headers</a>(),
+  body :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>() | nil | :stream
+) :: {:ok, <a href="#t:t/0">t</a>(), <a href="Mint.Types.html#t:request_ref/0">Mint.Types.request_ref</a>()} | {:error, <a href="#t:t/0">t</a>(), <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>()}</pre>
+
+      </div>
+
+<p>Sends a request to the connected server.</p><p>This function sends a new request to the server that <code class="inline">conn</code> is connected to.
+<code class="inline">method</code> is a string representing the method for the request, such as <code class="inline">&quot;GET&quot;</code>
+or <code class="inline">&quot;POST&quot;</code>. <code class="inline">path</code> is the path on the host to send the request to. <code class="inline">headers</code>
+is a list of request headers in the form <code class="inline">{header_name, header_value}</code> with
+<code class="inline">header_name</code> and <code class="inline">header_value</code> being strings. <code class="inline">body</code> can have one of three
+values:</p><ul><li><p><code class="inline">nil</code> - no body is sent with the request.</p></li><li><p>iodata - the body to send for the request.</p></li><li><p><code class="inline">:stream</code> - when the value of the body is <code class="inline">:stream</code> the request
+body can be streamed on the connection. See <a href="#stream_request_body/3"><code class="inline">stream_request_body/3</code></a>.
+In HTTP/1, you can't open a request if the body of another request is
+streaming.</p></li></ul><p>If the request is sent correctly, this function returns <code class="inline">{:ok, conn, request_ref}</code>.
+<code class="inline">conn</code> is an updated connection that should be stored over the old connection.
+<code class="inline">request_ref</code> is a unique reference that can be used to match on responses for this
+request that are returned by <a href="#stream/2"><code class="inline">stream/2</code></a>. See <a href="#stream/2"><code class="inline">stream/2</code></a> for more information.</p><p>If there's an error with sending the request, <code class="inline">{:error, conn, reason}</code> is returned.
+<code class="inline">reason</code> is the cause of the error. <code class="inline">conn</code> is an updated connection. It's important
+to store the returned connection over the old connection in case of errors too, because
+the state of the connection might change when there are errors as well. An error when
+sending a request <strong>does not</strong> necessarily mean that the connection is closed. Use
+<a href="#open?/1"><code class="inline">open?/1</code></a> to verify that the connection is open.</p><p>Requests can be pipelined so the full response does not have to received
+before the next request can be sent. It is up to users to verify that the
+server supports pipelining and that the request is safe to pipeline.</p><p>In HTTP/1, you can't open a request if the body of another request is streaming.
+See <a href="Mint.HTTP1.html#request/5"><code class="inline">Mint.HTTP1.request/5</code></a> for more information.</p><p>For a quick discussion on HTTP/2 streams and requests, see the <a href="Mint.HTTP2.html"><code class="inline">Mint.HTTP2</code></a> module and
+<a href="Mint.HTTP2.html#request/5"><code class="inline">Mint.HTTP2.request/5</code></a>.</p><h2 id="request/5-the-content-length-header" class="section-heading"><a href="#request/5-the-content-length-header" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">The <code class="inline">content-length</code> header</span></h2><p>If you don't set the <code class="inline">content-length</code> header and you send a body with the request (that
+is, not <code class="inline">nil</code> and not <code class="inline">:stream</code>), then Mint will add a default <code class="inline">content-length</code> header
+to your request. If you're using HTTP/2 and streaming the request, you may provide the
+<code class="inline">content-length</code> header yourself. If you're using HTTP/1, Mint will do chunked
+transfer-encoding when a content-length is not provided (see <a href="Mint.HTTP1.html#request/5"><code class="inline">Mint.HTTP1.request/5</code></a>).</p><h2 id="request/5-connect-requests" class="section-heading"><a href="#request/5-connect-requests" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">CONNECT requests</span></h2><p>For requests with the <code class="inline">CONNECT</code> method, <code class="inline">path</code> is the target of the tunnel in
+<em>authority form</em> (<code class="inline">&quot;host:port&quot;</code>), not a path. See <a href="Mint.HTTP2.html#request/5"><code class="inline">Mint.HTTP2.request/5</code></a> for HTTP/2
+tunnel semantics and for the extended CONNECT protocol, where <code class="inline">path</code> doesn't apply.</p><h2 id="request/5-examples" class="section-heading"><a href="#request/5-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4200964688-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="c">_headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4200964688-2">[</span><span class="p" data-group-id="4200964688-2">]</span><span class="p">,</span><span class="w"> </span><span class="c">_body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="4200964688-1">)</span><span class="w">
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="4200964688-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;POST&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/path&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4200964688-4">[</span><span class="p" data-group-id="4200964688-5">{</span><span class="s">&quot;content-type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;application/json&quot;</span><span class="p" data-group-id="4200964688-5">}</span><span class="p" data-group-id="4200964688-4">]</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{}&quot;</span><span class="p" data-group-id="4200964688-3">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="request_body_window/2">
+
+  <div class="detail-header">
+    <a href="#request_body_window/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">request_body_window(conn, ref)</h1>
+
+        <span class="note">(since 1.8.0)</span>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1224" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Returns the request body flow-control window for the streaming request
+identified by <code class="inline">request_ref</code>.</p><p>The semantics differ by protocol:</p><ul><li><p>In HTTP/2, returns <code class="inline">min(connection_window, stream_window)</code> — the maximum
+number of body bytes that can be sent right now without violating flow
+control. Exceeding this value in a single <code class="inline">DATA</code> frame would close the
+connection with a <code class="inline">FLOW_CONTROL_ERROR</code>. See <a href="Mint.HTTP2.html#get_window_size/2"><code class="inline">Mint.HTTP2.get_window_size/2</code></a>
+for the underlying primitives.</p></li><li><p>In HTTP/1, returns <code class="inline">:infinity</code>. HTTP/1 has no application-level
+flow-control mechanism: any amount of body data is protocol-valid.</p></li></ul><p>The value returned reflects only the protocol-level flow-control
+constraint. It does not account for the operating-system socket send
+buffer: under either protocol, <a href="#stream_request_body/3"><code class="inline">stream_request_body/3</code></a> can still block
+when that buffer fills up. To bound this behavior, configure
+<code class="inline">send_timeout</code> on the socket via <code class="inline">:transport_opts</code> when establishing the
+connection (see <a href="#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a>).</p><p>Raises <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> if <code class="inline">request_ref</code> is not associated with an active
+streaming request.</p><h2 id="request_body_window/2-examples" class="section-heading"><a href="#request_body_window/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><p>Streaming a binary body in chunks that respect the protocol window:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defp</span><span class="w"> </span><span class="nf">stream_body</span><span class="p" data-group-id="8776104385-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p" data-group-id="8776104385-1">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-2">do</span><span class="w">
+  </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="8776104385-3">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="ss">:eof</span><span class="p" data-group-id="8776104385-3">)</span><span class="w">
+</span><span class="k" data-group-id="8776104385-2">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">stream_body</span><span class="p" data-group-id="8776104385-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p" data-group-id="8776104385-4">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-5">do</span><span class="w">
+  </span><span class="n">conn</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request_body_window</span><span class="p" data-group-id="8776104385-6">(</span><span class="n">ref</span><span class="p" data-group-id="8776104385-6">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">send_body_chunk</span><span class="p" data-group-id="8776104385-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p" data-group-id="8776104385-7">)</span><span class="w">
+</span><span class="k" data-group-id="8776104385-5">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">send_body_chunk</span><span class="p" data-group-id="8776104385-8">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p" data-group-id="8776104385-8">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-9">do</span><span class="w">
+  </span><span class="k">with</span><span class="w"> </span><span class="p" data-group-id="8776104385-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="8776104385-10">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">wait</span><span class="p" data-group-id="8776104385-11">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="8776104385-11">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-12">do</span><span class="w">
+    </span><span class="n">stream_body</span><span class="p" data-group-id="8776104385-13">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p" data-group-id="8776104385-13">)</span><span class="w">
+  </span><span class="k" data-group-id="8776104385-12">end</span><span class="w">
+</span><span class="k" data-group-id="8776104385-9">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">send_body_chunk</span><span class="p" data-group-id="8776104385-14">(</span><span class="n">window</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">body</span><span class="p" data-group-id="8776104385-14">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-15">do</span><span class="w">
+  </span><span class="n">chunk_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="p" data-group-id="8776104385-16">(</span><span class="n">window</span><span class="p">,</span><span class="w"> </span><span class="n">byte_size</span><span class="p" data-group-id="8776104385-17">(</span><span class="n">body</span><span class="p" data-group-id="8776104385-17">)</span><span class="p" data-group-id="8776104385-16">)</span><span class="w">
+  </span><span class="p" data-group-id="8776104385-18">&lt;&lt;</span><span class="n">chunk</span><span class="o">::</span><span class="n">binary</span><span class="o">-</span><span class="n">size</span><span class="p" data-group-id="8776104385-19">(</span><span class="n">chunk_size</span><span class="p" data-group-id="8776104385-19">)</span><span class="p">,</span><span class="w"> </span><span class="n">rest</span><span class="o">::</span><span class="n">binary</span><span class="p" data-group-id="8776104385-18">&gt;&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">body</span><span class="w">
+
+  </span><span class="k">with</span><span class="w"> </span><span class="p" data-group-id="8776104385-20">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="8776104385-20">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="8776104385-21">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">chunk</span><span class="p" data-group-id="8776104385-21">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-22">do</span><span class="w">
+    </span><span class="n">stream_body</span><span class="p" data-group-id="8776104385-23">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">rest</span><span class="p" data-group-id="8776104385-23">)</span><span class="w">
+  </span><span class="k" data-group-id="8776104385-22">end</span><span class="w">
+</span><span class="k" data-group-id="8776104385-15">end</span><span class="w">
+
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">wait</span><span class="p" data-group-id="8776104385-24">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="8776104385-24">)</span><span class="w"> </span><span class="k" data-group-id="8776104385-25">do</span><span class="w">
+  </span><span class="c1"># Wait for the server to refill the request body window with a</span><span class="w">
+  </span><span class="c1"># WINDOW_UPDATE frame. The concrete implementation depends on the</span><span class="w">
+  </span><span class="c1"># socket mode and other context.</span><span class="w">
+</span><span class="k" data-group-id="8776104385-25">end</span></code></pre><p>Note that <code class="inline">min(:infinity, n) == n</code> thanks to Erlang term ordering, so the
+same loop works on HTTP/1 (each iteration sends the entire remaining body in
+a single chunk) and on HTTP/2 (each iteration sends at most the current
+flow-control window).</p>
+  </section>
+</section>
+<section class="detail" id="set_mode/2">
+
+  <div class="detail-header">
+    <a href="#set_mode/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">set_mode(conn, mode)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L1005" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> set_mode(<a href="#t:t/0">t</a>(), :active | :passive) :: {:ok, <a href="#t:t/0">t</a>()} | {:error, <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>()}</pre>
+
+      </div>
+
+<p>Changes the mode of the underlying socket.</p><p>To use the connection in <em>active mode</em>, where the process that started the
+connection receives socket messages, set the mode to <code class="inline">:active</code> (see also <a href="#stream/2"><code class="inline">stream/2</code></a>).
+To use the connection in <em>passive mode</em>, where you need to manually receive data
+from the socket, set the mode to <code class="inline">:passive</code> (see also <a href="#recv/3"><code class="inline">recv/3</code></a>).</p><p>The mode can also be controlled at connection time by the <code class="inline">:mode</code> option passed
+to <a href="#connect/4"><code class="inline">connect/4</code></a>.</p><p>Note that if you're switching from active to passive mode, you still might have
+socket messages in the process mailbox that you need to consume before doing
+any other operation on the connection.</p><p>See the &quot;Mode&quot; section in the module documentation for more information on modes.</p><h2 id="set_mode/2-examples" class="section-heading"><a href="#set_mode/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9363708136-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="9363708136-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">set_mode</span><span class="p" data-group-id="9363708136-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="ss">:passive</span><span class="p" data-group-id="9363708136-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="stream/2">
+
+  <div class="detail-header">
+    <a href="#stream/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream(conn, message)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L918" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stream(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, <a href="#t:t/0">t</a>(), [<a href="Mint.Types.html#t:response/0">Mint.Types.response</a>()]}
+  | {:error, <a href="#t:t/0">t</a>(), <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>(), [<a href="Mint.Types.html#t:response/0">Mint.Types.response</a>()]}
+  | :unknown</pre>
+
+      </div>
+
+<p>Streams the next batch of responses from the given <code class="inline">message</code>.</p><p>This function processes a &quot;message&quot; which can be any term, but should be
+a message received by the process that owns the connection. <strong>Processing</strong>
+a message means that this function will parse it and check if it's a message
+that is directed to this connection, that is, a TCP/SSL message received on the
+connection's socket. If it is, then this function will parse the message,
+turn it into a list of responses, and possibly take action given the responses.
+As an example of an action that this function could perform, if the server sends
+a ping request this function will transparently take care of pinging the server back.</p><p>If there's no error, this function returns <code class="inline">{:ok, conn, responses}</code> where <code class="inline">conn</code> is
+the updated connection and <code class="inline">responses</code> is a list of responses. See the &quot;Responses&quot;
+section below. If there's an error, <code class="inline">{:error, conn, reason, responses}</code> is returned,
+where <code class="inline">conn</code> is the updated connection, <code class="inline">reason</code> is the error reason, and <code class="inline">responses</code>
+is a list of responses that were correctly parsed before the error. An error
+<strong>does not</strong> necessarily mean that the connection is closed. Use <a href="#open?/1"><code class="inline">open?/1</code></a> to verify
+that the connection is open.</p><section role="note" class="admonition tip"><h4 class="admonition-title tip">Graceful Close</h4><p>If this function returns <code class="inline">{:ok, conn, responses}</code>, it doesn't <em>necessarily</em> mean
+that the connection is still open. For example, TCP/SSL <strong>close</strong> messages are treated
+as errors only if there are in-flight requests. If there are no in-flight requests,
+the connection is closed gracefully and <code class="inline">{:ok, conn, responses}</code> is returned.
+Always check with <a href="#open?/1"><code class="inline">open?/1</code></a> to see if the connection is still open.</p></section><p>If the given <code class="inline">message</code> is not from the connection's socket,
+this function returns <code class="inline">:unknown</code>.</p><section role="note" class="admonition warning"><h4 class="admonition-title warning">Receiving Multiple Messages</h4><p>Your connection and the HTTP server can exchange multiple <strong>protocol-specific messages</strong>
+on the socket that don't necessarily <em>produce responses</em>. For example, the HTTP server
+might tell the connection to update some internal settings. For this reason, you
+should always receive as many messages coming to your process as possible, for example
+by using <code class="inline">receive</code> recursively. You can see an example of this approach in the
+<a href="architecture.html#usage-examples">&quot;Usage Examples&quot; documentation</a>.</p></section><h2 id="stream/2-socket-mode" class="section-heading"><a href="#stream/2-socket-mode" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Socket mode</span></h2><p>Mint sets the socket in <code class="inline">active: :once</code> mode. This means that a single socket
+message at a time is delivered to the process that owns the connection. After
+a message is delivered, then no other messages are delivered (we say the socket
+goes in <em>passive</em> mode). When <a href="#stream/2"><code class="inline">stream/2</code></a> is called to process the message that
+was received, Mint sets the socket back to <code class="inline">active: :once</code>. This is good to know
+in order to understand how the socket is handled by Mint, but in normal usage
+it just means that you will process one message at a time with <a href="#stream/2"><code class="inline">stream/2</code></a> and not
+pay too much attention to the socket mode.</p><p>Mint also supports passive mode to avoid receiving messages. See the &quot;Mode&quot; section
+in the module documentation.</p><h2 id="stream/2-responses" class="section-heading"><a href="#stream/2-responses" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Responses</span></h2><p>Each possible response returned by this function is a tuple with two or more elements.
+The first element is always an atom that identifies the kind of response. The second
+element is a unique reference <a href="Mint.Types.html#t:request_ref/0"><code class="inline">Mint.Types.request_ref/0</code></a> that identifies the request
+that the response belongs to. This is the term returned by <a href="#request/5"><code class="inline">request/5</code></a>. After these
+two elements, there can be response-specific terms as well, documented below.</p><p>These are the possible responses that can be returned.</p><ul><li><p><code class="inline">{:status, request_ref, status_code}</code> - returned when the server replied
+with a response status code. The status code is a non-negative integer.
+You can have zero or more <code class="inline">1xx</code> <code class="inline">:status</code> and <code class="inline">:headers</code> responses for a
+single request, but they all precede a single non-<code class="inline">1xx</code> <code class="inline">:status</code> response.</p></li><li><p><code class="inline">{:status_reason, request_ref, reason_phrase}</code> - returned when the server replied
+with a response status code and a reason-phrase. The reason-phrase is a string.
+Returned when the <code class="inline">:optional_responses</code> option is passed to <a href="#connect/4"><code class="inline">connect/4</code></a>, with
+<code class="inline">:status_reason</code> in the list. See <a href="Mint.HTTP1.html#connect/4"><code class="inline">Mint.HTTP1.connect/4</code></a> for more information.
+This is only available for HTTP/1.1 connections. <em>Available since v1.8.0</em>.</p></li><li><p><code class="inline">{:headers, request_ref, headers}</code> - returned when the server replied
+with a list of headers. Headers are in the form <code class="inline">{header_name, header_value}</code>
+with <code class="inline">header_name</code> and <code class="inline">header_value</code> being strings. A single <code class="inline">:headers</code> response
+will come after the <code class="inline">:status</code> response and a single <code class="inline">:headers</code> response may come
+after all the <code class="inline">:data</code> responses if <strong>trailer headers</strong> are present unless
+<code class="inline">:stream_headers</code> is enabled (only available for HTTP/1.1 connections), in which
+case any number of <code class="inline">:headers</code> responses (including none) may come after the
+<code class="inline">:status</code> response and/or after all the <code class="inline">:data</code> responses.</p></li><li><p><code class="inline">{:data, request_ref, binary}</code> - returned when the server replied with
+a chunk of response body (as a binary). The request shouldn't be considered done
+when a piece of body is received because multiple chunks could be received. The
+request is done when the <code class="inline">:done</code> response is returned.</p></li><li><p><code class="inline">{:done, request_ref}</code> - returned when the server signaled the request
+as done. When this is received, the response body and headers can be considered
+complete and it can be assumed that no more responses will be received for this
+request. This means that for example, you can stop holding on to the request ref
+for this request.</p></li><li><p><code class="inline">{:error, request_ref, reason}</code> - returned when there is an error that
+only affects the request and not the whole connection. For example, if the
+server sends bad data on a given request, that request will be closed and an error
+for that request will be returned among the responses, but the connection will
+remain alive and well.</p></li><li><p><code class="inline">{:pong, request_ref}</code> - returned when a server replies to a ping
+request sent by the client. This response type is HTTP/2-specific
+and will never be returned by an HTTP/1 connection. See <a href="Mint.HTTP2.html#ping/2"><code class="inline">Mint.HTTP2.ping/2</code></a>
+for more information.</p></li><li><p><code class="inline">{:push_promise, request_ref, promised_request_ref, headers}</code> - returned when
+the server sends a server push to the client. This response type is HTTP/2 specific
+and will never be returned by an HTTP/1 connection. See <a href="Mint.HTTP2.html"><code class="inline">Mint.HTTP2</code></a> for more
+information on server pushes.</p></li></ul><h2 id="stream/2-examples" class="section-heading"><a href="#stream/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><p>Let's assume we have a function called <code class="inline">receive_next_and_stream/1</code> that takes
+a connection and then receives the next message, calls <a href="#stream/2"><code class="inline">stream/2</code></a> with that message
+as an argument, and then returns the result of <a href="#stream/2"><code class="inline">stream/2</code></a>:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defp</span><span class="w"> </span><span class="nf">receive_next_and_stream</span><span class="p" data-group-id="6928778974-1">(</span><span class="n">conn</span><span class="p" data-group-id="6928778974-1">)</span><span class="w"> </span><span class="k" data-group-id="6928778974-2">do</span><span class="w">
+  </span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="6928778974-3">do</span><span class="w">
+    </span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="6928778974-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="6928778974-4">)</span><span class="w">
+  </span><span class="k" data-group-id="6928778974-3">end</span><span class="w">
+</span><span class="k" data-group-id="6928778974-2">end</span></code></pre><p>Now, we can see an example of a workflow involving <a href="#stream/2"><code class="inline">stream/2</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9565626914-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p" data-group-id="9565626914-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="9565626914-2">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="c">_headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9565626914-3">[</span><span class="p" data-group-id="9565626914-3">]</span><span class="p" data-group-id="9565626914-2">)</span><span class="w">
+
+</span><span class="p" data-group-id="9565626914-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">responses</span><span class="p" data-group-id="9565626914-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_next_and_stream</span><span class="p" data-group-id="9565626914-5">(</span><span class="n">conn</span><span class="p" data-group-id="9565626914-5">)</span><span class="w">
+</span><span class="n">responses</span><span class="w">
+</span><span class="c1">#=&gt; [{:status, ^request_ref, 200}]</span><span class="w">
+
+</span><span class="p" data-group-id="9565626914-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">responses</span><span class="p" data-group-id="9565626914-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_next_and_stream</span><span class="p" data-group-id="9565626914-7">(</span><span class="n">conn</span><span class="p" data-group-id="9565626914-7">)</span><span class="w">
+</span><span class="n">responses</span><span class="w">
+</span><span class="c1">#=&gt; [{:headers, ^request_ref, [{&quot;Content-Type&quot;, &quot;application/json&quot;}]},</span><span class="w">
+</span><span class="c1">#=&gt;  {:data, ^request_ref, &quot;{&quot;}]</span><span class="w">
+
+</span><span class="p" data-group-id="9565626914-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">responses</span><span class="p" data-group-id="9565626914-8">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">receive_next_and_stream</span><span class="p" data-group-id="9565626914-9">(</span><span class="n">conn</span><span class="p" data-group-id="9565626914-9">)</span><span class="w">
+</span><span class="n">responses</span><span class="w">
+</span><span class="c1">#=&gt; [{:data, ^request_ref, &quot;}&quot;}, {:done, ^request_ref}]</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="stream_request_body/3">
+
+  <div class="detail-header">
+    <a href="#stream_request_body/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream_request_body(conn, ref, body)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint/blob/v1.11.0/lib/mint/http.ex#L769" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stream_request_body(
+  <a href="#t:t/0">t</a>(),
+  <a href="Mint.Types.html#t:request_ref/0">Mint.Types.request_ref</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>() | :eof | {:eof, trailer_headers :: <a href="Mint.Types.html#t:headers/0">Mint.Types.headers</a>()}
+) :: {:ok, <a href="#t:t/0">t</a>()} | {:error, <a href="#t:t/0">t</a>(), <a href="Mint.Types.html#t:error/0">Mint.Types.error</a>()}</pre>
+
+      </div>
+
+<p>Streams a chunk of the request body on the connection or signals the end of the body.</p><p>If a request is opened (through <a href="#request/5"><code class="inline">request/5</code></a>) with the body as <code class="inline">:stream</code>, then the
+body can be streamed through this function. The function takes a <code class="inline">conn</code>, a
+<code class="inline">request_ref</code> returned by <a href="#request/5"><code class="inline">request/5</code></a> to identify the request to stream the body for,
+and a chunk of body to stream. The value of chunk can be:</p><ul><li><p>iodata - a chunk of iodata is transmitted to the server as part of the body
+of the request. If the chunk is empty, in HTTP/1 it's a no-op, while in HTTP/2
+a <code class="inline">DATA</code> frame will be sent.</p></li><li><p><code class="inline">:eof</code> - signals the end of the streaming of the request body for the given
+request. Usually the server won't send any reply until this is sent.</p></li><li><p><code class="inline">{:eof, trailer_headers}</code> - sends <strong>trailer headers</strong> and signals the end
+of the streaming of the request body for the given request. This behaves the
+same way as <code class="inline">:eof</code> but first sends the trailer headers. See the
+<a href="#module-trailer-headers"><em>Trailer headers</em></a> section below.</p></li></ul><p>This function always returns an updated connection to be stored over the old connection.</p><p>When streaming a body of arbitrary size, use <a href="#request_body_window/2"><code class="inline">request_body_window/2</code></a> to learn
+how many bytes you can send right now without violating HTTP/2 flow control,
+then split your body accordingly before passing each chunk to this function.</p><p>For information about transfer encoding and content length in HTTP/1, see
+<a href="Mint.HTTP1.html#stream_request_body/3"><code class="inline">Mint.HTTP1.stream_request_body/3</code></a>.</p><h2 id="stream_request_body/3-trailer-headers" class="section-heading"><a href="#stream_request_body/3-trailer-headers" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Trailer headers</span></h2><p>HTTP trailer headers can be sent after the body of a request. trailer headers are described
+<a rel="nofollow" href="https://www.rfc-editor.org/rfc/rfc9110#section-6.5">in RFC 9110</a>.</p><p>The behaviour is slightly different for HTTP/1 and HTTP/2:</p><ul><li><p>In HTTP/1, trailer headers are only supported if the transfer encoding is set to
+<code class="inline">chunked</code>. See <a href="Mint.HTTP1.html#stream_request_body/3"><code class="inline">Mint.HTTP1.stream_request_body/3</code></a> for more information on chunked
+transfer encoding.</p></li><li><p>In HTTP/2, trailer headers behave like normal headers. You don't need to care
+about the transfer encoding.</p></li></ul><h3 id="stream_request_body/3-the-trailer-header" class="section-heading"><a href="#stream_request_body/3-the-trailer-header" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">The <code class="inline">trailer</code> header</span></h3><p>As specified in <a rel="nofollow" href="https://tools.ietf.org/html/rfc7230#section-4.4">section 4.4 of RFC 7230</a>,
+in HTTP/1 you need to specify which headers you're going to send as traoler
+headers using the <code class="inline">trailer</code> header. The <code class="inline">trailer</code> header applies to both HTTP/1
+and HTTP/2. See the examples below for more information.</p><h3 id="stream_request_body/3-the-te-header" class="section-heading"><a href="#stream_request_body/3-the-te-header" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">The <code class="inline">te</code> header</span></h3><p>As specified in  <a rel="nofollow" href="https://tools.ietf.org/html/rfc7230#section-4.3">section 4.3 of RFC 7230</a>,
+the <code class="inline">te</code> (or <code class="inline">TE</code>) header is used to specify which transfer-encodings the client
+is willing to accept (besides <code class="inline">chunked</code>). Mint supports decoding of trailer headers,
+but if you want to notify the server that you are accepting trailer headers,
+use the <code class="inline">trailers</code> value in the <code class="inline">te</code> header. For example:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="7076911585-1">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GET&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7076911585-2">[</span><span class="p" data-group-id="7076911585-3">{</span><span class="s">&quot;te&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;trailers&quot;</span><span class="p" data-group-id="7076911585-3">}</span><span class="p" data-group-id="7076911585-2">]</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;some body&quot;</span><span class="p" data-group-id="7076911585-1">)</span></code></pre><p>Note that the <code class="inline">te</code> header can also be used to communicate which encodings you
+support to the server.</p><h2 id="stream_request_body/3-examples" class="section-heading"><a href="#stream_request_body/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><p>Let's see an example of streaming an empty JSON object (<code class="inline">{}</code>) by streaming one curly
+brace at a time.</p><pre><code class="makeup elixir" translate="no"><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3358482974-1">[</span><span class="p" data-group-id="3358482974-2">{</span><span class="s">&quot;content-type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;application/json&quot;</span><span class="p" data-group-id="3358482974-2">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3358482974-3">{</span><span class="s">&quot;content-length&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2&quot;</span><span class="p" data-group-id="3358482974-3">}</span><span class="p" data-group-id="3358482974-1">]</span><span class="w">
+</span><span class="p" data-group-id="3358482974-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p" data-group-id="3358482974-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="3358482974-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;POST&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="3358482974-5">)</span><span class="w">
+</span><span class="p" data-group-id="3358482974-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="3358482974-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="3358482974-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{&quot;</span><span class="p" data-group-id="3358482974-7">)</span><span class="w">
+</span><span class="p" data-group-id="3358482974-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="3358482974-8">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="3358482974-9">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;}&quot;</span><span class="p" data-group-id="3358482974-9">)</span><span class="w">
+</span><span class="p" data-group-id="3358482974-10">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="3358482974-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="3358482974-11">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p">,</span><span class="w"> </span><span class="ss">:eof</span><span class="p" data-group-id="3358482974-11">)</span></code></pre><p>Here's an example of sending trailer headers:</p><pre><code class="makeup elixir" translate="no"><span class="n">headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6006486187-1">[</span><span class="p" data-group-id="6006486187-2">{</span><span class="s">&quot;content-type&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;application/json&quot;</span><span class="p" data-group-id="6006486187-2">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6006486187-3">{</span><span class="s">&quot;trailer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;my-trailer, x-expires&quot;</span><span class="p" data-group-id="6006486187-3">}</span><span class="p" data-group-id="6006486187-1">]</span><span class="w">
+</span><span class="p" data-group-id="6006486187-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p" data-group-id="6006486187-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">request</span><span class="p" data-group-id="6006486187-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;POST&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="6006486187-5">)</span><span class="w">
+
+</span><span class="p" data-group-id="6006486187-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6006486187-6">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="6006486187-7">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;{}&quot;</span><span class="p" data-group-id="6006486187-7">)</span><span class="w">
+
+</span><span class="n">trailer_headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6006486187-8">[</span><span class="p" data-group-id="6006486187-9">{</span><span class="s">&quot;my-trailer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;xxx&quot;</span><span class="p" data-group-id="6006486187-9">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6006486187-10">{</span><span class="s">&quot;x-expires&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;10 days&quot;</span><span class="p" data-group-id="6006486187-10">}</span><span class="p" data-group-id="6006486187-8">]</span><span class="w">
+</span><span class="p" data-group-id="6006486187-11">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6006486187-11">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="6006486187-12">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">request_ref</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6006486187-13">{</span><span class="ss">:eof</span><span class="p">,</span><span class="w"> </span><span class="n">trailer_headers</span><span class="p" data-group-id="6006486187-13">}</span><span class="p" data-group-id="6006486187-12">)</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+
+        <p>
+
+            <span class="line">
+              <a href="https://hex.pm/packages/mint/1.11.0">Hex Package</a>
+
+              <a href="https://preview.hex.pm/preview/mint/1.11.0">Hex Preview</a>
+
+            </span>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Go to package docs">
+              Go to package docs
+            </button>
+
+              <a href="llms.txt" target="_blank">
+                View llms.txt
+              </a>
+
+
+              <a href="Mint.epub">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener nofollow" translate="no">ExDoc</a> (v0.40.3) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "checked_at_utc": "2026-11-12T21:15:34.329743+00:00",
+  "status": "passed",
+  "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+  "target_lines": 821,
+  "boundary": 485,
+  "local_context_files": 17,
+  "external_raw_and_extract_pairs": 12,
+  "stage_context_reports": 4,
+  "target_local_link_occurrences": 29,
+  "all_targets_in_approved_context": true,
+  "manifest_sha256": "8caac34c2f73468acbfc6686f369e86f318721f5204b9c64bac27700e14b463b",
+  "L17_frozen_exactly": true
+}

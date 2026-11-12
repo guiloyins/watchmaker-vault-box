@@ -1,0 +1,36 @@
+{
+  "command": "MIX_ENV=test mix run --no-start ../tools/probes/sqlite.exs",
+  "result": "passed",
+  "values": {
+    "sqlite_version": [
+      [
+        "3.54.1"
+      ]
+    ],
+    "journal_mode": [
+      [
+        "wal"
+      ]
+    ],
+    "synchronous": [
+      [
+        2
+      ]
+    ],
+    "foreign_keys": [
+      [
+        1
+      ]
+    ],
+    "busy_timeout": [
+      [
+        100
+      ]
+    ]
+  },
+  "transaction_insert_readback": "committed",
+  "evidence": "Isolated dependency probe; values transcribed from tool stdout. Not an application-store test.",
+  "compile_note": "Pure model helpers were being written concurrently and produced transient missing-module warnings; final compilation must be warning-free.",
+  "observed_date": "2026-11-12",
+  "observed_time_utc": "23:11 (minute precision)"
+}

@@ -1,0 +1,72 @@
+{
+  "dispatched_at_utc": "2026-11-12T22:04:13.634226+00:00",
+  "stage": 9,
+  "round": 1,
+  "mode": "REVIEW",
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+  "semantic_target": "## Detailed Implementation Plan through EOF",
+  "line_range": [
+    486,
+    861
+  ],
+  "feature_range": [
+    1,
+    485
+  ],
+  "detailed_range": [
+    486,
+    861
+  ],
+  "context_manifest": "/workspace/watchmaker_vault/docs/reviews/stage9-context/reading-list.json",
+  "context_manifest_sha256": "a5cfe7862507cbd2b051520cae9520720f59e1f55d1ec7cf41327a7b60265aed",
+  "reviewers": [
+    {
+      "agent": "/root/egm_stage9_readiness_r1",
+      "reviewer": "egm-implementation-readiness",
+      "fork_turns": "none",
+      "persona": "/example/local/implementation_readiness.md",
+      "persona_sha256": "1f6aa61cfe7cb86dc94943ab3b3fd339e5baba533937198fd10edb06dfa64e8f",
+      "standard": "/example/local/implementation-readiness-standard.md",
+      "standard_sha256": "49ef3a44228a14c774ec606477293be6467b232a9e4af9e031a3cad64ed87642",
+      "status": "dispatched"
+    },
+    {
+      "agent": "/root/egm_stage9_codebase_r1",
+      "reviewer": "egm-codebase-details",
+      "fork_turns": "none",
+      "persona": "/example/local/codebase_details.md",
+      "persona_sha256": "d80db07e449b57b3b3776d1401cca72a54b6b65a0ab218b86f9064ee4b8167bc",
+      "standard": "/example/local/implementation-readiness-standard.md",
+      "standard_sha256": "49ef3a44228a14c774ec606477293be6467b232a9e4af9e031a3cad64ed87642",
+      "status": "initial_attempt_isolation_failed_replacement_dispatched",
+      "retry": {
+        "agent": "/root/egm_stage9_codebase_retry1",
+        "fork_turns": "none",
+        "dispatched_at_utc": "2026-11-12T22:11:37.301078+00:00",
+        "same_assigned_inputs": true,
+        "additional_search_boundary": "Content reads/searches restricted to exact assigned paths, docs/specs and existing real server/firmware/tools/contracts directories. No repository-root content search or prior report content."
+      }
+    },
+    {
+      "agent": "/root/egm_stage9_style_r1",
+      "reviewer": "egm-style",
+      "fork_turns": "none",
+      "persona": "/example/local/style.md",
+      "persona_sha256": "9330780622baaef8dc683ea78efb3ff8e4583e3dde7ab6092b84df50e8c9ea58",
+      "standard": null,
+      "standard_sha256": null,
+      "status": "dispatched"
+    }
+  ],
+  "context_counts": {
+    "local": 17,
+    "external_captures": 12
+  },
+  "stage_context_includes_prior_report_files": false,
+  "status_context_includes_prior_results": true,
+  "host_instruction_file_isolation": "unverified",
+  "child_tool_transcript_available_to_parent": false,
+  "implementation_execution_authorized_by_review": false,
+  "next_boundary": "interactive Stage 9 checkpoint; no automatic new review round or remediation"
+}

@@ -1,0 +1,214 @@
+{
+  "stage": 7,
+  "round": 1,
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "line_range": [
+    1,
+    445
+  ],
+  "findings": [
+    {
+      "id": "design-1-1",
+      "reviewer": "egm-design",
+      "round": 1,
+      "severity": "Major",
+      "scope": [
+        [
+          230,
+          232
+        ],
+        [
+          270,
+          274
+        ]
+      ],
+      "title": "Reconciliation has no defined exit for an interrupted release",
+      "discrepancy": "Historical command uncertainty blocks Reset and journal clearing without a specified authorized operation or durable disposition that completes reconciliation. Current readiness cannot replace that historical outcome.",
+      "recommendation": "Define recovery decisions, evidence, authorized operations, durable dispositions and exact Reset/history-clear eligibility while preserving command identity, unresolved execution uncertainty and no automatic motion. Coordinate contract/fixture changes only if needed.",
+      "consolidated_id": "S7-01",
+      "same_action_as": [
+        "S5-01"
+      ],
+      "raw_report": "docs/reviews/stage7-design-r1-raw.md",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "status": "resolved_by_accepted_edit",
+      "resolution_category": "PROPOSE FIX",
+      "resolution_report": "docs/reviews/stage7-resolution/resolved-review-report.md",
+      "proposed_patch": "docs/reviews/stage7-resolution/proposed-changes.patch",
+      "approved_by": "user: auto accept",
+      "applied_at_utc": "2026-11-12T21:10:25.535736+00:00",
+      "application_record": "docs/reviews/stage7-resolution/application.json"
+    },
+    {
+      "id": "design-1-2",
+      "reviewer": "egm-design",
+      "round": 1,
+      "severity": "Major",
+      "scope": [
+        [
+          250,
+          256
+        ]
+      ],
+      "title": "Active-once receiving does not bound blocking simulator writes",
+      "discrepancy": "A synchronous send blocked by a non-reading peer can delay heartbeat, retry, close and modeled-watchdog timers in the single simulator client process. Receiving and queue bounds do not bound writes.",
+      "recommendation": "Specify bounded writes, close/generation invalidation on failed or ambiguous sends, deadline revalidation and watchdog protection or a verified blocking budget; test genuine send-buffer backpressure.",
+      "consolidated_id": "S7-02",
+      "same_action_as": [],
+      "raw_report": "docs/reviews/stage7-design-r1-raw.md",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "status": "resolved_by_accepted_edit",
+      "resolution_category": "PROPOSE FIX",
+      "resolution_report": "docs/reviews/stage7-resolution/resolved-review-report.md",
+      "proposed_patch": "docs/reviews/stage7-resolution/proposed-changes.patch",
+      "approved_by": "user: auto accept",
+      "applied_at_utc": "2026-11-12T21:10:25.535736+00:00",
+      "application_record": "docs/reviews/stage7-resolution/application.json"
+    },
+    {
+      "id": "style-1-1",
+      "reviewer": "egm-style",
+      "round": 1,
+      "severity": "Nit",
+      "scope": [
+        [
+          76,
+          76
+        ]
+      ],
+      "title": "Resolved choices are listed under Open Questions",
+      "discrepancy": "The section repeats six settled software choices alongside pending evidence.",
+      "recommendation": "State D1–D6 are settled in the introduction; remove the repeated list while preserving pending version/hardware checks and the approved-choice boundary.",
+      "consolidated_id": "S7-03",
+      "same_action_as": [],
+      "raw_report": "docs/reviews/stage7-style-r1-raw.md",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "status": "resolved_by_accepted_edit",
+      "resolution_category": "PROPOSE FIX",
+      "resolution_report": "docs/reviews/stage7-resolution/resolved-review-report.md",
+      "proposed_patch": "docs/reviews/stage7-resolution/proposed-changes.patch",
+      "approved_by": "user: auto accept",
+      "applied_at_utc": "2026-11-12T21:10:25.535736+00:00",
+      "application_record": "docs/reviews/stage7-resolution/application.json"
+    },
+    {
+      "id": "style-1-2",
+      "reviewer": "egm-style",
+      "round": 1,
+      "severity": "Nit",
+      "scope": [
+        [
+          372,
+          372
+        ]
+      ],
+      "title": "Alternative H heading misnames the rejected mechanism",
+      "discrepancy": "The heading calls release an affirmative hold signal while the explanation retains presses until release arrives.",
+      "recommendation": "Use heading: H. Keep presses active until release, or renew leases on packet receipt.",
+      "consolidated_id": "S7-04",
+      "same_action_as": [],
+      "raw_report": "docs/reviews/stage7-style-r1-raw.md",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "status": "resolved_by_accepted_edit",
+      "resolution_category": "PROPOSE FIX",
+      "resolution_report": "docs/reviews/stage7-resolution/resolved-review-report.md",
+      "proposed_patch": "docs/reviews/stage7-resolution/proposed-changes.patch",
+      "approved_by": "user: auto accept",
+      "applied_at_utc": "2026-11-12T21:10:25.535736+00:00",
+      "application_record": "docs/reviews/stage7-resolution/application.json"
+    },
+    {
+      "id": "style-1-3",
+      "reviewer": "egm-style",
+      "round": 1,
+      "severity": "Nit",
+      "scope": [
+        [
+          426,
+          426
+        ],
+        [
+          436,
+          436
+        ],
+        [
+          444,
+          444
+        ]
+      ],
+      "title": "Defensive disclaimers do not change a reader decision",
+      "discrepancy": "Denials about WebSockex obsolescence, unsupported display drivers and invented earlier evaluations repeat evidence limits without changing an operator or implementation choice.",
+      "recommendation": "Drop the identified final sentences at 426 and 436 and all of 444; retain concrete selected-mechanism obligations and evidence qualifications at 438–440.",
+      "editorial_action": "DROP",
+      "consolidated_id": "S7-05",
+      "same_action_as": [],
+      "raw_report": "docs/reviews/stage7-style-r1-raw.md",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "status": "resolved_by_accepted_edit",
+      "resolution_category": "PROPOSE FIX",
+      "resolution_report": "docs/reviews/stage7-resolution/resolved-review-report.md",
+      "proposed_patch": "docs/reviews/stage7-resolution/proposed-changes.patch",
+      "approved_by": "user: auto accept",
+      "applied_at_utc": "2026-11-12T21:10:25.535736+00:00",
+      "application_record": "docs/reviews/stage7-resolution/application.json"
+    }
+  ],
+  "counts": {
+    "blocker": 0,
+    "major": 2,
+    "nit": 3
+  },
+  "reviewers": {
+    "egm-design": "completed",
+    "egm-structural": "completed",
+    "egm-style": "completed"
+  },
+  "round_clean": false,
+  "converged": false,
+  "settled_findings": [
+    "design-1-1",
+    "design-1-2",
+    "style-1-1",
+    "style-1-2",
+    "style-1-3"
+  ],
+  "applied_fixes": [
+    "design-1-1",
+    "design-1-2",
+    "style-1-1",
+    "style-1-2",
+    "style-1-3"
+  ],
+  "resolution": {
+    "status": "resolved",
+    "report": "docs/reviews/stage7-resolution/resolved-review-report.md",
+    "proposed_fix_count": 5,
+    "contested": 0,
+    "escalated": 0,
+    "declined": 0,
+    "applied": 5,
+    "formal_reaudit_used": false,
+    "other_open_major_actions": [
+      "S5-02",
+      "S5-03"
+    ],
+    "accepted": 5,
+    "remaining_stage7": 0,
+    "same_action_resolved": [
+      "S5-01"
+    ],
+    "application_record": "docs/reviews/stage7-resolution/application.json"
+  },
+  "current_target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+  "current_ranges": {
+    "feature": [
+      1,
+      484
+    ],
+    "detailed": [
+      485,
+      821
+    ]
+  }
+}

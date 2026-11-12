@@ -1,0 +1,140 @@
+{
+  "verified_at_utc": "2026-11-12T19:58:25.435605+00:00",
+  "context_manifest_sha256": "e671181b539b229edacc2504350c78a473dad630fdaf26ec3b8d89cb591880a1",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "feature_range": [
+    1,
+    445
+  ],
+  "checks": [
+    {
+      "id": "L01",
+      "matches": true
+    },
+    {
+      "id": "L02",
+      "matches": true
+    },
+    {
+      "id": "L03",
+      "matches": true
+    },
+    {
+      "id": "L04",
+      "matches": true
+    },
+    {
+      "id": "L05",
+      "matches": true
+    },
+    {
+      "id": "L06",
+      "matches": true
+    },
+    {
+      "id": "L07",
+      "matches": true
+    },
+    {
+      "id": "L08",
+      "matches": true
+    },
+    {
+      "id": "L09",
+      "matches": true
+    },
+    {
+      "id": "L10",
+      "matches": true
+    },
+    {
+      "id": "L11",
+      "matches": true
+    },
+    {
+      "id": "L12",
+      "matches": true
+    },
+    {
+      "id": "L13",
+      "matches": true
+    },
+    {
+      "id": "L14",
+      "matches": true
+    },
+    {
+      "id": "L15",
+      "matches": true
+    },
+    {
+      "id": "L16",
+      "matches": true
+    },
+    {
+      "id": "L17",
+      "matches": true
+    },
+    {
+      "id": "E01",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E02",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E03",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E04",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E05",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E06",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E07",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E08",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E09",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E10",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E11",
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E12",
+      "raw_matches": true,
+      "extract_matches": true
+    }
+  ],
+  "scope": "Input integrity only; no product or physical behavior verified."
+}

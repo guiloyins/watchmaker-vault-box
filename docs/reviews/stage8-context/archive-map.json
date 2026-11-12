@@ -1,0 +1,8 @@
+{
+  "R04": {
+    "original_path": "/workspace/watchmaker_vault/goldfish_review_report.md",
+    "snapshot_path": "/workspace/watchmaker_vault/docs/reviews/stage8-context/R04-goldfish-review-report.input.md",
+    "sha256": "a8983d3696d95c062b4d7b81b7c29b1c69cd823919881044f14e03d48c325924",
+    "reason": "Preserve completed Stage 8 input before the root report is reused for Stage 8 resolution proposals."
+  }
+}

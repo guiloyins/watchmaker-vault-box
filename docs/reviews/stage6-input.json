@@ -1,0 +1,24 @@
+{
+  "dispatched_at_utc": "2026-11-12T19:51:42.712536+00:00",
+  "stage": 6,
+  "mode": "REVIEW",
+  "reviewer": "/root/egm_stage6_comprehension",
+  "fork_turns": "none",
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "target_lines": 781,
+  "feature_range": [
+    1,
+    445
+  ],
+  "detailed_range": [
+    446,
+    781
+  ],
+  "persona": "/example/local/comprehension.md",
+  "persona_sha256": "974f4972f717dc7b102a9b1407b3a625749149f2ae905727241e919f43cc3fa5",
+  "document_standard": null,
+  "goldfish_context": [],
+  "linked_sources_or_prior_reviews_supplied": false,
+  "host_instruction_file_isolation": "unverified"
+}

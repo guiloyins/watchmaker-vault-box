@@ -1,0 +1,5 @@
+patching file 'docs/designs/watchmakers-vault.md'
+patching file 'docs/specs/PROTOCOL_V1.md'
+patching file 'docs/specs/WATCHMAKERS_VAULT_SPEC.md'
+patching file 'docs/specs/HARDWARE_AUDIT.md'
+patching file 'docs/specs/ACCEPTANCE.md'

@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+vault_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+cd "$vault_root"
+export MIX_HOME="$vault_root/.cache/mix"
+export HEX_HOME="$vault_root/.cache/hex"
+export ELIXIR_MAKE_CACHE_DIR="$vault_root/.cache/elixir_make"
+mkdir -p "$MIX_HOME" "$HEX_HOME" "$ELIXIR_MAKE_CACHE_DIR"
+mix local.hex 2.2.1 --force
+mix local.rebar rebar3 \
+  https://builds.hex.pm/installs/1.18.4/rebar3-3.28.0-otp-28 \
+  --sha512 518c2956c6a73a3522fd13b5c2a031c7524ee753c956161d37a38803be568ed1d7d7fae62ab31989d197271f12198ba9f2616fbc94bc042b6775b1be619eeedc \
+  --force

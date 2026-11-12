@@ -1,0 +1,2710 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:watchmakers-vault:protocol:v1",
+  "title": "Watchmaker\u2019s Vault device protocol v1",
+  "description": "Structural wire contract. Domain validation additionally enforces credentials, actor bindings, role ownership, revisions, sequence/dedup state, monotonic freshness, puzzle correctness, and physical actuator readiness. Unknown top-level extension fields are allowed; payload/projection objects are strict.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/hello"
+    },
+    {
+      "$ref": "#/$defs/welcome"
+    },
+    {
+      "$ref": "#/$defs/command"
+    },
+    {
+      "$ref": "#/$defs/command_result"
+    },
+    {
+      "$ref": "#/$defs/snapshot"
+    },
+    {
+      "$ref": "#/$defs/heartbeat_request"
+    },
+    {
+      "$ref": "#/$defs/heartbeat"
+    },
+    {
+      "$ref": "#/$defs/heartbeat_ack"
+    },
+    {
+      "$ref": "#/$defs/box_arm"
+    },
+    {
+      "$ref": "#/$defs/box_disarm"
+    },
+    {
+      "$ref": "#/$defs/box_command"
+    },
+    {
+      "$ref": "#/$defs/box_status"
+    },
+    {
+      "$ref": "#/$defs/box_status_ack"
+    },
+    {
+      "$ref": "#/$defs/box_query"
+    },
+    {
+      "$ref": "#/$defs/box_feedback"
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "text": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "role": {
+      "enum": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ]
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/role"
+      },
+      "uniqueItems": true,
+      "maxItems": 4
+    },
+    "pause_reasons": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "operator",
+          "controller_offline",
+          "box_offline",
+          "recovery"
+        ]
+      },
+      "uniqueItems": true,
+      "maxItems": 4
+    },
+    "phase": {
+      "enum": [
+        "lobby",
+        "maze",
+        "seal",
+        "solved"
+      ]
+    },
+    "rune": {
+      "enum": [
+        "star",
+        "moon",
+        "sun",
+        "wave"
+      ]
+    },
+    "release_status": {
+      "enum": [
+        "not_requested",
+        "pending",
+        "accepted",
+        "motion_complete",
+        "position_confirmed",
+        "uncertain",
+        "failed"
+      ]
+    },
+    "position": {
+      "enum": [
+        "locked",
+        "released",
+        "unknown"
+      ]
+    },
+    "position_basis": {
+      "enum": [
+        "endstop",
+        "manual_verified",
+        "unverified"
+      ]
+    },
+    "failure": {
+      "anyOf": [
+        {
+          "enum": [
+            "unknown_command",
+            "not_armed",
+            "unknown_position",
+            "stale_binding",
+            "busy",
+            "history_full",
+            "connection_lost",
+            "reboot_interrupted",
+            "freshness_lost",
+            "travel_timeout",
+            "limit_fault",
+            "driver_fault"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "readiness": {
+      "type": "object",
+      "properties": {
+        "arm_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "armed_session_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "calibration_valid": {
+          "type": "boolean"
+        },
+        "start_verified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "arm_id",
+        "armed_session_id",
+        "calibration_valid",
+        "start_verified"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "arm_id": {
+                "type": "string"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "armed_session_id": {
+                "$ref": "#/$defs/id"
+              },
+              "calibration_valid": {
+                "const": true
+              },
+              "start_verified": {
+                "const": true
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "armed_session_id": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "box_projection": {
+      "type": "object",
+      "properties": {
+        "connected": {
+          "type": "boolean"
+        },
+        "simulated": {
+          "type": "boolean"
+        },
+        "command_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "release_status": {
+          "$ref": "#/$defs/release_status"
+        },
+        "motor_active": {
+          "type": "boolean"
+        },
+        "latch_position": {
+          "$ref": "#/$defs/position"
+        },
+        "position_basis": {
+          "$ref": "#/$defs/position_basis"
+        },
+        "readiness": {
+          "$ref": "#/$defs/readiness"
+        },
+        "failure_code": {
+          "$ref": "#/$defs/failure"
+        },
+        "command_confirmation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/command_confirmation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "connected",
+        "simulated",
+        "command_id",
+        "release_status",
+        "motor_active",
+        "latch_position",
+        "position_basis",
+        "readiness",
+        "failure_code",
+        "command_confirmation"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "release_status": {
+                "const": "position_confirmed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "command_confirmation": {
+                "$ref": "#/$defs/command_confirmation"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "command_confirmation": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "simulated": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "release_status": {
+                "not": {
+                  "const": "position_confirmed"
+                }
+              },
+              "command_confirmation": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "peer": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "$ref": "#/$defs/role"
+        },
+        "connected": {
+          "type": "boolean"
+        },
+        "source": {
+          "enum": [
+            "cyd",
+            "browser",
+            "none"
+          ]
+        },
+        "held": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "role",
+        "connected",
+        "source",
+        "held"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "connected": {
+                "const": false
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "held": {
+                "const": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "source": {
+                "const": "none"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "connected": {
+                "const": false
+              },
+              "held": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "peers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/peer"
+      },
+      "maxItems": 4
+    },
+    "controller_capabilities": {
+      "type": "object",
+      "properties": {
+        "touch": {
+          "const": true
+        },
+        "screen_width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "screen_height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4096
+        },
+        "max_message_bytes": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "touch",
+        "screen_width",
+        "screen_height",
+        "max_message_bytes"
+      ],
+      "additionalProperties": true
+    },
+    "box_capabilities": {
+      "type": "object",
+      "properties": {
+        "latch": {
+          "const": "stepper"
+        },
+        "home_sensor": {
+          "type": "boolean"
+        },
+        "released_sensor": {
+          "type": "boolean"
+        },
+        "led_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 256
+        },
+        "buzzer": {
+          "type": "boolean"
+        },
+        "max_message_bytes": {
+          "type": "integer",
+          "minimum": 8192,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "latch",
+        "home_sensor",
+        "released_sensor",
+        "led_count",
+        "buzzer",
+        "max_message_bytes"
+      ],
+      "additionalProperties": true
+    },
+    "hello": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "hello"
+            },
+            "device_id": {
+              "$ref": "#/$defs/id"
+            },
+            "boot_id": {
+              "$ref": "#/$defs/id"
+            },
+            "firmware_version": {
+              "$ref": "#/$defs/text"
+            },
+            "device_class": {
+              "const": "controller"
+            },
+            "capabilities": {
+              "$ref": "#/$defs/controller_capabilities"
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "device_id",
+            "boot_id",
+            "firmware_version",
+            "device_class",
+            "capabilities"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "hello"
+            },
+            "device_id": {
+              "$ref": "#/$defs/id"
+            },
+            "boot_id": {
+              "$ref": "#/$defs/id"
+            },
+            "firmware_version": {
+              "$ref": "#/$defs/text"
+            },
+            "device_class": {
+              "const": "box"
+            },
+            "capabilities": {
+              "$ref": "#/$defs/box_capabilities"
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "device_id",
+            "boot_id",
+            "firmware_version",
+            "device_class",
+            "capabilities"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "welcome": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "welcome"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "round_id": {
+          "$ref": "#/$defs/seq"
+        },
+        "puzzle_revision": {
+          "$ref": "#/$defs/seq"
+        },
+        "required_roles": {
+          "$ref": "#/$defs/roles"
+        },
+        "assigned_role": {
+          "type": "null"
+        },
+        "heartbeat_interval_ms": {
+          "const": 100
+        },
+        "input_lease_ms": {
+          "const": 400
+        },
+        "peer_dead_ms": {
+          "const": 1500
+        },
+        "allowed_roles": {
+          "$ref": "#/$defs/roles",
+          "description": "Authorization from authenticated registration. required_roles is participation, not authority."
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "session_id",
+        "round_id",
+        "puzzle_revision",
+        "required_roles",
+        "assigned_role",
+        "heartbeat_interval_ms",
+        "input_lease_ms",
+        "peer_dead_ms",
+        "allowed_roles"
+      ],
+      "additionalProperties": true
+    },
+    "command": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "command"
+            },
+            "connection_id": {
+              "$ref": "#/$defs/id"
+            },
+            "command_seq": {
+              "$ref": "#/$defs/seq"
+            },
+            "session_id": {
+              "$ref": "#/$defs/id"
+            },
+            "action": {
+              "const": "claim_role"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "role": {
+                  "$ref": "#/$defs/role"
+                }
+              },
+              "required": [
+                "role"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "connection_id",
+            "command_seq",
+            "session_id",
+            "action",
+            "payload"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "command"
+            },
+            "connection_id": {
+              "$ref": "#/$defs/id"
+            },
+            "command_seq": {
+              "$ref": "#/$defs/seq"
+            },
+            "session_id": {
+              "$ref": "#/$defs/id"
+            },
+            "role": {
+              "$ref": "#/$defs/role"
+            },
+            "control_epoch": {
+              "$ref": "#/$defs/seq"
+            },
+            "action": {
+              "const": "release_role"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "connection_id",
+            "command_seq",
+            "session_id",
+            "role",
+            "control_epoch",
+            "action",
+            "payload"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "command"
+            },
+            "connection_id": {
+              "$ref": "#/$defs/id"
+            },
+            "command_seq": {
+              "$ref": "#/$defs/seq"
+            },
+            "session_id": {
+              "$ref": "#/$defs/id"
+            },
+            "action": {
+              "const": "request_snapshot"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {},
+              "required": [],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "connection_id",
+            "command_seq",
+            "session_id",
+            "action",
+            "payload"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "command"
+            },
+            "connection_id": {
+              "$ref": "#/$defs/id"
+            },
+            "command_seq": {
+              "$ref": "#/$defs/seq"
+            },
+            "session_id": {
+              "$ref": "#/$defs/id"
+            },
+            "round_id": {
+              "$ref": "#/$defs/seq"
+            },
+            "puzzle_revision": {
+              "$ref": "#/$defs/seq"
+            },
+            "role": {
+              "$ref": "#/$defs/role"
+            },
+            "control_epoch": {
+              "$ref": "#/$defs/seq"
+            },
+            "action": {
+              "const": "move"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "direction": {
+                  "enum": [
+                    "up",
+                    "down",
+                    "left",
+                    "right"
+                  ]
+                },
+                "expected_board_version": {
+                  "$ref": "#/$defs/version"
+                }
+              },
+              "required": [
+                "direction",
+                "expected_board_version"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "connection_id",
+            "command_seq",
+            "session_id",
+            "round_id",
+            "puzzle_revision",
+            "role",
+            "control_epoch",
+            "action",
+            "payload"
+          ],
+          "additionalProperties": true
+        },
+        {
+          "type": "object",
+          "properties": {
+            "v": {
+              "const": 1
+            },
+            "type": {
+              "const": "command"
+            },
+            "connection_id": {
+              "$ref": "#/$defs/id"
+            },
+            "command_seq": {
+              "$ref": "#/$defs/seq"
+            },
+            "session_id": {
+              "$ref": "#/$defs/id"
+            },
+            "round_id": {
+              "$ref": "#/$defs/seq"
+            },
+            "puzzle_revision": {
+              "$ref": "#/$defs/seq"
+            },
+            "role": {
+              "$ref": "#/$defs/role"
+            },
+            "control_epoch": {
+              "$ref": "#/$defs/seq"
+            },
+            "action": {
+              "const": "select_rune"
+            },
+            "payload": {
+              "type": "object",
+              "properties": {
+                "rune": {
+                  "$ref": "#/$defs/rune"
+                }
+              },
+              "required": [
+                "rune"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "v",
+            "type",
+            "connection_id",
+            "command_seq",
+            "session_id",
+            "round_id",
+            "puzzle_revision",
+            "role",
+            "control_epoch",
+            "action",
+            "payload"
+          ],
+          "additionalProperties": true
+        }
+      ]
+    },
+    "command_result": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "command_result"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "command_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "status": {
+          "enum": [
+            "applied",
+            "rejected"
+          ]
+        },
+        "code": {
+          "enum": [
+            "role_claimed",
+            "role_released",
+            "snapshot_sent",
+            "moved",
+            "rune_selected",
+            "stale_board",
+            "stale_round",
+            "stale_puzzle",
+            "paused",
+            "wrong_phase",
+            "seq_gap",
+            "result_expired",
+            "wall",
+            "out_of_bounds",
+            "wrong_axis",
+            "role_busy",
+            "stale_controller",
+            "not_authorized",
+            "stale_session"
+          ]
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "state_revision": {
+          "$ref": "#/$defs/version"
+        },
+        "data": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "command_seq",
+        "status",
+        "code",
+        "session_id",
+        "state_revision",
+        "data"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "role_claimed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "applied"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "$ref": "#/$defs/role"
+                  },
+                  "control_epoch": {
+                    "$ref": "#/$defs/seq"
+                  }
+                },
+                "required": [
+                  "role",
+                  "control_epoch"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "role_released"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "applied"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "snapshot_sent"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "applied"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "moved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "applied"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "position": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 15
+                  },
+                  "board_version": {
+                    "$ref": "#/$defs/version"
+                  }
+                },
+                "required": [
+                  "position",
+                  "board_version"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "rune_selected"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "applied"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "selected_rune": {
+                    "$ref": "#/$defs/rune"
+                  }
+                },
+                "required": [
+                  "selected_rune"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "stale_board"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "board_version": {
+                    "$ref": "#/$defs/version"
+                  },
+                  "position": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 15
+                  }
+                },
+                "required": [
+                  "board_version",
+                  "position"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "stale_round"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "round_id": {
+                    "$ref": "#/$defs/seq"
+                  }
+                },
+                "required": [
+                  "round_id"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "stale_puzzle"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "puzzle_revision": {
+                    "$ref": "#/$defs/seq"
+                  }
+                },
+                "required": [
+                  "puzzle_revision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "paused"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "pause_reasons": {
+                    "$ref": "#/$defs/pause_reasons"
+                  }
+                },
+                "required": [
+                  "pause_reasons"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "wrong_phase"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "phase": {
+                    "$ref": "#/$defs/phase"
+                  }
+                },
+                "required": [
+                  "phase"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "seq_gap"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {
+                  "expected_command_seq": {
+                    "$ref": "#/$defs/seq"
+                  }
+                },
+                "required": [
+                  "expected_command_seq"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "result_expired"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "wall"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "out_of_bounds"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "wrong_axis"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "role_busy"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "stale_controller"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "not_authorized"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "stale_session"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "rejected"
+              },
+              "data": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "maze": {
+      "type": "object",
+      "properties": {
+        "rows": {
+          "const": 4
+        },
+        "cols": {
+          "const": 4
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "goal": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 15
+        },
+        "wall_kind": {
+          "enum": [
+            "right",
+            "bottom"
+          ]
+        },
+        "walls": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 15
+          },
+          "uniqueItems": true,
+          "maxItems": 12
+        },
+        "allowed_moves": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "up",
+              "down",
+              "left",
+              "right"
+            ]
+          },
+          "uniqueItems": true,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "rows",
+        "cols",
+        "position",
+        "goal",
+        "wall_kind",
+        "walls",
+        "allowed_moves"
+      ],
+      "additionalProperties": false
+    },
+    "seal": {
+      "type": "object",
+      "properties": {
+        "clue_for_role": {
+          "$ref": "#/$defs/role"
+        },
+        "clue_rune": {
+          "$ref": "#/$defs/rune"
+        },
+        "selected_rune": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/rune"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "partner_held": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "clue_for_role",
+        "clue_rune",
+        "selected_rune",
+        "partner_held"
+      ],
+      "additionalProperties": false
+    },
+    "hold": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "boolean"
+        },
+        "qualified": {
+          "type": "boolean"
+        },
+        "elapsed_ms": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2000
+        },
+        "duration_ms": {
+          "const": 2000
+        },
+        "fresh_press_required": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "active",
+        "qualified",
+        "elapsed_ms",
+        "duration_ms",
+        "fresh_press_required"
+      ],
+      "additionalProperties": false
+    },
+    "controller_snapshot": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "snapshot"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "round_id": {
+          "$ref": "#/$defs/seq"
+        },
+        "puzzle_revision": {
+          "$ref": "#/$defs/seq"
+        },
+        "state_revision": {
+          "$ref": "#/$defs/version"
+        },
+        "phase": {
+          "$ref": "#/$defs/phase"
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "pause_reasons": {
+          "$ref": "#/$defs/pause_reasons"
+        },
+        "required_roles": {
+          "$ref": "#/$defs/roles"
+        },
+        "peers": {
+          "$ref": "#/$defs/peers"
+        },
+        "box": {
+          "$ref": "#/$defs/box_projection"
+        },
+        "projection": {
+          "const": "controller"
+        },
+        "role": {
+          "$ref": "#/$defs/role"
+        },
+        "control_epoch": {
+          "$ref": "#/$defs/seq"
+        },
+        "board_version": {
+          "$ref": "#/$defs/version"
+        },
+        "maze": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/maze"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "seal": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/seal"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hold": {
+          "$ref": "#/$defs/hold"
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "session_id",
+        "round_id",
+        "puzzle_revision",
+        "state_revision",
+        "phase",
+        "paused",
+        "pause_reasons",
+        "required_roles",
+        "peers",
+        "box",
+        "projection",
+        "role",
+        "control_epoch",
+        "board_version",
+        "maze",
+        "seal",
+        "hold"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "maze"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maze": {
+                "$ref": "#/$defs/maze"
+              },
+              "seal": {
+                "type": "null"
+              },
+              "hold": {
+                "properties": {
+                  "active": {
+                    "const": false
+                  },
+                  "qualified": {
+                    "const": false
+                  },
+                  "elapsed_ms": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "seal"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maze": {
+                "type": "null"
+              },
+              "seal": {
+                "$ref": "#/$defs/seal"
+              },
+              "hold": {
+                "properties": {
+                  "qualified": {
+                    "const": false
+                  },
+                  "elapsed_ms": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1999
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "lobby"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maze": {
+                "type": "null"
+              },
+              "seal": {
+                "type": "null"
+              },
+              "hold": {
+                "properties": {
+                  "active": {
+                    "const": false
+                  },
+                  "qualified": {
+                    "const": false
+                  },
+                  "elapsed_ms": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "phase": {
+                "const": "solved"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maze": {
+                "type": "null"
+              },
+              "seal": {
+                "type": "null"
+              },
+              "hold": {
+                "properties": {
+                  "active": {
+                    "const": false
+                  },
+                  "qualified": {
+                    "const": true
+                  },
+                  "elapsed_ms": {
+                    "const": 2000
+                  },
+                  "fresh_press_required": {
+                    "const": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "paused": {
+                "const": true
+              },
+              "phase": {
+                "not": {
+                  "const": "solved"
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "hold": {
+                "properties": {
+                  "active": {
+                    "const": false
+                  },
+                  "qualified": {
+                    "const": false
+                  },
+                  "elapsed_ms": {
+                    "const": 0
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "const": "a"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maze": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/maze"
+                      },
+                      {
+                        "properties": {
+                          "wall_kind": {
+                            "const": "right"
+                          },
+                          "allowed_moves": {
+                            "const": [
+                              "up",
+                              "down"
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "seal": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/seal"
+                      },
+                      {
+                        "properties": {
+                          "clue_for_role": {
+                            "const": "b"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "role": {
+                "const": "b"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "maze": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/maze"
+                      },
+                      {
+                        "properties": {
+                          "wall_kind": {
+                            "const": "bottom"
+                          },
+                          "allowed_moves": {
+                            "const": [
+                              "left",
+                              "right"
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              "seal": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "allOf": [
+                      {
+                        "$ref": "#/$defs/seal"
+                      },
+                      {
+                        "properties": {
+                          "clue_for_role": {
+                            "const": "a"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "public_snapshot": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "snapshot"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "round_id": {
+          "$ref": "#/$defs/seq"
+        },
+        "puzzle_revision": {
+          "$ref": "#/$defs/seq"
+        },
+        "state_revision": {
+          "$ref": "#/$defs/version"
+        },
+        "phase": {
+          "$ref": "#/$defs/phase"
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "pause_reasons": {
+          "$ref": "#/$defs/pause_reasons"
+        },
+        "required_roles": {
+          "$ref": "#/$defs/roles"
+        },
+        "peers": {
+          "$ref": "#/$defs/peers"
+        },
+        "box": {
+          "$ref": "#/$defs/box_projection"
+        },
+        "projection": {
+          "const": "public"
+        },
+        "role": {
+          "type": "null"
+        },
+        "control_epoch": {
+          "type": "null"
+        },
+        "maze": false,
+        "seal": false,
+        "hold": false,
+        "board_version": false
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "session_id",
+        "round_id",
+        "puzzle_revision",
+        "state_revision",
+        "phase",
+        "paused",
+        "pause_reasons",
+        "required_roles",
+        "peers",
+        "box",
+        "projection",
+        "role",
+        "control_epoch"
+      ],
+      "additionalProperties": true
+    },
+    "box_snapshot": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "snapshot"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "round_id": {
+          "$ref": "#/$defs/seq"
+        },
+        "puzzle_revision": {
+          "$ref": "#/$defs/seq"
+        },
+        "state_revision": {
+          "$ref": "#/$defs/version"
+        },
+        "phase": {
+          "$ref": "#/$defs/phase"
+        },
+        "paused": {
+          "type": "boolean"
+        },
+        "pause_reasons": {
+          "$ref": "#/$defs/pause_reasons"
+        },
+        "required_roles": {
+          "$ref": "#/$defs/roles"
+        },
+        "peers": {
+          "$ref": "#/$defs/peers"
+        },
+        "box": {
+          "$ref": "#/$defs/box_projection"
+        },
+        "projection": {
+          "const": "box"
+        },
+        "role": {
+          "type": "null"
+        },
+        "control_epoch": {
+          "type": "null"
+        },
+        "maze": false,
+        "seal": false,
+        "hold": false,
+        "board_version": false
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "session_id",
+        "round_id",
+        "puzzle_revision",
+        "state_revision",
+        "phase",
+        "paused",
+        "pause_reasons",
+        "required_roles",
+        "peers",
+        "box",
+        "projection",
+        "role",
+        "control_epoch"
+      ],
+      "additionalProperties": true
+    },
+    "snapshot": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/controller_snapshot"
+        },
+        {
+          "$ref": "#/$defs/public_snapshot"
+        },
+        {
+          "$ref": "#/$defs/box_snapshot"
+        }
+      ]
+    },
+    "heartbeat_request": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "heartbeat_request"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "heartbeat_seq": {
+          "$ref": "#/$defs/seq"
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "heartbeat_seq"
+      ],
+      "additionalProperties": true
+    },
+    "input": {
+      "type": "object",
+      "properties": {
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "round_id": {
+          "$ref": "#/$defs/seq"
+        },
+        "puzzle_revision": {
+          "$ref": "#/$defs/seq"
+        },
+        "role": {
+          "$ref": "#/$defs/role"
+        },
+        "control_epoch": {
+          "$ref": "#/$defs/seq"
+        },
+        "pressed": {
+          "type": "boolean",
+          "description": "True only for the dedicated HOLD SEAL control; direction/rune taps are discrete commands and do not set held state."
+        },
+        "press_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/seq"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "session_id",
+        "round_id",
+        "puzzle_revision",
+        "role",
+        "control_epoch",
+        "pressed",
+        "press_id"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "pressed": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "press_id": {
+                "$ref": "#/$defs/seq"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "press_id": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "heartbeat": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "heartbeat"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "heartbeat_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "input_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "input": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/input"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "heartbeat_seq",
+        "input_seq",
+        "input"
+      ],
+      "additionalProperties": true
+    },
+    "heartbeat_ack": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "heartbeat_ack"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "heartbeat_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "input_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "input_accepted": {
+          "type": "boolean"
+        },
+        "code": {
+          "enum": [
+            "ok",
+            "paused",
+            "stale_sample",
+            "stale_challenge",
+            "stale_context",
+            "must_release"
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "heartbeat_seq",
+        "input_seq",
+        "input_accepted",
+        "code"
+      ],
+      "additionalProperties": true
+    },
+    "box_arm": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_arm"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "box_boot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "arm_id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "box_boot_id",
+        "session_id",
+        "arm_id"
+      ],
+      "additionalProperties": true
+    },
+    "box_disarm": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_disarm"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "box_boot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "arm_id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "box_boot_id",
+        "session_id",
+        "arm_id"
+      ],
+      "additionalProperties": true
+    },
+    "box_command": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_command"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "box_boot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "arm_id": {
+          "$ref": "#/$defs/id"
+        },
+        "heartbeat_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "command_id": {
+          "$ref": "#/$defs/id"
+        },
+        "action": {
+          "const": "set_latch"
+        },
+        "target": {
+          "const": "released"
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "box_boot_id",
+        "session_id",
+        "arm_id",
+        "heartbeat_seq",
+        "command_id",
+        "action",
+        "target"
+      ],
+      "additionalProperties": true
+    },
+    "box_status": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_status"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "box_boot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "status_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "command_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "command_session_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "release_status": {
+          "enum": [
+            "not_requested",
+            "accepted",
+            "motion_complete",
+            "position_confirmed",
+            "uncertain",
+            "failed"
+          ]
+        },
+        "motor_active": {
+          "type": "boolean"
+        },
+        "latch_position": {
+          "$ref": "#/$defs/position"
+        },
+        "position_basis": {
+          "$ref": "#/$defs/position_basis"
+        },
+        "readiness": {
+          "$ref": "#/$defs/readiness"
+        },
+        "failure_code": {
+          "$ref": "#/$defs/failure"
+        },
+        "command_confirmation": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/command_confirmation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "box_boot_id",
+        "session_id",
+        "status_seq",
+        "command_id",
+        "command_session_id",
+        "release_status",
+        "motor_active",
+        "latch_position",
+        "position_basis",
+        "readiness",
+        "failure_code",
+        "command_confirmation"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "command_id": {
+                "type": "null"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "command_session_id": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "release_status": {
+                "const": "position_confirmed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "command_confirmation": {
+                "$ref": "#/$defs/command_confirmation"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "command_confirmation": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "box_status_ack": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_status_ack"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "status_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "accepted": {
+          "type": "boolean"
+        },
+        "code": {
+          "enum": [
+            "ok",
+            "stale_status"
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "status_seq",
+        "accepted",
+        "code"
+      ],
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "code": {
+                "const": "ok"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "accepted": {
+                "const": true
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "accepted": {
+                "const": false
+              }
+            }
+          }
+        }
+      ]
+    },
+    "box_query": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_query"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "command_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "command_id"
+      ],
+      "additionalProperties": true
+    },
+    "box_feedback": {
+      "type": "object",
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "type": {
+          "const": "box_feedback"
+        },
+        "connection_id": {
+          "$ref": "#/$defs/id"
+        },
+        "box_boot_id": {
+          "$ref": "#/$defs/id"
+        },
+        "session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "feedback_seq": {
+          "$ref": "#/$defs/seq"
+        },
+        "light_mode": {
+          "enum": [
+            "idle",
+            "progress",
+            "paused",
+            "success",
+            "error"
+          ]
+        },
+        "progress_percent": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "sound": {
+          "enum": [
+            "none",
+            "tick",
+            "success",
+            "error"
+          ]
+        },
+        "ttl_ms": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 1500
+        }
+      },
+      "required": [
+        "v",
+        "type",
+        "connection_id",
+        "box_boot_id",
+        "session_id",
+        "feedback_seq",
+        "light_mode",
+        "progress_percent",
+        "sound",
+        "ttl_ms"
+      ],
+      "additionalProperties": true
+    },
+    "command_confirmation": {
+      "type": "object",
+      "properties": {
+        "basis": {
+          "enum": [
+            "endstop",
+            "manual_verified"
+          ]
+        },
+        "box_boot_id": {
+          "$ref": "#/$defs/id"
+        }
+      },
+      "required": [
+        "basis",
+        "box_boot_id"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "edits": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "Preserve every accepted Stage 7 service, seal, acknowledgement, capacity, absent-ID and clear-authorization rule.",
+      "new": "Preserve the service, seal, acknowledgement, capacity, absent-ID and clear-authorization requirements in [Technical Plan §7](#7-pause-recovery-and-release-reconciliation), [Technical Plan §10](#10-firmware-and-physical-service-boundaries) and [Protocol v1 administrative recovery and history clearing](../specs/PROTOCOL_V1.md#administrative-release-recovery).",
+      "findings": [
+        "S9-06"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "The identified ULN2003AN is not a verified PCB wiring diagram. Establish the C5 board input/pins, module jumper function, ground/power, inactive boot outputs, signal compatibility, measured travel and manual release before connecting real outputs. Keep all earlier software checks runnable with the fake actuator.",
+      "new": "Before peripheral activation, verify the C5 board profile/input/pins, ULN2003AN module wiring and jumper, ground/power and USB-source isolation, inactive boot outputs, signal compatibility and accessible manual release. Then use bounded local-service movement to establish calibration under the staged [hardware procedure](../specs/HARDWARE_AUDIT.md). Measured release travel/rate/time limits and current locked-position verification are required before gameplay motion. Keep all earlier software checks runnable with the fake actuator.",
+      "findings": [
+        "S9-07"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "Keep the protocol/schema/fixtures byte-identical during the hardware-only correction. A later accepted protocol change requires synchronized source, schema, fixtures and both language tests.",
+      "new": "Preserve the current accepted protocol/schema/fixture baseline. A separately accepted contract change must update affected prose, schema, fixtures and both language tests together; record that change and its verification in the status file.",
+      "findings": [
+        "S9-08"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "### Selected decisions and remaining evidence\n\n**Resolved D1:** The author selected audience-specific snapshots. Technical Plan §5, Alternative I and the M1/M2 file manifest now use that mechanism.\n\n**Resolved D2:** The author selected generated firmware configuration for both CYD and C5 profiles. Technical Plan §10, Alternative J and the firmware build manifest now define source/output ownership, mandatory regeneration and validation gates. Matching CYDs share a profile only after identification confirms the match; per-device secrets/calibration remain separate.\n\n**Resolved D3:** The author selected a generated host access key. Technical Plan §3, Alternative K and the M1 manifest define generation, protected output, digest/epoch persistence, session exchange/expiry/logout, stopped/disarmed rotation, persisted session invalidation, maintenance exclusion and crash-recovery tests. A focused drafting-support agent checked source constraints and failure cases; this was not a formal EGM review or executed implementation verification.\n\n**Resolved D4:** The author selected automated browser checks with Playwright. Technical Plan §11, Alternative L, the M1/M2 browser file manifest and verification commands now define the harness, actor/process isolation, production input path and secret-handling/native-event limits. A read-only drafting-support agent checked those limits; no browser tests or application builds have been run.\n\n**Resolved D5:** The author selected Phoenix-managed asset builds. Technical Plan §11, Alternative M and the M0/M1 manifest now assign esbuild setup, watching, build/deploy, version pins, generated outputs and privacy checks to Mix. Playwright's npm package remains separate. No asset dependencies were installed and no bundles were built in this drafting step.\n\n**Resolved D6:** The author selected Mint.WebSocket. Technical Plan §9, Alternative N and the M2 file manifest now define client-owned lifecycle, locked dependencies, active-once delivery, one shared pure box model/store with independent runtime/state/database instances, bounded frame handling and separate raw fault injection. No simulator implementation or transport tests have been executed.\n\nAll six software choices and the Detailed Implementation Plan are approved. The canonical design is saved at `docs/designs/watchmakers-vault.md` for the already requested interactive EGM review. Review findings and any subsequent accepted changes belong to that canonical file.\n\n",
+      "new": "### Selected decisions and remaining verification\n\nD1–D6 are fixed in the [plan scope](#readiness-and-scope-of-this-plan); their implementation mechanisms and verification gates are specified beside the corresponding M0–M4 tasks.\n\n",
+      "findings": [
+        "S9-09"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "Remaining evidence consists of tested toolchain/dependency versions, native browser observations and hardware identity/profile/calibration/fit checks. Name final driver/profile files when their evidence exists and update the affected manifest before building that target. These evidence gates do not block independent browser/simulator implementation after design approval. Section approval itself does not establish a passed application test, compiled firmware, physical observation or completed milestone.",
+      "new": "All milestone verification remains pending: pure-rule, application, storage/recovery, deterministic timing, protocol/simulator, browser, firmware-host, build and physical checks. Toolchain compatibility and board identity/profile/calibration/fit evidence are particular dependencies. Name final driver/profile files when their evidence exists and update the affected manifest before building that target. Hardware-specific gaps block their affected target; independent browser, simulator and portable firmware work can proceed after the design review. Record executed results per acceptance case before claiming a passed milestone.",
+      "findings": [
+        "S9-10"
+      ]
+    },
+    {
+      "path": "docs/specs/CODEX_START_HERE.md",
+      "old": "`PROTOCOL_V1.md`, `ACCEPTANCE.md`, the JSON Schema and the fixtures",
+      "new": "`PROTOCOL_V1.md`, `IMPLEMENTATION_CONTRACTS.md`, `LOCAL_SERVICE_V1.md`, `JSON_VALIDATION.md`, `ACCEPTANCE.md`, the JSON Schema and the fixtures",
+      "findings": [
+        "S9-01",
+        "S9-02",
+        "S9-03",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/specs/CODEX_START_HERE.md",
+      "old": "Before real motor output, require a verified board profile, bounded calibrated release travel/speed/timeout, known starting position, local service procedure and current arm authorization.",
+      "new": "Before peripheral activation, require a verified board profile, electrical/source-isolation checks and an accessible manual release. Establish travel/rate/time bounds through the staged bounded local-service calibration procedure. Before gameplay motor output, require that calibration, a verified current starting position, service exit and current arm authorization.",
+      "findings": [
+        "S9-07"
+      ]
+    },
+    {
+      "path": "docs/specs/README.md",
+      "old": "| `PROTOCOL_V1.md` | Normative raw WebSocket message contract, ownership, freshness, ordering, actuator acknowledgements and recovery. |",
+      "new": "| `PROTOCOL_V1.md` | Normative raw WebSocket message contract, ownership, freshness, ordering, actuator acknowledgements and recovery. |\n| [IMPLEMENTATION_CONTRACTS.md](IMPLEMENTATION_CONTRACTS.md) | Concrete internal APIs/model types, server and simulator storage schemas, transaction identities and failure predicates. |\n| [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md) | Local-only USB framing, provisioning and recovery/calibration operation contracts; no device WebSocket extension. |\n| [JSON_VALIDATION.md](JSON_VALIDATION.md) | Selected parsers, structural validation, native/ESP-IDF dependency wiring and staged conformance checks. |",
+      "findings": [
+        "S9-01",
+        "S9-02",
+        "S9-03",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/specs/README.md",
+      "old": "The JSON Schema owns structural constraints and the fixtures own the fixed puzzle data.",
+      "new": "The JSON Schema owns structural constraints and the fixtures own the fixed puzzle data. The implementation contracts define internal code/storage details; the local-service contract defines USB maintenance only. Neither extends the network-v1 shapes. The JSON validation contract defines how implementations enforce the existing structural and semantic requirements.",
+      "findings": [
+        "S9-01",
+        "S9-02",
+        "S9-03",
+        "S9-05"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `docs/specs/README.md` | Update | Keep the reading order and actual paths current. |",
+      "new": "| `docs/specs/README.md` | Update | Keep the reading order and actual paths current. |\n| `docs/specs/JSON_VALIDATION.md` | Maintain accepted contract | Preserve selected parsers, exact numeric/duplicate handling, structural coverage, dependency wiring and independently executable test-stage boundaries; record compatibility evidence separately. |",
+      "findings": [
+        "S9-04",
+        "S9-05"
+      ]
+    }
+  ]
+}

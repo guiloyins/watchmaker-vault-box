@@ -1,0 +1,43 @@
+{
+  "dispatched_at_utc": "2026-11-12T19:57:52.681017+00:00",
+  "stage": 7,
+  "round": 1,
+  "mode": "REVIEW",
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "feature_range": [
+    1,
+    445
+  ],
+  "context_manifest": "/workspace/watchmaker_vault/docs/reviews/stage7-context/reading-list.json",
+  "context_manifest_sha256": "e671181b539b229edacc2504350c78a473dad630fdaf26ec3b8d89cb591880a1",
+  "reviewers": [
+    {
+      "agent": "/root/egm_stage7_design_r1",
+      "fork_turns": "none",
+      "persona": "/example/local/design_critic.md",
+      "persona_sha256": "cee6294735ce2bd4fea19245852b6eb07cbe8ede7e72a4bfc829f586e4a39d0f",
+      "standard": "/example/local/feature-spec-standard.md",
+      "standard_sha256": "8e9821e7bfd7c074dd1cec7ba02e3ea09a3fd32e35b91a1463a37c1ee3b9d6a4"
+    },
+    {
+      "agent": "/root/egm_stage7_structure_r1",
+      "fork_turns": "none",
+      "persona": "/example/local/structural.md",
+      "persona_sha256": "f0d4fe6faee4e388366b7d653fe353a9b09f45ca1bf5dae29280e351cda7da87",
+      "standard": "/example/local/feature-spec-standard.md",
+      "standard_sha256": "8e9821e7bfd7c074dd1cec7ba02e3ea09a3fd32e35b91a1463a37c1ee3b9d6a4"
+    },
+    {
+      "agent": "/root/egm_stage7_style_r1",
+      "fork_turns": "none",
+      "persona": "/example/local/style.md",
+      "persona_sha256": "9330780622baaef8dc683ea78efb3ff8e4583e3dde7ab6092b84df50e8c9ea58",
+      "standard": null,
+      "standard_sha256": null
+    }
+  ],
+  "host_instruction_file_isolation": "unverified",
+  "iteration_status": "initial round, not converged",
+  "next_boundary": "interactive parent egm-review Stage 7 checkpoint"
+}

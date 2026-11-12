@@ -1,0 +1,52 @@
+{
+  "completed_at_utc": "2026-11-12T19:54:14.829701+00:00",
+  "stage": 6,
+  "status": "completed_checkpoint_pending",
+  "reviewer": "/root/egm_stage6_comprehension",
+  "native_agent_completion_received": true,
+  "fork_turns": "none",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "feature_range": [
+    1,
+    445
+  ],
+  "detailed_range": [
+    446,
+    781
+  ],
+  "document_standard": null,
+  "goldfish_context": [],
+  "findings": {
+    "blocker": 0,
+    "major": 0,
+    "nit": 0
+  },
+  "complete_reviewer_response_preserved": true,
+  "both_required_paraphrases_preserved": true,
+  "reported_read_coverage": "Full persona and target 1..781; truncated 276..306 output repaired; no unresolved gap",
+  "host_instruction_file_isolation": "unverified",
+  "child_tool_transcript_available_to_parent": false,
+  "design_changed": false,
+  "stage5_findings": "S5-01, S5-02 and S5-03 remain open",
+  "stage7": "not_run",
+  "acceptance_ids_retained": 40,
+  "current_artifact_local_links_verified": 12,
+  "artifacts": [
+    {
+      "path": "comprehension_report.md",
+      "sha256": "1cf79afb2577820b469a2f1a202f0f7a787c47592779587a3f781323814df827"
+    },
+    {
+      "path": "egm_review_state.md",
+      "sha256": "e56f09624e560a490516bc5be22e1731449556c107d2c02daec4584c8907c9f9"
+    },
+    {
+      "path": "egm_review_context.md",
+      "sha256": "3be75016e450830f989ed561afe8e303299501ee446e56253eeaadab5ad15033"
+    },
+    {
+      "path": "docs/implementation-status.md",
+      "sha256": "cefcb0eeb25cc0af0220c6a1e73da49b3a1aece1a51780d0235957981b729425"
+    }
+  ]
+}

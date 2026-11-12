@@ -1,0 +1,440 @@
+{
+  "prepared_at_utc": "2026-11-12T21:46:25.347145+00:00",
+  "status": "proposed_not_applied",
+  "stage": 8,
+  "findings": [
+    "zoom8-1-1",
+    "zoom8-1-2",
+    "zoom8-1-3"
+  ],
+  "consolidated_actions": [
+    "S5-02",
+    "S5-03",
+    "S8-03"
+  ],
+  "files": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "original_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "original_lines": 821,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/proposed/docs/designs/watchmakers-vault.md",
+      "proposed_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "proposed_lines": 861
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "original_sha256": "0f19b6092219c160c956c0a67a488739a8d0653c6ac13837fcdb059e64f35d97",
+      "original_lines": 713,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/proposed/docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "proposed_sha256": "d90c341dc991a8dad8560e57453366ef9d1c7d676ee38f039bb33dfb757d8c36",
+      "proposed_lines": 729
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "original_sha256": "ffd8f436ed4ca844cf1f9d1d757796f053efe553f9090a8235d03e7db418c801",
+      "original_lines": 109,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/proposed/docs/specs/ACCEPTANCE.md",
+      "proposed_sha256": "4fa93bbdf6fee493ff8db98f151bcd6185decce427301edad16c4f26d8eecfbd",
+      "proposed_lines": 109
+    }
+  ],
+  "edits": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "`mix vault.init` creates missing setup only and never silently rotates an existing key. A digest cannot recover the plaintext if its output file is lost. Explicit local `mix vault.host.rotate --output PATH` performs replacement: write and durably close a new protected file before activating its digest; preserve the previous file and credential until the database commit succeeds. Serialize competing rotations with a transaction and expected-epoch check. A failed file write or database activation leaves the old key active; a crash after file creation but before commit may leave an inactive replacement file, while a crash after commit leaves the new key recoverable at its chosen path. A read-only status mode compares a supplied file's digest with the active record without printing its contents. Recovery never guesses or automatically activates an orphaned file.\n\nRotation increments the durable authentication epoch. Routes, mounts, host views, actor readiness, input samples and host actions validate the current epoch and fail closed when it cannot be checked. A revocation notification is an optimization only: rotation from a separate Mix process must still invalidate stale sessions and queued input. Validate any host-owned grant's authentication epoch again inside the same serialized database transaction that commits a durable action or winning transition; rotation uses that same database. An action committed before rotation remains committed, while a stale pre-check cannot authorize a later commit after rotation. Revoking a host-owned required controller clears its holds and invokes the normal recovery pause, including the specified input-epoch effects on other controllers. Preserve independent player/device credentials and assignments. Revocation does not erase or replay an already committed release intent.",
+      "new": "`mix vault.init` creates missing setup only and never silently rotates an existing key. Explicit local `mix vault.host.rotate --output PATH` replaces the host key only during stopped/disarmed maintenance. One local startup/maintenance guard excludes running Vault applications and competing credential tasks. Replacement durably writes a new protected output file before committing its digest and incremented authentication epoch; retain both files when activation is uncertain and inspect the active record without exposing secrets. Restart follows paused-session recovery and rejects old host sessions by their persisted epoch. Rotation preserves independent credentials, assignments and release history; it neither cancels motion nor closes uncertainty. Ordinary authorization, private-view checks, session expiry and logout remain enforced; expiry/logout of a required host controller clears its holds and invokes recovery pause. Host-key rotation adds no epoch comparison to gameplay or winning transactions. The [D3 maintenance boundary](#d3-maintenance-boundary) defines exclusion, lost-key preparation and crash recovery."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "Start the repository, PubSub, registries, game and box-link supervisors, recovery coordinator and endpoint.",
+      "new": "Acquire the local startup/maintenance guard, then start the repository, PubSub, registries, game and box-link supervisors, recovery coordinator and endpoint."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/config/runtime.exs` | Create | Validate environment, mode, origin, storage and secret-file configuration on startup. |",
+      "new": "| `server/config/runtime.exs` | Create | Validate environment, mode, origin, canonical owned local data directory, database and secret-file configuration; every supported Vault startup/credential task derives the same guard path. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/lib/vault/application.ex` | Create | Supervise repository, PubSub, registries, dynamic game/box supervisors, recovery coordinator and endpoint in dependency order. |",
+      "new": "| `server/lib/vault/application.ex` | Create | Acquire the local maintenance guard before supervision and release only after the tree terminates. Supervise repository, PubSub, registries, independent game/box lifecycles, recovery coordinator and endpoint in dependency order. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "one release per solved attempt, host-epoch revalidation and compatible checkpoint schemas.",
+      "new": "one release per solved attempt and compatible checkpoint schemas."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "Own accepted game state, bindings, counters, freshness and effects; revalidate host epochs at commit.",
+      "new": "Own accepted game state, bindings, counters, freshness and effects; enforce ordinary authorization, expiry and controller validity."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/lib/vault/credentials.ex` | Create | Generate independent random credentials, verify fixed-format key digests, check durable authentication epochs/expiry and perform transactional rotation. Keep protected output-file handling and bounded login throttling here; redact all secrets and fail closed on storage errors. |",
+      "new": "| `server/lib/vault/credentials.ex` | Create | Generate independent credentials, verify key digests and scope/epoch/expiry, and replace host credentials only under stopped maintenance. Own protected output, activation/readback and login throttling; redact secrets and fail closed on storage errors. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/lib/mix/tasks/vault.init.ex` | Create | Idempotently initialize host/game setup and write newly generated credentials only to an explicitly requested protected file. Never regenerate existing credentials implicitly or claim a stored digest can recover a missing key file. |",
+      "new": "| `server/lib/mix/tasks/vault.init.ex` | Create | Acquire the shared maintenance guard before task-owned storage; initialize missing setup/protected credential output without starting Phoenix or implicitly replacing credentials. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/lib/mix/tasks/vault.host.rotate.ex` | Create | Explicitly replace the host key with protected-file staging and expected-epoch transaction checks. Provide read-only file-status inspection and clear failure/crash recovery without exposing key contents or rotating player/device credentials. |",
+      "new": "| `server/lib/mix/tasks/vault.host.rotate.ex` | Create | Acquire stopped-maintenance admission before task-owned storage; make protected-file durability precede digest/epoch activation. Provide read-only file matching and uncertain-commit recovery; require no possession of a lost old key. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/lib/mix/tasks/vault.device.add.ex` | Create | Add/rotate an explicitly named device registration and protected secret file without logging its bearer token. |",
+      "new": "| `server/lib/mix/tasks/vault.device.add.ex` | Create | Use the same maintenance admission boundary; add/rotate only the explicitly named device registration and protected secret file without logging its bearer token. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/test/vault/credentials_test.exs` | Create | Verify separate credential scopes, digests, malformed-key rejection, expiry, throttling, epoch revocation, storage errors and serialization of rotation against durable host actions/winning transitions. |",
+      "new": "| `server/test/vault/credentials_test.exs` | Create | Verify separate scopes, digests, format rejection, expiry, throttling, persisted epoch rejection after restart and storage errors; preserve independent credentials and ordinary logout/expiry behavior. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/test/vault/credential_tasks_test.exs` | Create | Exercise idempotent setup, owner-only/exclusive output, failure/crash boundaries, competing rotations, read-only status and rotation from a separate process. Never print test credentials into retained evidence. |",
+      "new": "| `server/test/vault/credential_tasks_test.exs` | Create | Exercise protected idempotent setup, file/DB crash boundaries, stopped replacement, read-only status and uncertain-commit readback; tasks never start Phoenix or print retained credentials. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/test/vault_web/auth_test.exs` | Create | Attempt forged roles/host access/cross-role events and verify key POST, clean redirects, renewed sessions, CSRF, logout, expiry and log filtering. Rotate from a separate process and reject stale actions/views/held-input completion while preserving independent credentials. |",
+      "new": "| `server/test/vault_web/auth_test.exs` | Create | Verify forged-role/access rejection, key POST, redirects, session renewal, CSRF, expiry/logout and log filtering. After stopped rotation/restart reject old host sessions/views/actions, preserve independent credentials, and prevent expired/logged-out actors finishing holds. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `tools/browser/tests/privacy_auth.spec.js` | Create | Cover M1-03/M1-04 with exact role allowlists, served-surface inspection, unauthenticated/forged-role attempts and host-key login/rotation. Assert without retaining secrets or unrestricted participant payloads. |",
+      "new": "| `tools/browser/tests/privacy_auth.spec.js` | Create | Cover M1-03/M1-04 allowlists, served surfaces, unauthorized/forged access and login; use fixture-owned stop/rotate/restart to reject stale host sessions without retaining secrets or unrestricted payloads. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `docs/runbook.md` | Create | Document initialization/protected credential files, host-key login/expiry/logout, explicit rotation and file/DB crash recovery, three scoped browser sessions, simulated service/arm, full playthrough and reset without exposing secrets. |",
+      "new": "| `docs/runbook.md` | Create | Document protected setup/login/expiry/logout, stopped/disarmed rotation, lost-key local stopping, stale-guard recovery after every Vault VM/task is stopped, file/DB readback and paused release recovery; include scoped browser play, simulated service/arm and reset. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/lib/vault/application.ex` | Create | Acquire the local maintenance guard before supervision and release only after the tree terminates. Supervise repository, PubSub, registries, independent game/box lifecycles, recovery coordinator and endpoint in dependency order. |",
+      "new": "| `server/lib/vault/application.ex` | Create | Acquire the local maintenance guard before supervision and release only after the tree terminates. Supervise repository, PubSub, registries, independent game/box lifecycles, recovery coordinator and endpoint in dependency order. |\n| `server/lib/vault/maintenance_guard.ex` | Create | Share exclusive-create admission and ownership-checked orderly cleanup across startup/offline credential tasks; existing/partial markers block, with no automatic stale reclamation or bypass. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "| `server/test/vault/credential_tasks_test.exs` | Create | Exercise protected idempotent setup, file/DB crash boundaries, stopped replacement, read-only status and uncertain-commit readback; tasks never start Phoenix or print retained credentials. |",
+      "new": "| `server/test/vault/credential_tasks_test.exs` | Create | Exercise protected idempotent setup, file/DB crash boundaries, stopped replacement, read-only status and uncertain-commit readback; tasks never start Phoenix or print retained credentials. |\n| `server/test/vault/maintenance_guard_test.exs` | Create | Exercise competing OS-process startup/tasks, shutdown ordering, crash/partial markers, canonical directory reuse and explicit offline recovery on the actual runtime/filesystem. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "**D1 implementation order:** Establish allowlisted projections and the shared `updates.ex` helper first. GameSession publishes adopted visible state using those projections, after commit when a durable transition is involved. Player/host LiveViews and later device sockets authorize their scope, subscribe once, then fetch bootstrap state and consume direct snapshots. Coalescing keeps only the newest permitted presentation state per scope while preserving required results and lifecycle events. Authorization-scope changes fence queued old-scope messages, and session changes require explicit rebind/welcome. Tests cover update-during-mount, unsolicited equal/older revisions, cross-role/cross-game leakage and old-scope delivery. Heartbeats alone publish no full snapshots. No second puzzle state owner or change to the raw wire contract is introduced.",
+      "new": "#### D3 maintenance boundary\n\nUse one persistent guard file, `vault.owner`, in the canonical owner-controlled local data directory containing the server database. All supported Vault application starts and local credential-mutating tasks derive the same guard; no alternate path or bypass is supported. Acquire it by exclusive creation before the supervision tree or task-owned mutation resources start. An existing, partial or unreadable marker blocks admission. Store a nonsecret ownership token and diagnostic process information; PID or age never authorizes stealing it. Use a local filesystem with verified exclusive-create behavior.\n\n`Vault.Application.start/2` acquires the guard before repository, game processes and endpoint startup. `stop/1` removes its own marker only after the supervision tree has terminated. A credential task acquires first, starts only required configuration/dependencies and task-owned storage, never starts Phoenix or :vault, and releases only after work/resources close. Abnormal exit or uncertain cleanup leaves the marker. Recovery requires an operator to stop every Vault VM and credential task using that directory and then explicitly remove the stale marker. No automatic reclamation is attempted. This deliberately sacrifices automatic restart after abnormal application exit; verify competing OS-process admission, orderly shutdown and partial/crashed markers on the selected runtime/filesystem before M1 acceptance. Do not hold a transaction on the gameplay database for the application lifetime.\n\nBefore maintenance, pause/disarm an unsolved game where host access is available. For a configured physical box, use local USB service to establish persisted gameplay inhibition, stopped motion and disabled outputs without reconciling command history. This stopping operation remains available when the host key is lost or ordinary Pause is disabled. Stop Vault before replacement. An already transmitted command may have acted before the local stop. Preserve known terminal outcomes and their Reset rules; retain pending/active/uncertain intents and recovery metadata without requiring closure before credential replacement. After restart/new login, Begin or continue the unchanged release-recovery procedure and refresh binding evidence. Rotation supplies no motion, cancellation claim, host disposition, local acknowledgement, reboot fence or permission to redeliver. If the physical stopped/disarmed condition cannot be established, keep that installation out of service; independent simulated software work remains available.\n\nUnder the guard, create the new protected key file exclusively. Complete and verify file and directory-entry durability before the short digest/epoch activation transaction; never overwrite/delete the prior output file. Known precommit failure/rollback leaves the prior credential active. A crash before activation may leave an inactive replacement; after commit the replacement is active. An uncertain result preserves both files and requires reading the active digest/epoch before retrying. Read-only status compares a supplied file without printing contents or activating an orphan. File/directory synchronization and SQLite durability need actual implementation evidence, not a claim of immunity to storage failure.\n\nHost credential digest/epoch mutation is unavailable while Vault runs. Restart loads the committed credential and rejects old host cookies before private views or actions. Ordinary scope/enabled/expiry checks and qualification-time controller validity remain, including after waits; an expired or logged-out actor cannot complete a hold. Restart's new game session independently clears queued input, leases and arms. Player/device credentials and desired assignments remain, while live grants must be re-established normally. Test the lost-key path with terminal and unresolved simulated histories, and retain separate M4 physical stopping evidence.\n\n**D1 implementation order:** Establish allowlisted projections and the shared `updates.ex` helper first. GameSession publishes adopted visible state using those projections, after commit when a durable transition is involved. Player/host LiveViews and later device sockets authorize their scope, subscribe once, then fetch bootstrap state and consume direct snapshots. Coalescing keeps only the newest permitted presentation state per scope while preserving required results and lifecycle events. Authorization-scope changes fence queued old-scope messages, and session changes require explicit rebind/welcome. Tests cover update-during-mount, unsolicited equal/older revisions, cross-role/cross-game leakage and old-scope delivery. Heartbeats alone publish no full snapshots. No second puzzle state owner or change to the raw wire contract is introduced."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "explicitly rotates it after loss or exposure",
+      "new": "explicitly replaces it during stopped/disarmed local maintenance after loss or exposure"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "explicit rotation and revocation tests.",
+      "new": "stopped/disarmed rotation, persisted session invalidation, maintenance exclusion and crash-recovery tests."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "Test the exact setup/task arguments and protected credential paths from a clean environment before publishing the final launch recipe.",
+      "new": "Test exact setup/task arguments and protected credential paths from a clean environment; verify shared startup/maintenance exclusion and stopped-rotation/stale-marker recovery on isolated data before publishing the launch recipe."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "Exclude secrets, local databases and journals,",
+      "new": "Exclude secrets, configured runtime data directories and guard files, local databases and journals,"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-1",
+      "old": "firmware component locks and blocked hardware combinations.",
+      "new": "firmware component locks and blocked hardware combinations; record local-filesystem exclusive-create and protected-file durability checks."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "zoom8-1-1",
+      "old": "Provide one local host login, separate player join credentials, and distinct credentials for every CYD and the box. Keep secrets out of source control, URLs retained after joining, screenshots, logs, and DTOs. Store credential hashes where appropriate and document initial provisioning and rotation. Exchange a player join token for a scoped browser session and redirect to a clean route. The host role is never granted by choosing a URL parameter.",
+      "new": "Provide one local host login, separate player join credentials, and distinct credentials for every CYD and the box. Keep secrets out of source control, URLs retained after joining, screenshots, logs, and DTOs. Store credential hashes where appropriate and document initial provisioning and rotation. Exchange a player join token for a scoped browser session and redirect to a clean route. The host role is never granted by choosing a URL parameter.\n\nThe generated host access key is replaced only during stopped/disarmed local maintenance. One persistent exclusive-create guard in the canonical owned local data directory excludes Vault startup and other local credential-mutating tasks. Acquire before application or task-owned storage starts; credential tasks never start Phoenix. Release only after orderly shutdown/resource closure. A crashed, partial or unreadable marker blocks both modes until an operator stops every Vault VM/task and explicitly removes the stale marker; no bypass or age/PID stealing is supported.\n\nDurably retain the protected replacement file before committing its digest and incremented epoch; preserve files and inspect active state after uncertain activation without activating an orphan. Restart paused and reject old host sessions. Preserve independent credentials, assignments and release history. Ordinary authorization, expiry and logout remain enforced; host-key replacement adds no rotation-vs-win transaction coupling. Local physical stopping remains possible without host login; after new login, complete the unchanged recovery procedure where required. Rotation cannot cancel a transmitted release, close uncertainty or authorize redelivery."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "zoom8-1-1",
+      "old": "- `mix vault.init`: idempotent creation of the local host/game setup; write generated credentials to a requested protected local file, and do not rotate existing credentials implicitly.",
+      "new": "- `mix vault.init`: idempotent creation of the local host/game setup; write generated credentials to a requested protected local file, and do not rotate existing credentials implicitly.\n- `mix vault.host.rotate --output PATH`: replace the host key during stopped/disarmed maintenance using the common guard, protected-file-first activation and read-only status/readback; do not start Phoenix or require the lost old key."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "zoom8-1-1",
+      "old": "These are requirements for the implementation deliverable, not commands supplied by this specification package. Codex must provide the actual scripts/tasks and verify their documented syntax.",
+      "new": "These are requirements for the implementation deliverable, not commands supplied by this specification package. Codex must provide the actual scripts/tasks and verify their documented syntax. All supported Vault startup and credential-mutating entry points enforce the same guard. Document stale-marker availability costs and verify runtime/filesystem behavior."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "zoom8-1-1",
+      "old": "**M1-04 — Access boundaries.** As an unauthenticated visitor, player A, and read-only observer, attempt host operations, B’s route, forged role parameters, and direct events. Expected: access denied at the server. Changing a URL or hiding/showing a button never grants authority. Join/device secrets do not appear in logs or page content.",
+      "new": "**M1-04 — Access boundaries.** As an unauthenticated visitor, player A, and read-only observer, attempt host operations, B’s route, forged role parameters, and direct events. Expected: access denied at the server. Changing a URL or hiding/showing a button never grants authority. Join/device secrets do not appear in logs or page content. For generated-key maintenance, race running/starting/stopping applications and separate credential tasks: only one guard owner proceeds and rejected admission performs no credential write. Kill an owner and leave a partial marker; both modes stay blocked without age/PID stealing until every fixture-owned VM/task is stopped and explicit removal permits one new owner. Test protected existing/symlink output rejection, failed writes, interruption before/after durable file creation and database activation, lost commit replies and readback without plaintext/orphan activation. After stop/replace/restart, reject old host keys/cookies, accept the new key, preserve independent credentials/assignments and restore progress paused with cleared live authority. Ordinary expiry/logout still prevents host-held qualification. With terminal and unresolved simulated histories, exercise lost-key local stop/inhibit, stopped replacement, restart/new login and unchanged recovery; preserve original identity/outcome and terminal Reset rules, with no motion, cancellation claim, closure or redelivery from rotation. Physical stopping evidence remains M4 work."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| Simulated box | `server/lib/vault/simulated_box.ex` | Implement the box interface with modeled service readiness, arm consumption, journal deduplication, status transitions and fault injection. |",
+      "new": "| Simulated box | `server/lib/vault/simulated_box.ex` | Own the in-process runtime, independent model instance, scheduling and durable store connection; delegate box-local transitions to the shared pure model. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| Simulated box | `server/lib/vault/simulated_box.ex` | Own the in-process runtime, independent model instance, scheduling and durable store connection; delegate box-local transitions to the shared pure model. |",
+      "new": "| Simulated box | `server/lib/vault/simulated_box.ex` | Own the in-process runtime, independent model instance, scheduling and durable store connection; delegate box-local transitions to the shared pure model. |\n| Shared simulated box model | `server/lib/vault/simulated_box/model.ex` | Evaluate box-local state/events/time into proposed state and typed effects without I/O, processes or scheduling; serve both simulated runtimes. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "The simulated implementations also model persistent recovery-service inhibition, local reconciliation, reboot fences and administrative closure; these are explicitly modeled host actions and never physical observations.",
+      "new": "The simulated implementations model the box-local recovery service, reconciliation and reboot fences; host administrative closure remains in GameSession/GameStore. Modeled service actions never claim physical observations."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "Both adapters require explicit arm permission, deduplicate command identities and distinguish accepted, motion-complete, confirmed, uncertain and failed outcomes. The simulator models reference/locked readiness through a clearly labeled host action, consumes its arm on command acceptance and supports disconnect, reboot, lost-acknowledgement and interrupted-motion injection. It keeps physical position unknown, basis unverified and command confirmation null; it never reports physical position confirmation. Its lid animation is presentation only. The simulated implementations model the box-local recovery service, reconciliation and reboot fences; host administrative closure remains in GameSession/GameStore. Modeled service actions never claim physical observations. Host-only disposition controls remain outside the unchanged v1 box DTO.",
+      "new": "Both adapters require explicit arm permission, deduplicate command identities and distinguish accepted, motion-complete, confirmed, uncertain and failed outcomes. The simulator models reference/locked readiness through a clearly labeled host action, consumes its arm on command acceptance and supports disconnect, reboot, lost-acknowledgement and interrupted-motion injection. It keeps physical position unknown, basis unverified and command confirmation null; it never reports physical position confirmation. Its lid animation is presentation only. The simulated implementations model the box-local recovery service, reconciliation and reboot fences; host administrative closure remains in GameSession/GameStore. Modeled service actions never claim physical observations. Host-only disposition controls remain outside the unchanged v1 box DTO.\n\nBoth simulated runtimes use the compiled pure `Vault.SimulatedBox.Model`, with separate state instances, durable databases and lifecycles. The model owns box-local readiness, arm consumption, command identity/deduplication and capacity, deadline-first motion/interruption, reboot restoration and local recovery-service/seal/reconciliation/clear transitions. It returns proposed state and typed effects from validated events and current local monotonic time; it performs no I/O or scheduling.\n\nGameSession/GameStore retain puzzle qualification, release identity creation, dispatch retirement, host authorization, closed_no_replay, Close/preparation arbitration and Reset eligibility. The model records only the local operator attestation of a host disposition or replacement preparation; it cannot create that host authorization. Runtime adapters execute effects with independent timers and storage ownership; transport adapters own wire validation, authentication, status retries and connection generations. Neither adapter duplicates box-local transition decisions. Simulation selection and truthful v1 projections remain unchanged.\n\nUse a thin compiled `Vault.SimulatedBox.Store` over Exqlite/SQLite for the bounded durable subset, with one separate file/connection per box instance outside the server checkpoint. Explicit initialization creates a new store; reopening an expected store never silently replaces missing, corrupt or unsupported history. Run the same protocol-derived traces with literal expected observations through both adapters; agreement between adapters alone is insufficient because the model is shared."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "The wrapper loads that locked environment without starting the Phoenix application in the client process.",
+      "new": "The wrapper loads that locked environment and the compiled shared model/store without starting the Phoenix application or server Repo in the client process."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "The fake box has its own protected temporary, versioned command journal, separate from the server checkpoint; tests preserve it across simulated reboot and inject storage/interruption failures.",
+      "new": "The fake box uses its own protected fixture-owned SQLite database through the shared Store, separate from the server checkpoint and in-process simulator store; tests preserve it across simulated reboot and inject storage/interruption failures."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "local databases and journals,",
+      "new": "local databases and journals including simulator SQLite/WAL/SHM files,"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "simulator transport, firmware component locks",
+      "new": "simulator transport, tested Exqlite/SQLite versions and effective durability settings, firmware component locks"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "Define Phoenix/LiveView, Ecto SQLite, raw WebSocket and esbuild-wrapper dependencies",
+      "new": "Define Phoenix/LiveView, Ecto SQLite, an explicit compatible Exqlite dependency for direct simulator storage, raw WebSocket and esbuild-wrapper dependencies"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "Centralize application defaults and runtime selection;",
+      "new": "Centralize application defaults, independent simulator database paths and runtime selection;"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `server/lib/vault/clock.ex` | Create | Define monotonic-time and scheduling seams used by the session; keep persisted wall-clock audit values separate. |",
+      "new": "| `server/lib/vault/clock.ex` | Create | Define monotonic-time and scheduling seams used by the session; keep persisted wall-clock audit values separate. |\n| `server/lib/vault/simulated_box/model.ex` | Create | Implement the shared pure box-local state/effect contract with explicit time, binding, persistence completion and recovery inputs; no I/O or process startup. |\n| `server/test/vault/simulated_box/model_test.exs` | Create | Exercise deterministic box transition, deadline, identity/capacity and recovery cases against independent literal expectations without Phoenix, storage or sockets. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `server/lib/vault/simulated_box.ex` | Create | Model readiness, arm consumption, journal outcomes and failures plus persistent recovery-service inhibition, local metadata and reboot/clear fences. Preserve simulation labeling and unknown physical position. |",
+      "new": "| `server/lib/vault/simulated_box.ex` | Create | Own the in-process runtime, independent model instance/store connection and timers; execute shared-model effects through normal box interfaces, preserving simulated truthfulness and GameSession-independent lifecycle. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "never dispatch a retired ID or re-envelope a queued old effect with replacement bindings.",
+      "new": "never dispatch a retired ID or re-envelope a queued old effect with replacement bindings. Bridge current binding/challenge events and replies for the in-process adapter without renewing timestamps or authority."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `server/lib/vault/simulated_box.ex` | Create | Own the in-process runtime, independent model instance/store connection and timers; execute shared-model effects through normal box interfaces, preserving simulated truthfulness and GameSession-independent lifecycle. |",
+      "new": "| `server/lib/vault/simulated_box.ex` | Create | Own the in-process runtime, independent model instance/store connection and timers; execute shared-model effects through normal box interfaces, preserving simulated truthfulness and GameSession-independent lifecycle. |\n| `server/lib/vault/simulated_box/store.ex` | Create | Provide standalone Exqlite storage for versioned bounded durable model state, explicit initialization, short durable transactions, operation readback and separate per-instance files; no server checkpoint access. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `server/test/vault/simulated_box_test.exs` | Create | Check modeled service/arm requirements, single-ID execution and truthful simulated state. |",
+      "new": "| `server/test/vault/simulated_box_test.exs` | Create | Run literal protocol-derived conformance through the in-process adapter with independent clock/store/effect instrumentation; include actual reloads and GameSession-independent lifecycle. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `server/test/vault/simulated_box_test.exs` | Create | Run literal protocol-derived conformance through the in-process adapter with independent clock/store/effect instrumentation; include actual reloads and GameSession-independent lifecycle. |",
+      "new": "| `server/test/vault/simulated_box_test.exs` | Create | Run literal protocol-derived conformance through the in-process adapter with independent clock/store/effect instrumentation; include actual reloads and GameSession-independent lifecycle. |\n| `server/test/vault/simulated_box/store_test.exs` | Create | Exercise real SQLite initialization, version/corruption refusal, persistence/commit-readback failures, crash/reload boundaries and retained clear authorization with isolated files. |\n| `server/test/support/box_conformance.ex` | Create | Define protocol-derived event traces and literal observable expectations for both adapters; never call the model to generate expected outcomes. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "**D1 implementation order:** Establish allowlisted projections and the shared `updates.ex` helper first. GameSession publishes adopted visible state using those projections, after commit when a durable transition is involved. Player/host LiveViews and later device sockets authorize their scope, subscribe once, then fetch bootstrap state and consume direct snapshots. Coalescing keeps only the newest permitted presentation state per scope while preserving required results and lifecycle events. Authorization-scope changes fence queued old-scope messages, and session changes require explicit rebind/welcome. Tests cover update-during-mount, unsolicited equal/older revisions, cross-role/cross-game leakage and old-scope delivery. Heartbeats alone publish no full snapshots. No second puzzle state owner or change to the raw wire contract is introduced.",
+      "new": "#### Shared simulated-box model and persistence\n\nImplement the complete box-local contract for M1; M2 adds the external adapter and transport conformance, not a second semantic model. A pure model transition takes state, a validated event and current local monotonic time. Adapters establish event provenance; the model checks supplied boot/session/connection/generation, command freshness and recovery context. Volatile bindings, arms, reservations, motion, challenge times and timer generations never reload as authority. Persist accepted identities/outcomes and versioned service/reconciliation/clear state; historical binding references remain evidence only.\n\nExpire watchdog/travel deadlines before acceptance, steps, persistence-completion and motion-completion events. A newly accepted command creates an inactive reservation and a persistence effect. Only a matching successful durable result may advance that reservation; immediately before the first step, recheck time, freshness, bindings, arm reservation, inhibit and freeze. Failed or ambiguous writes authorize zero steps. Stop/deactivate modeled motion before terminal or interrupted persistence; no store write runs while motion is active. Reboot changes boot identity, clears live authority and restores unfinished accepted intents as interrupted/uncertain without continuation. Transport replacement retains the runtime/store but clears arm and old-generation authority and interrupts motion; GameSession restart cannot erase box history. Preserve every accepted Stage 7 service, seal, acknowledgement, capacity, absent-ID and clear-authorization rule.\n\n`Vault.SimulatedBox` is supervised independently of GameSession and owns its instance, scheduler and store connection. The external runtime owns another instance, scheduler and store connection independently of the Mint owner/runner. Both enforce the 1,500 ms server-silence deadline by the next bounded modeled step. Effects and their completions are generation-tagged and bounded; a late heartbeat or completion cannot revive a stroke. Scheduling and persistence adapters execute decisions rather than reimplementing readiness, deduplication or recovery policy.\n\nFor the in-process adapter, GameSession's normal 100 ms challenge scheduler supplies actual challenge events through BoxLink, bound to the selected simulator and current committed session. Preserve each challenge's original monotonic issuance/enqueue time and binding generation across the internal queue; delayed delivery cannot refresh that timestamp. The runtime accepts these trusted internal events only from its bound server owner, applies deadline checks before processing them, and returns actual challenge replies through BoxLink for normal server freshness validation. Monitor owner loss and deliver explicit session/rebind invalidation without rebooting the box runtime. Model step timers, snapshots, queries and the existence of a process never manufacture heartbeat freshness. This uses typed internal messages with no additional network transport.\n\nUse the explicit locked Exqlite dependency for a versioned bounded singleton state record in a separate file-backed SQLite database per box instance. Validate the durable payload and preserve a store revision/operation identity for commit readback. Use short transactions, WAL, synchronous=FULL and an initial 100 ms busy timeout; verify effective settings and actual write/failure latency on the selected stack. The busy timeout does not bound all disk I/O or establish physical durability. The in-process demo uses a persistent configured path; external fixtures use protected independent files retained across intended reboots. An ambiguous commit keeps the runtime inactive/inhibited until readback; it cannot restore permission for an old stroke. Clear authorization is persisted and verified outside the journal subset before entry erasure, and remains through the required reboot/new-session fence and durable service exit even if both subsets occupy the same database record. No shared GameStore connection, custom atomic JSON-file replacement protocol or empty-history fallback is introduced.\n\n`server/test/support/box_conformance.ex` contains hand-authored events and literal observable expectations derived from protocol v1 and the acceptance cases, never expectations calculated by calling the model. Exercise each adapter through its public boundary with distinct state, clock, database and effect instrumentation. Cover readiness/arm consumption, fingerprints/capacity, commit-before-first-step and ambiguous writes, independent transport/box/GameSession restart, 1,499/1,500 ms silence, late completion before queued timeout delivery, expiry during persistence, full recovery/clear fences and v1 truthfulness. Stall the in-process challenge producer and deliver queued old-generation/old-timestamp challenges; the independent runtime must expire silence and reject revival. Observe modeled-step counts, emitted statuses, persistence traces and actual database reloads. Shared-code agreement cannot independently validate the model; retain actual external WS/WSS/fault tests and later independent firmware host checks as separate evidence.\n\n**D1 implementation order:** Establish allowlisted projections and the shared `updates.ex` helper first. GameSession publishes adopted visible state using those projections, after commit when a durable transition is involved. Player/host LiveViews and later device sockets authorize their scope, subscribe once, then fetch bootstrap state and consume direct snapshots. Coalescing keeps only the newest permitted presentation state per scope while preserving required results and lifecycle events. Authorization-scope changes fence queued old-scope messages, and session changes require explicit rebind/welcome. Tests cover update-during-mount, unsolicited equal/older revisions, cross-role/cross-game leakage and old-scope delivery. Heartbeats alone publish no full snapshots. No second puzzle state owner or change to the raw wire contract is introduced."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `tools/device-simulator` | Create | Launch explicit controller/box scenarios using the server's locked development/test Mix environment without starting Phoenix in the client process. Require endpoint, identity, credential path and scenario; redact secrets and require isolated server-selected simulation for fake box scenarios. |",
+      "new": "| `tools/device-simulator` | Create | Launch the locked development/test Mix project from server/ using mix run --no-start --no-halt ../tools/simulator/cli.exs and scenario args; require isolated endpoint/identity/credential inputs and an independent box DB path for fake-box scenarios. No Mix.install or second Mix project. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "Validate bounded args and start locked dependencies without Phoenix or credential output.",
+      "new": "Validate bounded args and explicitly start only required client/storage applications and dependencies; load the compiled shared model/store without :vault, Phoenix endpoint, GameSession supervisors or server Repo, and never output credentials."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `tools/simulator/box_runtime.exs` | Create | Own external fake-box motion, independent watchdog/step timers, readiness and journal transitions. Monitor transport ownership, reject stale generations, stop before persistence/reporting and revalidate after intent writes and before completion. |",
+      "new": "| `tools/simulator/box_runtime.exs` | Create | Own an external shared-model instance, independent store connection, watchdog/step timers and bounded generation-tagged effects. Monitor transport, stop before persistence/reporting, and revalidate persistence completions/current time without duplicating model policy. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `tools/simulator/box_model.exs` | Create | Keep modeled transition rules explicit in time, binding, readiness, deduplication and interruption inputs. The box runtime owns execution; preserve any shared-core decision separately tracked under S5-03, without creating a second authoritative model here. |\n",
+      "new": ""
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "| `tools/simulator/box_store.exs` | Create | Persist the external runtime journal and recovery-service metadata in its protected versioned state file, independent of server checkpoint and replaceable transport. Write only while modeled motion is inactive, recheck before first step, and retain uncertainty/inhibit across reboot. |\n",
+      "new": ""
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "Provide controlled WS/WSS pressure peers, bounded byte/time setup, operation/queue instrumentation and a blocked transport stub for independent runtime watchdog tests.",
+      "new": "Provide protected per-instance SQLite files, literal shared conformance traces, controlled WS/WSS pressure peers, bounded byte/time setup, operation/queue instrumentation and a blocked transport stub for independent runtime watchdog tests."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "Also complete recovery close-out/new round without physical-position claims.",
+      "new": "Also run the literal conformance traces externally, verify independent box/transport/GameSession termination and reload, and complete recovery close-out/new round without physical-position claims."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "separate actual WS/WSS backpressure evidence and independent fake-box watchdog results.",
+      "new": "separate actual WS/WSS backpressure evidence, independent fake-box watchdog results, per-adapter conformance and shared-code evidence limits."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "**Verification and exit:** Execute M2-T1–M2-T7 and M2-01–M2-08, not just structural schema validation. Measure the actual storage-lock error latency. Prove recovery after each commit/dispatch/ack crash boundary preserves the same intent without automatic resend. Repeat the browser demo after integration. Freeze the wire contract only after observed conformance, with shared schema/fixtures checked unchanged unless a separately accepted change is recorded. Include complete unknown/interrupted recovery through closure and a new round. For WS and WSS separately, demonstrate actual backed-up sends within finite setup limits; inability to induce pressure is incomplete, not a pass. Independently block a live transport stub beyond 1,500 ms to prove the runtime watchdog rather than only an earlier send timeout. Exercise queued writes, delayed completions and journal/write failure boundaries.",
+      "new": "**Verification and exit:** Execute M2-T1–M2-T7 and M2-01–M2-08, not just structural schema validation. Measure the actual storage-lock error latency. Prove recovery after each commit/dispatch/ack crash boundary preserves the same intent without automatic resend. Repeat the browser demo after integration. Freeze the wire contract only after observed conformance, with shared schema/fixtures checked unchanged unless a separately accepted change is recorded. Include complete unknown/interrupted recovery through closure and a new round. For WS and WSS separately, demonstrate actual backed-up sends within finite setup limits; inability to induce pressure is incomplete, not a pass. Independently block a live transport stub beyond 1,500 ms to prove the runtime watchdog rather than only an earlier send timeout. Exercise queued writes, delayed completions and journal/write failure boundaries. Record each adapter against the same independent expected traces, its own durable store/crash probes and client no-start isolation. Shared-model agreement alone is not proof of semantic correctness."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-2",
+      "old": "client-owned lifecycle, locked dependencies, active-once delivery, independent fake-box persistence, bounded frame handling and separate raw fault injection.",
+      "new": "client-owned lifecycle, locked dependencies, active-once delivery, one shared pure box model/store with independent runtime/state/database instances, bounded frame handling and separate raw fault injection."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "zoom8-1-2",
+      "old": "| `Vault.BoxLink` | Box connection lifecycle, read-only recovery queries and eligible committed dispatch. Never decides a solve, re-envelopes stale effects or dispatches permanently retired intents. Explicit administrative closure belongs to the authorized game/session transaction. |",
+      "new": "| `Vault.BoxLink` | Box connection lifecycle, read-only recovery queries and eligible committed dispatch. Never decides a solve, re-envelopes stale effects or dispatches permanently retired intents. Explicit administrative closure belongs to the authorized game/session transaction. |\n| `Vault.SimulatedBox.Model` | Pure shared box-local transitions from validated events and explicit time; no host disposition authority, I/O or scheduling. |\n| `Vault.SimulatedBox` / external box runtime | Independent model instances, lifecycle/timers, store connections and effect execution. |\n| `Vault.SimulatedBox.Store` | Thin Exqlite/SQLite adapter for each instance’s independent versioned durable state, separate from the server checkpoint. |"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "zoom8-1-2",
+      "old": "Also model the complete service-inhibit/seal/reboot/close-out/local-attestation/Reset path and its failures; simulated closure does not claim physical inspection.",
+      "new": "Also model the box-local service-inhibit/seal/reboot/local-attestation/clear path and its failures. Host disposition/Reset decisions remain in GameSession/GameStore; simulated actions never claim physical inspection."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "zoom8-1-2",
+      "old": "Provide a simulated implementation of the same BoxLink/actuator interface. It must require arming, consume a single command ID, report accepted then motion-complete state, deduplicate commands, and support injected disconnect, reboot, lost acknowledgement and interrupted motion. In simulation only, a host action can establish a simulated reference/locked position. Also model the box-local service-inhibit/seal/reboot/local-attestation/clear path and its failures. Host disposition/Reset decisions remain in GameSession/GameStore; simulated actions never claim physical inspection.",
+      "new": "Provide a simulated implementation of the same BoxLink/actuator interface. It must require arming, consume a single command ID, report accepted then motion-complete state, deduplicate commands, and support injected disconnect, reboot, lost acknowledgement and interrupted motion. In simulation only, a host action can establish a simulated reference/locked position. Also model the box-local service-inhibit/seal/reboot/local-attestation/clear path and its failures. Host disposition/Reset decisions remain in GameSession/GameStore; simulated actions never claim physical inspection.\n\nBoth simulated runtimes use the compiled pure `Vault.SimulatedBox.Model`, with separate state instances, durable databases and lifecycles. The model owns box-local readiness, arm consumption, command identity/deduplication and capacity, deadline-first motion/interruption, reboot restoration and local recovery-service/seal/reconciliation/clear transitions. It returns proposed state and typed effects from validated events and current local monotonic time; it performs no I/O or scheduling.\n\nGameSession/GameStore retain puzzle qualification, release identity creation, dispatch retirement, host authorization, closed_no_replay, Close/preparation arbitration and Reset eligibility. The model records only the local operator attestation of a host disposition or replacement preparation; it cannot create that host authorization. Runtime adapters execute effects with independent timers and storage ownership; transport adapters own wire validation, authentication, status retries and connection generations. Neither adapter duplicates box-local transition decisions. Simulation selection and truthful v1 projections remain unchanged.\n\nUse a thin compiled `Vault.SimulatedBox.Store` over Exqlite/SQLite for the bounded durable subset, with one separate file/connection per box instance outside the server checkpoint. Explicit initialization creates a new store; reopening an expected store never silently replaces missing, corrupt or unsupported history. Run the same protocol-derived traces with literal expected observations through both adapters; agreement between adapters alone is insufficient because the model is shared.\n\nComplete these semantics for the M1 in-process simulator. The M2 external runtime loads the same compiled model/store from the locked Mix project without starting Phoenix or the server Repo. Each database supports explicit initialization, failure/readback and crash/reload tests. Keep required persistence outside active modeled motion and preserve every protocol recovery fence."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "zoom8-1-2",
+      "old": "**M0-04 — Test seams.** Pure puzzle tests run without Phoenix, a database, network, or hardware. Timing tests control monotonic time and scheduled messages deterministically. Firmware host tests substitute transport, touch, nonvolatile storage, clock, and actuator interfaces. Do not use multi-second sleeps to prove deadline boundaries.",
+      "new": "**M0-04 — Test seams.** Pure puzzle tests run without Phoenix, a database, network, or hardware. Timing tests control monotonic time and scheduled messages deterministically. Firmware host tests substitute transport, touch, nonvolatile storage, clock, and actuator interfaces. Do not use multi-second sleeps to prove deadline boundaries. Exercise the shared pure box model without Phoenix, database or network."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "zoom8-1-2",
+      "old": "**M1-01 — One game, multiple views.** Create one game, open separate A/B participant sessions and the host console, then reload each. Expected: one authoritative game process, preserved state, no per-mount game creation, and a clearly labeled simulated box. Start is host-only and requires both controllers plus simulated readiness.",
+      "new": "**M1-01 — One game, multiple views.** Create one game, open separate A/B participant sessions and the host console, then reload each. Expected: one authoritative game process, preserved state, no per-mount game creation, and a clearly labeled simulated box. Start is host-only and requires both controllers plus simulated readiness. Run the in-process adapter against protocol-derived literal conformance expectations; verify its independent runtime and durable store survive a GameSession-only restart. Load the compiled model/store from the locked Mix environment without starting :vault, Phoenix or the server Repo."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "zoom8-1-2",
+      "old": "**M2-04 — Persistence failure.** Use the initial 100 ms SQLite `busy_timeout`; hold a write lock and separately inject a write failure. Measure a bounded error path targeting less than the 400 ms input lease on the tested machine, without claiming hard real-time guarantees. No success, uncommitted state, or actuator effect may escape. Enter a volatile recovery pause with a `storage_error` diagnostic; retain the committed checkpoint. No transaction waits on the network. Record measured latency and configuration changes.",
+      "new": "**M2-04 — Persistence failure.** Use the initial 100 ms SQLite `busy_timeout`; hold a write lock and separately inject a write failure. Measure a bounded error path targeting less than the 400 ms input lease on the tested machine, without claiming hard real-time guarantees. No success, uncommitted state, or actuator effect may escape. Enter a volatile recovery pause with a `storage_error` diagnostic; retain the committed checkpoint. No transaction waits on the network. Record measured latency and configuration changes. Exercise each independent simulator SQLite store: expected-file missing/corrupt/version refusal, failures before/after commit, lost commit reply and crash/reload. Verify effective durability settings and measured latency without treating the busy timeout as a disk-I/O bound."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "zoom8-1-2",
+      "old": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected. After Begin recovery, deliver a late terminal outcome and assert Reset still requires that recovery's host disposition; terminal observations cannot bypass active recovery.",
+      "new": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected. After Begin recovery, deliver a late terminal outcome and assert Reset still requires that recovery's host disposition; terminal observations cannot bypass active recovery. Run the same literal expected recovery traces through both simulator adapters with separate state/store/timing fixtures; expectation generation never invokes the model. Separately terminate transport, box runtime and GameSession and inspect persisted history and modeled-step counts. Adapter agreement alone cannot validate their shared semantics."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "zoom8-1-2",
+      "old": "**M2-08 — Backpressure and acknowledgements.** Slow a simulated connection and lose command/status acknowledgements. Snapshot coalescing stays bounded and does not discard required results. Status retries preserve sequence/content, apply no duplicate transition, and stop at the documented retry limit. Delayed cosmetic feedback neither repeats sound nor drives the motor. For WS and WSS separately, stop a controlled peer reading until instrumentation establishes real send backpressure within finite byte/time setup limits; account for TLS buffering and mark inability to induce pressure incomplete. Verify 100 ms socket send timeout, 200 ms complete-write and 100 ms teardown guards on the locked stack, bounded producer admission, one-write loop turns and deadline processing between several slow queued writes. Exercise data/control/upgrade paths, overflow, partial/error/timeout and late-success outcomes; retire the generation and never replay old envelopes after reconnect. Separately block a live transport stub beyond 1,500 ms in deterministic fake-box runtime tests: expire silence by the next bounded modeled step, deactivate motion and retain uncertainty without any successful send. Deliver completion before the queued watchdog message but after its deadline; it must not report success. Delay intent persistence past expiry and assert zero first steps; terminal/interruption I/O starts only after motion is inactive. Record actual WS/WSS scheduling/cleanup limits without claiming hard real-time guarantees. Deliver a write completion after its absolute deadline but before the queued timeout message: the runner must retire the generation and terminate the owner immediately, without a further close window. The additional 100 ms close allowance applies only to returned send errors/socket timeouts.",
+      "new": "**M2-08 — Backpressure and acknowledgements.** Slow a simulated connection and lose command/status acknowledgements. Snapshot coalescing stays bounded and does not discard required results. Status retries preserve sequence/content, apply no duplicate transition, and stop at the documented retry limit. Delayed cosmetic feedback neither repeats sound nor drives the motor. For WS and WSS separately, stop a controlled peer reading until instrumentation establishes real send backpressure within finite byte/time setup limits; account for TLS buffering and mark inability to induce pressure incomplete. Verify 100 ms socket send timeout, 200 ms complete-write and 100 ms teardown guards on the locked stack, bounded producer admission, one-write loop turns and deadline processing between several slow queued writes. Exercise data/control/upgrade paths, overflow, partial/error/timeout and late-success outcomes; retire the generation and never replay old envelopes after reconnect. Separately block a live transport stub beyond 1,500 ms in deterministic fake-box runtime tests: expire silence by the next bounded modeled step, deactivate motion and retain uncertainty without any successful send. Deliver completion before the queued watchdog message but after its deadline; it must not report success. Delay intent persistence past expiry and assert zero first steps; terminal/interruption I/O starts only after motion is inactive. Record actual WS/WSS scheduling/cleanup limits without claiming hard real-time guarantees. Deliver a write completion after its absolute deadline but before the queued timeout message: the runner must retire the generation and terminate the owner immediately, without a further close window. The additional 100 ms close allowance applies only to returned send errors/socket timeouts. Apply model deadline/persistence/effect-order assertions through both runtime adapters; preserve actual WS/WSS backpressure and blocked-Mint-owner evidence as separate external-client checks."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-3",
+      "old": "Mint's active-once mode controls receiving; writes can still block. Configure `send_timeout: 100` milliseconds through `transport_opts` for both WS and verified WSS, covering upgrade/request, data and control writes. Before entering a write call, obtain the runner's acknowledgement that its operation ID, connection generation and absolute monotonic deadline are registered. The runner, which performs no socket/journal I/O or blocking scenario waits, enforces a separate 200 ms whole-operation deadline. It checks that deadline before accepting completion; a late completion cannot defeat expiry because it precedes a timeout message in the mailbox. The owner must obtain completion acceptance before further protocol work. At expiry the runner retires the generation and terminates the owner immediately. These are proposed simulator budgets to verify on the locked TCP/TLS stack; they do not extend any protocol freshness or motion deadline.\n\nAdmit at most one active write and nine queued frames, totaling at most 41,280 encoded bytes. Bound producer admission as well as the internal queue so asynchronous producers cannot grow an unbounded mailbox. Overflow is a connection fault, not permission to discard required commands/results/statuses. Keep at most one replaceable heartbeat work item and sample complete current input when dispatching it. Keep identical envelopes only for the specified same-connection retries. Perform one write per loop turn, then service input and expire deadlines; do not drain a queue as one write batch or send catch-up retries. Sweep monotonic deadlines before and after transport operations and before queued input/retry/completion events.\n\nAny send error, socket timeout or whole-operation overrun is an ambiguous-delivery failure. Invalidate the generation and pending authority before teardown; do not retry the failed bytes, reuse that connection or add a WebSocket close-frame write. For a returned send error or socket timeout, permit local close under a further 100 ms runner deadline, then terminate the owner if necessary. Whole-operation overruns terminate immediately at their 200 ms deadline without another close window. Reconnect only after the old owner is down, using a new generation, welcome, current state and neutral/new-press input. Old results, socket events, frames and timers cannot regain authority. A lost acknowledgement does not establish that the original action failed to execute.",
+      "new": "Bound simulator writes with socket timeouts, independently supervised operation/teardown deadlines, and finite producer admission and encoded queues. A send error, timeout or operation overrun retires the connection generation and pending authority as ambiguous delivery; failed bytes are never retried, and reconnect waits for the old transport owner to exit. The fake-box runtime retains independent motion/watchdog ownership through these failures. The [D6 bounded-write implementation in Detailed Implementation Plan §3](#d6-bounded-write-implementation) specifies the budgets, registration/completion handshake, loop fairness and teardown sequencing, with required WS/WSS verification; those budgets cannot extend protocol freshness or motion deadlines."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "zoom8-1-3",
+      "old": "**Verification and exit:** Execute M2-T1–M2-T7 and M2-01–M2-08, not just structural schema validation. Measure the actual storage-lock error latency. Prove recovery after each commit/dispatch/ack crash boundary preserves the same intent without automatic resend. Repeat the browser demo after integration. Freeze the wire contract only after observed conformance, with shared schema/fixtures checked unchanged unless a separately accepted change is recorded. Include complete unknown/interrupted recovery through closure and a new round. For WS and WSS separately, demonstrate actual backed-up sends within finite setup limits; inability to induce pressure is incomplete, not a pass. Independently block a live transport stub beyond 1,500 ms to prove the runtime watchdog rather than only an earlier send timeout. Exercise queued writes, delayed completions and journal/write failure boundaries. Record each adapter against the same independent expected traces, its own durable store/crash probes and client no-start isolation. Shared-model agreement alone is not proof of semantic correctness.",
+      "new": "#### D6 bounded-write implementation\n\nMint's active-once mode controls receiving; writes can still block. Configure `send_timeout: 100` milliseconds through `transport_opts` for both WS and verified WSS, covering upgrade/request, data and control writes. Before entering a write call, obtain the runner's acknowledgement that its operation ID, connection generation and absolute monotonic deadline are registered. The runner, which performs no socket/journal I/O or blocking scenario waits, enforces a separate 200 ms whole-operation deadline. It checks that deadline before accepting completion; a late completion cannot defeat expiry because it precedes a timeout message in the mailbox. The owner must obtain completion acceptance before further protocol work. At expiry the runner retires the generation and terminates the owner immediately. These are proposed simulator budgets to verify on the locked TCP/TLS stack; they do not extend any protocol freshness or motion deadline.\n\nAdmit at most one active write and nine queued frames, totaling at most 41,280 encoded bytes. Bound producer admission as well as the internal queue so asynchronous producers cannot grow an unbounded mailbox. Overflow is a connection fault, not permission to discard required commands/results/statuses. Keep at most one replaceable heartbeat work item and sample complete current input when dispatching it. Keep identical envelopes only for the specified same-connection retries. Perform one write per loop turn, then service input and expire deadlines; do not drain a queue as one write batch or send catch-up retries. Sweep monotonic deadlines before and after transport operations and before queued input/retry/completion events.\n\nAny send error, socket timeout or whole-operation overrun is an ambiguous-delivery failure. Invalidate the generation and pending authority before teardown; do not retry the failed bytes, reuse that connection or add a WebSocket close-frame write. For a returned send error or socket timeout, permit local close under a further 100 ms runner deadline, then terminate the owner if necessary. Whole-operation overruns terminate immediately at their 200 ms deadline without another close window. Reconnect only after the old owner is down, using a new generation, welcome, current state and neutral/new-press input. Old results, socket events, frames and timers cannot regain authority. A lost acknowledgement does not establish that the original action failed to execute.\n\n**Verification and exit:** Execute M2-T1–M2-T7 and M2-01–M2-08, not just structural schema validation. Measure the actual storage-lock error latency. Prove recovery after each commit/dispatch/ack crash boundary preserves the same intent without automatic resend. Repeat the browser demo after integration. Freeze the wire contract only after observed conformance, with shared schema/fixtures checked unchanged unless a separately accepted change is recorded. Include complete unknown/interrupted recovery through closure and a new round. For WS and WSS separately, demonstrate actual backed-up sends within finite setup limits; inability to induce pressure is incomplete, not a pass. Independently block a live transport stub beyond 1,500 ms to prove the runtime watchdog rather than only an earlier send timeout. Exercise queued writes, delayed completions and journal/write failure boundaries. Record each adapter against the same independent expected traces, its own durable store/crash probes and client no-start isolation. Shared-model agreement alone is not proof of semantic correctness."
+    }
+  ],
+  "canonical_files_changed": false,
+  "wire_schema_or_fixture_changes": false,
+  "candidate_ranges": {
+    "feature": [
+      1,
+      485
+    ],
+    "detailed": [
+      486,
+      861
+    ]
+  },
+  "accepted_transport_block_moved_verbatim": true
+}

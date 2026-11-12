@@ -1,0 +1,1970 @@
+{
+  "protocol_version": 1,
+  "schema_path": "../contracts/protocol-v1.schema.json",
+  "notes": [
+    "Each valid example is a standalone structural example, not one sequential transcript.",
+    "Schema validation does not establish authorization, lease freshness, deduplication, role ownership, correct clues, or physical readiness. Those require domain tests.",
+    "Firmware and physical layouts use portrait dimensions from audited hardware profiles."
+  ],
+  "valid_examples": [
+    {
+      "name": "hello_1",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "hello",
+        "device_id": "cyd_a",
+        "boot_id": "boot_83",
+        "device_class": "controller",
+        "firmware_version": "0.1.0",
+        "capabilities": {
+          "touch": true,
+          "screen_width": 240,
+          "screen_height": 320,
+          "max_message_bytes": 8192
+        }
+      }
+    },
+    {
+      "name": "welcome_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "welcome",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "assigned_role": null,
+        "heartbeat_interval_ms": 100,
+        "input_lease_ms": 400,
+        "peer_dead_ms": 1500,
+        "allowed_roles": [
+          "a"
+        ]
+      }
+    },
+    {
+      "name": "command_1",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "command",
+        "connection_id": "conn_21",
+        "command_seq": 1,
+        "session_id": "session_17",
+        "action": "claim_role",
+        "payload": {
+          "role": "a"
+        }
+      }
+    },
+    {
+      "name": "command_result_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 1,
+        "status": "applied",
+        "code": "role_claimed",
+        "session_id": "session_17",
+        "state_revision": 2,
+        "data": {
+          "role": "a",
+          "control_epoch": 3
+        }
+      }
+    },
+    {
+      "name": "command_2",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "command",
+        "connection_id": "conn_21",
+        "command_seq": 2,
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "role": "a",
+        "control_epoch": 3,
+        "action": "move",
+        "payload": {
+          "direction": "up",
+          "expected_board_version": 0
+        }
+      }
+    },
+    {
+      "name": "command_result_2",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 2,
+        "status": "applied",
+        "code": "moved",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {
+          "position": 8,
+          "board_version": 1
+        }
+      }
+    },
+    {
+      "name": "snapshot_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 3,
+        "board_version": 1,
+        "phase": "maze",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": {
+          "rows": 4,
+          "cols": 4,
+          "position": 8,
+          "goal": 3,
+          "wall_kind": "right",
+          "walls": [
+            2,
+            5,
+            6,
+            9,
+            12
+          ],
+          "allowed_moves": [
+            "up",
+            "down"
+          ]
+        },
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": true,
+          "active": false
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "heartbeat_request_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "heartbeat_request",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 41
+      }
+    },
+    {
+      "name": "heartbeat_1",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "heartbeat",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 41,
+        "input_seq": 58,
+        "input": {
+          "session_id": "session_17",
+          "round_id": 1,
+          "puzzle_revision": 1,
+          "role": "a",
+          "control_epoch": 3,
+          "pressed": true,
+          "press_id": 9
+        }
+      }
+    },
+    {
+      "name": "heartbeat_2",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "heartbeat",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 42,
+        "input_seq": 59,
+        "input": {
+          "session_id": "session_17",
+          "round_id": 1,
+          "puzzle_revision": 1,
+          "role": "a",
+          "control_epoch": 3,
+          "pressed": false,
+          "press_id": null
+        }
+      }
+    },
+    {
+      "name": "box_arm_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_arm",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "arm_id": "arm_62"
+      }
+    },
+    {
+      "name": "box_command_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_command",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "arm_id": "arm_62",
+        "heartbeat_seq": 53,
+        "command_id": "act_0e66",
+        "action": "set_latch",
+        "target": "released"
+      }
+    },
+    {
+      "name": "box_status_1",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 7,
+        "command_id": "act_0e66",
+        "release_status": "accepted",
+        "motor_active": true,
+        "latch_position": "unknown",
+        "position_basis": "unverified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": false
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": null
+      }
+    },
+    {
+      "name": "box_status_2",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 8,
+        "command_id": "act_0e66",
+        "release_status": "motion_complete",
+        "motor_active": false,
+        "latch_position": "unknown",
+        "position_basis": "unverified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": false
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": null
+      }
+    },
+    {
+      "name": "box_status_3",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 9,
+        "command_id": "act_0e66",
+        "release_status": "position_confirmed",
+        "motor_active": false,
+        "latch_position": "released",
+        "position_basis": "endstop",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": false
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": {
+          "basis": "endstop",
+          "box_boot_id": "boot_box_4"
+        }
+      }
+    },
+    {
+      "name": "box_feedback_1",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_feedback",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "feedback_seq": 12,
+        "light_mode": "progress",
+        "progress_percent": 50,
+        "sound": "none",
+        "ttl_ms": 1000
+      }
+    },
+    {
+      "name": "hello_box",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "hello",
+        "device_id": "box_1",
+        "boot_id": "boot_box_4",
+        "device_class": "box",
+        "firmware_version": "0.1.0",
+        "capabilities": {
+          "latch": "stepper",
+          "home_sensor": false,
+          "released_sensor": false,
+          "led_count": 8,
+          "buzzer": false,
+          "max_message_bytes": 8192
+        }
+      }
+    },
+    {
+      "name": "welcome_box",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "welcome",
+        "connection_id": "conn_box_8",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "required_roles": [],
+        "assigned_role": null,
+        "heartbeat_interval_ms": 100,
+        "input_lease_ms": 400,
+        "peer_dead_ms": 1500,
+        "allowed_roles": []
+      }
+    },
+    {
+      "name": "select_rune",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "command",
+        "connection_id": "conn_21",
+        "command_seq": 3,
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "role": "a",
+        "control_epoch": 3,
+        "action": "select_rune",
+        "payload": {
+          "rune": "star"
+        }
+      }
+    },
+    {
+      "name": "release_role",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "command",
+        "connection_id": "conn_21",
+        "command_seq": 4,
+        "session_id": "session_17",
+        "role": "a",
+        "control_epoch": 3,
+        "action": "release_role",
+        "payload": {}
+      }
+    },
+    {
+      "name": "request_snapshot",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "command",
+        "connection_id": "conn_21",
+        "command_seq": 5,
+        "session_id": "session_17",
+        "action": "request_snapshot",
+        "payload": {}
+      }
+    },
+    {
+      "name": "result_rune_selected",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 3,
+        "status": "applied",
+        "code": "rune_selected",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {
+          "selected_rune": "star"
+        }
+      }
+    },
+    {
+      "name": "result_role_released",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 4,
+        "status": "applied",
+        "code": "role_released",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {}
+      }
+    },
+    {
+      "name": "result_snapshot_sent",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 5,
+        "status": "applied",
+        "code": "snapshot_sent",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {}
+      }
+    },
+    {
+      "name": "result_stale_board",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 6,
+        "status": "rejected",
+        "code": "stale_board",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {
+          "board_version": 2,
+          "position": 9
+        }
+      }
+    },
+    {
+      "name": "result_paused",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 7,
+        "status": "rejected",
+        "code": "paused",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {
+          "pause_reasons": [
+            "operator"
+          ]
+        }
+      }
+    },
+    {
+      "name": "result_sequence_gap",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "command_result",
+        "connection_id": "conn_21",
+        "command_seq": 10,
+        "status": "rejected",
+        "code": "seq_gap",
+        "session_id": "session_17",
+        "state_revision": 3,
+        "data": {
+          "expected_command_seq": 8
+        }
+      }
+    },
+    {
+      "name": "snapshot_controller_b_maze",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_22",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 3,
+        "board_version": 1,
+        "phase": "maze",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "b",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": {
+          "rows": 4,
+          "cols": 4,
+          "position": 8,
+          "goal": 3,
+          "wall_kind": "bottom",
+          "walls": [
+            1,
+            4,
+            10,
+            11
+          ],
+          "allowed_moves": [
+            "left",
+            "right"
+          ]
+        },
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": true,
+          "active": false
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_controller_a_seal_start",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 20,
+        "board_version": 1,
+        "phase": "seal",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": {
+          "clue_for_role": "b",
+          "clue_rune": "moon",
+          "selected_rune": "star",
+          "partner_held": true
+        },
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": true
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_controller_b_seal_start",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_22",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 20,
+        "board_version": 1,
+        "phase": "seal",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "b",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": {
+          "clue_for_role": "a",
+          "clue_rune": "star",
+          "selected_rune": "moon",
+          "partner_held": true
+        },
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": true
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_controller_lobby",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 0,
+        "board_version": 1,
+        "phase": "lobby",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": true,
+          "active": false
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_controller_solved",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 24,
+        "board_version": 1,
+        "phase": "solved",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": null,
+        "hold": {
+          "qualified": true,
+          "elapsed_ms": 2000,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": false
+        },
+        "box": {
+          "release_status": "pending",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": true,
+          "simulated": false,
+          "command_id": "act_0e66",
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_controller_paused_maze",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 4,
+        "board_version": 1,
+        "phase": "maze",
+        "paused": true,
+        "pause_reasons": [
+          "operator"
+        ],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": {
+          "rows": 4,
+          "cols": 4,
+          "position": 8,
+          "goal": 3,
+          "wall_kind": "right",
+          "walls": [
+            2,
+            5,
+            6,
+            9,
+            12
+          ],
+          "allowed_moves": [
+            "up",
+            "down"
+          ]
+        },
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": true,
+          "active": false
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_public",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_unclaimed",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 3,
+        "phase": "maze",
+        "paused": false,
+        "pause_reasons": [],
+        "role": null,
+        "control_epoch": null,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "public",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "snapshot_box",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_box_8",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 3,
+        "phase": "maze",
+        "paused": false,
+        "pause_reasons": [],
+        "role": null,
+        "control_epoch": null,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "box",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    },
+    {
+      "name": "heartbeat_unclaimed",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "heartbeat",
+        "connection_id": "conn_unclaimed",
+        "heartbeat_seq": 1,
+        "input_seq": 1,
+        "input": null
+      }
+    },
+    {
+      "name": "heartbeat_box",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "heartbeat",
+        "connection_id": "conn_box_8",
+        "heartbeat_seq": 53,
+        "input_seq": 53,
+        "input": null
+      }
+    },
+    {
+      "name": "heartbeat_ack",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "heartbeat_ack",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 42,
+        "input_seq": 59,
+        "input_accepted": true,
+        "code": "ok"
+      }
+    },
+    {
+      "name": "heartbeat_ack_stale",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "heartbeat_ack",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 40,
+        "input_seq": 58,
+        "input_accepted": false,
+        "code": "stale_challenge"
+      }
+    },
+    {
+      "name": "box_disarm",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_disarm",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "arm_id": "arm_62"
+      }
+    },
+    {
+      "name": "box_status_ready",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 1,
+        "command_id": null,
+        "release_status": "not_requested",
+        "motor_active": false,
+        "latch_position": "locked",
+        "position_basis": "manual_verified",
+        "readiness": {
+          "arm_id": "arm_62",
+          "armed_session_id": "session_17",
+          "calibration_valid": true,
+          "start_verified": true
+        },
+        "failure_code": null,
+        "command_session_id": null,
+        "command_confirmation": null
+      }
+    },
+    {
+      "name": "box_status_interrupted",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 10,
+        "command_id": "act_0e66",
+        "release_status": "uncertain",
+        "motor_active": false,
+        "latch_position": "unknown",
+        "position_basis": "unverified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "failure_code": "connection_lost",
+        "command_session_id": "session_17",
+        "command_confirmation": null
+      }
+    },
+    {
+      "name": "box_status_after_reboot_old_intent",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_9",
+        "box_boot_id": "boot_box_5",
+        "session_id": "session_18",
+        "status_seq": 1,
+        "command_id": "act_0e66",
+        "release_status": "uncertain",
+        "motor_active": false,
+        "latch_position": "unknown",
+        "position_basis": "unverified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "failure_code": "reboot_interrupted",
+        "command_session_id": "session_17",
+        "command_confirmation": null
+      }
+    },
+    {
+      "name": "box_status_ack",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_status_ack",
+        "connection_id": "conn_box_8",
+        "status_seq": 9,
+        "accepted": true,
+        "code": "ok"
+      }
+    },
+    {
+      "name": "box_status_ack_stale",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_status_ack",
+        "connection_id": "conn_box_8",
+        "status_seq": 2,
+        "accepted": false,
+        "code": "stale_status"
+      }
+    },
+    {
+      "name": "box_query_intent",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_query",
+        "connection_id": "conn_box_8",
+        "command_id": "act_0e66"
+      }
+    },
+    {
+      "name": "box_query_readiness",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "box_query",
+        "connection_id": "conn_box_8",
+        "command_id": null
+      }
+    },
+    {
+      "name": "known_type_unknown_top_field",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "heartbeat_request",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 41,
+        "future_optional_diagnostic": "ignored"
+      }
+    },
+    {
+      "name": "historical_confirmed_current_locked",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_9",
+        "box_boot_id": "boot_box_5",
+        "session_id": "session_18",
+        "status_seq": 3,
+        "command_id": "act_0e66",
+        "release_status": "position_confirmed",
+        "motor_active": false,
+        "latch_position": "locked",
+        "position_basis": "manual_verified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": true
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": {
+          "basis": "endstop",
+          "box_boot_id": "boot_box_4"
+        }
+      }
+    },
+    {
+      "name": "historical_confirmed_current_unknown",
+      "direction": "client_to_server",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_9",
+        "box_boot_id": "boot_box_5",
+        "session_id": "session_18",
+        "status_seq": 4,
+        "command_id": "act_0e66",
+        "release_status": "position_confirmed",
+        "motor_active": false,
+        "latch_position": "unknown",
+        "position_basis": "unverified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": {
+          "basis": "endstop",
+          "box_boot_id": "boot_box_4"
+        }
+      }
+    },
+    {
+      "name": "snapshot_historical_confirmation_current_locked",
+      "direction": "server_to_client",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 24,
+        "board_version": 1,
+        "phase": "solved",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": null,
+        "hold": {
+          "qualified": true,
+          "elapsed_ms": 2000,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": false
+        },
+        "box": {
+          "release_status": "position_confirmed",
+          "latch_position": "locked",
+          "position_basis": "manual_verified",
+          "connected": true,
+          "simulated": false,
+          "command_id": "act_0e66",
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": true,
+            "start_verified": true
+          },
+          "failure_code": null,
+          "command_confirmation": {
+            "basis": "endstop",
+            "box_boot_id": "boot_box_4"
+          }
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      }
+    }
+  ],
+  "invalid_examples": [
+    {
+      "name": "unsupported_version",
+      "message": {
+        "v": 2,
+        "type": "heartbeat_request",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 41
+      },
+      "reason": "Only protocol v1 is supported."
+    },
+    {
+      "name": "pressed_without_press_id",
+      "message": {
+        "v": 1,
+        "type": "heartbeat",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 42,
+        "input_seq": 59,
+        "input": {
+          "session_id": "session_17",
+          "round_id": 1,
+          "puzzle_revision": 1,
+          "role": "a",
+          "control_epoch": 3,
+          "pressed": true,
+          "press_id": null
+        }
+      },
+      "reason": "A true press requires a positive press ID."
+    },
+    {
+      "name": "release_with_press_id",
+      "message": {
+        "v": 1,
+        "type": "heartbeat",
+        "connection_id": "conn_21",
+        "heartbeat_seq": 42,
+        "input_seq": 59,
+        "input": {
+          "session_id": "session_17",
+          "round_id": 1,
+          "puzzle_revision": 1,
+          "role": "a",
+          "control_epoch": 3,
+          "pressed": false,
+          "press_id": 9
+        }
+      },
+      "reason": "Released input has null press ID."
+    },
+    {
+      "name": "move_invalid_direction",
+      "message": {
+        "v": 1,
+        "type": "command",
+        "connection_id": "conn_21",
+        "command_seq": 2,
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "role": "a",
+        "control_epoch": 3,
+        "action": "move",
+        "payload": {
+          "direction": "diagonal",
+          "expected_board_version": 0
+        }
+      },
+      "reason": "Only four named directions exist."
+    },
+    {
+      "name": "box_command_missing_arm",
+      "message": {
+        "v": 1,
+        "type": "box_command",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "heartbeat_seq": 53,
+        "command_id": "act_0e66",
+        "action": "set_latch",
+        "target": "released"
+      },
+      "reason": "Actuation requires an explicit arm generation."
+    },
+    {
+      "name": "box_command_relock",
+      "message": {
+        "v": 1,
+        "type": "box_command",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "arm_id": "arm_62",
+        "heartbeat_seq": 53,
+        "command_id": "act_0e66",
+        "action": "set_latch",
+        "target": "locked"
+      },
+      "reason": "Gameplay protocol cannot relock."
+    },
+    {
+      "name": "box_confirmed_without_evidence",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 9,
+        "command_id": "act_0e66",
+        "release_status": "position_confirmed",
+        "motor_active": false,
+        "latch_position": "released",
+        "position_basis": "unverified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": false
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": null
+      },
+      "reason": "A historical position_confirmed outcome requires recorded command_confirmation; current position basis alone is not that evidence."
+    },
+    {
+      "name": "public_snapshot_contains_maze",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_unclaimed",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 3,
+        "phase": "maze",
+        "paused": false,
+        "pause_reasons": [],
+        "role": null,
+        "control_epoch": null,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "public",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ],
+        "maze": {
+          "rows": 4,
+          "cols": 4,
+          "position": 8,
+          "goal": 3,
+          "wall_kind": "right",
+          "walls": [
+            2,
+            5,
+            6,
+            9,
+            12
+          ],
+          "allowed_moves": [
+            "up",
+            "down"
+          ]
+        }
+      },
+      "reason": "Public projection omits puzzle fields."
+    },
+    {
+      "name": "role_a_wrong_wall_projection",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 3,
+        "board_version": 1,
+        "phase": "maze",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": {
+          "rows": 4,
+          "cols": 4,
+          "position": 8,
+          "goal": 3,
+          "wall_kind": "bottom",
+          "walls": [
+            2,
+            5,
+            6,
+            9,
+            12
+          ],
+          "allowed_moves": [
+            "up",
+            "down"
+          ]
+        },
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": true,
+          "active": false
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      },
+      "reason": "Role A sees right walls."
+    },
+    {
+      "name": "seal_lacks_clue",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 20,
+        "board_version": 1,
+        "phase": "seal",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 0,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": true
+        },
+        "box": {
+          "release_status": "not_requested",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": false,
+          "simulated": false,
+          "command_id": null,
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      },
+      "reason": "Seal phase requires its role-filtered clue projection."
+    },
+    {
+      "name": "solved_unqualified",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 24,
+        "board_version": 1,
+        "phase": "solved",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": null,
+        "hold": {
+          "qualified": false,
+          "elapsed_ms": 2000,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": false
+        },
+        "box": {
+          "release_status": "pending",
+          "latch_position": "unknown",
+          "position_basis": "unverified",
+          "connected": true,
+          "simulated": false,
+          "command_id": "act_0e66",
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "failure_code": null,
+          "command_confirmation": null
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      },
+      "reason": "Solved state reflects completed qualification."
+    },
+    {
+      "name": "feedback_invalid_ttl",
+      "message": {
+        "v": 1,
+        "type": "box_feedback",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "feedback_seq": 12,
+        "light_mode": "progress",
+        "progress_percent": 50,
+        "sound": "none",
+        "ttl_ms": 10000
+      },
+      "reason": "Feedback expires within 1500ms."
+    },
+    {
+      "name": "readiness_arm_without_session",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_8",
+        "box_boot_id": "boot_box_4",
+        "session_id": "session_17",
+        "status_seq": 1,
+        "command_id": null,
+        "release_status": "not_requested",
+        "motor_active": false,
+        "latch_position": "locked",
+        "position_basis": "manual_verified",
+        "readiness": {
+          "arm_id": "arm_62",
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": true
+        },
+        "failure_code": null,
+        "command_session_id": null,
+        "command_confirmation": null
+      },
+      "reason": "An active arm must name its session."
+    },
+    {
+      "name": "confirmation_on_unconfirmed_outcome",
+      "message": {
+        "v": 1,
+        "type": "box_status",
+        "connection_id": "conn_box_9",
+        "box_boot_id": "boot_box_5",
+        "session_id": "session_18",
+        "status_seq": 3,
+        "command_id": "act_0e66",
+        "release_status": "motion_complete",
+        "motor_active": false,
+        "latch_position": "locked",
+        "position_basis": "manual_verified",
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": true,
+          "start_verified": true
+        },
+        "failure_code": null,
+        "command_session_id": "session_17",
+        "command_confirmation": {
+          "basis": "endstop",
+          "box_boot_id": "boot_box_4"
+        }
+      },
+      "reason": "command_confirmation must be null unless the named command outcome is position_confirmed."
+    },
+    {
+      "name": "simulation_cannot_claim_physical_confirmation",
+      "message": {
+        "v": 1,
+        "type": "snapshot",
+        "connection_id": "conn_21",
+        "session_id": "session_17",
+        "round_id": 1,
+        "puzzle_revision": 1,
+        "state_revision": 24,
+        "board_version": 1,
+        "phase": "solved",
+        "paused": false,
+        "pause_reasons": [],
+        "role": "a",
+        "control_epoch": 3,
+        "required_roles": [
+          "a",
+          "b"
+        ],
+        "maze": null,
+        "seal": null,
+        "hold": {
+          "qualified": true,
+          "elapsed_ms": 2000,
+          "duration_ms": 2000,
+          "fresh_press_required": false,
+          "active": false
+        },
+        "box": {
+          "release_status": "position_confirmed",
+          "latch_position": "locked",
+          "position_basis": "manual_verified",
+          "connected": true,
+          "simulated": true,
+          "command_id": "act_0e66",
+          "motor_active": false,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": true,
+            "start_verified": true
+          },
+          "failure_code": null,
+          "command_confirmation": {
+            "basis": "endstop",
+            "box_boot_id": "boot_box_4"
+          }
+        },
+        "projection": "controller",
+        "peers": [
+          {
+            "role": "a",
+            "connected": true,
+            "source": "cyd",
+            "held": false
+          },
+          {
+            "role": "b",
+            "connected": true,
+            "source": "browser",
+            "held": false
+          }
+        ]
+      },
+      "reason": "A server-owned simulated projection cannot report physical position_confirmed evidence."
+    }
+  ]
+}

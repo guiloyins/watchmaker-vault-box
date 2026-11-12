@@ -1,0 +1,392 @@
+{
+  "fixture_version": 1,
+  "time_unit": "milliseconds",
+  "clock": "injected server monotonic time",
+  "interpretation": [
+    "These are domain-test vectors, not WebSocket messages. Expand recurring heartbeats using the same protocol validator as real inputs.",
+    "Unless a case overrides it, both roles have current bindings, correct rune selections, an accepted neutral baseline before time zero and a ready armed simulated box.",
+    "Auto heartbeats issue a new challenge and immediately sample the current input every 100ms, beginning at zero. Explicit edge samples use the latest challenge and a new input_seq.",
+    "At the same timestamp, apply explicit input changes and lease-expiry checks before evaluating a solve; completion must independently check all current deadlines.",
+    "Expectation at_ms is relative to the case start. Equality with challenge-issued+400 is expired.",
+    "Messages for stale context may be recorded diagnostically but cannot affect the effective input or renew its lease."
+  ],
+  "defaults": {
+    "heartbeat_interval_ms": 100,
+    "input_lease_ms": 400,
+    "peer_dead_ms": 1500,
+    "hold_duration_ms": 2000
+  },
+  "cases": [
+    {
+      "id": "hold_exact_boundary",
+      "auto_heartbeats": true,
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "a",
+          "press_id": 1
+        },
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "b",
+          "press_id": 1
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 1999,
+          "phase": "seal",
+          "release_intents": 0
+        },
+        {
+          "at_ms": 2000,
+          "phase": "solved",
+          "release_intents": 1
+        },
+        {
+          "at_ms": 2100,
+          "inject": "duplicate_completion_timer",
+          "release_intents": 1
+        }
+      ]
+    },
+    {
+      "id": "staggered_overlap",
+      "auto_heartbeats": true,
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "a",
+          "press_id": 1
+        },
+        {
+          "at_ms": 350,
+          "action": "press",
+          "role": "b",
+          "press_id": 1
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 2349,
+          "phase": "seal",
+          "release_intents": 0
+        },
+        {
+          "at_ms": 2350,
+          "phase": "solved",
+          "release_intents": 1
+        }
+      ]
+    },
+    {
+      "id": "release_just_before_completion",
+      "auto_heartbeats": true,
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "a",
+          "press_id": 1
+        },
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "b",
+          "press_id": 1
+        },
+        {
+          "at_ms": 1999,
+          "action": "release",
+          "role": "b"
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 1999,
+          "hold_active": false,
+          "hold_elapsed_ms": 0
+        },
+        {
+          "at_ms": 2000,
+          "inject": "old_completion_timer",
+          "phase": "seal",
+          "release_intents": 0
+        }
+      ]
+    },
+    {
+      "id": "lease_expiry_wins_tie",
+      "auto_heartbeats": true,
+      "stop_role_heartbeat_after_ms": {
+        "b": 1600
+      },
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "a",
+          "press_id": 1
+        },
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "b",
+          "press_id": 1
+        },
+        {
+          "at_ms": 1650,
+          "action": "physical_release_not_delivered",
+          "role": "b"
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 1999,
+          "phase": "seal",
+          "hold_active": true
+        },
+        {
+          "at_ms": 2000,
+          "phase": "seal",
+          "hold_active": false,
+          "release_intents": 0
+        },
+        {
+          "at_ms": 3100,
+          "paused": true,
+          "pause_reasons": [
+            "controller_offline",
+            "recovery"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "late_challenge_does_not_extend_lease",
+      "auto_heartbeats": false,
+      "given": {
+        "both_pressed": true,
+        "latest_challenge_issue_ms": 0
+      },
+      "timeline": [
+        {
+          "at_ms": 399,
+          "action": "sample",
+          "role": "a",
+          "challenge_issued_ms": 0,
+          "input_seq": 2,
+          "pressed": true,
+          "press_id": 1
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 399,
+          "input_accepted": true,
+          "lease_deadline_ms": 400
+        },
+        {
+          "at_ms": 400,
+          "hold_active": false,
+          "fresh_press_required": true
+        }
+      ]
+    },
+    {
+      "id": "expired_challenge_rejected",
+      "auto_heartbeats": false,
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "issue_challenge",
+          "role": "a",
+          "heartbeat_seq": 1
+        },
+        {
+          "at_ms": 400,
+          "action": "sample",
+          "role": "a",
+          "heartbeat_seq": 1,
+          "input_seq": 100,
+          "pressed": true,
+          "press_id": 1
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 400,
+          "input_accepted": false,
+          "code": "stale_challenge",
+          "hold_active": false
+        }
+      ]
+    },
+    {
+      "id": "expired_press_requires_real_release",
+      "auto_heartbeats": false,
+      "given": {
+        "expired_press_role": "a",
+        "expired_press_id": 7
+      },
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "issue_challenge",
+          "role": "a",
+          "heartbeat_seq": 10
+        },
+        {
+          "at_ms": 10,
+          "action": "sample",
+          "role": "a",
+          "heartbeat_seq": 10,
+          "input_seq": 100,
+          "pressed": true,
+          "press_id": 7
+        },
+        {
+          "at_ms": 20,
+          "action": "sample",
+          "role": "a",
+          "heartbeat_seq": 10,
+          "input_seq": 101,
+          "pressed": false,
+          "press_id": null
+        },
+        {
+          "at_ms": 30,
+          "action": "sample",
+          "role": "a",
+          "heartbeat_seq": 10,
+          "input_seq": 102,
+          "pressed": true,
+          "press_id": 8
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 10,
+          "input_accepted": false,
+          "code": "must_release"
+        },
+        {
+          "at_ms": 20,
+          "input_accepted": true,
+          "fresh_press_required": false
+        },
+        {
+          "at_ms": 30,
+          "input_accepted": true,
+          "role_held": true
+        }
+      ]
+    },
+    {
+      "id": "pause_keeps_choices_clears_attempt",
+      "auto_heartbeats": true,
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "a",
+          "press_id": 1
+        },
+        {
+          "at_ms": 0,
+          "action": "press",
+          "role": "b",
+          "press_id": 1
+        },
+        {
+          "at_ms": 1500,
+          "action": "host_pause"
+        },
+        {
+          "at_ms": 1600,
+          "action": "old_epoch_pressed_sample",
+          "role": "a"
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 1500,
+          "paused": true,
+          "phase": "seal",
+          "selected_runes": {
+            "a": "star",
+            "b": "moon"
+          },
+          "hold_active": false
+        },
+        {
+          "at_ms": 2000,
+          "inject": "old_completion_timer",
+          "release_intents": 0
+        }
+      ]
+    },
+    {
+      "id": "observer_disconnect_does_not_pause",
+      "auto_heartbeats": true,
+      "given": {
+        "owners": {
+          "a": "cyd",
+          "b": "cyd"
+        }
+      },
+      "timeline": [
+        {
+          "at_ms": 100,
+          "action": "disconnect_host_observer"
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 101,
+          "paused": false,
+          "owners_unchanged": true
+        }
+      ]
+    },
+    {
+      "id": "recovery_does_not_resume_old_hold",
+      "auto_heartbeats": false,
+      "timeline": [
+        {
+          "at_ms": 0,
+          "action": "game_session_restart"
+        },
+        {
+          "at_ms": 10,
+          "action": "deliver_old_connection_sample"
+        },
+        {
+          "at_ms": 20,
+          "action": "reconnect_and_authenticate"
+        },
+        {
+          "at_ms": 30,
+          "action": "deliver_old_completion_timer"
+        }
+      ],
+      "expectations": [
+        {
+          "at_ms": 0,
+          "new_session_id": true,
+          "paused": true,
+          "all_leases_cleared": true,
+          "raw_close_code": 4003
+        },
+        {
+          "at_ms": 30,
+          "paused": true,
+          "release_intents_added": 0
+        }
+      ]
+    }
+  ]
+}

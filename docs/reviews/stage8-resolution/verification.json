@@ -1,0 +1,120 @@
+{
+  "checked_at_utc": "2026-11-12T21:47:37.791404+00:00",
+  "status": "passed_documentation_and_specification_checks_only",
+  "proposal_sha256": "7aa188e57b55ac9564a73eb1b8490299f7fe528fb45cd83a0c297d5d07e0dc7e",
+  "patch_sha256": "18dea6e4721df233f7e1cf646e6ba127530969a932cbad8b980b249c844d883d",
+  "files": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "original_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "original_lines": 821,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/proposed/docs/designs/watchmakers-vault.md",
+      "proposed_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "proposed_lines": 861
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "original_sha256": "0f19b6092219c160c956c0a67a488739a8d0653c6ac13837fcdb059e64f35d97",
+      "original_lines": 713,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/proposed/docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "proposed_sha256": "d90c341dc991a8dad8560e57453366ef9d1c7d676ee38f039bb33dfb757d8c36",
+      "proposed_lines": 729
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "original_sha256": "ffd8f436ed4ca844cf1f9d1d757796f053efe553f9090a8235d03e7db418c801",
+      "original_lines": 109,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/proposed/docs/specs/ACCEPTANCE.md",
+      "proposed_sha256": "4fa93bbdf6fee493ff8db98f151bcd6185decce427301edad16c4f26d8eecfbd",
+      "proposed_lines": 109
+    }
+  ],
+  "exact_edits_replayed": 64,
+  "patch_dry_run_exit": 0,
+  "local_links_checked_relative_to_final_destination": 33,
+  "new_internal_anchors": 2,
+  "fences_and_table_widths": "passed",
+  "file_manifest_rows": 209,
+  "unchanged_acceptance_ids": [
+    "M0-01",
+    "M0-02",
+    "M0-03",
+    "M0-04",
+    "M1-01",
+    "M1-02",
+    "M1-03",
+    "M1-04",
+    "M1-05",
+    "M1-06",
+    "M1-07",
+    "M2-T1",
+    "M2-T2",
+    "M2-T3",
+    "M2-T4",
+    "M2-T5",
+    "M2-T6",
+    "M2-T7",
+    "M2-01",
+    "M2-02",
+    "M2-03",
+    "M2-04",
+    "M2-05",
+    "M2-06",
+    "M2-07",
+    "M2-08",
+    "M3-01",
+    "M3-02",
+    "M3-03",
+    "M3-04",
+    "M4-01",
+    "M4-02",
+    "M4-03",
+    "M4-04",
+    "M4-05",
+    "M4-06",
+    "M5-01",
+    "M5-02",
+    "M5-03",
+    "M5-04"
+  ],
+  "canonical_files_unchanged": true,
+  "protocol_schema_fixture_hashes": {
+    "docs/specs/PROTOCOL_V1.md": "c75ed1c7cc0b51ae4acd9006b924fb88bdef5b01ec73ccbba7b1e47817324444",
+    "docs/specs/contracts/protocol-v1.schema.json": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+    "docs/specs/fixtures/protocol-examples.json": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+    "docs/specs/fixtures/maze-v1.private.json": "d81ad5c348811bb323006c7a1c71683550dc5946d8aa070d7dc90c79792e073d",
+    "docs/specs/fixtures/timing-cases.json": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d"
+  },
+  "accepted_recovery_and_physical_service_sections_unchanged": true,
+  "accepted_transport_detail_moved_verbatim": true,
+  "all_D1_D6_choices_retained": true,
+  "removed_paths_were_planned_only": [
+    "tools/simulator/box_model.exs",
+    "tools/simulator/box_store.exs"
+  ],
+  "candidate_ranges": {
+    "feature": [
+      1,
+      485
+    ],
+    "detailed": [
+      486,
+      861
+    ]
+  },
+  "validator_command": [
+    "python3",
+    "/example/local/verify_contracts.py",
+    "--report",
+    "/workspace/watchmaker_vault/docs/reviews/stage8-resolution/candidate-spec-validation.md"
+  ],
+  "validator_exit": 0,
+  "runtime_or_physical_tests": "not_run",
+  "formal_reaudit": false,
+  "stage9": "not_started",
+  "approval": "pending",
+  "applied_fixes": [],
+  "report_and_tracking_links_verified": 31,
+  "all_remaining_actions_proposed": true,
+  "earlier_stage7_resolved_report_preserved": true
+}

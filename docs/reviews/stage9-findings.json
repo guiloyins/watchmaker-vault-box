@@ -1,0 +1,677 @@
+{
+  "stage": 9,
+  "round": 1,
+  "status": "resolved_by_approved_applied_fixes",
+  "completed_at_utc": "2026-11-12T22:22:06.213540+00:00",
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+  "line_range": [
+    486,
+    861
+  ],
+  "feature_range": [
+    1,
+    485
+  ],
+  "raw_counts": {
+    "blocker": 0,
+    "major": 7,
+    "nit": 5
+  },
+  "consolidated_counts": {
+    "blocker": 0,
+    "major": 5,
+    "nit": 5
+  },
+  "findings": [
+    {
+      "id": "readiness-1-1",
+      "reviewer": "egm-implementation-readiness",
+      "severity": "Major",
+      "title": "Shared internal contracts remain design work",
+      "scope": [
+        [
+          543,
+          543
+        ],
+        [
+          557,
+          587
+        ],
+        [
+          632,
+          638
+        ],
+        [
+          820,
+          820
+        ]
+      ],
+      "discrepancy": "Line 543 instructs the implementer to “Fix the game API's actor and action contracts,” but the plan does not supply those contracts. It identifies responsibilities without defining callable signatures, actor structures, internal action/result types, browser hook event payloads, or the shared model’s state/event/effect types. Protocol v1 supplies device wire structures; it does not specify the host-only recovery operations or internal browser/model interfaces.",
+      "rationale": "The planned independent UI, session and simulator tasks cannot implement mutually compatible boundaries without first making the API and data-model choices that the readiness standard requires the plan to settle. In particular, callers need a concrete distinction between a retry of Begin recovery and a deliberate replacement preparation, and model adapters need an exact persistence-effect/completion correlation contract.",
+      "guidance": "Add a compact normative interface section before the M1 tasks. Define the principal/controller structures; Games operations with arguments, success/rejection results and idempotency keys; browser challenge/input/rebind payloads; and Model transition/state/event/effect types, including persistence-completion generation checks. Bind each definition to the already listed source files and use those definitions as the parallel-work handoff.",
+      "raw_report": "docs/reviews/stage9-readiness-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-01",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "readiness-1-2",
+      "reviewer": "egm-implementation-readiness",
+      "severity": "Major",
+      "title": "Durable schemas and transaction identities are not specified",
+      "scope": [
+        [
+          550,
+          556
+        ],
+        [
+          562,
+          562
+        ],
+        [
+          565,
+          565
+        ],
+        [
+          640,
+          640
+        ]
+      ],
+      "discrepancy": "The migration task says to create records with “required uniqueness, foreign keys, recovery/disposition fields and original-identity constraints,” but neither it nor the supporting context supplies the actual schema. The checkpoint representation, column types/nullability/defaults, observation/recovery cardinality, exact unique keys and foreign-key actions remain unspecified. The simulator store likewise has a “versioned bounded singleton state record” without a defined durable payload encoding, initial version or size limit.",
+      "rationale": "Choosing SQLite and listing minimum retained facts does not determine a database schema. The implementer must decide how to enforce one intent per original solve despite later session changes, retain prior recovery generations and conflicting observations, and read back an uncertain operation without mistaking it for a new request. These are persistence-design decisions, not dependency-version evidence.",
+      "guidance": "Specify the server tables and checkpoint serialization, constraints and indexes, immutable solve/intent identity, recovery request identity, and the transaction predicates for win, Begin/replacement and Close. Define the simulator singleton’s versioned durable payload, maximum size, operation/revision fields and validation rules. State initialization and incompatible-version behavior explicitly. Add assertions against those concrete constraints to the listed store and recovery tests.",
+      "raw_report": "docs/reviews/stage9-readiness-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-02",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "readiness-1-3",
+      "reviewer": "egm-implementation-readiness",
+      "severity": "Major",
+      "title": "USB provisioning and recovery service lack an executable interface contract",
+      "scope": [
+        [
+          718,
+          721
+        ],
+        [
+          727,
+          727
+        ],
+        [
+          787,
+          789
+        ],
+        [
+          795,
+          795
+        ]
+      ],
+      "discrepancy": "The plan calls for typed service operations, “bounded USB/serial parsing,” a provisioning wrapper and exact operating instructions, but does not define their shared request/response format. Missing decisions include framing, command names and arguments, provisioning-file shape, maximum request/field sizes, result/error responses, and retry/readback identity for durable service operations.",
+      "rationale": "Protocol v1 deliberately excludes these operations. The hardware runbook describes their order and explicitly leaves implemented commands unspecified. Therefore neither the firmware service parser nor `tools/fw-provision` can be written against a settled interface. The gap also affects operator comparison of sealed evidence and host disposition identifiers.",
+      "guidance": "Freeze a local-only service contract covering provisioning, inspect, recovery entry, seal, disposition/replacement attestation, clear, exit and bounded motion commands. Include exact framing and limits, required identity fields, response/error shapes, idempotent retry/readback behavior, and a protected provisioning-file example with placeholders. Assign this contract to an exact source/document path and reference it from both implementations and the service tests. Keep physical pins and measured travel evidence-dependent.",
+      "raw_report": "docs/reviews/stage9-readiness-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-03",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "readiness-1-4",
+      "reviewer": "egm-implementation-readiness",
+      "severity": "Major",
+      "title": "M0’s test scope depends on modules scheduled for later phases",
+      "scope": [
+        [
+          529,
+          539
+        ],
+        [
+          560,
+          560
+        ],
+        [
+          644,
+          644
+        ],
+        [
+          652,
+          656
+        ]
+      ],
+      "discrepancy": "M0 creates `projections_test.exs` to verify permitted walls and clue/selection structures, while `projections.ex` is first created in M1. M0 also requires `contract_test.exs` to verify server-produced wire data, while the production protocol implementation is scheduled for M2 and the projection producers for M1. The plan does not define which M0 production implementation these tests exercise or a narrower temporary scope.",
+      "rationale": "A fresh implementer must either pull later-phase files forward, invent provisional production code, or weaken the M0 assertions. That prevents the listed phase from being independently executable as a stable, testable checkpoint.",
+      "guidance": "Move the initial pure `projections.ex` implementation into M0 alongside its tests, then expand it in M1. Explicitly restrict the M0 contract test to the existing schema/fixtures and private-copy consistency, and schedule assertions against produced projection/envelope data in the phases that create those producers. Specify the M0 test command/startup configuration so it runs without M1 application supervision, Repo or endpoint.",
+      "raw_report": "docs/reviews/stage9-readiness-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-04",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "style-1-1",
+      "reviewer": "egm-style",
+      "severity": "Nit",
+      "title": "Replace the undefined review-stage reference",
+      "scope": [
+        [
+          634,
+          634
+        ]
+      ],
+      "discrepancy_rationale_guidance": "“Preserve every accepted Stage 7 … rule” makes an implementation requirement depend on review chronology. The document defines M0–M5 delivery milestones; it does not define a “Stage 7” contract that a new implementer can locate. **Action: CALIBRATE.** Replace that sentence with direct links to Technical Plan §7, §10 and `PROTOCOL_V1.md`’s administrative-recovery/history-clearing requirements. Preserve the listed obligations.",
+      "raw_report": "docs/reviews/stage9-style-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-06",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "style-1-2",
+      "reviewer": "egm-style",
+      "severity": "Nit",
+      "title": "Separate electrical activation from calibration prerequisites",
+      "scope": [
+        [
+          775,
+          775
+        ]
+      ],
+      "discrepancy_rationale_guidance": "The instruction groups “measured travel” with electrical checks and requires all of them “before connecting real outputs.” This obscures the staged procedure in L12: verify electrical conditions, perform a small bounded local-service movement, then calibrate travel before gameplay actuation. A reader could incorrectly treat final motor calibration as a prerequisite for the first calibration movement. **Action: CALIBRATE.** State two gates explicitly: electrical/profile/manual-release checks before peripheral activation; bounded local-service calibration and current starting-position verification before gameplay motion.",
+      "raw_report": "docs/reviews/stage9-style-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-07",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "style-1-3",
+      "reviewer": "egm-style",
+      "severity": "Nit",
+      "title": "Remove the obsolete correction-pass scope",
+      "scope": [
+        [
+          841,
+          841
+        ]
+      ],
+      "discrepancy_rationale_guidance": "“Keep the protocol/schema/fixtures byte-identical during the hardware-only correction” addresses a completed documentation pass, whereas this section governs future M0–M5 implementation. L17 explicitly distinguishes the historical hardware-correction hashes from the subsequently accepted protocol changes. **Action: CALIBRATE.** Replace the historical phrase with an instruction to preserve the current accepted contract baseline unless a separately accepted change updates the affected prose, schema, fixtures and tests together. Historical byte-preservation results belong in the status record.",
+      "raw_report": "docs/reviews/stage9-style-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-08",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "style-1-4",
+      "reviewer": "egm-style",
+      "severity": "Nit",
+      "title": "Consolidate repeated decision and drafting-status material",
+      "scope": [
+        [
+          843,
+          857
+        ]
+      ],
+      "discrepancy_rationale_guidance": "The six “Resolved” paragraphs repeat the selected choices already summarized at line 492 and detailed beside their implementation mechanisms. Statements about drafting-support agents, what was not installed or run, and saving the canonical draft describe document production rather than an implementer’s next action. The section-level nonexecution boundary already appears at line 490. **Actions: DROP / RELOCATE.** Replace the repeated decision summaries with a compact cross-reference if navigation is needed. Move drafting-agent and review-history details to `docs/implementation-status.md`; retain concrete test/evidence gates beside their corresponding milestone.",
+      "raw_report": "docs/reviews/stage9-style-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-09",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "style-1-5",
+      "reviewer": "egm-style",
+      "severity": "Nit",
+      "title": "Narrow the supposedly exhaustive evidence inventory",
+      "scope": [
+        [
+          859,
+          859
+        ]
+      ],
+      "discrepancy_rationale_guidance": "“Remaining evidence consists of” names toolchain versions, native browser observations and hardware checks, but omits the still-unexecuted application, deterministic timing, storage/recovery, protocol and firmware-host tests specified above. L17 confirms that none of those implementation checks has run. **Action: CALIBRATE.** Say that *all milestone verification remains pending*, then identify hardware/toolchain evidence as particular dependencies, or change the list to an explicitly non-exhaustive “includes.”",
+      "raw_report": "docs/reviews/stage9-style-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-10",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "codebase-1-1",
+      "reviewer": "egm-codebase-details",
+      "severity": "Major",
+      "title": "M0 tests depend on production modules scheduled for later milestones",
+      "scope": [
+        [
+          536,
+          539
+        ],
+        [
+          560,
+          560
+        ],
+        [
+          652,
+          658
+        ]
+      ],
+      "discrepancy": "M0 creates `projections_test.exs` to check permitted walls and clue/selection structures, plus `contract_test.exs` to verify server-produced wire data. The production projection implementation is first created in M1 at line 560, and reusable protocol validation and wire adapters are deferred to M2. The plan does not identify an M0 implementation of these outputs or explicitly defer these tests.",
+      "rationale": "Following the file manifest in order leaves M0 with tests for implementations outside its checkpoint. A fresh implementer must pull later work forward, introduce temporary implementations, or skip tests. This fails the standard’s requirement that each phase leave a stable, buildable, testable state.",
+      "guidance": "Create the minimum pure projection implementation in M0 and mark its M1 work as expansion, or move its dependent tests to M1. Place the server-produced wire tests alongside the production serialization/validation boundary that supplies them. Specify which test command and cases constitute the independently runnable M0 gate.",
+      "raw_report": "docs/reviews/stage9-codebase-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-04",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "codebase-1-2",
+      "reviewer": "egm-codebase-details",
+      "severity": "Major",
+      "title": "The durable database schema remains a design task",
+      "scope": [
+        [
+          550,
+          556
+        ],
+        [
+          543,
+          543
+        ],
+        [
+          562,
+          562
+        ]
+      ],
+      "discrepancy": "These rows name Ecto schema files and a migration, but specify categories of retained data and “required uniqueness, foreign keys, recovery/disposition fields and original-identity constraints,” rather than the actual table/field definitions and constraints. The contextual state table at lines 187–199 also describes semantic contents, not a concrete database schema. There is no current server schema or migration to reuse.",
+      "rationale": "A fresh implementer still must choose the checkpoint representation, field types/nullability, identity keys, foreign keys, uniqueness keys for one intent per solved attempt, and representation of idempotent recovery preparation/closure receipts. Those choices affect the promised atomicity and recovery behavior. The assigned standard explicitly treats choosing a database schema as an implementation-readiness failure.",
+      "guidance": "Add the concrete version-one Ecto/SQLite schema: tables, fields/types/defaults/nullability, primary/foreign keys, unique constraints, versioned checkpoint representation, and persisted request/result identities for preparation and closure readback. Map the documented transactions to those fields and constraints before implementation.",
+      "raw_report": "docs/reviews/stage9-codebase-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-02",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "codebase-1-3",
+      "reviewer": "egm-codebase-details",
+      "severity": "Major",
+      "title": "Protocol parsing and structural-validation dependencies are not selected",
+      "scope": [
+        [
+          521,
+          521
+        ],
+        [
+          537,
+          537
+        ],
+        [
+          656,
+          656
+        ],
+        [
+          708,
+          710
+        ]
+      ],
+      "discrepancy": "The plan requires exact JSON/schema conformance in Elixir and portable firmware, but does not select the JSON parsing dependencies or decide whether structural validation is library-backed, generated, or manually implemented against the schema. The firmware manifest only says to declare tested managed dependencies. The only current executable validator is the Python specification checker using `jsonschema.Draft202012Validator`; it is not a selected runtime implementation for either language.",
+      "rationale": "This leaves dependency selection and a substantial implementation mechanism to the implementer. The firmware choice also determines how the same protocol source builds under both native host CMake and ESP-IDF. This is distinct from appropriately deferring hardware-dependent values or verifying compatible dependency versions.",
+      "guidance": "Name the parser dependencies and structural-validation strategy for both implementations, specify native/ESP-IDF dependency wiring, and identify how the shared schema and fixtures verify that strategy. Keep version compatibility as an explicit verification gate, but settle the implementation mechanism in the plan.",
+      "raw_report": "docs/reviews/stage9-codebase-r1-raw.md",
+      "status": "resolved",
+      "consolidated_id": "S9-05",
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    }
+  ],
+  "consolidated_actions": [
+    {
+      "id": "S9-01",
+      "severity": "Major",
+      "title": "Define the internal API and model contracts",
+      "raw_findings": [
+        "readiness-1-1"
+      ],
+      "scope": [
+        [
+          543,
+          543
+        ],
+        [
+          557,
+          587
+        ],
+        [
+          632,
+          638
+        ],
+        [
+          820,
+          820
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-02",
+      "severity": "Major",
+      "title": "Specify durable schemas and transaction identities",
+      "raw_findings": [
+        "readiness-1-2",
+        "codebase-1-2"
+      ],
+      "scope": [
+        [
+          543,
+          543
+        ],
+        [
+          550,
+          556
+        ],
+        [
+          562,
+          562
+        ],
+        [
+          565,
+          565
+        ],
+        [
+          640,
+          640
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-03",
+      "severity": "Major",
+      "title": "Specify the local USB service and provisioning contract",
+      "raw_findings": [
+        "readiness-1-3"
+      ],
+      "scope": [
+        [
+          718,
+          721
+        ],
+        [
+          727,
+          727
+        ],
+        [
+          787,
+          789
+        ],
+        [
+          795,
+          795
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-04",
+      "severity": "Major",
+      "title": "Make the M0 test checkpoint independently executable",
+      "raw_findings": [
+        "readiness-1-4",
+        "codebase-1-1"
+      ],
+      "scope": [
+        [
+          529,
+          539
+        ],
+        [
+          536,
+          539
+        ],
+        [
+          560,
+          560
+        ],
+        [
+          644,
+          644
+        ],
+        [
+          652,
+          656
+        ],
+        [
+          652,
+          658
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-05",
+      "severity": "Major",
+      "title": "Select JSON parsers and structural-validation mechanisms",
+      "raw_findings": [
+        "codebase-1-3"
+      ],
+      "scope": [
+        [
+          521,
+          521
+        ],
+        [
+          537,
+          537
+        ],
+        [
+          656,
+          656
+        ],
+        [
+          708,
+          710
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-06",
+      "severity": "Nit",
+      "title": "Replace the undefined review-stage reference",
+      "raw_findings": [
+        "style-1-1"
+      ],
+      "scope": [
+        [
+          634,
+          634
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-07",
+      "severity": "Nit",
+      "title": "Separate electrical activation from calibration prerequisites",
+      "raw_findings": [
+        "style-1-2"
+      ],
+      "scope": [
+        [
+          775,
+          775
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-08",
+      "severity": "Nit",
+      "title": "Remove the obsolete correction-pass scope",
+      "raw_findings": [
+        "style-1-3"
+      ],
+      "scope": [
+        [
+          841,
+          841
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-09",
+      "severity": "Nit",
+      "title": "Consolidate repeated decision and drafting-status material",
+      "raw_findings": [
+        "style-1-4"
+      ],
+      "scope": [
+        [
+          843,
+          857
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    },
+    {
+      "id": "S9-10",
+      "severity": "Nit",
+      "title": "Narrow the supposedly exhaustive evidence inventory",
+      "raw_findings": [
+        "style-1-5"
+      ],
+      "scope": [
+        [
+          859,
+          859
+        ]
+      ],
+      "status": "resolved",
+      "resolution_category": "PROPOSE FIX",
+      "resolution": "approved_fix_applied_and_verified",
+      "application_evidence": "docs/reviews/stage9-resolution/application.json"
+    }
+  ],
+  "prior_stage8_actions_resolved": [
+    "S5-02",
+    "S5-03",
+    "S8-03"
+  ],
+  "new_fixes_applied": [
+    "S9-01",
+    "S9-02",
+    "S9-03",
+    "S9-04",
+    "S9-05",
+    "S9-06",
+    "S9-07",
+    "S9-08",
+    "S9-09",
+    "S9-10"
+  ],
+  "clean_round": false,
+  "converged": false,
+  "reaudit_used": false,
+  "incomplete_attempt_excluded": "/root/egm_stage9_codebase_r1",
+  "successful_replacement": "/root/egm_stage9_codebase_retry1",
+  "next_boundary": "Review concluded; finalized design handed off to M0 implementation",
+  "resolution": {
+    "prepared_at_utc": "2026-11-12T22:57:04.511790+00:00",
+    "report": "goldfish_review_report.md",
+    "proposal": "docs/reviews/stage9-resolution/proposal.json",
+    "verification": "docs/reviews/stage9-resolution/verification.json",
+    "original_review_findings": "docs/reviews/stage9-findings.review-complete.json",
+    "category_counts_by_action": {
+      "PROPOSE FIX": 10,
+      "CONTEST": 0,
+      "ESCALATE": 0,
+      "DECLINE": 0
+    },
+    "category_counts_by_raw_finding": {
+      "PROPOSE FIX": 12,
+      "CONTEST": 0,
+      "ESCALATE": 0,
+      "DECLINE": 0
+    },
+    "approval": "all_ten_auto_accepted",
+    "formal_reaudit": false,
+    "resolved_at_utc": "2026-11-12T23:01:35.771055+00:00",
+    "application_evidence": "docs/reviews/stage9-resolution/application.json",
+    "applied_actions": 10,
+    "remaining_unaddressed_actions": 0,
+    "design_finalized": true,
+    "final_design_sha256": "5969db47c3e233f0aaa6e82a8cf8cb6164f3c53ef4c988629f8bd477abaf9845",
+    "finalization_record": "docs/reviews/design-finalization.md"
+  }
+}

@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""M0 source-contract and private/public copy checks; no production wire claims."""
+import importlib.metadata
+from pathlib import Path
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def main():
+    expected = "4.26.0"
+    try:
+        installed = importlib.metadata.version("jsonschema")
+    except importlib.metadata.PackageNotFoundError:
+        raise SystemExit("Use the repository venv: .venv/bin/python tools/check-contracts")
+    if installed != expected:
+        raise SystemExit(f"jsonschema {expected} required; found {installed}. Use the repository venv.")
+
+    copies = [
+        ("docs/specs/contracts/protocol-v1.schema.json", "contracts/protocol-v1.schema.json"),
+        ("docs/specs/fixtures/protocol-examples.json", "contracts/fixtures/protocol-examples.json"),
+        ("docs/specs/fixtures/timing-cases.json", "contracts/fixtures/timing-cases.json"),
+        ("docs/specs/fixtures/maze-v1.private.json", "server/priv/puzzles/maze-v1.private.json"),
+    ]
+    for source, copy in copies:
+        if (ROOT / source).read_bytes() != (ROOT / copy).read_bytes():
+            raise SystemExit(f"Contract copy differs: {copy}")
+
+    forbidden = {"open_edges", "solution_cells", "solution_steps", "expected_by_role", "expected_rune", "full_map"}
+    public_roots = [ROOT / "server/assets", ROOT / "server/priv/static", ROOT / "firmware/apps"]
+    for public in public_roots:
+        if not public.exists():
+            continue
+        for path in public.rglob("*"):
+            if path.is_file():
+                content = path.read_bytes()
+                if path.name == "maze-v1.private.json" or any(f'"{key}"'.encode() in content for key in forbidden):
+                    raise SystemExit(f"Private puzzle material in public/runtime client tree: {path.relative_to(ROOT)}")
+
+    print("Four authoritative contract/fixture copies are byte-identical; private fixture is outside public/client trees.", flush=True)
+    result = subprocess.run([sys.executable, str(ROOT / "docs/specs/verify_contracts.py")], cwd=ROOT)
+    return result.returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

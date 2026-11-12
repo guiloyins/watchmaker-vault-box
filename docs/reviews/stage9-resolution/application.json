@@ -1,0 +1,208 @@
+{
+  "applied_at_utc": "2026-11-12T22:59:27.643701+00:00",
+  "status": "resolved_and_design_finalized",
+  "authorization": "Auto accept all ten fixes, verify the changes, and finalize the design.",
+  "stage": 9,
+  "accepted_action_ids": [
+    "S9-01",
+    "S9-02",
+    "S9-03",
+    "S9-04",
+    "S9-05",
+    "S9-06",
+    "S9-07",
+    "S9-08",
+    "S9-09",
+    "S9-10"
+  ],
+  "accepted_actions": 10,
+  "accepted_raw_findings": 12,
+  "contested": 0,
+  "escalated": 0,
+  "declined": 0,
+  "remaining_unaddressed_actions": 0,
+  "exact_edit_operations": 80,
+  "files": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "action": "modify",
+      "before_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "approved_preview_sha256": "aaf97d3b978485abd72a0f6385431ba45c8087c48954356747c7eb7c133b7540",
+      "applied_sha256": "aaf97d3b978485abd72a0f6385431ba45c8087c48954356747c7eb7c133b7540",
+      "exact_preview_match": true,
+      "final_sha256": "5969db47c3e233f0aaa6e82a8cf8cb6164f3c53ef4c988629f8bd477abaf9845"
+    },
+    {
+      "path": "docs/specs/CODEX_START_HERE.md",
+      "action": "modify",
+      "before_sha256": "8b635573c272092be98135220f397484117367080033c0c908acb0912e6b4d0b",
+      "approved_preview_sha256": "fd9f4956f3f92256772ca7827e4f126c0f02203bd029f87edb526f0ba9c21159",
+      "applied_sha256": "fd9f4956f3f92256772ca7827e4f126c0f02203bd029f87edb526f0ba9c21159",
+      "exact_preview_match": true,
+      "final_sha256": "fd9f4956f3f92256772ca7827e4f126c0f02203bd029f87edb526f0ba9c21159"
+    },
+    {
+      "path": "docs/specs/README.md",
+      "action": "modify",
+      "before_sha256": "3d0263926628187f92f33b46c0e5217b4bb6da7e0c0d65ce6df72594514f1d1e",
+      "approved_preview_sha256": "5151140ef280071ea365a2d41fc2a9a407ebee977d492c09bb4b923693a55878",
+      "applied_sha256": "5151140ef280071ea365a2d41fc2a9a407ebee977d492c09bb4b923693a55878",
+      "exact_preview_match": true,
+      "final_sha256": "5151140ef280071ea365a2d41fc2a9a407ebee977d492c09bb4b923693a55878"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "action": "modify",
+      "before_sha256": "d90c341dc991a8dad8560e57453366ef9d1c7d676ee38f039bb33dfb757d8c36",
+      "approved_preview_sha256": "e4024dd5cdd095be256a08de4cf49f67d645bf8e5b9f7a6d4430ef596ae12625",
+      "applied_sha256": "e4024dd5cdd095be256a08de4cf49f67d645bf8e5b9f7a6d4430ef596ae12625",
+      "exact_preview_match": true,
+      "final_sha256": "e4024dd5cdd095be256a08de4cf49f67d645bf8e5b9f7a6d4430ef596ae12625"
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "action": "modify",
+      "before_sha256": "4fa93bbdf6fee493ff8db98f151bcd6185decce427301edad16c4f26d8eecfbd",
+      "approved_preview_sha256": "fe8c4cabab90243c563fd73066b416f07b01057f2ad429a73e472ce1e4dc4113",
+      "applied_sha256": "fe8c4cabab90243c563fd73066b416f07b01057f2ad429a73e472ce1e4dc4113",
+      "exact_preview_match": true,
+      "final_sha256": "fe8c4cabab90243c563fd73066b416f07b01057f2ad429a73e472ce1e4dc4113"
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "action": "modify",
+      "before_sha256": "13c846be1033402ee3d511a14d625fa2b54de580c1857a03bf7e75987481123b",
+      "approved_preview_sha256": "cc9dd35c457e41bc1179e670b35799433dce7e7b61da02fe90f6879ac58f9cd1",
+      "applied_sha256": "cc9dd35c457e41bc1179e670b35799433dce7e7b61da02fe90f6879ac58f9cd1",
+      "exact_preview_match": true,
+      "final_sha256": "cc9dd35c457e41bc1179e670b35799433dce7e7b61da02fe90f6879ac58f9cd1"
+    },
+    {
+      "path": "docs/specs/IMPLEMENTATION_CONTRACTS.md",
+      "action": "create",
+      "before_sha256": null,
+      "approved_preview_sha256": "feca08a268842f6628c11039c79bc4c573f4cb9e786eb3681a87783569968c90",
+      "applied_sha256": "feca08a268842f6628c11039c79bc4c573f4cb9e786eb3681a87783569968c90",
+      "exact_preview_match": true,
+      "final_sha256": "feca08a268842f6628c11039c79bc4c573f4cb9e786eb3681a87783569968c90"
+    },
+    {
+      "path": "docs/specs/LOCAL_SERVICE_V1.md",
+      "action": "create",
+      "before_sha256": null,
+      "approved_preview_sha256": "e2f8b78bf045c0cc8e8d54199962cbf7367696a37dbf54b0f3b65dcf733bc816",
+      "applied_sha256": "e2f8b78bf045c0cc8e8d54199962cbf7367696a37dbf54b0f3b65dcf733bc816",
+      "exact_preview_match": true,
+      "final_sha256": "e2f8b78bf045c0cc8e8d54199962cbf7367696a37dbf54b0f3b65dcf733bc816"
+    },
+    {
+      "path": "docs/specs/JSON_VALIDATION.md",
+      "action": "create",
+      "before_sha256": null,
+      "approved_preview_sha256": "861e945e0ae613458a4e2b916061e20b50d309dc8981640518596842c96e78ee",
+      "applied_sha256": "861e945e0ae613458a4e2b916061e20b50d309dc8981640518596842c96e78ee",
+      "exact_preview_match": true,
+      "final_sha256": "861e945e0ae613458a4e2b916061e20b50d309dc8981640518596842c96e78ee"
+    }
+  ],
+  "proposal_sha256": "8c3295fce904d45bc22c8c36dde9c71ce1bd5a4dfee8e748001fe82e0309b1e5",
+  "approved_patch_sha256": "7d22520ad06d739163523c60764f6c24fb4515e8b7236d9e0ae5e6800728e2b6",
+  "approved_proposal_verification_sha256": "4916394da9d8c8533de7bcb9ff2799c51e019ec49bbc538701613b48b6bb6720",
+  "original_findings_archive": "docs/reviews/stage9-findings.review-complete.json",
+  "formal_reaudit": false,
+  "runtime_or_physical_tests": "not_run",
+  "implementation_milestones_completed": [],
+  "verification": {
+    "checked_at_utc": "2026-11-12T23:00:06.905344+00:00",
+    "exact_saved_preview_matches": 9,
+    "local_links_checked": 69,
+    "local_anchors_checked": 11,
+    "markdown_fences_and_tables": "passed",
+    "new_contract_json_examples_syntax_checked": 3,
+    "planned_file_rows": 238,
+    "acceptance_ids_unchanged": 40,
+    "accepted_recovery_and_physical_service_sections_unchanged": true,
+    "accepted_transport_detail_unchanged": true,
+    "preserved_contract_hashes": {
+      "docs/specs/PROTOCOL_V1.md": "c75ed1c7cc0b51ae4acd9006b924fb88bdef5b01ec73ccbba7b1e47817324444",
+      "docs/specs/contracts/protocol-v1.schema.json": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+      "docs/specs/fixtures/maze-v1.private.json": "d81ad5c348811bb323006c7a1c71683550dc5946d8aa070d7dc90c79792e073d",
+      "docs/specs/fixtures/protocol-examples.json": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+      "docs/specs/fixtures/timing-cases.json": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d"
+    },
+    "validator_command": [
+      "python3",
+      "docs/specs/verify_contracts.py",
+      "--report",
+      "docs/reviews/stage9-resolution/applied-spec-validation.md"
+    ],
+    "validator_exit": 0,
+    "spec_validation_report": "docs/reviews/stage9-resolution/applied-spec-validation.md",
+    "ranges": {
+      "feature": [
+        1,
+        485
+      ],
+      "detailed": [
+        486,
+        880
+      ]
+    },
+    "runtime_or_physical_tests": "not_run",
+    "sql_migrations": "not_run",
+    "formal_reaudit": false
+  },
+  "finalization": {
+    "finalized_at_utc": "2026-11-12T23:01:35.771055+00:00",
+    "authorization": "Auto accept all ten fixes, verify the changes, and finalize the design.",
+    "design": "docs/designs/watchmakers-vault.md",
+    "approved_batch_design_sha256": "aaf97d3b978485abd72a0f6385431ba45c8087c48954356747c7eb7c133b7540",
+    "final_design_sha256": "5969db47c3e233f0aaa6e82a8cf8cb6164f3c53ef4c988629f8bd477abaf9845",
+    "metadata_edits": [
+      {
+        "old": "- **Status:** In Review — all design sections approved; D1–D6 selected; finalized for interactive EGM review",
+        "new": "- **Status:** Approved — finalized after EGM review; all review findings resolved by accepted edits"
+      },
+      {
+        "old": "Its single `Detailed Implementation Plan` section provides the boundary for the subsequent interactive EGM review. Dependencies and hardware facts still require the stated implementation-time checks; this draft does not claim those checks have run.",
+        "new": "Its single `Detailed Implementation Plan` section separates architectural decisions from milestone tasks. Dependencies and hardware facts still require the stated implementation-time checks; this finalized design does not claim those checks have run."
+      }
+    ],
+    "metadata_edit_scope": "Approval status and introductory lifecycle wording only; no contract or implementation decision changed.",
+    "ranges": {
+      "feature": [
+        1,
+        485
+      ],
+      "detailed": [
+        486,
+        880
+      ]
+    },
+    "outstanding_review_actions": 0,
+    "formal_reaudit": false,
+    "clean_round_or_convergence_claimed": false,
+    "implementation_milestones_completed": []
+  },
+  "closure_verification": {
+    "checked_at_utc": "2026-11-12T23:02:11.212451+00:00",
+    "status": "passed",
+    "current_markdown_files_checked": 14,
+    "current_local_file_links_checked": 147,
+    "approved_batch_and_finalization_metadata_exact": true,
+    "historical_proposal_verification_and_review_records_preserved": true,
+    "all_ten_actions_resolved": true,
+    "remaining_review_actions": 0,
+    "acceptance_status_rows": 40,
+    "milestones_complete": [],
+    "formal_reaudit": false,
+    "runtime_or_physical_tests": "not_run",
+    "records": {
+      "goldfish_review_report.md": "6c701e829e3a3e5f5d0cd88a21d835debb312e3694712b82d42c1ce65291d9ed",
+      "egm_review_state.md": "a64fa3782d165529ee76ce1e84864869e3f51ccbf791c4517318cf2b8f54565d",
+      "egm_review_context.md": "7f84c7ce06a95a0b1d40fc2707090eee9db4263d8eb22dc037954c2f13e1ff97",
+      "docs/implementation-status.md": "c2465370275b27cda54f26941eb01754f846aa13c5e581c87bd84f85ad863381",
+      "docs/reviews/design-finalization.md": "7a7a6e487ca0f41b8e5e806c269e083d81864d74010851f53e7d61d3f3a8bff8"
+    }
+  }
+}

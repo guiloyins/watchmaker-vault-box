@@ -1,0 +1,86 @@
+{
+  "completed_at_utc": "2026-11-12T22:22:06.213540+00:00",
+  "stage": 9,
+  "round": 1,
+  "status": "completed_with_open_findings",
+  "input_record": "docs/reviews/stage9-round1-input.json",
+  "input_record_sha256": "5089749fbcf41bbe065628b357352cf23a99fe1f3c5ce114564324de1d75f840",
+  "context_manifest_sha256": "a5cfe7862507cbd2b051520cae9520720f59e1f55d1ec7cf41327a7b60265aed",
+  "target_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+  "reviewers": [
+    {
+      "reviewer": "readiness",
+      "agent": "/root/egm_stage9_readiness_r1",
+      "status": "completed",
+      "native_final_received": true,
+      "report": "docs/reviews/stage9-readiness-r1-raw.md",
+      "report_sha256": "3f658ee2148ceeb947579ab2174c578fb0699c94266d3c5c9309f1d7e79b9e77",
+      "full_required_reads_reported": true,
+      "remaining_read_gaps": []
+    },
+    {
+      "reviewer": "codebase",
+      "agent": "/root/egm_stage9_codebase_retry1",
+      "status": "completed",
+      "native_final_received": true,
+      "report": "docs/reviews/stage9-codebase-r1-raw.md",
+      "report_sha256": "a1990db7e71f8b97f736ee48f0fbe8aaa7de45ae7836ecf4fdb6b1b25d99e765",
+      "full_required_reads_reported": true,
+      "remaining_read_gaps": []
+    },
+    {
+      "reviewer": "style",
+      "agent": "/root/egm_stage9_style_r1",
+      "status": "completed",
+      "native_final_received": true,
+      "report": "docs/reviews/stage9-style-r1-raw.md",
+      "report_sha256": "baa48c9380aac8dfd48e91e0ce7e63f6eee181c4db1e6e11d8daee3d6ab43a60",
+      "full_required_reads_reported": true,
+      "remaining_read_gaps": []
+    }
+  ],
+  "failed_attempts": [
+    {
+      "agent": "/root/egm_stage9_codebase_r1",
+      "status": "incomplete_isolation_failed",
+      "retry_count": 1,
+      "excluded_from_findings": true,
+      "report": "docs/reviews/stage9-codebase-r1-incomplete.md"
+    }
+  ],
+  "raw_counts": {
+    "blocker": 0,
+    "major": 7,
+    "nit": 5
+  },
+  "consolidated_counts": {
+    "blocker": 0,
+    "major": 5,
+    "nit": 5
+  },
+  "clean_round": false,
+  "converged": false,
+  "reaudit_used": false,
+  "target_unchanged_during_review": true,
+  "all_frozen_context_hashes_match": true,
+  "host_instruction_file_isolation": "unverified",
+  "child_tool_transcript_available_to_parent": false,
+  "runtime_or_physical_tests": "not_run",
+  "report": "implementation_readiness_report.md",
+  "report_sha256": "720d8c7d90e12faf0f618ad13e594f1f4f0f2194c04f8240f85a3eb5caab7715",
+  "findings_sha256": "88a005f76f330dd0b683d2a52e3af932230ab5cc9825cff247ec5d5841c50372",
+  "next_boundary": "Stage 9 terminal checkpoint",
+  "artifact_verification": {
+    "checked_at_utc": "2026-11-12T22:22:46.898510+00:00",
+    "status": "passed",
+    "raw_findings_mapped_exactly_once": 12,
+    "consolidated_actions": 10,
+    "counted_native_completions": 3,
+    "approved_stage8_preview_hashes_preserved": true,
+    "protocol_schema_fixture_hashes_preserved": true,
+    "report_findings_and_native_report_hashes_match": true,
+    "markdown_fences_and_tables": "passed",
+    "local_links_checked": 64,
+    "runtime_tests": "not_run"
+  }
+}

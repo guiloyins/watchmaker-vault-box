@@ -1,0 +1,90 @@
+{
+  "completed_at_utc": "2026-11-12T20:10:20.206013+00:00",
+  "stage": 7,
+  "round": 1,
+  "status": "critique_round_complete_parent_checkpoint_pending",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "target_lines": 781,
+  "feature_range": [
+    1,
+    445
+  ],
+  "context_manifest_sha256": "e671181b539b229edacc2504350c78a473dad630fdaf26ec3b8d89cb591880a1",
+  "reviewers": [
+    {
+      "agent": "/root/egm_stage7_design_r1",
+      "status": "completed",
+      "fork_turns": "none"
+    },
+    {
+      "agent": "/root/egm_stage7_structure_r1",
+      "status": "completed",
+      "fork_turns": "none"
+    },
+    {
+      "agent": "/root/egm_stage7_style_r1",
+      "status": "completed",
+      "fork_turns": "none"
+    }
+  ],
+  "counts": {
+    "blocker": 0,
+    "major": 2,
+    "nit": 3
+  },
+  "round_clean": false,
+  "converged": false,
+  "settled_findings": [],
+  "applied_fixes": [],
+  "cross_stage_major_overlap": {
+    "S7-01": "S5-01"
+  },
+  "distinct_open_actions_across_stages": {
+    "major": 4,
+    "nit": 3
+  },
+  "all_required_inputs_read": "Reported by all three reviewers; per-source receipts retained",
+  "input_hash_verification": "Target, all 17 frozen local inputs, 12 external extracts and 12 raw captures match",
+  "receipt_correction": "Design reviewer recomputed E09 raw HTML hash; confirmed original response typo only; no input/finding change or new audit round",
+  "context_contains_prior_review_summaries": true,
+  "host_instruction_file_isolation": "unverified",
+  "child_tool_transcript_available_to_parent": false,
+  "design_or_contract_changes": false,
+  "stage8": "not_run",
+  "acceptance_ids_retained": 40,
+  "artifact_local_links_verified": 63,
+  "artifacts": [
+    {
+      "path": "critic_report.md",
+      "sha256": "8a2d80c6dbb1c5a8fd4230b2536151d328e701d16435c78999df4b1772b81fc9"
+    },
+    {
+      "path": "docs/reviews/stage7-design-r1-raw.md",
+      "sha256": "62624f33ff681411e6e23747ba9ab18041eda39140505f4c60c76b09baf5d454"
+    },
+    {
+      "path": "docs/reviews/stage7-structure-r1-raw.md",
+      "sha256": "5a98fe310485e3b397604414970f683d3e51f7335af616720658c4c54590e6e5"
+    },
+    {
+      "path": "docs/reviews/stage7-style-r1-raw.md",
+      "sha256": "557498356a109acbb05d221992bc5c89e8aa4fef12feed128588310245e3f600"
+    },
+    {
+      "path": "egm_review_state.md",
+      "sha256": "678744af763d0ab34a02d3ba7acd0f23d4ffa8ccd0e1c74543c7d3cd5931dd51"
+    },
+    {
+      "path": "egm_review_context.md",
+      "sha256": "29b1d7a80b5b5367dc56cf744545a42d29ba092e03a2f743253c1ac2c5f1995c"
+    },
+    {
+      "path": "docs/implementation-status.md",
+      "sha256": "cab34d0a614bb15bd12ece0bd1424214a8f886eabdb471443ebe42af3673bcf4"
+    },
+    {
+      "path": "docs/reviews/stage7-findings.json",
+      "sha256": "958bb5f09f015ef81b63f9cc3b7feefe48cb15b26aff81d9d1c5fbc6e44dcf21"
+    }
+  ]
+}

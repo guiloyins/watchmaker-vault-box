@@ -1,0 +1,138 @@
+{
+  "checked_at_utc": "2026-11-12T22:54:20.607918+00:00",
+  "status": "passed_documentation_and_specification_checks_only",
+  "proposal_sha256": "8c3295fce904d45bc22c8c36dde9c71ce1bd5a4dfee8e748001fe82e0309b1e5",
+  "patch_sha256": "7d22520ad06d739163523c60764f6c24fb4515e8b7236d9e0ae5e6800728e2b6",
+  "files": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "action": "modify",
+      "original_sha256": "ce06f13354f9ea5ac34b68977dd467b9391f6e3920ef8f693f766636b05c0876",
+      "original_lines": 861,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/designs/watchmakers-vault.md",
+      "proposed_sha256": "aaf97d3b978485abd72a0f6385431ba45c8087c48954356747c7eb7c133b7540",
+      "proposed_lines": 880
+    },
+    {
+      "path": "docs/specs/CODEX_START_HERE.md",
+      "action": "modify",
+      "original_sha256": "8b635573c272092be98135220f397484117367080033c0c908acb0912e6b4d0b",
+      "original_lines": 46,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/CODEX_START_HERE.md",
+      "proposed_sha256": "fd9f4956f3f92256772ca7827e4f126c0f02203bd029f87edb526f0ba9c21159",
+      "proposed_lines": 46
+    },
+    {
+      "path": "docs/specs/README.md",
+      "action": "modify",
+      "original_sha256": "3d0263926628187f92f33b46c0e5217b4bb6da7e0c0d65ce6df72594514f1d1e",
+      "original_lines": 42,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/README.md",
+      "proposed_sha256": "5151140ef280071ea365a2d41fc2a9a407ebee977d492c09bb4b923693a55878",
+      "proposed_lines": 45
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "action": "modify",
+      "original_sha256": "d90c341dc991a8dad8560e57453366ef9d1c7d676ee38f039bb33dfb757d8c36",
+      "original_lines": 729,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "proposed_sha256": "e4024dd5cdd095be256a08de4cf49f67d645bf8e5b9f7a6d4430ef596ae12625",
+      "proposed_lines": 733
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "action": "modify",
+      "original_sha256": "4fa93bbdf6fee493ff8db98f151bcd6185decce427301edad16c4f26d8eecfbd",
+      "original_lines": 109,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/ACCEPTANCE.md",
+      "proposed_sha256": "fe8c4cabab90243c563fd73066b416f07b01057f2ad429a73e472ce1e4dc4113",
+      "proposed_lines": 111
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "action": "modify",
+      "original_sha256": "13c846be1033402ee3d511a14d625fa2b54de580c1857a03bf7e75987481123b",
+      "original_lines": 170,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/HARDWARE_AUDIT.md",
+      "proposed_sha256": "cc9dd35c457e41bc1179e670b35799433dce7e7b61da02fe90f6879ac58f9cd1",
+      "proposed_lines": 170
+    },
+    {
+      "path": "docs/specs/IMPLEMENTATION_CONTRACTS.md",
+      "action": "create",
+      "original_sha256": null,
+      "original_lines": 0,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/IMPLEMENTATION_CONTRACTS.md",
+      "proposed_sha256": "feca08a268842f6628c11039c79bc4c573f4cb9e786eb3681a87783569968c90",
+      "proposed_lines": 201
+    },
+    {
+      "path": "docs/specs/LOCAL_SERVICE_V1.md",
+      "action": "create",
+      "original_sha256": null,
+      "original_lines": 0,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/LOCAL_SERVICE_V1.md",
+      "proposed_sha256": "e2f8b78bf045c0cc8e8d54199962cbf7367696a37dbf54b0f3b65dcf733bc816",
+      "proposed_lines": 200
+    },
+    {
+      "path": "docs/specs/JSON_VALIDATION.md",
+      "action": "create",
+      "original_sha256": null,
+      "original_lines": 0,
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/proposed/docs/specs/JSON_VALIDATION.md",
+      "proposed_sha256": "861e945e0ae613458a4e2b916061e20b50d309dc8981640518596842c96e78ee",
+      "proposed_lines": 131
+    }
+  ],
+  "exact_edit_operations_replayed": 80,
+  "patch_dry_run_exit": 0,
+  "local_links_checked": 69,
+  "local_anchors_checked": 11,
+  "markdown_fences_and_table_widths": "passed",
+  "new_contract_json_examples_syntax_checked": 3,
+  "example_limits": "JSON syntax only; provisioning placeholder example intentionally cannot provision; no implementation decoder run",
+  "manifest_rows": 238,
+  "acceptance_ids_unchanged": 40,
+  "feature_section_unchanged": false,
+  "feature_edit_operations": [
+    31
+  ],
+  "accepted_recovery_and_physical_service_sections_unchanged": true,
+  "accepted_transport_detail_unchanged": true,
+  "canonical_files_unchanged": true,
+  "all_ten_actions_have_edits": true,
+  "simulator_capacity_arithmetic": {
+    "maximum_reserved_bytes": 512000,
+    "payload_limit": 524288,
+    "test_class": "static arithmetic, not executed store/model behavior"
+  },
+  "validator_command": [
+    "python3",
+    "/example/local/verify_contracts.py",
+    "--report",
+    "/workspace/watchmaker_vault/docs/reviews/stage9-resolution/candidate-spec-validation.md"
+  ],
+  "validator_exit": 0,
+  "scratch_overlay": "/example/local",
+  "runtime_or_physical_tests": "not_run",
+  "sql_migrations": "not_run; schema tables are normative descriptions, not executable DDL samples",
+  "formal_reaudit": false,
+  "approval": "pending",
+  "applied_fixes": [],
+  "resolution_record_verification": {
+    "checked_at_utc": "2026-11-12T22:57:36.012925+00:00",
+    "status": "passed",
+    "linked_paths_checked": 75,
+    "actions_proposed": 10,
+    "raw_findings_categorized_and_quoted": 12,
+    "original_review_findings_hash_preserved": true,
+    "historical_completion_unchanged": true,
+    "report_sha256": "627e75caec2b2a46f3f363fc7d810ac510823095a913a157216a99b56ef6adb7",
+    "canonical_and_preview_hashes_rechecked": true,
+    "tracking_markdown_and_acceptance_status_rows": "passed",
+    "approval": "pending",
+    "applied_fixes": []
+  }
+}

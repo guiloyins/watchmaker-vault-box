@@ -1,0 +1,43 @@
+{
+  "dispatched_at_utc": "2026-11-12T21:16:29.996377+00:00",
+  "stage": 8,
+  "round": 1,
+  "mode": "REVIEW",
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+  "line_range": [
+    1,
+    821
+  ],
+  "feature_range": [
+    1,
+    484
+  ],
+  "detailed_range": [
+    485,
+    821
+  ],
+  "context_manifest": "/workspace/watchmaker_vault/docs/reviews/stage8-context/reading-list.json",
+  "context_manifest_sha256": "8caac34c2f73468acbfc6686f369e86f318721f5204b9c64bac27700e14b463b",
+  "reviewers": [
+    {
+      "agent": "/root/egm_stage8_zoom_out",
+      "fork_turns": "none",
+      "persona": "/example/local/zoom_out.md",
+      "persona_sha256": "adc9d7b7db4c304866e61d5e5e446502231abe188ce64656939305e07ae7995f",
+      "standard": "/example/local/zoom-out-standard.md",
+      "standard_sha256": "0a01013bd363a8d744f8372b65495892360d7339e4e35c767003ae38f48e6799",
+      "status": "dispatched"
+    }
+  ],
+  "context_counts": {
+    "local": 17,
+    "external_captures": 12,
+    "stage_reports": 4
+  },
+  "stage_context_includes_prior_reports": true,
+  "host_instruction_file_isolation": "unverified",
+  "child_tool_transcript_available_to_parent": false,
+  "implementation_execution_authorized_by_review": false,
+  "next_boundary": "interactive Stage 8 checkpoint; Stage 9 not started"
+}

@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-11-12T22:04:13.675174+00:00",
+  "target_hash_matches": true,
+  "local_hashes_match": 17,
+  "external_readable_hashes_match": 12,
+  "external_raw_hashes_match": 12,
+  "unapproved_new_target_urls": [],
+  "read_completion": "All three counted native reviewers explicitly report full reads and repaired clipping; one isolation-failed attempt excluded and replaced. Full child tool transcripts unavailable.",
+  "completed_check_at_utc": "2026-11-12T22:22:06.213540+00:00",
+  "all_hashes_still_match": true
+}

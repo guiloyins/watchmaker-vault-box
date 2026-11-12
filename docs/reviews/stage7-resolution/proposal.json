@@ -1,0 +1,671 @@
+{
+  "prepared_at_utc": "2026-11-12T21:03:25.154521+00:00",
+  "status": "proposed_not_applied",
+  "stage": 7,
+  "findings": [
+    "design-1-1",
+    "design-1-2",
+    "style-1-1",
+    "style-1-2",
+    "style-1-3"
+  ],
+  "same_action_as": {
+    "design-1-1": "S5-01"
+  },
+  "files": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "original_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+      "proposed_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/designs/watchmakers-vault.md",
+      "original_lines": 781,
+      "proposed_lines": 821
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "original_sha256": "ae0ed2e4b7274e0c7bba22d5f10bbea84caf146432ecdf33d723b9ef85bc6f4e",
+      "proposed_sha256": "c75ed1c7cc0b51ae4acd9006b924fb88bdef5b01ec73ccbba7b1e47817324444",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/PROTOCOL_V1.md",
+      "original_lines": 237,
+      "proposed_lines": 270
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "original_sha256": "092145562c887315871e5d5d9d345c04f52c32cf38395c255f59507ea8809f3e",
+      "proposed_sha256": "0f19b6092219c160c956c0a67a488739a8d0653c6ac13837fcdb059e64f35d97",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "original_lines": 711,
+      "proposed_lines": 713
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "original_sha256": "764cea3705c5f0ab1d0b11524384649b40e1ac457726a6bcc8e4377ca53c7a47",
+      "proposed_sha256": "13c846be1033402ee3d511a14d625fa2b54de580c1857a03bf7e75987481123b",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/HARDWARE_AUDIT.md",
+      "original_lines": 155,
+      "proposed_lines": 170
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "original_sha256": "0b4b5d1efe8eac25e19728c27ad9319675ca5a8b95f6156e9d29c3ac382376f8",
+      "proposed_sha256": "ffd8f436ed4ca844cf1f9d1d757796f053efe553f9090a8235d03e7db418c801",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/ACCEPTANCE.md",
+      "original_lines": 109,
+      "proposed_lines": 109
+    }
+  ],
+  "edits": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "Start, pause, resume, reset and deliberate replacement are host operations.",
+      "new": "Start, pause, resume, reset, deliberate replacement, Begin release recovery and Close release without replay are host operations. The two recovery operations remain available when ordinary Pause/Reset is disabled."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "Unknown execution remains visible until reconciled.",
+      "new": "An unresolved release can be explicitly closed without replay after the local service and boot/session fence below; its unknown historical execution remains visible."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| Actuator intent and observations | Unique command ID, intended box, originating game/session/round, immutable operation fingerprint, dispatch/outcome information and timestamps | Retain the same identity and reconcile its outcome. Never prune actuator identities with diagnostics. |",
+      "new": "| Actuator intent and observations | Original command/fingerprint and intended box, originating game/session/round, observations, permanent dispatch retirement, recovery progress, separate disposition and non-pruned evidence | Preserve identity, uncertainty and administrative closure independently; restart restores no live arm, connection or current inspection evidence. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "On GameSession restart, load the checkpoint, commit a new session and recovery pause, close old raw sockets with code 4003, clear volatile state and explicitly rebind browser controllers. Keep an existing solved state and release command ID. Query the authenticated box about that ID; pending rows and missing acknowledgements do not cause automatic motion delivery. A readiness-only report updates current facts without overwriting the persisted release outcome. Conflicting observations remain diagnostic evidence rather than silently establishing certainty.",
+      "new": "On GameSession restart, load the checkpoint, commit a new session and recovery pause, close old raw sockets with code 4003, clear volatile state and explicitly rebind browser controllers. Keep an existing solved state and release command ID. Query the authenticated box about that ID; pending rows and missing acknowledgements do not cause automatic motion delivery. A readiness-only report updates current facts without overwriting the persisted release outcome. Conflicting observations remain diagnostic evidence rather than silently establishing certainty. A recovered intent remains query-only; explicit release recovery retires it permanently rather than reissuing it."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "Disable Pause/Reset while a committed release is pending, moving or uncertain. Those controls cannot promise to cancel motion already in transit. After a known terminal result and idle mechanism, reset creates a fresh puzzle context and invalidates old inputs, while retaining actuator history. Relocking remains a separate local service operation. Any operator recovery of an existing intent must preserve its identity and obey the protocol's freshness, binding and arming requirements.",
+      "new": "Keep the reported release outcome separate from a durable administrative disposition. **Begin release recovery** and **Close release without replay** are authenticated host operations available while ordinary Pause/Reset is disabled. Closing an intent as `closed_no_replay` records that the operator has handled its recovery and permanently retired its delivery; it does not assert whether its original motion happened. Preserve the original command/fingerprint, intended box, originating game/session/round, observations, confirmation and conflicting evidence. An uncertain outcome stays uncertain. The disposition is host-only administrative data, not a new v1 field, release status or physical confirmation.\n\nBegin recovery commits a recovery ID, permanent dispatch retirement and a new paused session while preserving the solved checkpoint and original intent. Then fence old handlers, queued effects, input and arms. BoxLink never re-envelopes an old effect under replacement bindings. Recovery is query, local service and explicit closure only; neither automatic nor operator-requested redelivery of the original intent is offered. An already transmitted command may act before the local stop, so beginning recovery is not a cancellation claim. The operator uses local service/manual release if access to the prize is needed.\n\nFor a physical box, enter USB recovery service: immediately inhibit gameplay arming/admission and queued or reserved gameplay work, stop at a bounded step boundary, disable outputs and close the old connection. Persist the service inhibit before acknowledging successful entry; check it again before any first step. Service-inhibit, seal, reconciliation and clear-authorization records carry an explicit storage version. A failed write leaves the device faulted and unable to arm; missing, corrupt or unsupported required recovery records fail closed. Service remains available for deliberate bounded local operations under its existing limits.\n\nRecord a bounded local reconciliation entry: recovery ID, original command/fingerprint and intended box, actual journal observation, operator observation and service epoch. For an absent ID, record only “not present in the current journal”; absence proves no historical execution result. Reboot with the inhibit and entry retained. Require a new boot ID and authenticated connection to the committed recovery session. Re-establish any current reference/position evidence locally after that reboot; do not restore old verification. After any bounded restoration, **Seal recovery evidence** durably freezes all motion, including USB jog/example/local, invalidates queued/reserved movement, stops/disables outputs and binds the local entry to the current recovery ID, boot and session. Enforce the freeze at execution boundaries. The operator compares that sealed serial entry with the host intent. Only then obtain a fresh sequenced query result for the exact command/box/boot/connection/session, with `motor_active:false` and no arm. Reboot or binding changes preserve the freeze but invalidate its evidence binding; refresh/reseal against current bindings before closure.\n\nClose release without replay requires explicit host confirmation of that matching local evidence. Commit `closed_no_replay` with the recovery ID, original intent, operator, reason, local record reference, current binding/status evidence and timestamps; recheck host authorization and recovery generation in the transaction. No transaction waits for USB, network or inspection. Readiness-only reports and elapsed time cannot close an intent. If a reply is lost, read back the same durable disposition; do not create a replacement intent. Any preclosure boot/connection/session change invalidates current evidence and requires it to be refreshed. Restart preserves retirement/disposition but restores no live authority.\n\nThe operator then verifies the committed host disposition in USB service and records its identifier on the matching local reconciliation entry. This is an authorized operator attestation across the host UI and USB service, not a cryptographic or wire-level proof. A failed or uncertain host/local write keeps recovery service, motion and history clearing inhibited until durable records are read back. Local acknowledgement gates unfreezing, leaving recovery service and clearing uncertain history. Reset may occur after the host closure while that local step is pending because the box remains frozen; it cannot enable another arm.\n\nIf more local motion is needed before closure, explicitly restart preparation through Begin release recovery with the expected prior recovery ID. Serialize this transaction against Close: a successful restart replaces the recovery ID/session and makes the old generation ineligible for closure while retaining permanent dispatch retirement; a previously committed Close instead requires its normal disposition-acknowledgement path. Verify the committed replacement locally before unfreezing into preparation. Local invalidation alone cannot defeat a concurrent host Close. Ordinary request retries read back their original recovery ID rather than creating a new generation.\n\n| Observation | Retained history | Completion path |\n| --- | --- | --- |\n| Commit before dispatch; query returns `unknown_command` | Original intent and uncertainty; absence is only a current journal observation. | Full stopped-service/reboot/inspection/query procedure, then explicit `closed_no_replay`; never redeliver the old ID. |\n| Accepted command interrupted, or device journal lost | Original acceptance/outcome evidence remains; missing device history does not prove no motion. | Same closure path; local restoration establishes current condition only. |\n| `motion_complete`, valid `position_confirmed`, or terminal `failed` | Preserve exactly the reported outcome; completion proves no lid state. | If recovery has not begun, use the terminal-and-idle Reset path. Once Begin recovery exists, finish its host Close and local acknowledgement even if a later terminal observation arrives; it cannot bypass that recovery. |\n| Conflicting historical outcomes for the same verified identity | Retain the conflict without promoting certainty. | Full recovery fence plus explicit operator acknowledgement may close delivery while execution remains unresolved. |\n| Wrong device/fingerprint, contradictory current stopped/armed evidence, or unavailable intended box | Keep diagnostics; do not adopt the disputed observation. | Refuse closure until the intended identity and stopped/disarmed condition are established. |\n| Server intent/disposition store unavailable or lost | No empty-game fallback or invented replacement intent. | Restore the original durable records; otherwise leave the box quarantined. |\n\nReset is available after a known terminal result and idle mechanism only if release recovery has not begun; once recovery begins, require durable `closed_no_replay` and the stopped/disarmed recovery evidence above, including when a late terminal outcome arrives. Reset preserves actuator history, creates a new puzzle context and performs no motor operation. For another physical game, establish the new welcome/session, finish local service acknowledgement, relock/reference and verify the current locked start, deliberately leave service, obtain a new arm and confirm readiness. Only a newly solved attempt can create a new release identity. The host labels an uncertain closed record “Release outcome unknown — recovery closed; original command will not be sent again.”"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "Both adapters require explicit arm permission, deduplicate command identities and distinguish accepted, motion-complete, confirmed, uncertain and failed outcomes. The simulator models reference/locked readiness through a clearly labeled host action, consumes its arm on command acceptance and supports disconnect, reboot, lost-acknowledgement and interrupted-motion injection. It keeps physical position unknown, basis unverified and command confirmation null; it never reports physical position confirmation. Its lid animation is presentation only.",
+      "new": "Both adapters require explicit arm permission, deduplicate command identities and distinguish accepted, motion-complete, confirmed, uncertain and failed outcomes. The simulator models reference/locked readiness through a clearly labeled host action, consumes its arm on command acceptance and supports disconnect, reboot, lost-acknowledgement and interrupted-motion injection. It keeps physical position unknown, basis unverified and command confirmation null; it never reports physical position confirmation. Its lid animation is presentation only. The simulated implementations also model persistent recovery-service inhibition, local reconciliation, reboot fences and administrative closure; these are explicitly modeled host actions and never physical observations. Host-only disposition controls remain outside the unchanged v1 box DTO."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "Physical box motion requires valid calibration and current locked-start evidence, a fresh arm bound to connection/boot/session, bounded travel/rate and an unexpired challenge. Persist command intent and consume permission before movement; after that write and immediately before the first step, recheck reserved authority and freshness. A failed durable write allows no step. Record final outcomes, retain up to 32 accepted command identities without automatic eviction, and return existing outcomes without moving again. A full journal rejects new motion. Clearing it requires local stopped/disarmed service after uncertain records are reconciled, followed by reboot and a new host session.",
+      "new": "Physical box motion requires valid calibration and current locked-start evidence, a fresh arm bound to connection/boot/session, bounded travel/rate and an unexpired challenge. Persist command intent and consume permission before movement; after that write and immediately before the first step, recheck reserved authority and freshness. A failed durable write allows no step. Record final outcomes, retain up to 32 accepted command identities without automatic eviction, and return existing outcomes without moving again. A full journal rejects new motion. Clearing it requires local stopped/disarmed service after uncertain records are reconciled, followed by reboot and a new host session.\n\nRecovery-service inhibit survives reboot and is checked at gameplay admission and immediately before the first step. It rejects gameplay arms/commands and invalidates queued or reserved work; it does not prohibit stopped, bounded local service. Read-only queries remain available.\n\nQueries and stopped service remain available at the 32-entry limit. Reconciliation metadata attaches to existing accepted entries and consumes no additional accepted-command slot. An absent queried ID uses one bounded active recovery record outside that capacity; it does not become a fabricated accepted command. An uncertain entry is administratively reconciled only after local metadata records the operator's verification of its matching durable host `closed_no_replay` disposition. Its recorded execution outcome remains uncertain.\n\nHistory clearing is a separate explicit USB operation, never puzzle Reset or routine service. Require stopped/disarmed recovery service, no active reservation, retained server history and every uncertain entry administratively reconciled. Before erasure, persist a versioned clear-pending record outside the erased journal: operation identity, pre-clear session and a bounded complete copy of the matching verified dispositions/local acknowledgements needed to authorize exit, including those attached to entries about to be erased. Validate that durable copy before erasure; never reconstruct authorization from an empty journal. Preserve credentials, calibration configuration, service inhibition and motion-freeze state. A partial erase or restart remains inhibited. Missing, corrupt or unsupported required recovery/clear records fail closed. Reboot and establish a different host session before recording completion of that fence. In order: complete the reboot/new-session fence; use the retained authorization to deliberately unfreeze into preparation; establish fresh reference/locked verification while gameplay remains inhibited; deliberately leave service; obtain a new arm. Retain the completed clear authorization until service exit is durably recorded, so interruption of any step cannot erase permission evidence or bypass a remaining gate. Server command identities and retirement records remain permanent. Old envelopes and retired intents never gain new bindings or permission."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "The same accepted identity never starts movement again; any explicitly authorized operator recovery follows the protocol's binding and readiness requirements.",
+      "new": "The same accepted identity never starts movement again. Explicit recovery is query, stopped local service and administrative closure; it permanently retires the original intent instead of authorizing renewed delivery."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "A single client process owns its connection, protocol state and timers; a functional transport module updates the Mint connection/WebSocket structures.",
+      "new": "One client process exclusively owns its Mint connection/WebSocket structures, protocol context and client timers; a functional transport module updates those structures. The runner monitors transport-operation deadlines. An external fake box has a separate runtime for modeled actuation, watchdog, readiness and journal transitions, which never waits for a transport call or acknowledgement."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "Use Mint's active-once socket delivery and tagged timer messages so waiting for a result does not block heartbeat responses.",
+      "new": "Use Mint's active-once socket delivery and tagged timer messages for receive processing; enforce the separate bounded-write policy below."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "The simulator owns upgrade validation, ping/pong, close handling and reconnect scheduling. Use Mint's active-once socket delivery and tagged timer messages for receive processing; enforce the separate bounded-write policy below. Limit handshake/upgrade/welcome waits, bound pending work and serialized data, and reject oversize assembled messages before retaining unbounded decoder state. An incremental frame-size/fragment guard runs before decoding; it tracks cumulative data-message bytes without counting interleaved control frames as puzzle data. Normal outbound JSON stays within 4,096 bytes, incoming messages within 8,192 bytes and depth eight, and generated traffic observes 30 messages/second with burst ten. Do not request compression extensions. The selected dependency's documented frame API handles normal traffic; it does not supply arbitrary fragmentation or malformed framing for negative tests.",
+      "new": "The simulator owns upgrade validation, ping/pong, close handling and reconnect scheduling. Use Mint's active-once socket delivery and tagged timer messages for receive processing; enforce the separate bounded-write policy below. Limit handshake/upgrade/welcome waits, bound pending work and serialized data, and reject oversize assembled messages before retaining unbounded decoder state. An incremental frame-size/fragment guard runs before decoding; it tracks cumulative data-message bytes without counting interleaved control frames as puzzle data. Normal outbound JSON stays within 4,096 bytes, incoming messages within 8,192 bytes and depth eight, and generated traffic observes 30 messages/second with burst ten. Do not request compression extensions. The selected dependency's documented frame API handles normal traffic; it does not supply arbitrary fragmentation or malformed framing for negative tests.\n\nMint's active-once mode controls receiving; writes can still block. Configure `send_timeout: 100` milliseconds through `transport_opts` for both WS and verified WSS, covering upgrade/request, data and control writes. Before entering a write call, obtain the runner's acknowledgement that its operation ID, connection generation and absolute monotonic deadline are registered. The runner, which performs no socket/journal I/O or blocking scenario waits, enforces a separate 200 ms whole-operation deadline. It checks that deadline before accepting completion; a late completion cannot defeat expiry because it precedes a timeout message in the mailbox. The owner must obtain completion acceptance before further protocol work. At expiry the runner retires the generation and terminates the owner immediately. These are proposed simulator budgets to verify on the locked TCP/TLS stack; they do not extend any protocol freshness or motion deadline.\n\nAdmit at most one active write and nine queued frames, totaling at most 41,280 encoded bytes. Bound producer admission as well as the internal queue so asynchronous producers cannot grow an unbounded mailbox. Overflow is a connection fault, not permission to discard required commands/results/statuses. Keep at most one replaceable heartbeat work item and sample complete current input when dispatching it. Keep identical envelopes only for the specified same-connection retries. Perform one write per loop turn, then service input and expire deadlines; do not drain a queue as one write batch or send catch-up retries. Sweep monotonic deadlines before and after transport operations and before queued input/retry/completion events.\n\nAny send error, socket timeout or whole-operation overrun is an ambiguous-delivery failure. Invalidate the generation and pending authority before teardown; do not retry the failed bytes, reuse that connection or add a WebSocket close-frame write. For a returned send error or socket timeout, permit local close under a further 100 ms runner deadline, then terminate the owner if necessary. Whole-operation overruns terminate immediately at their 200 ms deadline without another close window. Reconnect only after the old owner is down, using a new generation, welcome, current state and neutral/new-press input. Old results, socket events, frames and timers cannot regain authority. A lost acknowledgement does not establish that the original action failed to execute."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "Reply to actual server heartbeat challenges with complete current input; ping/pong is never game freshness. Keep the one-pending-command rule and identical 500 ms retries capped at three, then close/reconnect and discard the pending action. A new connection or session clears pending input, challenges and timers, obtains welcome/current state, and requires a neutral baseline plus a new scenario press before holding again. Tag timers and incoming socket state by connection generation so queued old work cannot revive input. Server-side 400 ms challenge-issued leases and 2,000 ms qualification remain authoritative; the client cannot extend a lease from packet arrival time. The modeled box applies the 1,500 ms authenticated-server-silence rule and never resumes interrupted motion automatically.",
+      "new": "Reply to actual server heartbeat challenges with complete current input; ping/pong is never game freshness. Keep the one-pending-command rule and identical 500 ms retries capped at three, then close/reconnect and discard the pending action. A new connection or session clears pending input, challenges and timers, obtains welcome/current state, and requires a neutral baseline plus a new scenario press before holding again. Tag timers and incoming socket state by connection generation so queued old work cannot revive input. Server-side 400 ms challenge-issued leases and 2,000 ms qualification remain authoritative; the client cannot extend a lease from packet arrival time. The modeled box applies the 1,500 ms authenticated-server-silence rule and never resumes interrupted motion automatically.\n\nA separate external fake-box runtime owns modeled motion, its independent watchdog/step timers, readiness and journal transitions; the Mint owner never owns that actuator deadline. Communicate through bounded asynchronous, generation-tagged events. The runtime monitors transport loss and receives authenticated-challenge events with their client-recorded monotonic receive time, so mailbox delay does not renew freshness. Before command acceptance, each step, the first step after intent persistence, and any completion, expire watchdog/travel deadlines and check current authority. Stop at the next bounded modeled step boundary on known transport loss or 1,500 ms of authenticated-server silence; deactivate motion without waiting for a status send. A late heartbeat or queued completion cannot revive an interrupted stroke or overwrite uncertainty with success.\n\nJournal I/O occurs only while modeled motion is inactive: persist intent before the first step and recheck authority/time afterward; deactivate motion before recording terminal/interrupted outcomes. Transport-owner replacement retains the runtime and journal, clears arm authority, and never resumes a stroke. A simulated box reboot changes boot identity and reloads inhibited/inactive state and retained history. Queries may report that history under new transport bindings, but neither reconnection nor reboot replays an actuation."
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "style-1-1",
+      "old": "These are evidence and implementation-detail dependencies, rather than requests to replace the architecture already specified:",
+      "new": "D1–D6 are settled; the remaining dependencies are tested versions and hardware evidence. These checks establish implementation facts and do not reopen the approved software choices:"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "style-1-1",
+      "old": "- **Software decisions:** D1–D6 are resolved: audience-specific snapshots, generated board configuration, generated host access key, Playwright, Phoenix-managed assets and Mint.WebSocket simulator transport. Remaining toolchain checks establish tested versions; remaining hardware investigations establish actual target facts rather than reopening these choices.",
+      "new": ""
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "style-1-2",
+      "old": "### H. Treat a release event or a recent packet arrival as sufficient hold evidence",
+      "new": "### H. Keep presses active until release, or renew leases on packet receipt"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "style-1-3",
+      "old": " No claim is made that WebSockex is obsolete or incapable of normal clients.",
+      "new": ""
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "style-1-3",
+      "old": " No display-driver path is declared unsupported or obsolete without that evidence.",
+      "new": ""
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "style-1-3",
+      "old": "The source selects SQLite, Phoenix and the shared protocol; this draft does not invent an earlier database/framework evaluation or claim measured superiority over untested products.",
+      "new": ""
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/game_store.ex` | Create | Implement checkpoint/create/load/transition and actuator-outcome transactions; validate relevant host authentication epochs inside the committing transaction, serialize against rotation, enforce one intent per originating solved attempt and reject incompatible checkpoint schemas. |",
+      "new": "| `server/lib/vault/game_store.ex` | Create | Implement checkpoint/intent transactions, one release per solved attempt, host-epoch revalidation and compatible checkpoint schemas. Persist recovery preparation, permanent retirement and idempotent closed_no_replay separately from reported outcomes; no transaction waits for external service. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/game_store/actuator_command.ex` | Create | Define immutable command identity/fingerprint, intended box and sequenced reported outcomes independently of diagnostic pruning. |",
+      "new": "| `server/lib/vault/game_store/actuator_command.ex` | Create | Define immutable command/fingerprint and intended box; retain sequenced outcomes, permanent dispatch retirement, recovery/disposition IDs and operator/current-binding evidence independently from diagnostic pruning. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/priv/repo/migrations/20261112000000_create_vault_state.exs` | Create | Create checkpoints, registrations, browser credentials/authentication epochs, assignments and actuator tables with foreign keys and required uniqueness constraints. This is planned source, not a claim a migration ran. |",
+      "new": "| `server/priv/repo/migrations/20261112000000_create_vault_state.exs` | Create | Create checkpoints, identities/credentials, assignments and actuator records with required uniqueness, foreign keys, recovery/disposition fields and original-identity constraints. This is planned source, not an executed migration. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/games.ex` | Create | Authenticate capabilities, explicitly create games and idempotently locate/recover existing ones; route controller and host actions to the registered process. |",
+      "new": "| `server/lib/vault/games.ex` | Create | Authenticate capabilities, explicitly create/locate existing games and route controller/host actions, including begin recovery and close without replay, to the registered process. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/game_session.ex` | Create | Own state, actor bindings, counters, challenge records, hold attempts and effects. Preserve separate session/round/rule/board/state generations; invalidate revoked host actors/holds and revalidate their authentication epochs at input and qualification boundaries. |",
+      "new": "| `server/lib/vault/game_session.ex` | Create | Own accepted game state, bindings, counters, freshness and effects; revalidate host epochs at commit. Prepare and close recovery idempotently, preserve solved/original intent state and enforce terminal-or-administratively-closed Reset eligibility. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/projections.ex` | Create | Build allowlisted A/B/public/box/host views and privacy-safe action results; do not serialize the entire reducer state. |",
+      "new": "| `server/lib/vault/projections.ex` | Create | Build allowlisted A/B/public/box/host views. Host-only recovery disposition/evidence must not change v1 box DTO fields or convert uncertain execution into physical confirmation. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/recovery.ex` | Create | Restore checkpoints paused under a committed new session, invalidate old connections and coordinate read-only release reconciliation. |",
+      "new": "| `server/lib/vault/recovery.ex` | Create | Restore paused checkpoints and new session fences; implement preparation/retirement and explicit host closure. Serialize explicit preparation replacement against Close, invalidate stale evidence/generations and read back idempotent request outcomes after lost replies. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/box_link.ex` | Create | Select the box adapter, manage arm/readiness, dispatch only newly committed release effects and query existing identities after uncertainty. |",
+      "new": "| `server/lib/vault/box_link.ex` | Create | Select the adapter and manage arm/query/status. Dispatch only eligible newly committed intents; never dispatch a retired ID or re-envelope a queued old effect with replacement bindings. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/simulated_box.ex` | Create | Model service readiness, single-use arming, command journal and accepted/motion-complete states; expose explicit failure injection without physical position confirmation. |",
+      "new": "| `server/lib/vault/simulated_box.ex` | Create | Model readiness, arm consumption, journal outcomes and failures plus persistent recovery-service inhibition, local metadata and reboot/clear fences. Preserve simulation labeling and unknown physical position. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault_web/live/host_live.ex` | Create | Subscribe to the authenticated host snapshot scope before bootstrap; render mirrors/status/events and permitted operator controls. Use independent logical actors when controlling both roles. |",
+      "new": "| `server/lib/vault_web/live/host_live.ex` | Create | Subscribe before bootstrap, render mirrors and authenticated controls with independent role actors. Add Begin release recovery and Close release without replay, explicit local-evidence attestation and a distinct uncertain-but-closed display. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/lib/vault/box_link.ex` | Update | Connect physical dispatch/query/status with current box bindings, readiness and durable intent; keep automatic recovery query-only. |",
+      "new": "| `server/lib/vault/box_link.ex` | Update | Integrate raw physical status/query and durable intent bindings; enforce permanent retirement and original effect generations, with query-only recovery and no old-ID redelivery. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/test/vault/reconciliation_test.exs` | Create | Test unknown/lost/contradictory command outcomes, old confirmation versus current position and readiness-only reports. |",
+      "new": "| `server/test/vault/reconciliation_test.exs` | Create | Exercise unknown/interrupted/conflicting outcomes through service/reboot/closure/Reset/new round. Preserve the original uncertainty and ID; reject readiness-only closure and wrong identity; inject preparation/closure/ack failures and delayed old envelopes. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `server/test/vault/recovery_test.exs` | Create | Crash/restart sessions, rotate identity, close old sockets, clear leases and retain the original release identity. |",
+      "new": "| `server/test/vault/recovery_test.exs` | Create | Crash/restart sessions during recovery and preserve original identity, retirement, disposition and service inhibition while replacing bindings and invalidating current evidence. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/components/vault_device/vault_storage.cpp` | Create | Persist versioned provision/calibration/journal data with explicit failures and credential redaction. |",
+      "new": "| `firmware/components/vault_device/vault_storage.cpp` | Create | Persist versioned provision/calibration/journal data, service inhibit, reconciliation and clear-pending metadata with explicit failures and credential redaction; malformed required recovery state fails closed. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/components/vault_device/include/vault_service.hpp` | Create | Define local service authorization and typed provision/inspect commands, separate from remote gameplay. |",
+      "new": "| `firmware/components/vault_device/include/vault_service.hpp` | Create | Define typed local provisioning, recovery-entry/inspection, host-disposition attestation, service-exit and history-clear operations separately from remote gameplay. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/apps/box/main/app_main.cpp` | Create | Compose provisioned device state, serial service, journal and one actuator owner; boot with outputs disabled. |",
+      "new": "| `firmware/apps/box/main/app_main.cpp` | Create | Compose device state, serial service, journal and one actuator owner. Boot with outputs disabled and retained service/clear inhibition; no missing or invalid recovery record can enable gameplay. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/components/vault_actuator/vault_actuator.cpp` | Create | Execute one locally scheduled motion within travel/rate/deadline/watchdog bounds; stop on missed scheduling budget instead of catching up. |",
+      "new": "| `firmware/components/vault_actuator/vault_actuator.cpp` | Create | Execute one bounded locally scheduled motion; check recovery inhibit at admission and before the first step, invalidate reservations on service entry, stop at a bounded boundary and never catch up delayed steps. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/components/vault_actuator/include/vault_journal.hpp` | Create | Define durable immutable command identity/outcome and 32-record capacity rules. |",
+      "new": "| `firmware/components/vault_actuator/include/vault_journal.hpp` | Create | Define immutable command identity/outcome, 32 accepted-entry capacity, separate per-entry reconciliation metadata and one bounded absent-ID recovery record plus clear-pending fence. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/components/vault_actuator/vault_journal.cpp` | Create | Write intent before steps, preserve deduplication across reboot, reject changed fingerprints and refuse new motion at capacity without eviction. |",
+      "new": "| `firmware/components/vault_actuator/vault_journal.cpp` | Create | Write intent before steps; preserve outcomes and deduplication across reboot. Reconcile at capacity without a 33rd accepted entry. Before erasure, copy verified disposition/acknowledgement evidence into versioned external clear authorization; retain it through the boot/session fence and durable service exit. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/components/vault_actuator/box_service.cpp` | Create | Implement stopped/disarmed inspect, bounded jog, calibration, current manual verification, relock and conditional sensor-backed homing. Gate history clearing on reconciliation, reboot and new session. |",
+      "new": "| `firmware/components/vault_actuator/box_service.cpp` | Create | Implement bounded service, durable recovery entry, inspect/reboot and Seal recovery evidence that freezes gameplay and USB motion. Unfreeze only after locally verifying committed host closure or replacement preparation; failed writes remain inhibited. Preserve historical uncertainty. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/tests/journal_test.cpp` | Create | Verify duplicate/changed identities, 33rd-command refusal, reboot uncertainty, saved historical evidence and controlled clearing. |",
+      "new": "| `firmware/tests/journal_test.cpp` | Create | Verify duplicate/changed identities, capacity, reboot outcomes, full-journal reconciliation without extra accepted entries, absent-ID metadata, failed attestation writes and interrupted clear/reboot/new-session fencing. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `firmware/tests/service_test.cpp` | Create | Prove no-sensor homing is unavailable, mandatory release limits stay required, local service disarms gameplay and reset/reconnect never relock. |",
+      "new": "| `firmware/tests/service_test.cpp` | Create | Test queued/reserved/moving commands at entry/seal, persistent inhibit/freeze across reboot, rejected local motion while sealed, Close versus preparation-restart races, wrong-record attestations and deliberate exit. Reset/reconnect never move or clear history; no-sensor homing remains unavailable. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `docs/hardware/box-service.md` | Create | Document actual implemented serial commands and ordered current-session reference → locked verification → leave service → arm → ready report → resume/release workflow. |",
+      "new": "| `docs/hardware/box-service.md` | Create | Document exact recovery-entry/inspect/reboot/host-close/local-attest operations and operator-attestation limits; then Reset/new session, local reference/locked verification, deliberate service exit, arm and ready report. Separate history clearing from Reset. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-1",
+      "old": "| `docs/runbook.md` | Update | Add raw-device provisioning, LAN/WSS settings, uncertain-command reconciliation, database location and backup/shutdown guidance. |",
+      "new": "| `docs/runbook.md` | Update | Add raw-device provisioning, LAN/WSS, database backup/shutdown, explicit uncertain-command close-out, crash/readback cases and original-ID retirement. Explain that local/current inspection does not establish historical execution. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `tools/simulator/cli.exs` | Create | Validate bounded CLI arguments, start only required client dependencies, load the fixed simulator modules and dispatch a named finite scenario; no dependency download or credential echo at runtime. |",
+      "new": "| `tools/simulator/cli.exs` | Create | Validate bounded args and start locked dependencies without Phoenix or credential output. Monitor each Mint owner, enforce 200 ms whole-write and 100 ms teardown deadlines without blocking I/O/scenario waits, and restart transport only after the old owner exits. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `tools/simulator/client.exs` | Create | Own one client's connection generation, protocol context, one pending discrete command, exact retries and challenge replies. Coordinate tagged timers and Mint transport results; reconnect discards stale actions and requires new welcome/neutral/press context. |",
+      "new": "| `tools/simulator/client.exs` | Create | Own connection generation, protocol context, one pending command, retries and challenge replies. Bound producer admission/encoded queues, perform one write per turn with deadline sweeps, and fatally invalidate ambiguous sends; deliver bounded generation-tagged events asynchronously to the box runtime. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `tools/simulator/mint_transport.exs` | Create | Wrap Mint HTTP/1.1 upgrade and WebSocket encode/stream/decode with active-once delivery, authentication, verified WSS, handshake deadlines, ping/pong/close behavior and bounded queues. Preserve updated immutable transport state after each operation. |",
+      "new": "| `tools/simulator/mint_transport.exs` | Create | Wrap exclusive Mint HTTP/1.1 WS/WSS state, active-once receive, verified TLS, bounds, handshake/control framing and 100 ms TCP/TLS send_timeout. Register whole-operation start/completion with the runner and expose fatal teardown; never reuse failed-generation state. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `tools/simulator/box_model.exs` | Create | Model readiness, arming, deduplication, interruption/watchdog and truthful unknown physical position for the server-selected fake box; simulated reboot changes boot identity while retaining journal history. |",
+      "new": "| `tools/simulator/box_model.exs` | Create | Keep modeled transition rules explicit in time, binding, readiness, deduplication and interruption inputs. The box runtime owns execution; preserve any shared-core decision separately tracked under S5-03, without creating a second authoritative model here. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `tools/simulator/box_store.exs` | Create | Persist the fake box's versioned journal to a separate protected temporary state file using validated atomic replacement and explicit write failures; retain accepted intent across process restart and never share the server checkpoint. This is simulator persistence, not hardware NVS evidence. |",
+      "new": "| `tools/simulator/box_store.exs` | Create | Persist the external runtime journal and recovery-service metadata in its protected versioned state file, independent of server checkpoint and replaceable transport. Write only while modeled motion is inactive, recheck before first step, and retain uncertainty/inhibit across reboot. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `server/test/support/simulator_fixture.ex` | Create | Provision isolated endpoint/identities/credentials/state directories and bind the exact fake-box identity as server-selected simulated mode before connection. Refuse real hardware mode and prevent client-declared simulation or two active box adapters. |",
+      "new": "| `server/test/support/simulator_fixture.ex` | Create | Provision isolated endpoint/identity/state and server-selected simulation, never physical mode. Provide controlled WS/WSS pressure peers, bounded byte/time setup, operation/queue instrumentation and a blocked transport stub for independent runtime watchdog tests. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `server/test/vault/simulator_client_test.exs` | Create | Exercise Mint lifecycle, ping/pong versus game heartbeats, bounds, retry timers, stale-generation delivery, disconnect/reconnect and certificate/hostname rejection against controlled endpoints. |",
+      "new": "| `server/test/vault/simulator_client_test.exs` | Create | Test actual WS/WSS send saturation, 100/200/100 ms write/operation/teardown policy, several queued writes, timer fairness, overflow, late returns, generation fences, no old-envelope replay, TLS rejection and bounded socket cleanup on owner termination. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `server/test/vault/simulator_box_test.exs` | Create | Exercise independent journal reboot/write failures, duplicate outcomes, no automatic replay, modeled readiness and visible simulation labeling without physical position claims. |",
+      "new": "| `server/test/vault/simulator_box_test.exs` | Create | Prove the independent 1,500 ms watchdog under a live blocked transport stub, deadline-first step/completion decisions, inactive-only journal I/O, transport replacement versus reboot and retained outcomes. Also complete recovery close-out/new round without physical-position claims. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `docs/protocol-conformance.md` | Create | Map all v1 requirements to server/simulator/firmware tests and record frozen contract hashes after M2 verification. |",
+      "new": "| `docs/protocol-conformance.md` | Create | Map v1 and recovery requirements to executed tests; record frozen wire hashes, tested Mint/OTP/OS versions, queue/socket options, separate actual WS/WSS backpressure evidence and independent fake-box watchdog results. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "| `tools/simulator/box_model.exs` | Create | Keep modeled transition rules explicit in time, binding, readiness, deduplication and interruption inputs. The box runtime owns execution; preserve any shared-core decision separately tracked under S5-03, without creating a second authoritative model here. |",
+      "new": "| `tools/simulator/box_runtime.exs` | Create | Own external fake-box motion, independent watchdog/step timers, readiness and journal transitions. Monitor transport ownership, reject stale generations, stop before persistence/reporting and revalidate after intent writes and before completion. |\n| `tools/simulator/box_model.exs` | Create | Keep modeled transition rules explicit in time, binding, readiness, deduplication and interruption inputs. The box runtime owns execution; preserve any shared-core decision separately tracked under S5-03, without creating a second authoritative model here. |"
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "finding": "design-1-2",
+      "old": "**Verification and exit:** Execute M2-T1–M2-T7 and M2-01–M2-08, not just structural schema validation. Measure the actual storage-lock error latency. Prove recovery after each commit/dispatch/ack crash boundary preserves the same intent without automatic resend. Repeat the browser demo after integration. Freeze the wire contract only after observed conformance, with shared schema/fixtures checked unchanged unless a separately accepted change is recorded.",
+      "new": "**Verification and exit:** Execute M2-T1–M2-T7 and M2-01–M2-08, not just structural schema validation. Measure the actual storage-lock error latency. Prove recovery after each commit/dispatch/ack crash boundary preserves the same intent without automatic resend. Repeat the browser demo after integration. Freeze the wire contract only after observed conformance, with shared schema/fixtures checked unchanged unless a separately accepted change is recorded. Include complete unknown/interrupted recovery through closure and a new round. For WS and WSS separately, demonstrate actual backed-up sends within finite setup limits; inability to induce pressure is incomplete, not a pass. Independently block a live transport stub beyond 1,500 ms to prove the runtime watchdog rather than only an earlier send timeout. Exercise queued writes, delayed completions and journal/write failure boundaries."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "New server-generated identifier on full game reset and recovery from a server/GameSession restart.",
+      "new": "New server-generated identifier on full game reset, server/GameSession restart recovery, or explicit Begin release recovery (including replacement preparation)."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "Full reset/GameSession recovery closes device sockets",
+      "new": "Full reset/GameSession recovery and explicit Begin release recovery close device sockets"
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "A required controller/box disconnect adds its offline reason and a recovery latch. Restored freshness clears only the offline reason. Explicit host Resume clears `operator`/`recovery` only when required controllers have fresh neutral inputs and box readiness is restored. A host observer is not a gameplay participant; its disconnect does not add controller-offline pause. Before a committed solve, the transition into pause disarms the box once. Arming while paused is explicitly allowed: Arm → readiness report → Resume. Evaluating paused state or executing Resume must not disarm the fresh permission again. Once a solved outcome/release intent commits, disable Pause/Reset until its outcome is reconciled. A pause button must not imply it can cancel release already in transit.",
+      "new": "A required controller/box disconnect adds its offline reason and a recovery latch. Restored freshness clears only the offline reason. Explicit host Resume clears `operator`/`recovery` only when required controllers have fresh neutral inputs and box readiness is restored. A host observer is not a gameplay participant; its disconnect does not add controller-offline pause. Before a committed solve, the transition into pause disarms the box once. Arming while paused is explicitly allowed: Arm → readiness report → Resume. Evaluating paused state or executing Resume must not disarm the fresh permission again. Once a solved outcome/release intent commits, disable Pause/Reset until its outcome is reconciled. A pause button must not imply it can cancel release already in transit. Reconciliation can end through the separate durable closed_no_replay procedure below while the original release outcome stays uncertain. Begin/Close recovery are distinct host operations, not Pause/Reset or motor commands."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "Every `box_status` includes `session_id` for its current welcome and a readiness object: `{\"arm_id\":null,\"armed_session_id\":null,\"calibration_valid\":false,\"start_verified\":false}`. `calibration_valid` means that this boot has the configured mechanical reference/travel bounds. `start_verified` means the latch is currently verified locked by its actual sensor or by explicit current operator verification, not merely the last commanded step count. Calibration, homing, jogging, relocking, and manual position verification are **USB serial service operations in the MVP**; Phoenix displays their reported results and can arm/disarm, but cannot invent a reference or position. On reboot, disconnect, session change, fault, or accepted movement, clear arming and start verification. Calibration may survive a simple disconnect only if the hardware reference remains valid; it is false after interrupted motion or reboot until re-established.",
+      "new": "Every `box_status` includes `session_id` for its current welcome and a readiness object: `{\"arm_id\":null,\"armed_session_id\":null,\"calibration_valid\":false,\"start_verified\":false}`. `calibration_valid` means that this boot has the configured mechanical reference/travel bounds. `start_verified` means the latch is currently verified locked by its actual sensor or by explicit current operator verification, not merely the last commanded step count. Calibration, homing, jogging, relocking, and manual position verification are **USB serial service operations in the MVP**; Phoenix displays their reported results and can arm/disarm, but cannot invent a reference or position. On reboot, disconnect, session change, fault, or accepted movement, clear arming and start verification. Calibration may survive a simple disconnect only if the hardware reference remains valid; it is false after interrupted motion or reboot until re-established. Recovery service also has a persistent local inhibit and, after evidence is sealed, an all-motion freeze; both survive reboot and reject gameplay arming/admission. These local records add no wire fields and do not prevent read-only queries."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "Require existing valid calibration and verified locked position; arming only sets",
+      "new": "Require existing valid calibration, verified locked position and no service inhibit/motion freeze; arming only sets"
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "After the durable intent write and immediately before the first step, recheck binding, the reserved arm generation, fresh challenge, and watchdog.",
+      "new": "After the durable intent write and immediately before the first step, recheck binding, reserved arm generation, fresh challenge, watchdog and local service inhibit/motion freeze. Service entry/sealing invalidates queued and reserved motion at execution boundaries."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "Persist the command intent in nonvolatile storage **before the first motor step**, retaining the immutable fingerprint `{original session_id, action, target}` and reserved arm ID. A duplicate `command_id` returns its recorded status and never starts again, including after reboot; a changed fingerprint is invalid. Retain all accepted IDs, up to 32, with **no automatic eviction**. When full, reject new actuation with `history_full`; existing status queries/duplicates still work. Clearing history is explicit USB service only while disarmed/stopped, after reconciling every uncertain intent, followed by reboot and a new host session. The server permanently enforces unique command IDs and never reuses them. Clearing history never authorizes replay of old wire commands, whose boot/connection/session bindings are obsolete.",
+      "new": "Persist the command intent in nonvolatile storage **before the first motor step**, retaining the immutable fingerprint `{original session_id, action, target}` and reserved arm ID. A duplicate `command_id` returns its recorded status and never starts again, including after reboot; a changed fingerprint is invalid. Retain all accepted IDs, up to 32, with **no automatic eviction**. When full, reject new actuation with `history_full`; existing status queries/duplicates still work. Clearing history is explicit USB service only while disarmed/stopped, after reconciling every uncertain intent, followed by reboot and a new host session. The server permanently enforces unique command IDs and never reuses them. Clearing history never authorizes replay of old wire commands, whose boot/connection/session bindings are obsolete.\n\nQueries and stopped service remain available at the 32-entry limit. Reconciliation metadata attaches to existing accepted entries and consumes no additional accepted-command slot. An absent queried ID uses one bounded active recovery record outside that capacity; it does not become a fabricated accepted command. An uncertain entry is administratively reconciled only after local metadata records the operator's verification of its matching durable host `closed_no_replay` disposition. Its recorded execution outcome remains uncertain.\n\nHistory clearing is a separate explicit USB operation, never puzzle Reset or routine service. Require stopped/disarmed recovery service, no active reservation, retained server history and every uncertain entry administratively reconciled. Before erasure, persist a versioned clear-pending record outside the erased journal: operation identity, pre-clear session and a bounded complete copy of the matching verified dispositions/local acknowledgements needed to authorize exit, including those attached to entries about to be erased. Validate that durable copy before erasure; never reconstruct authorization from an empty journal. Preserve credentials, calibration configuration, service inhibition and motion-freeze state. A partial erase or restart remains inhibited. Missing, corrupt or unsupported required recovery/clear records fail closed. Reboot and establish a different host session before recording completion of that fence. In order: complete the reboot/new-session fence; use the retained authorization to deliberately unfreeze into preparation; establish fresh reference/locked verification while gameplay remains inhibited; deliberately leave service; obtain a new arm. Retain the completed clear authorization until service exit is durably recorded, so interruption of any step cannot erase permission evidence or bypass a remaining gate. Server command identities and retirement records remain permanent. Old envelopes and retired intents never gain new bindings or permission."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "A box reboot generates a new boot ID, disables motion, and reports prior intent plus unknown position unless current sensing proves it. A host/GameSession restart rotates `session_id`, enters recovery, clears all holds, and reconciles its durable release intent with a fresh box-status query. **Neither restart replays unlock or relock.** A missing acknowledgement means unknown outcome, not failure to execute. Even on the same boot, query status before considering a retry; only an explicit operator recovery decision may authorize a renewed delivery, and it must preserve the same command identity if referring to that existing intent. A new physical action needs a new intent after verified rearming.",
+      "new": "A box reboot generates a new boot ID, disables motion and reports prior intent plus unknown position unless current sensing proves it. Retain recovery-service inhibition and sealed-motion freezes. A host/GameSession restart rotates session_id, enters recovery, clears holds and queries its durable release intent. Neither restart replays unlock or relock. A missing acknowledgement is unknown execution, not proof of nonexecution. Recovery of an unresolved intent is query, stopped local service and explicit administrative closure only; the original intent is permanently retired when recovery begins and cannot be redelivered even by operator request. A later gameplay action requires a newly solved attempt, new intent and verified fresh arming."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "Server status query shape: `{\"v\":1,\"type\":\"box_query\",\"connection_id\":\"conn_box_8\",\"command_id\":\"act_0e66\"}`; null command ID requests current readiness/position without action. Replies use `box_status`, with null command ID and `not_requested` where no intent exists. Known-command reports include `command_session_id` from the immutable journal fingerprint, which may differ from the current transport `session_id` during recovery. Null/unknown commands use `command_session_id:null`. Unknown queried IDs retain that queried ID and report `uncertain` with `failure_code:\"unknown_command\"`. Rejections of new actuation use `failed` plus one of `not_armed | unknown_position | stale_binding | busy | history_full`; interruption uses `uncertain` plus `connection_lost | reboot_interrupted | freshness_lost`; hardware failure codes include `travel_timeout | limit_fault | driver_fault`. A readiness-only null-command report updates physical/readiness facts but **must not overwrite the server’s persisted release intent/status**. Validate reports against the bound boot and expected intent. Keep contradictory/stale observations in diagnostics without silently promoting certainty.",
+      "new": "Server status query shape: `{\"v\":1,\"type\":\"box_query\",\"connection_id\":\"conn_box_8\",\"command_id\":\"act_0e66\"}`; null command ID requests current readiness/position without action. Replies use `box_status`, with null command ID and `not_requested` where no intent exists. Known-command reports include `command_session_id` from the immutable journal fingerprint, which may differ from the current transport `session_id` during recovery. Null/unknown commands use `command_session_id:null`. Unknown queried IDs retain that queried ID and report `uncertain` with `failure_code:\"unknown_command\"`. Rejections of new actuation use `failed` plus one of `not_armed | unknown_position | stale_binding | busy | history_full`; interruption uses `uncertain` plus `connection_lost | reboot_interrupted | freshness_lost`; hardware failure codes include `travel_timeout | limit_fault | driver_fault`. A readiness-only null-command report updates physical/readiness facts but **must not overwrite the server’s persisted release intent/status**. Validate reports against the bound boot and expected intent. Keep contradictory/stale observations in diagnostics without silently promoting certainty.\n\n### Administrative release recovery\n\nKeep the reported release outcome separate from a durable administrative disposition. **Begin release recovery** and **Close release without replay** are authenticated host operations available while ordinary Pause/Reset is disabled. Closing an intent as `closed_no_replay` records that the operator has handled its recovery and permanently retired its delivery; it does not assert whether its original motion happened. Preserve the original command/fingerprint, intended box, originating game/session/round, observations, confirmation and conflicting evidence. An uncertain outcome stays uncertain. The disposition is host-only administrative data, not a new v1 field, release status or physical confirmation.\n\nBegin recovery commits a recovery ID, permanent dispatch retirement and a new paused session while preserving the solved checkpoint and original intent. Then fence old handlers, queued effects, input and arms. BoxLink never re-envelopes an old effect under replacement bindings. Recovery is query, local service and explicit closure only; neither automatic nor operator-requested redelivery of the original intent is offered. An already transmitted command may act before the local stop, so beginning recovery is not a cancellation claim. The operator uses local service/manual release if access to the prize is needed.\n\nFor a physical box, enter USB recovery service: immediately inhibit gameplay arming/admission and queued or reserved gameplay work, stop at a bounded step boundary, disable outputs and close the old connection. Persist the service inhibit before acknowledging successful entry; check it again before any first step. Service-inhibit, seal, reconciliation and clear-authorization records carry an explicit storage version. A failed write leaves the device faulted and unable to arm; missing, corrupt or unsupported required recovery records fail closed. Service remains available for deliberate bounded local operations under its existing limits.\n\nRecord a bounded local reconciliation entry: recovery ID, original command/fingerprint and intended box, actual journal observation, operator observation and service epoch. For an absent ID, record only “not present in the current journal”; absence proves no historical execution result. Reboot with the inhibit and entry retained. Require a new boot ID and authenticated connection to the committed recovery session. Re-establish any current reference/position evidence locally after that reboot; do not restore old verification. After any bounded restoration, **Seal recovery evidence** durably freezes all motion, including USB jog/example/local, invalidates queued/reserved movement, stops/disables outputs and binds the local entry to the current recovery ID, boot and session. Enforce the freeze at execution boundaries. The operator compares that sealed serial entry with the host intent. Only then obtain a fresh sequenced query result for the exact command/box/boot/connection/session, with `motor_active:false` and no arm. Reboot or binding changes preserve the freeze but invalidate its evidence binding; refresh/reseal against current bindings before closure.\n\nClose release without replay requires explicit host confirmation of that matching local evidence. Commit `closed_no_replay` with the recovery ID, original intent, operator, reason, local record reference, current binding/status evidence and timestamps; recheck host authorization and recovery generation in the transaction. No transaction waits for USB, network or inspection. Readiness-only reports and elapsed time cannot close an intent. If a reply is lost, read back the same durable disposition; do not create a replacement intent. Any preclosure boot/connection/session change invalidates current evidence and requires it to be refreshed. Restart preserves retirement/disposition but restores no live authority.\n\nThe operator then verifies the committed host disposition in USB service and records its identifier on the matching local reconciliation entry. This is an authorized operator attestation across the host UI and USB service, not a cryptographic or wire-level proof. A failed or uncertain host/local write keeps recovery service, motion and history clearing inhibited until durable records are read back. Local acknowledgement gates unfreezing, leaving recovery service and clearing uncertain history. Reset may occur after the host closure while that local step is pending because the box remains frozen; it cannot enable another arm.\n\nIf more local motion is needed before closure, explicitly restart preparation through Begin release recovery with the expected prior recovery ID. Serialize this transaction against Close: a successful restart replaces the recovery ID/session and makes the old generation ineligible for closure while retaining permanent dispatch retirement; a previously committed Close instead requires its normal disposition-acknowledgement path. Verify the committed replacement locally before unfreezing into preparation. Local invalidation alone cannot defeat a concurrent host Close. Ordinary request retries read back their original recovery ID rather than creating a new generation.\n\n| Observation | Retained history | Completion path |\n| --- | --- | --- |\n| Commit before dispatch; query returns `unknown_command` | Original intent and uncertainty; absence is only a current journal observation. | Full stopped-service/reboot/inspection/query procedure, then explicit `closed_no_replay`; never redeliver the old ID. |\n| Accepted command interrupted, or device journal lost | Original acceptance/outcome evidence remains; missing device history does not prove no motion. | Same closure path; local restoration establishes current condition only. |\n| `motion_complete`, valid `position_confirmed`, or terminal `failed` | Preserve exactly the reported outcome; completion proves no lid state. | If recovery has not begun, use the terminal-and-idle Reset path. Once Begin recovery exists, finish its host Close and local acknowledgement even if a later terminal observation arrives; it cannot bypass that recovery. |\n| Conflicting historical outcomes for the same verified identity | Retain the conflict without promoting certainty. | Full recovery fence plus explicit operator acknowledgement may close delivery while execution remains unresolved. |\n| Wrong device/fingerprint, contradictory current stopped/armed evidence, or unavailable intended box | Keep diagnostics; do not adopt the disputed observation. | Refuse closure until the intended identity and stopped/disarmed condition are established. |\n| Server intent/disposition store unavailable or lost | No empty-game fallback or invented replacement intent. | Restore the original durable records; otherwise leave the box quarantined. |\n\nReset is available after a known terminal result and idle mechanism only if release recovery has not begun; once recovery begins, require durable `closed_no_replay` and the stopped/disarmed recovery evidence above, including when a late terminal outcome arrives. Reset preserves actuator history, creates a new puzzle context and performs no motor operation. For another physical game, establish the new welcome/session, finish local service acknowledgement, relock/reference and verify the current locked start, deliberately leave service, obtain a new arm and confirm readiness. Only a newly solved attempt can create a new release identity. The host labels an uncertain closed record “Release outcome unknown — recovery closed; original command will not be sent again.”\n\nThis procedure adds host/database and local USB service metadata only. The v1 message types, envelopes, release_status enum, box/readiness DTOs and command_confirmation requirements are unchanged. New recovery metadata is not tunneled through a capability, unknown extension field or physical-confirmation value. Automatic proof of the host/USB exchange would require a separately designed wire extension; this MVP uses explicit authorized operator attestations."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "9. Duplicate commands, lost acknowledgements, and crashes around dispatch/movement never repeat actuation automatically.",
+      "new": "9. Duplicate commands, lost acknowledgements and crashes around dispatch/movement never repeat actuation. Unknown/interrupted intents can complete explicit closed_no_replay recovery and reach a new round without changing their original uncertainty or identity; delayed old envelopes remain rejected."
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "finding": "design-1-1",
+      "old": "11. Connection loss stops movement/disables coils; recovery requires reconciliation; snapshots never actuate.",
+      "new": "11. Connection loss stops movement/disables coils. Recovery inhibition and sealed-motion freezes survive reboot; Close versus preparation replacement is serialized. Full-journal reconciliation and interrupted history clearing preserve reboot/new-session fences; snapshots never actuate."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "After a solve has committed a release intent, Pause and Reset must not imply cancellation of a command already in transit. Disable these actions while the actuator outcome is pending, moving or uncertain, and direct the host to reconciliation. Reset becomes available after a known terminal outcome and an idle mechanism; preparing the physical latch for another game is a separate local service step.",
+      "new": "After a solve has committed a release intent, Pause/Reset must not imply cancellation of motion in transit. Keep them disabled while pending, moving or unreconciled. With no recovery begun, a known terminal-and-idle result permits Reset. Once recovery begins, Reset requires durable closed_no_replay and protocol v1 stopped/disarmed evidence even if a late terminal result arrives. Administrative closure preserves the historical outcome; subsequent local service and fresh verification prepare another game."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "Required host controls are Create/load game, Start, Pause, Resume, Reset puzzle, explicit per-role controller assignment/takeover, and a box-readiness/arm action. Show the effect of reset: “Restart puzzle; mechanism is unchanged.” Keep physical calibration and relocking in the local serial procedure. Provide a read-only box diagnostic area with command ID/status, boot identity, arming state, last contact and any failure.",
+      "new": "Required host controls are Create/load game, Start, Pause, Resume, Reset puzzle, explicit per-role controller assignment/takeover, and a box-readiness/arm action. Show the effect of reset: “Restart puzzle; mechanism is unchanged.” Keep physical calibration and relocking in the local serial procedure. Provide a read-only box diagnostic area with command ID/status, boot identity, arming state, last contact and any failure. Add Begin release recovery (including explicit replacement preparation) and Close release without replay, with authenticated operator evidence and a separate host-only administrative disposition display. These controls never create a physical-position claim."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "| `Vault.BoxLink` | Box connection lifecycle, read-only reconciliation, and dispatch of already authorized command IDs. Never decides that a puzzle was solved. |",
+      "new": "| `Vault.BoxLink` | Box connection lifecycle, read-only recovery queries and eligible committed dispatch. Never decides a solve, re-envelopes stale effects or dispatches permanently retired intents. Explicit administrative closure belongs to the authorized game/session transaction. |"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "- `session_id` changes on restart or reset and invalidates old playthrough inputs.",
+      "new": "- `session_id` changes on restart, reset or explicit Begin release recovery/replacement preparation and invalidates old inputs, effect bindings and arms."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "Use exactly four game phases: `lobby | maze | seal | solved`. Keep `paused` and `pause_reasons` orthogonal to phase. Track release independently as `not_requested | pending | accepted | motion_complete | position_confirmed | uncertain | failed`. In particular, `solved` does not mean the mechanism moved or the lid is open.",
+      "new": "Use exactly four game phases: `lobby | maze | seal | solved`. Keep `paused` and `pause_reasons` orthogonal to phase. Track release independently as `not_requested | pending | accepted | motion_complete | position_confirmed | uncertain | failed`. In particular, `solved` does not mean the mechanism moved or the lid is open. Store administrative recovery/disposition separately from this unchanged wire outcome enum; closed_no_replay does not make uncertain execution known."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "For the winning transition, atomically store the solved/release-pending checkpoint and one opaque `command_id` with its intended box, operation, originating game/session/round, status, and timestamps. Enforce uniqueness for the release action associated with that solved attempt. Only after commit may BoxLink dispatch that command.",
+      "new": "For the winning transition, atomically store the solved/release-pending checkpoint and one opaque `command_id` with its intended box, operation, originating game/session/round, status, and timestamps. Enforce uniqueness for the release action associated with that solved attempt. Only after commit may BoxLink dispatch that command. Dispatch retirement is durable and checked before effects; queued effects keep their original binding and cannot acquire a replacement connection/session."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "A crash between commit and dispatch leaves a durable pending command. A crash after dispatch but before acknowledgement leaves an uncertain outcome. Neither condition authorizes automatic actuator replay. On recovery, ask the authenticated box for status and its remembered command outcome. Present unresolved cases to the host. The firmware’s duplicate-command handling is necessary, but must not be represented as a universal exactly-once guarantee for physical motion.",
+      "new": "A crash between commit and dispatch leaves a durable pending command. A crash after dispatch but before acknowledgement leaves an uncertain outcome. Neither condition authorizes automatic actuator replay. On recovery, ask the authenticated box for status and its remembered command outcome. Present unresolved cases to the host. The firmware’s duplicate-command handling is necessary, but must not be represented as a universal exactly-once guarantee for physical motion. The explicit exit is the protocol v1 administrative recovery procedure: retire the old intent, enter stopped local recovery, reboot/fence bindings, restore locally as needed, seal and query current evidence, and commit a separate closed_no_replay disposition. No renewed delivery of the original intent is offered."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "Minimum records are: games/checkpoints; authorized devices and credential hashes; desired role assignments; actuator commands and reported outcomes. Include a checkpoint schema version. Configure SQLite synchronous durability deliberately; use `:full` for the actuator journal and document the practical storage guarantee. An application commit is not proof against every possible storage or power failure. Reject an incompatible checkpoint visibly rather than silently starting an empty game. Keep the newest 200 host diagnostic events in memory and optionally the newest 1,000 durable non-heartbeat events; prune only diagnostic rows, never actuator identities. Keep a short bounded event history for host diagnostics; an event-sourcing framework is unnecessary.",
+      "new": "Minimum records are: games/checkpoints; authorized devices and credential hashes; desired role assignments; actuator commands and reported outcomes. Include a checkpoint schema version. Configure SQLite synchronous durability deliberately; use `:full` for the actuator journal and document the practical storage guarantee. An application commit is not proof against every possible storage or power failure. Reject an incompatible checkpoint visibly rather than silently starting an empty game. Keep the newest 200 host diagnostic events in memory and optionally the newest 1,000 durable non-heartbeat events; prune only diagnostic rows, never actuator identities. Keep a short bounded event history for host diagnostics; an event-sourcing framework is unnecessary. Actuator records also retain permanent dispatch retirement, recovery generations, disposition and operator evidence, including local attestation references, independently of the reported execution result."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "Disable Reset while a release is pending, moving or uncertain; require reconciliation first.",
+      "new": "Disable Reset while pending, moving or unresolved. A terminal-and-idle result permits Reset only if recovery has not begun; otherwise require closed_no_replay with stopped/disarmed evidence, even after a late terminal observation."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "The host page shows both CYD-sized panels and one shared status area: stage, elapsed active time, pause reason, controller assignments, device connection freshness, box connection, and release-command state. Show Start, Pause/Resume, Reset puzzle, and deliberate per-role takeover controls. Keep box-readiness and arming controls in a separate host area. Physical calibration, enabled sensor-backed homing, manual verification and relocking use local USB/serial service in the MVP. Display reset’s game effect clearly.",
+      "new": "The host page shows both CYD-sized panels and one shared status area: stage, elapsed active time, pause reason, controller assignments, device connection freshness, box connection, and release-command state. Show Start, Pause/Resume, Reset puzzle, and deliberate per-role takeover controls. Keep box-readiness and arming controls in a separate host area. Physical calibration, enabled sensor-backed homing, manual verification and relocking use local USB/serial service in the MVP. Display reset’s game effect clearly. In unresolved-release recovery, show separate preparation/close controls and the durable disposition without changing the reported historical outcome; obtain explicit operator confirmation of the sealed USB record."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "Accept a new `box_command` only with the current connection, `box_boot_id`, session, unconsumed `arm_id`, fresh challenge and authorized opaque `command_id`; the release action is `set_latch` with target `released`. Persist command intent **before the first step**, and persist the final result. If durable recording fails, do not move. The same ID never starts the mechanism twice, including after reboot. Look up a known ID before new-motion readiness checks and return its recorded outcome without motion. Retain accepted IDs up to 32 with no automatic eviction; `history_full` rejects new actions. History clearing is explicit disarmed USB service followed by reboot and a new host session, as specified in the protocol.",
+      "new": "Accept a new `box_command` only with the current connection, `box_boot_id`, session, unconsumed `arm_id`, fresh challenge and authorized opaque `command_id`; the release action is `set_latch` with target `released`. Persist command intent **before the first step**, and persist the final result. If durable recording fails, do not move. The same ID never starts the mechanism twice, including after reboot. Look up a known ID before new-motion readiness checks and return its recorded outcome without motion. Retain accepted IDs up to 32 with no automatic eviction; `history_full` rejects new actions. History clearing is explicit disarmed USB service followed by reboot and a new host session, as specified in the protocol. Recovery-service inhibition and sealed-motion freezes are durable local state, checked at admission and immediately before a step. Queries remain available at capacity. Follow the protocol administrative-recovery and clear-pending procedure; never erase uncertain entries merely because current readiness is restored."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "On an explicit transport close during motion, stop at the next step boundary and de-energize the coils. Also implement a local **1500 ms watchdog since the last authenticated server challenge**: silent connection failure must stop motion without waiting for TCP to notice. This watchdog is independent of maximum travel and the motion deadline. Report `uncertain` with position unknown when communication returns. On boot/reset, outputs start inactive, prior in-flight intent becomes uncertain/unknown, and there is no automatic unlock, relock, continuation or homing. Reconnection obtains state and awaits explicit reconciliation. **Puzzle reset is a host action; physical relocking uses local USB/serial maintenance.** Neither reset nor reconnection moves the motor.",
+      "new": "On an explicit transport close during motion, stop at the next step boundary and de-energize the coils. Also implement a local **1500 ms watchdog since the last authenticated server challenge**: silent connection failure must stop motion without waiting for TCP to notice. This watchdog is independent of maximum travel and the motion deadline. Report `uncertain` with position unknown when communication returns. On boot/reset, outputs start inactive, prior in-flight intent becomes uncertain/unknown, and there is no automatic unlock, relock, continuation or homing. Reconnection obtains state and awaits explicit reconciliation. **Puzzle reset is a host action; physical relocking uses local USB/serial maintenance.** Neither reset nor reconnection moves the motor. Recovery-service entry persists inhibition before acknowledgement; sealing additionally freezes local jog/example/local and queued/reserved service motion. Reboot preserves those inhibits; only the protocol-ordered local acknowledgement or committed replacement-preparation path permits unfreezing."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "| Actuator intent | Unique command ID, game ID, original session/round, operation/target, intended box, immutable fingerprint, dispatch/outcome status and timestamps. Enforce one release intent per original solved attempt in the database. |",
+      "new": "| Actuator intent | Original command/game/session/round, operation/target and intended box with immutable fingerprint and one-intent-per-solve uniqueness; reported outcomes plus permanent dispatch retirement, recovery ID/generation, separate closed_no_replay disposition and non-pruned operator/local/current-binding evidence. |"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "There is no generic background job retry of physical commands. BoxLink may query an existing outcome automatically, but must not replay a motion merely because its database row says pending. Use the recovery table below.",
+      "new": "There is no retry delivery of an unresolved physical intent. BoxLink may query its outcome, while explicit recovery permanently retires dispatch and preserves the original solve/command. Use the recovery table and the normative [administrative recovery procedure](PROTOCOL_V1.md#administrative-release-recovery)."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "| Release row committed but dispatch not known | Keep original intent and solved state; query box. | Inspect/reconcile before any new physical action; no blind resend. |",
+      "new": "| Release row committed but dispatch not known | Preserve solved state/original ID; query only. | Begin recovery, complete stopped/sealed local service and reboot/current-binding evidence, then close_no_replay. Never infer nonexecution from unknown_command. |"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "| Box reports interrupted/unknown command | Preserve solved state and show uncertain release. | Stop, inspect and use local service; do not turn this into a new automatic solve. |",
+      "new": "| Box reports interrupted/unknown command | Preserve the recorded uncertainty and original ID. | Complete the same explicit administrative closure, then Reset/new session and fresh local preparation for another game; no replacement release for the old solve. |"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "| Journal is full | Reject new actions; permit queries and return known outcomes. | Reconcile all records before an explicit local history-clear procedure, reboot and new host session. |",
+      "new": "| Journal is full | Reject new actions; permit queries and stopped reconciliation metadata updates without another accepted entry. | Verify durable host dispositions locally for every uncertain entry; separately clear with retained inhibition/clear-pending state, reboot and a different host session. |"
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "The system provides durable deduplication within the documented journal lifecycle and avoids automatic replay. It must not claim universal exactly-once physical execution: a power loss can make the result unobservable even when some movement occurred.",
+      "new": "The system provides durable deduplication within the documented journal lifecycle and avoids automatic replay. It must not claim universal exactly-once physical execution: a power loss can make the result unobservable even when some movement occurred.\n\nThe recovery disposition records administrative handling, not historical execution certainty. Keep the local all-motion seal until the committed host disposition is verified locally. To redo preparation before closure, atomically replace the expected recovery generation on the host, serialized against Close, and verify that replacement locally before unsealing. Preserve permanent dispatch retirement throughout. Binding changes require fresh closing evidence. Crash/readback procedures never manufacture an intent or treat a lost acknowledgement as failed execution; unavailable original server records leave the box quarantined."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "Provide a simulated implementation of the same BoxLink/actuator interface. It must require arming, consume a single command ID, report accepted then motion-complete state, deduplicate commands, and support injected disconnect, reboot, lost acknowledgement and interrupted motion. In simulation only, a host action can establish a simulated reference/locked position.",
+      "new": "Provide a simulated implementation of the same BoxLink/actuator interface. It must require arming, consume a single command ID, report accepted then motion-complete state, deduplicate commands, and support injected disconnect, reboot, lost acknowledgement and interrupted motion. In simulation only, a host action can establish a simulated reference/locked position. Also model the complete service-inhibit/seal/reboot/close-out/local-attestation/Reset path and its failures; simulated closure does not claim physical inspection."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "- A local box service menu for inspect, bounded jog, calibration, manual position confirmation and rearming preparation; offer bounded home only with an installed, verified home sensor and enabled homing. Gameplay remains disarmed in service mode.",
+      "new": "- A local box service menu for inspect, bounded jog, calibration, manual position confirmation and rearming preparation; offer bounded home only with an installed, verified home sensor and enabled homing. Gameplay remains disarmed in service mode. Include recovery entry, exact-identity inspection, reboot, Seal recovery evidence, local verification of host disposition or replacement preparation, deliberate exit and separately gated history clearing, following protocol v1."
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "finding": "design-1-1",
+      "old": "6. For another physical round, stop and service/relock locally, then reset the puzzle and reconnect/reassign. After the new welcome/session is established, perform the final local locked-position/reference verification, leave service mode and explicitly rearm. A session change clears prior start verification. Reset alone never relocks.",
+      "new": "6. If release execution is unresolved, complete protocol recovery and closed_no_replay first, preserving the old uncertainty. Verify that host disposition locally before leaving recovery service. Reset the puzzle and establish its new welcome/session; then relock/reference and verify the current locked start locally, deliberately leave service and arm. A session change clears earlier start verification. Reset alone never relocks or clears history."
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "finding": "design-1-1",
+      "old": "Resolve any prior uncertain intent. Leave local service mode",
+      "new": "Complete any prior administrative recovery and its local host-disposition acknowledgement before final Step 5 verification. If recovery, reboot or a session change occurs after Step 5, repeat Step 5 under the final current binding. Leave local service mode"
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "finding": "design-1-1",
+      "old": "Establish the intended current connection/welcome/session before the final verification. Close and position the mechanism using the local procedure. Confirm the catch is actually engaged and the cam/reference is correct. Record `latch_position:\"locked\"` with `position_basis:\"endstop\"` only when the installed sensor proves that state, or `\"manual_verified\"` after current physical inspection. Otherwise report `\"unknown\"` / `\"unverified\"` and refuse arming. An old calibration record is not current verification. A subsequent disconnect or session change requires repeating this verification.",
+      "new": "Establish the intended current connection/welcome/session before the final verification. Close and position the mechanism using the local procedure. Confirm the catch is actually engaged and the cam/reference is correct. Record `latch_position:\"locked\"` with `position_basis:\"endstop\"` only when the installed sensor proves that state, or `\"manual_verified\"` after current physical inspection. Otherwise report `\"unknown\"` / `\"unverified\"` and refuse arming. An old calibration record is not current verification. A subsequent disconnect or session change requires repeating this verification. Prior unresolved-release recovery and its local acknowledgement must already be complete. Final verification occurs after any puzzle Reset/recovery reboot and new session; repeat it if those bindings change."
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "finding": "design-1-1",
+      "old": "Reconcile results. For a new game, reset the puzzle and establish the new welcome/session, then perform final locked-position/reference verification and obtain a new arm. After interruption/reset/watchdog expiry, recover locally first; never automatically resume old movement.",
+      "new": "If the historical release remains unresolved, complete administrative recovery without rewriting its uncertain outcome. For a new game, Reset and establish the new welcome/session, then perform final locked-position/reference verification, deliberately leave acknowledged service and obtain a new arm. Interruption never authorizes resuming or redelivering the original movement."
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "finding": "design-1-1",
+      "old": "## 5. Journal and interruption rules",
+      "new": "### Administrative recovery for an unresolved release\n\nUse the [protocol v1 recovery procedure](PROTOCOL_V1.md#administrative-release-recovery) for exact invariants. In order: authenticated host Begin recovery retires the original intent and changes session; USB recovery entry stops/de-energizes and durably inhibits gameplay; inspect the exact original identity and local journal; reboot with inhibition/metadata retained and reconnect to the recovery session; perform any bounded local restoration; Seal recovery evidence to freeze all motor operations; compare the sealed record with the host identity and obtain a fresh stopped/disarmed status; explicitly Close release without replay on the host; read back its committed disposition and attest that matching identifier locally.\n\nThe local attestation is performed by an authorized operator comparing the host UI and USB records. V1 carries no machine proof of this administrative exchange. Readiness is not that proof. Historical outcome remains uncertain where unknown; local inspection describes the mechanism now. Wrong identity or contradictory current stop/arm evidence blocks closure.\n\nA sealed box cannot jog, home, relock or accept gameplay motion. A reboot/binding change retains the freeze but requires renewed evidence. To resume preparation before host Close, first commit replacement of the expected recovery generation on the host, serialized against Close; verify the committed result locally before unsealing. If Close already committed, use its disposition acknowledgement instead. Failed writes or missing original host records remain inhibited/quarantined.\n\nAfter host closure, Reset may create the next puzzle context while the device still waits for local acknowledgement; the device cannot arm until acknowledgement and deliberate service exit. Final local reference/locked verification follows the new welcome/session. Record the original ID/outcome, recovery/disposition IDs, operator evidence and exact tested identities in the bench log; a completed new round must use a new intent.\n\n## 5. Journal and interruption rules"
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "finding": "design-1-1",
+      "old": "Keep at most **32 accepted command records without automatic eviction or erase**. Retain unresolved intent. When full, refuse new actuation with `history_full`. Puzzle reset, firmware reconnect and routine service must not clear the journal. Explicit USB history clearing is allowed only while stopped/disarmed after every uncertain intent is reconciled; follow it with reboot and a new host session. Preserve server command history and never reuse IDs. Old boot/connection/session bindings remain invalid.",
+      "new": "Keep at most **32 accepted command records without automatic eviction or erase**. Retain unresolved intent. When full, refuse new actuation with `history_full`. Puzzle reset, firmware reconnect and routine service must not clear the journal. Explicit USB history clearing is allowed only while stopped/disarmed after every uncertain intent is reconciled; follow it with reboot and a new host session. Preserve server command history and never reuse IDs. Old boot/connection/session bindings remain invalid.\n\nQueries and stopped service remain available at the 32-entry limit. Reconciliation metadata attaches to existing accepted entries and consumes no additional accepted-command slot. An absent queried ID uses one bounded active recovery record outside that capacity; it does not become a fabricated accepted command. An uncertain entry is administratively reconciled only after local metadata records the operator's verification of its matching durable host `closed_no_replay` disposition. Its recorded execution outcome remains uncertain.\n\nHistory clearing is a separate explicit USB operation, never puzzle Reset or routine service. Require stopped/disarmed recovery service, no active reservation, retained server history and every uncertain entry administratively reconciled. Before erasure, persist a versioned clear-pending record outside the erased journal: operation identity, pre-clear session and a bounded complete copy of the matching verified dispositions/local acknowledgements needed to authorize exit, including those attached to entries about to be erased. Validate that durable copy before erasure; never reconstruct authorization from an empty journal. Preserve credentials, calibration configuration, service inhibition and motion-freeze state. A partial erase or restart remains inhibited. Missing, corrupt or unsupported required recovery/clear records fail closed. Reboot and establish a different host session before recording completion of that fence. In order: complete the reboot/new-session fence; use the retained authorization to deliberately unfreeze into preparation; establish fresh reference/locked verification while gameplay remains inhibited; deliberately leave service; obtain a new arm. Retain the completed clear authorization until service exit is durably recorded, so interruption of any step cannot erase permission evidence or bypass a remaining gate. Server command identities and retirement records remain permanent. Old envelopes and retired intents never gain new bindings or permission."
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "finding": "design-1-1",
+      "old": "- [ ] Profile, manifest and calibration records attached.",
+      "new": "- [ ] Profile, manifest and calibration records attached.\n- [ ] Unknown/interrupted recovery reaches explicit closed_no_replay and a new round while preserving the old ID/uncertainty; service-seal, reboot, failed-write and clear-pending evidence recorded. This item is unperformed until supported by the stated tests and physical observations."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M2-05 — Atomic winning transition.** Inject crashes before commit, after commit/before dispatch, and after dispatch/before acknowledgement. Before commit: no solved checkpoint or command. After commit: the restored checkpoint references the same durable `command_id`; no replacement ID or automatic replay. Recovery queries the box and preserves uncertainty when execution cannot be established.",
+      "new": "**M2-05 — Atomic winning transition.** Inject crashes before commit, after commit/before dispatch, and after dispatch/before acknowledgement. Before commit: no solved checkpoint or command. After commit: the restored checkpoint references the same durable `command_id`; no replacement ID or automatic replay. Recovery queries the box and preserves uncertainty when execution cannot be established. Complete commit-before-dispatch/unknown_command and accepted/interrupted recovery through explicit closed_no_replay, Reset and a new simulated round. The old identity/outcome remain, no old-ID redelivery or replacement command for the old solve occurs, and only the new solve creates a new intent."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled.",
+      "new": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected.",
+      "new": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected. After Begin recovery, deliver a late terminal outcome and assert Reset still requires that recovery's host disposition; terminal observations cannot bypass active recovery."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-2",
+      "old": "**M2-08 — Backpressure and acknowledgements.** Slow a simulated connection and lose command/status acknowledgements. Snapshot coalescing stays bounded and does not discard required results. Status retries preserve sequence/content, apply no duplicate transition, and stop at the documented retry limit. Delayed cosmetic feedback neither repeats sound nor drives the motor.",
+      "new": "**M2-08 — Backpressure and acknowledgements.** Slow a simulated connection and lose command/status acknowledgements. Snapshot coalescing stays bounded and does not discard required results. Status retries preserve sequence/content, apply no duplicate transition, and stop at the documented retry limit. Delayed cosmetic feedback neither repeats sound nor drives the motor. For WS and WSS separately, stop a controlled peer reading until instrumentation establishes real send backpressure within finite byte/time setup limits; account for TLS buffering and mark inability to induce pressure incomplete. Verify 100 ms socket send timeout, 200 ms complete-write and 100 ms teardown guards on the locked stack, bounded producer admission, one-write loop turns and deadline processing between several slow queued writes. Exercise data/control/upgrade paths, overflow, partial/error/timeout and late-success outcomes; retire the generation and never replay old envelopes after reconnect. Separately block a live transport stub beyond 1,500 ms in deterministic fake-box runtime tests: expire silence by the next bounded modeled step, deactivate motion and retain uncertainty without any successful send. Deliver completion before the queued watchdog message but after its deadline; it must not report success. Delay intent persistence past expiry and assert zero first steps; terminal/interruption I/O starts only after motion is inactive. Record actual WS/WSS scheduling/cleanup limits without claiming hard real-time guarantees."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-2",
+      "old": "**M2-08 — Backpressure and acknowledgements.** Slow a simulated connection and lose command/status acknowledgements. Snapshot coalescing stays bounded and does not discard required results. Status retries preserve sequence/content, apply no duplicate transition, and stop at the documented retry limit. Delayed cosmetic feedback neither repeats sound nor drives the motor. For WS and WSS separately, stop a controlled peer reading until instrumentation establishes real send backpressure within finite byte/time setup limits; account for TLS buffering and mark inability to induce pressure incomplete. Verify 100 ms socket send timeout, 200 ms complete-write and 100 ms teardown guards on the locked stack, bounded producer admission, one-write loop turns and deadline processing between several slow queued writes. Exercise data/control/upgrade paths, overflow, partial/error/timeout and late-success outcomes; retire the generation and never replay old envelopes after reconnect. Separately block a live transport stub beyond 1,500 ms in deterministic fake-box runtime tests: expire silence by the next bounded modeled step, deactivate motion and retain uncertainty without any successful send. Deliver completion before the queued watchdog message but after its deadline; it must not report success. Delay intent persistence past expiry and assert zero first steps; terminal/interruption I/O starts only after motion is inactive. Record actual WS/WSS scheduling/cleanup limits without claiming hard real-time guarantees.",
+      "new": "**M2-08 — Backpressure and acknowledgements.** Slow a simulated connection and lose command/status acknowledgements. Snapshot coalescing stays bounded and does not discard required results. Status retries preserve sequence/content, apply no duplicate transition, and stop at the documented retry limit. Delayed cosmetic feedback neither repeats sound nor drives the motor. For WS and WSS separately, stop a controlled peer reading until instrumentation establishes real send backpressure within finite byte/time setup limits; account for TLS buffering and mark inability to induce pressure incomplete. Verify 100 ms socket send timeout, 200 ms complete-write and 100 ms teardown guards on the locked stack, bounded producer admission, one-write loop turns and deadline processing between several slow queued writes. Exercise data/control/upgrade paths, overflow, partial/error/timeout and late-success outcomes; retire the generation and never replay old envelopes after reconnect. Separately block a live transport stub beyond 1,500 ms in deterministic fake-box runtime tests: expire silence by the next bounded modeled step, deactivate motion and retain uncertainty without any successful send. Deliver completion before the queued watchdog message but after its deadline; it must not report success. Delay intent persistence past expiry and assert zero first steps; terminal/interruption I/O starts only after motion is inactive. Record actual WS/WSS scheduling/cleanup limits without claiming hard real-time guarantees. Deliver a write completion after its absolute deadline but before the queued timeout message: the runner must retire the generation and terminate the owner immediately, without a further close window. The additional 100 ms close allowance applies only to returned send errors/socket timeouts."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M4-02 — Arming is permission.** With an unverified position, reject arming/release. Perform USB service calibration/reference and current locked-position verification; arm explicitly from the authorized host. Arm/disarm alone produces no steps. Reboot, disconnect, pause/session change, fault, and accepted actuation invalidate permission as specified. Retired arm IDs cannot be revived.",
+      "new": "**M4-02 — Arming is permission.** With an unverified position, reject arming/release. Perform USB service calibration/reference and current locked-position verification; arm explicitly from the authorized host. Arm/disarm alone produces no steps. Reboot, disconnect, pause/session change, fault, and accepted actuation invalidate permission as specified. Retired arm IDs cannot be revived. Enter recovery with queued and reserved-before-first-step commands; persistent service inhibition rejects both. Seal recovery evidence and prove gameplay and USB jog/example/local stay blocked until the matching durable host disposition or replacement preparation is verified locally. Reboot preserves inhibition/freeze but invalidates old evidence bindings."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "Uncertain records prevent history clearing.",
+      "new": "Unreconciled uncertain records prevent history clearing; separate local administrative metadata never rewrites their execution outcome."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M4-04 — Duplicate and journal capacity.** In a firmware host test, accept 32 distinct command IDs; request a 33rd. Expected: `history_full`, no eviction, no movement. Existing duplicates return outcomes without stepping; changed fingerprints fail. Reboot, then query the first ID using current transport credentials: its durable outcome remains available. Unreconciled uncertain records prevent history clearing; separate local administrative metadata never rewrites their execution outcome. Authorized USB clearing requires reconciliation, stopped/disarmed hardware, reboot, and a new host session.",
+      "new": "**M4-04 — Duplicate and journal capacity.** In a firmware host test, accept 32 distinct command IDs; request a 33rd. Expected: `history_full`, no eviction, no movement. Existing duplicates return outcomes without stepping; changed fingerprints fail. Reboot, then query the first ID using current transport credentials: its durable outcome remains available. Unreconciled uncertain records prevent history clearing; separate local administrative metadata never rewrites their execution outcome. Authorized USB clearing requires reconciliation, stopped/disarmed hardware, reboot, and a new host session. Reconcile uncertain entries at capacity without a 33rd accepted slot; an absent queried ID uses one bounded external recovery record. Refuse clearing without matching local attestations of durable host dispositions. Inject faults before/after clear-pending persistence and during erase; retain inhibition and require reboot plus a different host session. Reset retains every entry; deliberate clearing preserves server history and never validates old envelopes."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M4-04 — Duplicate and journal capacity.** In a firmware host test, accept 32 distinct command IDs; request a 33rd. Expected: `history_full`, no eviction, no movement. Existing duplicates return outcomes without stepping; changed fingerprints fail. Reboot, then query the first ID using current transport credentials: its durable outcome remains available. Unreconciled uncertain records prevent history clearing; separate local administrative metadata never rewrites their execution outcome. Authorized USB clearing requires reconciliation, stopped/disarmed hardware, reboot, and a new host session. Reconcile uncertain entries at capacity without a 33rd accepted slot; an absent queried ID uses one bounded external recovery record. Refuse clearing without matching local attestations of durable host dispositions. Inject faults before/after clear-pending persistence and during erase; retain inhibition and require reboot plus a different host session. Reset retains every entry; deliberate clearing preserves server history and never validates old envelopes.",
+      "new": "**M4-04 — Duplicate and journal capacity.** In a firmware host test, accept 32 distinct command IDs; request a 33rd. Expected: `history_full`, no eviction, no movement. Existing duplicates return outcomes without stepping; changed fingerprints fail. Reboot, then query the first ID using current transport credentials: its durable outcome remains available. Unreconciled uncertain records prevent history clearing; separate local administrative metadata never rewrites their execution outcome. Authorized USB clearing requires reconciliation, stopped/disarmed hardware, reboot, and a new host session. Reconcile uncertain entries at capacity without a 33rd accepted slot; an absent queried ID uses one bounded external recovery record. Refuse clearing without matching local attestations of durable host dispositions. Inject faults before/after clear-pending persistence and during erase; retain inhibition and require reboot plus a different host session. Reset retains every entry; deliberate clearing preserves server history and never validates old envelopes. Erase per-entry reconciliation metadata and reboot: the versioned external clear authorization must retain matching verified dispositions/acknowledgements and permit the defined fence, unfreeze, preparation, verification, service-exit and arm sequence without reconstruction. Interrupt each step; missing/corrupt/unsupported required record versions remain inhibited."
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "finding": "design-1-1",
+      "old": "**M4-05 — Interrupted motion.** Cut connectivity, create authenticated-server silence, and power-cycle before/after first movement and before final recording. Known close stops at the next step boundary; silence stops within 1,500 ms plus one bounded step interval. Coils turn off. Report uncertain/unknown where appropriate; reconnect and boot never resume, unlock, home, or relock automatically.",
+      "new": "**M4-05 — Interrupted motion.** Cut connectivity, create authenticated-server silence, and power-cycle before/after first movement and before final recording. Known close stops at the next step boundary; silence stops within 1,500 ms plus one bounded step interval. Coils turn off. Report uncertain/unknown where appropriate; reconnect and boot never resume, unlock, home, or relock automatically. Also enter local service while moving, stop at a bounded boundary and disable outputs before successful acknowledgement. Fail inhibit/seal/attestation writes and reboot; gameplay remains blocked. Complete explicit administrative recovery and a newly verified round without changing the old uncertain outcome or resending the original ID. Validate actual physical behavior separately from host fakes."
+    }
+  ],
+  "wire_schema_or_fixture_changes": false,
+  "canonical_files_changed": false,
+  "other_open_major_findings": [
+    "S5-02",
+    "S5-03"
+  ]
+}

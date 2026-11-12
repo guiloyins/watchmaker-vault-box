@@ -1,0 +1,15 @@
+{
+  "recorded_at_utc": "2026-11-12T22:57:04.511790+00:00",
+  "reason": "The live Stage 9 findings and reusable root resolution report advance to the proposal checkpoint; original review/application evidence remains unchanged.",
+  "stage9_original_findings": {
+    "original_path": "docs/reviews/stage9-findings.json",
+    "archive_path": "docs/reviews/stage9-findings.review-complete.json",
+    "sha256": "88a005f76f330dd0b683d2a52e3af932230ab5cc9825cff247ec5d5841c50372",
+    "referenced_by": "docs/reviews/stage9-round1-completion.json:findings_sha256"
+  },
+  "stage8_resolved_report": {
+    "original_path": "goldfish_review_report.md",
+    "archive_path": "docs/reviews/stage8-resolution/resolved-review-report.md",
+    "sha256": "a78ece238dfddb6efaa195d8a0dddcc11868e2447ef0ab0018bc62c650f82380"
+  }
+}

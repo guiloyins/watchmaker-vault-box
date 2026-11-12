@@ -1,0 +1,171 @@
+{
+  "stage": 8,
+  "round": 1,
+  "status": "completed_checkpoint_pending",
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+  "line_range": [
+    1,
+    821
+  ],
+  "feature_range": [
+    1,
+    484
+  ],
+  "detailed_range": [
+    485,
+    821
+  ],
+  "counts": {
+    "blocker": 0,
+    "major": 2,
+    "nit": 1
+  },
+  "new_actions": {
+    "major": 0,
+    "nit": 1
+  },
+  "findings": [
+    {
+      "id": "zoom8-1-1",
+      "stage_id": "S8-01",
+      "consolidated_id": "S5-02",
+      "reviewer": "egm-zoom-out",
+      "severity": "Major",
+      "title": "Live key rotation remains an unjustified runtime dependency",
+      "scope": [
+        [
+          176,
+          178
+        ],
+        [
+          546,
+          546
+        ],
+        [
+          554,
+          554
+        ],
+        [
+          561,
+          563
+        ],
+        [
+          588,
+          589
+        ],
+        [
+          593,
+          593
+        ]
+      ],
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "status": "open",
+      "resolution_category": null,
+      "same_action_as": [
+        "S5-02"
+      ],
+      "introduced_by": null,
+      "raw_report": "docs/reviews/stage8-zoom-out-raw.md",
+      "discrepancy": "The revised design still supports rotation from competing external Mix processes while the application operates, with transactional credential-epoch checks inside durable gameplay and winning transitions. None of CUJs 1–4 requires maintaining gameplay availability during credential maintenance. D3 selects a generated key; it does not inherently require online rotation.",
+      "consequence": "Credential administration becomes part of the authoritative game's commit path and input-revocation behavior. Implementation must coordinate external-process rotation, current browser authorization, queued input, host-owned holds, SQLite transactions and winning transitions. This work is required before M1 despite no stated journey needing concurrent rotation.",
+      "rationale": "Protected credential output, digest storage, explicit replacement, expiry and revocation are justified. Supporting live concurrent replacement adds a distinct availability requirement to this single-laptop demonstration.",
+      "recommendation": "Retain generated host keys. Make rotation explicit stopped/disarmed maintenance, using the existing restart-to-paused and authority-fencing path, or document the concrete operational journey that requires online rotation and justifies these costs. Maintenance rotation still needs reliable file/database replacement, stale-session rejection and preservation of independent player/device credentials.",
+      "relationship": "This independently confirms **S5-02**, which R04 explicitly leaves open. Track this observation against that action. The recovery and transport fixes do not resolve it."
+    },
+    {
+      "id": "zoom8-1-2",
+      "stage_id": "S8-02",
+      "consolidated_id": "S5-03",
+      "reviewer": "egm-zoom-out",
+      "severity": "Major",
+      "title": "The two box simulators still lack a defined semantic sharing boundary",
+      "scope": [
+        [
+          156,
+          156
+        ],
+        [
+          261,
+          261
+        ],
+        [
+          285,
+          289
+        ],
+        [
+          560,
+          560
+        ],
+        [
+          636,
+          638
+        ]
+      ],
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "status": "open",
+      "resolution_category": null,
+      "same_action_as": [
+        "S5-03"
+      ],
+      "introduced_by": null,
+      "raw_report": "docs/reviews/stage8-zoom-out-raw.md",
+      "discrepancy": "`Vault.SimulatedBox` and the external fake-box runtime/model both implement readiness, arm consumption, deduplication, interruption, reboot and recovery behavior. The additions now require both to model durable service inhibition and administrative closure as well. Line 637 acknowledges S5-03 but does not decide which transition semantics are shared, or explicitly choose independently maintained models as test oracles.",
+      "consequence": "The browser demonstration and raw-protocol tests can implement different interpretations of the expanded recovery procedure. Both may pass their own tests while disagreeing about service exit, retained uncertainty or reboot readiness. Separate transport/runtime processes and journals do not by themselves prevent this semantic divergence.",
+      "rationale": "Independent runtime lifetimes and storage instances are necessary to exercise failures. Duplicating the underlying transition rules is a separate choice and needs an explicit reason.",
+      "recommendation": "Name one small pure box-state model used by the in-process adapter and external runtime, with separate instances, journals, scheduling and transport/fault adapters. Alternatively, deliberately retain independent models and require the same behavioral conformance cases against both. Keep the external journal separate from the server checkpoint. Select an existing suitable persistence primitive before committing to custom file machinery.",
+      "relationship": "This continues **S5-03**, with greater importance after the recovery additions. The new `box_runtime.exs` boundary correctly isolates the watchdog from transport; it resolves a different concern under S7-02 and does not settle semantic sharing."
+    },
+    {
+      "id": "zoom8-1-3",
+      "stage_id": "S8-03",
+      "consolidated_id": "S8-03",
+      "reviewer": "egm-zoom-out",
+      "severity": "Nit",
+      "title": "Move the new transport-loop recipe into the Detailed Implementation Plan",
+      "scope": [
+        [
+          277,
+          281
+        ],
+        [
+          632,
+          643
+        ],
+        [
+          657,
+          657
+        ]
+      ],
+      "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+      "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "status": "open",
+      "resolution_category": null,
+      "same_action_as": [],
+      "introduced_by": "S7-02 placement",
+      "raw_report": "docs/reviews/stage8-zoom-out-raw.md",
+      "discrepancy": "The feature architecture specifies write-registration/completion handshakes, one write per loop turn, deadline sweep locations, nine queued frames, an exact encoded-byte total and branch-specific teardown sequencing. These are implementation instructions beyond the architectural boundary and failure policy needed to understand D6.",
+      "consequence": "Readers must parse a scheduler recipe to understand the simulator architecture, while implementation authors must reconcile that recipe with the later transport/client/test manifest. Future measured budget changes will require coordinating several descriptions of the same mechanism.",
+      "rationale": "The independent watchdog owner, bounded writes, finite admission, fatal handling of ambiguous delivery and connection-generation invalidation are architectural decisions. Queue arithmetic and loop sequencing belong in the already designated implementation section. Their correctness obligations should remain intact.",
+      "recommendation": "Keep a compact feature-level statement of ownership, finite timing/admission bounds, ambiguous-send retirement and required verification. Move the detailed handshake, queue and loop algorithm into Detailed Implementation Plan §3, with one cross-reference from the feature section. Preserve the accepted deadlines and tests unless separately changed.",
+      "relationship": "This is a new placement issue introduced by the **S7-02** mitigation. It does not reopen the need to bound writes or isolate the modeled watchdog, and it does not duplicate S5-03."
+    }
+  ],
+  "earlier_resolutions_preserved": [
+    "S5-01/S7-01",
+    "S7-02",
+    "S7-03",
+    "S7-04",
+    "S7-05"
+  ],
+  "applied_fixes": [],
+  "reaudit_used": false,
+  "converged": false,
+  "distinct_open_actions": [
+    "S5-02",
+    "S5-03",
+    "S8-03"
+  ]
+}

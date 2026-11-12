@@ -1,0 +1,99 @@
+{
+  "completed_at_utc": "2026-11-12T21:26:59.274259+00:00",
+  "stage": 8,
+  "round": 1,
+  "status": "complete_interactive_checkpoint_pending",
+  "reviewer": {
+    "agent": "/root/egm_stage8_zoom_out",
+    "fork_turns": "none",
+    "status": "completed",
+    "native_final_observed": true
+  },
+  "target": "/workspace/watchmaker_vault/docs/designs/watchmakers-vault.md",
+  "target_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+  "line_range": [
+    1,
+    821
+  ],
+  "feature_range": [
+    1,
+    484
+  ],
+  "detailed_range": [
+    485,
+    821
+  ],
+  "context_manifest_sha256": "8caac34c2f73468acbfc6686f369e86f318721f5204b9c64bac27700e14b463b",
+  "counts": {
+    "blocker": 0,
+    "major": 2,
+    "nit": 1
+  },
+  "major_action_mapping": {
+    "zoom8-1-1": "S5-02",
+    "zoom8-1-2": "S5-03"
+  },
+  "new_actions": [
+    "S8-03"
+  ],
+  "distinct_open_actions": [
+    "S5-02",
+    "S5-03",
+    "S8-03"
+  ],
+  "assigned_reads": {
+    "local": 17,
+    "external_extracts": 12,
+    "raw_html_hashed": 12,
+    "stage_reports": 4
+  },
+  "read_coverage_evidence": "Explicit native reviewer receipt; normalized by manifest in stage8-zoom-out-raw.md",
+  "all_inputs_match_dispatch_hashes": true,
+  "code_reuse_search": "Completed; only docs/specs/verify_contracts.py found as executable project source",
+  "context_intentionally_includes_prior_findings": true,
+  "host_instruction_file_isolation": "unverified",
+  "child_tool_transcript_available_to_parent": false,
+  "unresolved_access_or_truncation_gaps": false,
+  "design_specification_schema_fixture_changes": false,
+  "applied_fixes": [],
+  "reaudit_used": false,
+  "converged": false,
+  "runtime_or_physical_checks": false,
+  "validator_rerun": false,
+  "evidence_bookkeeping_correction": {
+    "recorded_at_utc": "2026-11-12T21:26:59.270838+00:00",
+    "reason": "The validator prints stdout unless --report is specified. The candidate/applied evidence files had copied the original source report dated 14:45 instead of retaining the respective observed run output.",
+    "candidate_source": "contract-validation.txt captured from the executed 21:04 candidate run",
+    "applied_source": "Observed native exec stdout from the actual 21:10 live validation in the preceding approval turn; identical result body with its observed timestamp restored",
+    "original_copy_preserved": "docs/reviews/stage7-resolution/spec-validation-original-source-copy.md",
+    "validator_rerun": false,
+    "reviewed_L15_unchanged": true
+  },
+  "stage9": "not_run",
+  "artifacts": [
+    {
+      "path": "intermediate_zoom_out_report.md",
+      "sha256": "51bf9cea5095d1a1eb696b2ce4f863302c7517e271be6667c0fd55f2f6511f74"
+    },
+    {
+      "path": "docs/reviews/stage8-zoom-out-raw.md",
+      "sha256": "45141cafcdd6cabf6acea42e9e4b122192a5e375f5f1e2f202f0701c8cbbb715"
+    },
+    {
+      "path": "docs/reviews/stage8-findings.review-complete.json",
+      "sha256": "9525aa897ed28596895d869133f3dd90d5b5aa4c5466dfc4c983b9af3c7b23db",
+      "original_path": "docs/reviews/stage8-findings.json"
+    }
+  ],
+  "artifact_local_link_occurrences_verified": 28,
+  "artifact_fences_checked": true,
+  "later_input_archives": {
+    "R04": {
+      "original_path": "/workspace/watchmaker_vault/goldfish_review_report.md",
+      "snapshot_path": "/workspace/watchmaker_vault/docs/reviews/stage8-context/R04-goldfish-review-report.input.md",
+      "sha256": "a8983d3696d95c062b4d7b81b7c29b1c69cd823919881044f14e03d48c325924",
+      "reason": "Preserve completed Stage 8 input before the root report is reused for Stage 8 resolution proposals."
+    }
+  },
+  "later_resolution": "See live stage8-findings.json and stage8-resolution/proposal.json; initial review counts and re-audit status above remain historical."
+}

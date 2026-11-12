@@ -1,0 +1,285 @@
+{
+  "verified_at_utc": "2026-11-12T19:37:06.585973+00:00",
+  "reading_list_sha256": "55349ae348c5ca1502f9ca89304040fdb8bcd390ce2c78bd2c0c026d9cc938f4",
+  "target_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+  "target_lines": 781,
+  "detailed_heading_line": 446,
+  "checks": [
+    {
+      "id": "L01",
+      "path": "/workspace/watchmaker_vault/docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "matches": true
+    },
+    {
+      "id": "L02",
+      "path": "/workspace/watchmaker_vault/docs/specs/WATCHMAKERS_VAULT_HARDWARE_UPDATE.md",
+      "matches": true
+    },
+    {
+      "id": "L03",
+      "path": "/workspace/watchmaker_vault/docs/specs/CODEX_START_HERE.md",
+      "matches": true
+    },
+    {
+      "id": "L04",
+      "path": "/workspace/watchmaker_vault/docs/specs/README.md",
+      "matches": true
+    },
+    {
+      "id": "L05",
+      "path": "/workspace/watchmaker_vault/docs/hardware/board-audit.md",
+      "matches": true
+    },
+    {
+      "id": "L06",
+      "path": "/workspace/watchmaker_vault/docs/specs/PROTOCOL_V1.md",
+      "matches": true
+    },
+    {
+      "id": "L07",
+      "path": "/workspace/watchmaker_vault/docs/specs/contracts/protocol-v1.schema.json",
+      "matches": true
+    },
+    {
+      "id": "L08",
+      "path": "/workspace/watchmaker_vault/docs/specs/fixtures/maze-v1.private.json",
+      "matches": true
+    },
+    {
+      "id": "L09",
+      "path": "/workspace/watchmaker_vault/docs/specs/fixtures/protocol-examples.json",
+      "matches": true
+    },
+    {
+      "id": "L10",
+      "path": "/workspace/watchmaker_vault/docs/specs/fixtures/timing-cases.json",
+      "matches": true
+    },
+    {
+      "id": "L11",
+      "path": "/workspace/watchmaker_vault/docs/specs/ACCEPTANCE.md",
+      "matches": true
+    },
+    {
+      "id": "L12",
+      "path": "/workspace/watchmaker_vault/docs/specs/HARDWARE_AUDIT.md",
+      "matches": true
+    },
+    {
+      "id": "L13",
+      "path": "/workspace/watchmaker_vault/docs/specs/verify_contracts.py",
+      "matches": true
+    },
+    {
+      "id": "L14",
+      "path": "/workspace/watchmaker_vault/docs/specs/requirements-spec.txt",
+      "matches": true
+    },
+    {
+      "id": "L15",
+      "path": "/workspace/watchmaker_vault/docs/specs/SPEC_VALIDATION.md",
+      "matches": true
+    },
+    {
+      "id": "L16",
+      "path": "/workspace/watchmaker_vault/docs/hardware/documentary-checks.md",
+      "matches": true
+    },
+    {
+      "id": "L17",
+      "path": "/workspace/watchmaker_vault/docs/implementation-status.md",
+      "matches": true
+    },
+    {
+      "id": "E01",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E02",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E03",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E04",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E05",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E06",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E07",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E08",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E09",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E10",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E11",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    },
+    {
+      "id": "E12",
+      "http_status": 200,
+      "raw_matches": true,
+      "extract_matches": true
+    }
+  ],
+  "target_local_links": [
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_HARDWARE_UPDATE.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/CODEX_START_HERE.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/README.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_HARDWARE_UPDATE.md",
+      "exists": true
+    },
+    {
+      "destination": "../hardware/board-audit.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/PROTOCOL_V1.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/contracts/protocol-v1.schema.json",
+      "exists": true
+    },
+    {
+      "destination": "../specs/fixtures/maze-v1.private.json",
+      "exists": true
+    },
+    {
+      "destination": "../specs/fixtures/protocol-examples.json",
+      "exists": true
+    },
+    {
+      "destination": "../specs/fixtures/timing-cases.json",
+      "exists": true
+    },
+    {
+      "destination": "../specs/ACCEPTANCE.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/HARDWARE_AUDIT.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/CODEX_START_HERE.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/PROTOCOL_V1.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/README.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/PROTOCOL_V1.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/README.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/CODEX_START_HERE.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/HARDWARE_AUDIT.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/WATCHMAKERS_VAULT_SPEC.md",
+      "exists": true
+    },
+    {
+      "destination": "../specs/PROTOCOL_V1.md",
+      "exists": true
+    }
+  ],
+  "scope": "Document and capture integrity only; no application, browser, firmware or physical acceptance executed."
+}

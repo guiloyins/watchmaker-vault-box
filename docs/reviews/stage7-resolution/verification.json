@@ -1,0 +1,142 @@
+{
+  "recorded_at_utc": "2026-11-12T21:04:47.452465+00:00",
+  "status": "passed_documentation_checks_only",
+  "proposal_sha256": "63056d3e2829c5b98093ea353404ee3090b1ceeb1404db35c5a0c80c14150eff",
+  "patch_sha256": "a3a8a8705fec37b1035456f8ce2e5bde45a44fb3d829637f1b48786aee1ef57c",
+  "files": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "original_sha256": "12f3f725fb07b02fd5155434b505b096289d5a55d25e885ddfebd6b224d51110",
+      "proposed_sha256": "f19733970c497630aac8fb7d100c7633c6182f00ca2c11ad655c18530f1a780e",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/designs/watchmakers-vault.md",
+      "original_lines": 781,
+      "proposed_lines": 821
+    },
+    {
+      "path": "docs/specs/PROTOCOL_V1.md",
+      "original_sha256": "ae0ed2e4b7274e0c7bba22d5f10bbea84caf146432ecdf33d723b9ef85bc6f4e",
+      "proposed_sha256": "c75ed1c7cc0b51ae4acd9006b924fb88bdef5b01ec73ccbba7b1e47817324444",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/PROTOCOL_V1.md",
+      "original_lines": 237,
+      "proposed_lines": 270
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "original_sha256": "092145562c887315871e5d5d9d345c04f52c32cf38395c255f59507ea8809f3e",
+      "proposed_sha256": "0f19b6092219c160c956c0a67a488739a8d0653c6ac13837fcdb059e64f35d97",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "original_lines": 711,
+      "proposed_lines": 713
+    },
+    {
+      "path": "docs/specs/HARDWARE_AUDIT.md",
+      "original_sha256": "764cea3705c5f0ab1d0b11524384649b40e1ac457726a6bcc8e4377ca53c7a47",
+      "proposed_sha256": "13c846be1033402ee3d511a14d625fa2b54de580c1857a03bf7e75987481123b",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/HARDWARE_AUDIT.md",
+      "original_lines": 155,
+      "proposed_lines": 170
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "original_sha256": "0b4b5d1efe8eac25e19728c27ad9319675ca5a8b95f6156e9d29c3ac382376f8",
+      "proposed_sha256": "ffd8f436ed4ca844cf1f9d1d757796f053efe553f9090a8235d03e7db418c801",
+      "preview": "/workspace/watchmaker_vault/docs/reviews/stage7-resolution/proposed/docs/specs/ACCEPTANCE.md",
+      "original_lines": 109,
+      "proposed_lines": 109
+    }
+  ],
+  "ordered_exact_edits_replayed": 101,
+  "patch_dry_run_exit": 0,
+  "local_links_checked_relative_to_original_destination": 37,
+  "markdown_fences_and_table_widths": "passed",
+  "acceptance_ids_unchanged": [
+    "M0-01",
+    "M0-02",
+    "M0-03",
+    "M0-04",
+    "M1-01",
+    "M1-02",
+    "M1-03",
+    "M1-04",
+    "M1-05",
+    "M1-06",
+    "M1-07",
+    "M2-T1",
+    "M2-T2",
+    "M2-T3",
+    "M2-T4",
+    "M2-T5",
+    "M2-T6",
+    "M2-T7",
+    "M2-01",
+    "M2-02",
+    "M2-03",
+    "M2-04",
+    "M2-05",
+    "M2-06",
+    "M2-07",
+    "M2-08",
+    "M3-01",
+    "M3-02",
+    "M3-03",
+    "M3-04",
+    "M4-01",
+    "M4-02",
+    "M4-03",
+    "M4-04",
+    "M4-05",
+    "M4-06",
+    "M5-01",
+    "M5-02",
+    "M5-03",
+    "M5-04"
+  ],
+  "file_manifest_rows": 204,
+  "candidate_ranges": {
+    "feature": [
+      1,
+      484
+    ],
+    "detailed": [
+      485,
+      821
+    ]
+  },
+  "canonical_ranges": {
+    "feature": [
+      1,
+      445
+    ],
+    "detailed": [
+      446,
+      781
+    ]
+  },
+  "contract_validator_exit": 0,
+  "contract_validator_command": [
+    "python3",
+    "/example/local/verify_contracts.py"
+  ],
+  "canonical_design_and_sources_unchanged": true,
+  "wire_and_fixture_hashes": {
+    "docs/specs/contracts/protocol-v1.schema.json": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+    "docs/specs/fixtures/protocol-examples.json": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+    "docs/specs/fixtures/maze-v1.private.json": "d81ad5c348811bb323006c7a1c71683550dc5946d8aa070d7dc90c79792e073d",
+    "docs/specs/fixtures/timing-cases.json": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d"
+  },
+  "helper_confirmations": {
+    "/root/resolve_recovery_design": "Native final received: no required correction remains in the three bounded integration areas; read-only, no formal re-audit or execution.",
+    "/root/resolve_mint_writes": "Native final received: no required correction to runner registration/deadline/completion/teardown guards; read-only, no execution."
+  },
+  "not_executed": [
+    "Application or Playwright tests",
+    "Mint/OTP socket timing tests",
+    "Simulator watchdog tests",
+    "Firmware builds/tests",
+    "Physical bench checks",
+    "Formal EGM re-audit",
+    "Stage 8"
+  ],
+  "applied_fixes": [],
+  "approval": "pending"
+}

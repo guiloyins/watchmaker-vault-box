@@ -1,0 +1,19 @@
+{
+  "recorded_at_utc": "2026-11-12T23:26:36.606020+00:00",
+  "platform": "macOS-26.6.2-x86_64-i386-64bit",
+  "architecture": "x86_64",
+  "elixir": "Erlang/OTP 28 [erts-16.0.1] [source] [64-bit] [smp:16:16] [ds:16:16:10] [async-threads:1]\n\nElixir 1.18.4 (compiled with Erlang/OTP 28)",
+  "python_checks": "Python 3.13.12",
+  "node_pinned": "v20.17.0",
+  "node_shell": "v22.22.0",
+  "rebar": "rebar 3.28.0 on Erlang/OTP 28 Erts 16.0.1",
+  "rebar_sha512": "518c2956c6a73a3522fd13b5c2a031c7524ee753c956161d37a38803be568ed1d7d7fae62ab31989d197271f12198ba9f2616fbc94bc042b6775b1be619eeedc",
+  "esbuild": "0.25.12",
+  "esbuild_sha256": "bd09e65a6a1a903c40269d3a4ae23ffc6139f691703728c1faf25f62e48baa40",
+  "mix_lock_sha256": "61d2c237caf6d61387afccf55e49662cd8893bb0907a07e46266992eb2341748",
+  "checks_lock_sha256": "12d768c9c0789a558fb6e9fe8b615e539b0a434ed4fb1ef90a705a03bcef0fea",
+  "idf_available": false,
+  "cmake_available": false,
+  "hex_bootstrap": "2.2.1 installed successfully in fresh .cache/bootstrap-proof/mix",
+  "git_remote": ""
+}

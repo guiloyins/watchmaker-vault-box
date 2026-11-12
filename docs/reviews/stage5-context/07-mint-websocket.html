@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.39.1">
+    <meta name="project" content="MintWebSocket v1.0.6">
+
+
+    <title>Mint.WebSocket — MintWebSocket v1.0.6</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-ZFNMEJKT.css" />
+
+    <script defer src="dist/sidebar_items-9ABF7A81.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-HBZYRXZS.js"></script>
+
+  <script async defer src="https://s.hexdocs.pm/js/script.js"></script><script>window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init({endpoint:"https://s.hexdocs.pm/api/event"})</script></head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+      <div>
+        <a href="Mint.WebSocket.html" class="sidebar-projectName" translate="no">
+MintWebSocket
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v1.0.6
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-module" id="main" data-type="modules">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of MintWebSocket</span>
+            <div class="search-input-wrapper">
+              <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+                <i class="ri-close-line ri-lg" title="Cancel search"></i>
+              </button>
+            </div>
+          </label>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <div class="engine-selector" data-multiple="false">
+          <button type="button" class="engine-button" aria-label="Select search engine" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-search-2-line" aria-hidden="true"></i>
+            <span class="engine-name">Default</span>
+            <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+          </button>
+          <div class="engine-dropdown" hidden role="menu">
+
+              <button type="button"
+                      class="engine-option"
+                      data-engine-url="search.html?q="
+                      role="menuitemradio"
+                      aria-checked="true">
+                <span class="name">Default</span>
+                <span class="help">In-browser search</span>
+              </button>
+
+          </div>
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Mint.WebSocket</span> 
+      <small class="app-vsn" translate="no">(MintWebSocket v1.0.6)</small>
+
+    </h1>
+
+      <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L1" title="View Source" class="icon-action" rel="help nofollow">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+
+    <section id="moduledoc">
+<p>HTTP/1 and HTTP/2 WebSocket support for the Mint functional HTTP client</p><p>Like Mint, <a href="Mint.WebSocket.html"><code class="inline">Mint.WebSocket</code></a> provides a functional, process-less interface
+for operating a WebSocket connection. Prospective Mint.WebSocket users
+may wish to first familiarize themselves with <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html"><code class="inline">Mint.HTTP</code></a>.</p><p>Mint.WebSocket is not fully spec-conformant on its own. Runtime behaviors
+such as responding to pings with pongs must be implemented by the user of
+Mint.WebSocket.</p><h2 id="module-usage" class="section-heading"><a href="#module-usage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Usage</span></h2><p>A connection formed with <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a> can be upgraded to a WebSocket
+connection with <a href="#upgrade/5"><code class="inline">upgrade/5</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0768696526-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="0768696526-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="0768696526-2">(</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">9_000</span><span class="p" data-group-id="0768696526-2">)</span><span class="w">
+</span><span class="p" data-group-id="0768696526-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="0768696526-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">upgrade</span><span class="p" data-group-id="0768696526-4">(</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0768696526-5">[</span><span class="p" data-group-id="0768696526-5">]</span><span class="p" data-group-id="0768696526-4">)</span></code></pre><p><a href="#upgrade/5"><code class="inline">upgrade/5</code></a> sends an upgrade request to the remote server. The WebSocket
+connection is then built by awaiting the HTTP response from the server.</p><pre><code class="makeup elixir" translate="no"><span class="n">http_reply_message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">receive</span><span class="p" data-group-id="1184500694-1">(</span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1184500694-2">(</span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="1184500694-2">)</span><span class="p" data-group-id="1184500694-1">)</span><span class="w">
+</span><span class="p" data-group-id="1184500694-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1184500694-4">[</span><span class="p" data-group-id="1184500694-5">{</span><span class="ss">:status</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p" data-group-id="1184500694-5">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1184500694-6">{</span><span class="ss">:headers</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">resp_headers</span><span class="p" data-group-id="1184500694-6">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1184500694-7">{</span><span class="ss">:done</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p" data-group-id="1184500694-7">}</span><span class="p" data-group-id="1184500694-4">]</span><span class="p" data-group-id="1184500694-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="1184500694-8">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">http_reply_message</span><span class="p" data-group-id="1184500694-8">)</span><span class="w">
+
+</span><span class="p" data-group-id="1184500694-9">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p" data-group-id="1184500694-9">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="1184500694-10">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">resp_headers</span><span class="p" data-group-id="1184500694-10">)</span></code></pre><p>Once the WebSocket connection has been established, use the <code class="inline">websocket</code>
+data structure to encode and decode frames with <a href="#encode/2"><code class="inline">encode/2</code></a> and <a href="#decode/2"><code class="inline">decode/2</code></a>,
+and send and stream messages with <a href="#stream_request_body/3"><code class="inline">stream_request_body/3</code></a> and <a href="#stream/2"><code class="inline">stream/2</code></a>.</p><p>For example, one may send a &quot;hello world&quot; text frame across a connection
+like so:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="1979540503-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="1979540503-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">encode</span><span class="p" data-group-id="1979540503-2">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1979540503-3">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world&quot;</span><span class="p" data-group-id="1979540503-3">}</span><span class="p" data-group-id="1979540503-2">)</span><span class="w">
+</span><span class="p" data-group-id="1979540503-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="1979540503-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="1979540503-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="1979540503-5">)</span></code></pre><p>Say that the remote is echoing messages. Use <a href="#stream/2"><code class="inline">stream/2</code></a> and <a href="#decode/2"><code class="inline">decode/2</code></a> to
+decode a received WebSocket frame:</p><pre><code class="makeup elixir" translate="no"><span class="n">echo_message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">receive</span><span class="p" data-group-id="8192557499-1">(</span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8192557499-2">(</span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="8192557499-2">)</span><span class="p" data-group-id="8192557499-1">)</span><span class="w">
+</span><span class="p" data-group-id="8192557499-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8192557499-4">[</span><span class="p" data-group-id="8192557499-5">{</span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="8192557499-5">}</span><span class="p" data-group-id="8192557499-4">]</span><span class="p" data-group-id="8192557499-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="8192557499-6">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">echo_message</span><span class="p" data-group-id="8192557499-6">)</span><span class="w">
+</span><span class="p" data-group-id="8192557499-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8192557499-8">[</span><span class="p" data-group-id="8192557499-9">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world&quot;</span><span class="p" data-group-id="8192557499-9">}</span><span class="p" data-group-id="8192557499-8">]</span><span class="p" data-group-id="8192557499-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">decode</span><span class="p" data-group-id="8192557499-10">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="8192557499-10">)</span></code></pre><h2 id="module-http-2-support" class="section-heading"><a href="#module-http-2-support" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">HTTP/2 Support</span></h2><p>Mint.WebSocket supports WebSockets over HTTP/2 as defined in rfc8441.
+rfc8441 is an extension to the HTTP/2 specification. At the time of
+writing, very few HTTP/2 server libraries support or enable HTTP/2
+WebSockets by default.</p><p><a href="#upgrade/5"><code class="inline">upgrade/5</code></a> works on both HTTP/1 and HTTP/2 connections. In order to select
+HTTP/2, the <code class="inline">:http2</code> protocol should be explicitly selected in
+<a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="1789045663-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="1789045663-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="1789045663-2">(</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;websocket.example&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">80</span><span class="p">,</span><span class="w"> </span><span class="ss">protocols</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1789045663-3">[</span><span class="ss">:http2</span><span class="p" data-group-id="1789045663-3">]</span><span class="p" data-group-id="1789045663-2">)</span><span class="w">
+</span><span class="ss">:http2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">protocol</span><span class="p" data-group-id="1789045663-4">(</span><span class="n">conn</span><span class="p" data-group-id="1789045663-4">)</span><span class="w">
+</span><span class="p" data-group-id="1789045663-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="1789045663-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">upgrade</span><span class="p" data-group-id="1789045663-6">(</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1789045663-7">[</span><span class="p" data-group-id="1789045663-7">]</span><span class="p" data-group-id="1789045663-6">)</span></code></pre><p>If the server does not support the extended CONNECT method needed to bootstrap
+WebSocket connections over HTTP/2, <a href="#upgrade/4"><code class="inline">upgrade/4</code></a> will return an error tuple
+with the <code class="inline">:extended_connect_disabled</code> error reason.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="4118053723-1">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4118053723-2">%</span><span class="nc" data-group-id="4118053723-2">Mint.WebSocketError</span><span class="p" data-group-id="4118053723-2">{</span><span class="ss">reason</span><span class="p">:</span><span class="w"> </span><span class="ss">:extended_connect_disabled</span><span class="p" data-group-id="4118053723-2">}</span><span class="p" data-group-id="4118053723-1">}</span></code></pre><p>Why use HTTP/2 for WebSocket connections in the first place? HTTP/2
+can multiplex many requests over the same connection, which can
+reduce the latency incurred by forming new connections for each request.
+A WebSocket connection only occupies one stream of a HTTP/2 connection, so
+even if an HTTP/2 connection has an open WebSocket communication, it can be
+used to transport more requests.</p><h2 id="module-websocket-secure" class="section-heading"><a href="#module-websocket-secure" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">WebSocket Secure</span></h2><p>Encryption of connections is handled by Mint functions. To start a WSS
+connection, select <code class="inline">:https</code> as the scheme in <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a>:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9769259316-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="9769259316-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="9769259316-2">(</span><span class="ss">:https</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;websocket.example&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">443</span><span class="p" data-group-id="9769259316-2">)</span></code></pre><p>And pass the <code class="inline">:wss</code> scheme to <a href="#upgrade/5"><code class="inline">upgrade/5</code></a>. See the Mint documentation
+on SSL for more information.</p><h2 id="module-extensions" class="section-heading"><a href="#module-extensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Extensions</span></h2><p>The WebSocket protocol allows for <em>extensions</em>. Extensions act as a
+middleware for encoding and decoding frames. For example &quot;permessage-deflate&quot;
+compresses and decompresses the body of data frames, which minifies the amount
+of bytes which must be sent over the network.</p><p>See <a href="Mint.WebSocket.Extension.html"><code class="inline">Mint.WebSocket.Extension</code></a> for more information about extensions and
+<a href="Mint.WebSocket.PerMessageDeflate.html"><code class="inline">Mint.WebSocket.PerMessageDeflate</code></a> for information about the
+&quot;permessage-deflate&quot; extension.</p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:error/0" data-no-tooltip="" translate="no">error()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:frame/0" data-no-tooltip="" translate="no">frame()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A WebSocket frame.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:shorthand_frame/0" data-no-tooltip="" translate="no">shorthand_frame()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Shorthand notations for control frames.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>An immutable data structure representing WebSocket state.</p></div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#decode/2" data-no-tooltip="" translate="no">decode(websocket, data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Decodes a binary into a list of frames.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#encode/2" data-no-tooltip="" translate="no">encode(websocket, frame)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Encodes a frame into a binary.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#new/5" data-no-tooltip="" translate="no">new(conn, request_ref, status, response_headers, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new WebSocket data structure given the server's reply to the
+upgrade request.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#recv/3" data-no-tooltip="" translate="no">recv(conn, byte_count, timeout)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Receives data from the socket.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stream/2" data-no-tooltip="" translate="no">stream(conn, message)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A wrapper around <a><code class="inline">Mint.HTTP.stream/2</code></a> for streaming HTTP and WebSocket
+messages.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stream_request_body/3" data-no-tooltip="" translate="no">stream_request_body(conn, request_ref, data)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Streams chunks of data on the connection.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#upgrade/5" data-no-tooltip="" translate="no">upgrade(scheme, conn, path, headers, opts \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Requests that a connection be upgraded to the WebSocket protocol</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+
+    <div class="types-list">
+<section class="detail" id="t:error/0">
+
+  <div class="detail-header">
+    <a href="#t:error/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">error()</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L138" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> error() ::
+  <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:error/0">Mint.Types.error</a>()
+  | <a href="Mint.WebSocketError.html#t:t/0">Mint.WebSocketError.t</a>()
+  | <a href="Mint.WebSocket.UpgradeFailureError.html#t:t/0">Mint.WebSocket.UpgradeFailureError.t</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:frame/0">
+
+  <div class="detail-header">
+    <a href="#t:frame/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">frame()</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L189" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> frame() ::
+  {:text, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}
+  | {:binary, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}
+  | {:ping, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}
+  | {:pong, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}
+  | {:close, code :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>() | nil, reason :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | nil}</pre>
+
+      </div>
+
+<p>A WebSocket frame.</p><ul><li><code class="inline">{:binary, binary}</code> - a frame containing binary data. Binary frames
+can be used to send arbitrary binary data such as a PDF.</li><li><code class="inline">{:text, text}</code> - a frame containing string data. Text frames must be
+valid utf8. Elixir has wonderful support for utf8: <a href="https://hexdocs.pm/elixir/String.html#valid?/1"><code class="inline">String.valid?/1</code></a>
+can detect valid and invalid utf8.</li><li><code class="inline">{:ping, binary}</code> - a control frame which the server should respond to
+with a pong. The binary data must be echoed in the pong response.</li><li><code class="inline">{:pong, binary}</code> - a control frame which forms a reply to a ping frame.
+Pings and pongs may be used to check the a connection is alive or to
+estimate latency.</li><li><code class="inline">{:close, code, reason}</code> - a control frame used to request that a connection
+be closed or to acknowledgee a close frame send by the server.</li></ul><p>These may be passed to <a href="#encode/2"><code class="inline">encode/2</code></a> or returned from <a href="#decode/2"><code class="inline">decode/2</code></a>.</p><h2 id="t:frame/0-close-frames" class="section-heading"><a href="#t:frame/0-close-frames" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Close frames</span></h2><p>In order to close a WebSocket connection gracefully, either the client or
+server sends a close frame. Then the other endpoint responds with a
+close with code <code class="inline">1_000</code> and then closes the TCP/TLS connection. This can be
+accomplished in <a href="Mint.WebSocket.html"><code class="inline">Mint.WebSocket</code></a> like so:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6264173348-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6264173348-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">encode</span><span class="p" data-group-id="6264173348-2">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="ss">:close</span><span class="p" data-group-id="6264173348-2">)</span><span class="w">
+</span><span class="p" data-group-id="6264173348-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6264173348-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="6264173348-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6264173348-4">)</span><span class="w">
+
+</span><span class="n">close_response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">receive</span><span class="p" data-group-id="6264173348-5">(</span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6264173348-6">(</span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="6264173348-6">)</span><span class="p" data-group-id="6264173348-5">)</span><span class="w">
+</span><span class="p" data-group-id="6264173348-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6264173348-8">[</span><span class="p" data-group-id="6264173348-9">{</span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6264173348-9">}</span><span class="p" data-group-id="6264173348-8">]</span><span class="p" data-group-id="6264173348-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="6264173348-10">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">close_response</span><span class="p" data-group-id="6264173348-10">)</span><span class="w">
+</span><span class="p" data-group-id="6264173348-11">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6264173348-12">[</span><span class="p" data-group-id="6264173348-13">{</span><span class="ss">:close</span><span class="p">,</span><span class="w"> </span><span class="mi">1_000</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p" data-group-id="6264173348-13">}</span><span class="p" data-group-id="6264173348-12">]</span><span class="p" data-group-id="6264173348-11">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">decode</span><span class="p" data-group-id="6264173348-14">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6264173348-14">)</span><span class="w">
+
+</span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">close</span><span class="p" data-group-id="6264173348-15">(</span><span class="n">conn</span><span class="p" data-group-id="6264173348-15">)</span></code></pre><p><a rel="nofollow" href="https://datatracker.ietf.org/doc/html/rfc6455#section-7.4.1">RFC6455 § 7.4.1</a>
+documents codes which may be used in the <code class="inline">code</code> element.</p>
+  </section>
+</section>
+<section class="detail" id="t:shorthand_frame/0">
+
+  <div class="detail-header">
+    <a href="#t:shorthand_frame/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">shorthand_frame()</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L150" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> shorthand_frame() :: :ping | :pong | :close</pre>
+
+      </div>
+
+<p>Shorthand notations for control frames.</p><ul><li><code class="inline">:ping</code> - shorthand for <code class="inline">{:ping, &quot;&quot;}</code></li><li><code class="inline">:pong</code> - shorthand for <code class="inline">{:pong, &quot;&quot;}</code></li><li><code class="inline">:close</code> - shorthand for <code class="inline">{:close, nil, nil}</code></li></ul><p>These may be passed to <a href="#encode/2"><code class="inline">encode/2</code></a>. Frames decoded with <a href="#decode/2"><code class="inline">decode/2</code></a> are always
+in <a href="#t:frame/0"><code class="inline">frame/0</code></a> format.</p>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this opaque">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L127" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@opaque</span> t()</pre>
+
+      </div>
+
+<p>An immutable data structure representing WebSocket state.</p><p>You will usually want to keep these around:</p><ul><li>The Mint connection</li><li>The request reference for the WebSocket upgrade request</li><li>This WebSocket data structure</li></ul>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+
+    <div class="functions-list">
+<section class="detail" id="decode/2">
+
+  <div class="detail-header">
+    <a href="#decode/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">decode(websocket, data)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L573" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> decode(<a href="#t:t/0">t</a>(), data :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) ::
+  {:ok, <a href="#t:t/0">t</a>(), [<a href="#t:frame/0">frame</a>() | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}]} | {:error, <a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+<p>Decodes a binary into a list of frames.</p><p>The binary may received from the connection with <a href="#stream/2"><code class="inline">stream/2</code></a>.</p><p>This function will invoke the <a href="Mint.WebSocket.Extension.html#c:decode/2"><code class="inline">Mint.WebSocket.Extension.decode/2</code></a> callback
+for any accepted extensions.</p><h2 id="decode/2-examples" class="section-heading"><a href="#decode/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">receive</span><span class="p" data-group-id="9623601512-1">(</span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9623601512-2">(</span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="9623601512-2">)</span><span class="p" data-group-id="9623601512-1">)</span><span class="w">
+</span><span class="p" data-group-id="9623601512-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9623601512-4">[</span><span class="p" data-group-id="9623601512-5">{</span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="9623601512-5">}</span><span class="p" data-group-id="9623601512-4">]</span><span class="p" data-group-id="9623601512-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="9623601512-6">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="9623601512-6">)</span><span class="w">
+</span><span class="p" data-group-id="9623601512-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">frames</span><span class="p" data-group-id="9623601512-7">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">decode</span><span class="p" data-group-id="9623601512-8">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="9623601512-8">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="encode/2">
+
+  <div class="detail-header">
+    <a href="#encode/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">encode(websocket, frame)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L554" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> encode(<a href="#t:t/0">t</a>(), <a href="#t:shorthand_frame/0">shorthand_frame</a>() | <a href="#t:frame/0">frame</a>()) ::
+  {:ok, <a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()} | {:error, <a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+<p>Encodes a frame into a binary.</p><p>The resulting binary may be sent with <a href="#stream_request_body/3"><code class="inline">stream_request_body/3</code></a>.</p><p>This function will invoke the <a href="Mint.WebSocket.Extension.html#c:encode/2"><code class="inline">Mint.WebSocket.Extension.encode/2</code></a> callback
+for any accepted extensions.</p><h2 id="encode/2-examples" class="section-heading"><a href="#encode/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6948529607-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6948529607-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">encode</span><span class="p" data-group-id="6948529607-2">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6948529607-3">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world&quot;</span><span class="p" data-group-id="6948529607-3">}</span><span class="p" data-group-id="6948529607-2">)</span><span class="w">
+</span><span class="p" data-group-id="6948529607-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="6948529607-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="6948529607-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">websocket_ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="6948529607-5">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="new/5">
+
+    <span id="new/4"></span>
+
+  <div class="detail-header">
+    <a href="#new/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">new(conn, request_ref, status, response_headers, opts \\ [])</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L343" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Creates a new WebSocket data structure given the server's reply to the
+upgrade request.</p><p><code class="inline">request_ref</code> should be the reference of the request made with <a href="#upgrade/5"><code class="inline">upgrade/5</code></a>.
+<code class="inline">status</code> and <code class="inline">response_headers</code> should be the status code and headers
+of the server's response to the upgrade request—see the example below.</p><p>The returned <a href="#t:t/0">WebSocket data structure</a> is used to encode and decode frames.</p><p>This function will setup any extensions accepted by the server using
+the <a href="Mint.WebSocket.Extension.html#c:init/2"><code class="inline">Mint.WebSocket.Extension.init/2</code></a> callback.</p><h2 id="new/5-options" class="section-heading"><a href="#new/5-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Options</span></h2><ul><li><code class="inline">:mode</code> - (default: <code class="inline">:active</code>) either <code class="inline">:active</code> or <code class="inline">:passive</code>. This
+corresponds to the same option in <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a>.</li></ul><h2 id="new/5-examples" class="section-heading"><a href="#new/5-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">http_reply</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">receive</span><span class="p" data-group-id="0994687423-1">(</span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0994687423-2">(</span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="0994687423-2">)</span><span class="p" data-group-id="0994687423-1">)</span><span class="w">
+
+</span><span class="p" data-group-id="0994687423-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0994687423-4">[</span><span class="p" data-group-id="0994687423-5">{</span><span class="ss">:status</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p" data-group-id="0994687423-5">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0994687423-6">{</span><span class="ss">:headers</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="p" data-group-id="0994687423-6">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0994687423-7">{</span><span class="ss">:done</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p" data-group-id="0994687423-7">}</span><span class="p" data-group-id="0994687423-4">]</span><span class="p" data-group-id="0994687423-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="0994687423-8">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">http_reply</span><span class="p" data-group-id="0994687423-8">)</span><span class="w">
+
+</span><span class="p" data-group-id="0994687423-9">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p" data-group-id="0994687423-9">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">new</span><span class="p" data-group-id="0994687423-10">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">status</span><span class="p">,</span><span class="w"> </span><span class="n">headers</span><span class="p" data-group-id="0994687423-10">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="recv/3">
+
+  <div class="detail-header">
+    <a href="#recv/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">recv(conn, byte_count, timeout)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L466" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> recv(<a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">timeout</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), [<a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:response/0">Mint.Types.response</a>()]}
+  | {:error, <a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:error/0">Mint.Types.error</a>(), [<a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:response/0">Mint.Types.response</a>()]}</pre>
+
+      </div>
+
+<p>Receives data from the socket.</p><p>This function is used instead of <a href="#stream/2"><code class="inline">stream/2</code></a> when the connection is
+in <code class="inline">:passive</code> mode. You must pass the <code class="inline">mode: :passive</code> option to
+<a href="#new/5"><code class="inline">new/5</code></a> in order to use <a href="#recv/3"><code class="inline">recv/3</code></a>.</p><p>This function wraps <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#recv/3"><code class="inline">Mint.HTTP.recv/3</code></a>. See the <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#recv/3"><code class="inline">Mint.HTTP.recv/3</code></a>
+documentation for more information.</p><h2 id="recv/3-examples" class="section-heading"><a href="#recv/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="4037637594-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4037637594-2">[</span><span class="p" data-group-id="4037637594-3">{</span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4037637594-3">}</span><span class="p" data-group-id="4037637594-2">]</span><span class="p" data-group-id="4037637594-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">recv</span><span class="p" data-group-id="4037637594-4">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">5_000</span><span class="p" data-group-id="4037637594-4">)</span><span class="w">
+
+</span><span class="p" data-group-id="4037637594-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4037637594-6">[</span><span class="p" data-group-id="4037637594-7">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="4037637594-7">}</span><span class="p" data-group-id="4037637594-6">]</span><span class="p" data-group-id="4037637594-5">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">decode</span><span class="p" data-group-id="4037637594-8">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="4037637594-8">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="stream/2">
+
+  <div class="detail-header">
+    <a href="#stream/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream(conn, message)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L409" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stream(<a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), [<a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:response/0">Mint.Types.response</a>()]}
+  | {:error, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:error/0">Mint.Types.error</a>(), [<a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:response/0">Mint.Types.response</a>()]}
+  | :unknown</pre>
+
+      </div>
+
+<p>A wrapper around <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#stream/2"><code class="inline">Mint.HTTP.stream/2</code></a> for streaming HTTP and WebSocket
+messages.</p><p><strong>This function does not decode WebSocket frames</strong>. Instead, once a WebSocket
+connection has been established, decode any <code class="inline">{:data, request_ref, data}</code>
+frames with <a href="#decode/2"><code class="inline">decode/2</code></a>.</p><p>This function is a drop-in replacement for <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#stream/2"><code class="inline">Mint.HTTP.stream/2</code></a>, which
+enables streaming WebSocket data after the bootstrapping HTTP/1 connection
+has concluded. It decodes both WebSocket and regular HTTP messages.</p><h2 id="stream/2-examples" class="section-heading"><a href="#stream/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="n">message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">receive</span><span class="p" data-group-id="5824949506-1">(</span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5824949506-2">(</span><span class="n">message</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="5824949506-2">)</span><span class="p" data-group-id="5824949506-1">)</span><span class="w">
+
+</span><span class="p" data-group-id="5824949506-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5824949506-4">[</span><span class="p" data-group-id="5824949506-5">{</span><span class="ss">:data</span><span class="p">,</span><span class="w"> </span><span class="o">^</span><span class="n">websocket_ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5824949506-5">}</span><span class="p" data-group-id="5824949506-4">]</span><span class="p" data-group-id="5824949506-3">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream</span><span class="p" data-group-id="5824949506-6">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">message</span><span class="p" data-group-id="5824949506-6">)</span><span class="w">
+
+</span><span class="p" data-group-id="5824949506-7">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5824949506-8">[</span><span class="p" data-group-id="5824949506-9">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="5824949506-9">}</span><span class="p" data-group-id="5824949506-8">]</span><span class="p" data-group-id="5824949506-7">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">decode</span><span class="p" data-group-id="5824949506-10">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="5824949506-10">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="stream_request_body/3">
+
+  <div class="detail-header">
+    <a href="#stream_request_body/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream_request_body(conn, request_ref, data)</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L520" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> stream_request_body(
+  <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(),
+  <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:request_ref/0">Mint.Types.request_ref</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>() | :eof | {:eof, trailing_headers :: <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:headers/0">Mint.Types.headers</a>()}
+) :: {:ok, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>()} | {:error, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), <a href="#t:error/0">error</a>()}</pre>
+
+      </div>
+
+<p>Streams chunks of data on the connection.</p><p><a href="#stream_request_body/3"><code class="inline">stream_request_body/3</code></a> should be used to send encoded data on an
+established WebSocket connection that has already been upgraded with
+<a href="#upgrade/5"><code class="inline">upgrade/5</code></a>.</p><section role="note" class="admonition warning"><h4 class="admonition-title warning">Encoding</h4><p>This function doesn't perform any encoding. You should use <a href="#encode/2"><code class="inline">encode/2</code></a>
+to encode frames before sending them with <a href="#stream_request_body/3"><code class="inline">stream_request_body/3</code></a>.</p></section><p>This function is a wrapper around <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#stream_request_body/3"><code class="inline">Mint.HTTP.stream_request_body/3</code></a>. It
+delegates to that function unless the <code class="inline">request_ref</code> belongs to an HTTP/1
+WebSocket connection. When the request is an HTTP/1 WebSocket, this
+function allows sending data on a request which Mint considers to be
+closed, but is actually a valid WebSocket connection.</p><p>See the <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#stream_request_body/3"><code class="inline">Mint.HTTP.stream_request_body/3</code></a> documentation for more
+information.</p><h2 id="stream_request_body/3-examples" class="section-heading"><a href="#stream_request_body/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3459213870-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="3459213870-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">encode</span><span class="p" data-group-id="3459213870-2">(</span><span class="n">websocket</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3459213870-3">{</span><span class="ss">:text</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="3459213870-3">}</span><span class="p" data-group-id="3459213870-2">)</span><span class="w">
+</span><span class="p" data-group-id="3459213870-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="3459213870-4">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">stream_request_body</span><span class="p" data-group-id="3459213870-5">(</span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">websocket_ref</span><span class="p">,</span><span class="w"> </span><span class="n">data</span><span class="p" data-group-id="3459213870-5">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="upgrade/5">
+
+    <span id="upgrade/4"></span>
+
+  <div class="detail-header">
+    <a href="#upgrade/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">upgrade(scheme, conn, path, headers, opts \\ [])</h1>
+
+
+        <a href="https://github.com/elixir-mint/mint_web_socket/blob/main/lib/mint/web_socket.ex#L267" class="icon-action" rel="help nofollow" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> upgrade(
+  scheme :: :ws | :wss,
+  conn :: <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(),
+  path :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  headers :: <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:headers/0">Mint.Types.headers</a>(),
+  opts :: <a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>()
+) ::
+  {:ok, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), <a href="https://hexdocs.pm/mint/1.7.1/Mint.Types.html#t:request_ref/0">Mint.Types.request_ref</a>()}
+  | {:error, <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#t:t/0">Mint.HTTP.t</a>(), <a href="#t:error/0">error</a>()}</pre>
+
+      </div>
+
+<p>Requests that a connection be upgraded to the WebSocket protocol</p><p>This function wraps <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#request/5"><code class="inline">Mint.HTTP.request/5</code></a> to provide a single interface
+for bootstrapping an upgrade for HTTP/1 and HTTP/2 connections.</p><p>For HTTP/1 connections, this function performs a GET request with
+WebSocket-specific headers. For HTTP/2 connections, this function performs
+an extended CONNECT request which opens a stream to be used for the WebSocket
+connection.</p><p>The <code class="inline">scheme</code> argument should be either <code class="inline">:ws</code> or <code class="inline">:wss</code>, using <code class="inline">:ws</code> for
+connections established by passing <code class="inline">:http</code> to <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a> and
+<code class="inline">:wss</code> corresponding to <code class="inline">:https</code>.</p><p>The WebSocket handshake headers are subject to the <code class="inline">:case_sensitive_headers</code>
+option of <a href="https://hexdocs.pm/mint/1.7.1/Mint.HTTP.html#connect/4"><code class="inline">Mint.HTTP.connect/4</code></a>: they are lowercased by default and sent in
+their conventional casing (<code class="inline">Sec-WebSocket-Key</code> and friends) when that option
+is enabled.</p><h2 id="upgrade/5-options" class="section-heading"><a href="#upgrade/5-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Options</span></h2><ul><li><code class="inline">:extensions</code> - a list of extensions to negotiate. See the extensions
+section below.</li></ul><h2 id="upgrade/5-extensions" class="section-heading"><a href="#upgrade/5-extensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Extensions</span></h2><p>Extensions should be declared by passing the <code class="inline">:extensions</code> option in the
+<code class="inline">opts</code> keyword list. Note that in the WebSocket protocol, extensions are
+negotiated: the client proposes a list of extensions and the server may
+accept any (or none) of them. See <a href="Mint.WebSocket.Extension.html"><code class="inline">Mint.WebSocket.Extension</code></a> for more
+information about extension negotiation.</p><p>Extensions may be passed as a list of <a href="Mint.WebSocket.Extension.html"><code class="inline">Mint.WebSocket.Extension</code></a> structs
+or with the following shorthand notations:</p><ul><li><code class="inline">module</code> - shorthand for <code class="inline">{module, []}</code></li><li><code class="inline">{module, params}</code> - shorthand for <code class="inline">{module, params, []}</code></li><li><code class="inline">{module, params, opts}</code> - a shorthand which is expanded to a
+<a href="Mint.WebSocket.Extension.html"><code class="inline">Mint.WebSocket.Extension</code></a> struct</li></ul><h2 id="upgrade/5-examples" class="section-heading"><a href="#upgrade/5-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a><span class="text">Examples</span></h2><p>First, establish the Mint connection:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2889798509-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p" data-group-id="2889798509-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Mint.HTTP</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="2889798509-2">(</span><span class="ss">:http</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;localhost&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">9_000</span><span class="p" data-group-id="2889798509-2">)</span></code></pre><p>Then, send the upgrade request (with an extension in this example):</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9426388164-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="9426388164-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">upgrade</span><span class="p" data-group-id="9426388164-2">(</span><span class="ss">:ws</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9426388164-3">[</span><span class="p" data-group-id="9426388164-3">]</span><span class="p">,</span><span class="w"> </span><span class="ss">extensions</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9426388164-4">[</span><span class="nc">Mint.WebSocket.PerMessageDeflate</span><span class="p" data-group-id="9426388164-4">]</span><span class="p" data-group-id="9426388164-2">)</span></code></pre><p>Here's an example of providing extension parameters:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="8420380732-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">conn</span><span class="p">,</span><span class="w"> </span><span class="n">ref</span><span class="p" data-group-id="8420380732-1">}</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="nc">Mint.WebSocket</span><span class="o">.</span><span class="n">upgrade</span><span class="p" data-group-id="8420380732-2">(</span><span class="w">
+    </span><span class="ss">:ws</span><span class="p">,</span><span class="w">
+    </span><span class="n">conn</span><span class="p">,</span><span class="w">
+    </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="8420380732-3">[</span><span class="p" data-group-id="8420380732-3">]</span><span class="p">,</span><span class="w">
+    </span><span class="ss">extensions</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8420380732-4">[</span><span class="p" data-group-id="8420380732-5">{</span><span class="nc">Mint.WebSocket.PerMessageDeflate</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8420380732-6">[</span><span class="ss">:client_max_window_bits</span><span class="p" data-group-id="8420380732-6">]</span><span class="p">]</span><span class="p" data-group-id="8420380732-5">}</span><span class="p" data-group-id="8420380732-4">]</span><span class="w">
+  </span><span class="p" data-group-id="8420380732-2">)</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/mint_web_socket/1.0.6" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/mint_web_socket/1.0.6">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener nofollow" translate="no">ExDoc</a> (v0.39.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>

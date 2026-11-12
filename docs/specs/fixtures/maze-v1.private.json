@@ -1,0 +1,235 @@
+{
+  "fixture_version": 1,
+  "puzzle_id": "watchmakers_vault_golden_v1",
+  "puzzle_revision": 1,
+  "audience": "server_and_tests_only",
+  "warning": "Never copy this fixture, the complete edge set, solution or expected answers into player payloads or public assets.",
+  "rows": 4,
+  "cols": 4,
+  "coordinates": {
+    "columns": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "rows": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "cell_index": "row_index * 4 + column_index"
+  },
+  "start": 12,
+  "goal": 3,
+  "open_edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      6
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      5,
+      9
+    ],
+    [
+      6,
+      10
+    ],
+    [
+      7,
+      11
+    ],
+    [
+      8,
+      9
+    ],
+    [
+      8,
+      12
+    ],
+    [
+      9,
+      13
+    ],
+    [
+      10,
+      11
+    ],
+    [
+      13,
+      14
+    ],
+    [
+      14,
+      15
+    ]
+  ],
+  "roles": {
+    "a": {
+      "allowed_moves": [
+        "up",
+        "down"
+      ],
+      "wall_kind": "right",
+      "walls": [
+        2,
+        5,
+        6,
+        9,
+        12
+      ]
+    },
+    "b": {
+      "allowed_moves": [
+        "left",
+        "right"
+      ],
+      "wall_kind": "bottom",
+      "walls": [
+        1,
+        4,
+        10,
+        11
+      ]
+    }
+  },
+  "solution_cells": [
+    12,
+    8,
+    9,
+    5,
+    4,
+    0,
+    1,
+    2,
+    6,
+    10,
+    11,
+    7,
+    3
+  ],
+  "solution_steps": [
+    {
+      "role": "a",
+      "direction": "up",
+      "from": 12,
+      "to": 8
+    },
+    {
+      "role": "b",
+      "direction": "right",
+      "from": 8,
+      "to": 9
+    },
+    {
+      "role": "a",
+      "direction": "up",
+      "from": 9,
+      "to": 5
+    },
+    {
+      "role": "b",
+      "direction": "left",
+      "from": 5,
+      "to": 4
+    },
+    {
+      "role": "a",
+      "direction": "up",
+      "from": 4,
+      "to": 0
+    },
+    {
+      "role": "b",
+      "direction": "right",
+      "from": 0,
+      "to": 1
+    },
+    {
+      "role": "b",
+      "direction": "right",
+      "from": 1,
+      "to": 2
+    },
+    {
+      "role": "a",
+      "direction": "down",
+      "from": 2,
+      "to": 6
+    },
+    {
+      "role": "a",
+      "direction": "down",
+      "from": 6,
+      "to": 10
+    },
+    {
+      "role": "b",
+      "direction": "right",
+      "from": 10,
+      "to": 11
+    },
+    {
+      "role": "a",
+      "direction": "up",
+      "from": 11,
+      "to": 7
+    },
+    {
+      "role": "a",
+      "direction": "up",
+      "from": 7,
+      "to": 3
+    }
+  ],
+  "dead_end_branch": [
+    9,
+    13,
+    14,
+    15
+  ],
+  "seal": {
+    "options": [
+      "star",
+      "moon",
+      "sun",
+      "wave"
+    ],
+    "expected_by_role": {
+      "a": "star",
+      "b": "moon"
+    },
+    "clues_by_role": {
+      "a": {
+        "clue_for_role": "b",
+        "clue_rune": "moon"
+      },
+      "b": {
+        "clue_for_role": "a",
+        "clue_rune": "star"
+      }
+    },
+    "overlap_ms": 2000
+  }
+}

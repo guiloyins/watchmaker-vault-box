@@ -1,0 +1,174 @@
+{
+  "edits": [
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "Implement the domain/storage boundaries before their pages. Fix the game API's actor and action contracts before assigning independent UI work. Move/selection/operator decisions that change durable state follow validate → commit → adopt → acknowledge/publish/effect. Build one full browser playthrough, then the failure cases required to keep that playthrough truthful.",
+      "new": "Implement the domain/storage boundaries before their pages using [Internal interfaces and durable state, version 1](../specs/IMPLEMENTATION_CONTRACTS.md). Its exact principal/actor, Games, browser-hook, model/event/effect, checkpoint, SQLite and recovery/readback contracts are the handoff for independent consumers; routine implementation must not invent replacements. Move/selection/operator decisions that change durable state follow validate → commit → adopt → acknowledge/publish/effect. Build one full browser playthrough, then the failure cases required to keep that playthrough truthful.",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `docs/specs/README.md` | Update | Keep the reading order and actual paths current. |",
+      "new": "| `docs/specs/README.md` | Update | Keep the reading order and actual paths current. |\n| `docs/specs/IMPLEMENTATION_CONTRACTS.md` | Maintain accepted contract | Keep exact internal interfaces, server tables/constraints, bounded durable documents, recovery transaction identities and completion/readback fences aligned with implementation; changes require their affected tests and acceptance checks. |",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/game_store.ex` | Create | Implement checkpoint/intent transactions, one release per solved attempt and compatible checkpoint schemas. Persist recovery preparation, permanent retirement and idempotent closed_no_replay separately from reported outcomes; no transaction waits for external service. |",
+      "new": "| `server/lib/vault/game_store.ex` | Create | Implement IMPLEMENTATION_CONTRACTS version-one tables and short immediate transactions: checkpoint CAS, immutable original-solve uniqueness, append-only observations, operation receipts, permanent retirement and serialized preparation/Close. Readback never dispatches an old action; no transaction waits for external service. |",
+      "findings": [
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/game_store/actuator_command.ex` | Create | Define immutable command/fingerprint and intended box; retain sequenced outcomes, permanent dispatch retirement, recovery/disposition IDs and operator/current-binding evidence independently from diagnostic pruning. |",
+      "new": "| `server/lib/vault/game_store/actuator_command.ex` | Create | Map immutable command/fingerprint, original game/session/round, intended box, original dispatch binding, monotonic claimed/retired flags and history revision exactly as IMPLEMENTATION_CONTRACTS specifies; observations and administrative dispositions use their separate schemas. |",
+      "findings": [
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/priv/repo/migrations/20261112000000_create_vault_state.exs` | Create | Create checkpoints, identities/credentials, assignments and actuator records with required uniqueness, foreign keys, recovery/disposition fields and original-identity constraints. This is planned source, not an executed migration. |",
+      "new": "| `server/priv/repo/migrations/20261112000000_create_vault_state.exs` | Create | Implement the exact ten version-one application tables, PK/FK/CHECK/unique/index definitions, deferred receipt references and immutability triggers in IMPLEMENTATION_CONTRACTS; verify effective WAL/FULL/foreign-key/100 ms settings and fail-closed schema/init behavior. This is planned source, not an executed migration. |",
+      "findings": [
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/games.ex` | Create | Authenticate capabilities, explicitly create/locate existing games and route controller/host actions, including begin recovery and close without replay, to the registered process. |",
+      "new": "| `server/lib/vault/games.ex` | Create | Implement the fixed signatures, actions/results and request identities in IMPLEMENTATION_CONTRACTS; distinguish same-request Begin readback from explicit expected-generation replacement, with current authorization on every read/action. |",
+      "findings": [
+        "S9-01"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/controllers.ex` | Create | Apply one-owner-per-role grants, explicit takeover, revocation and fresh-neutral requirements from server-held identities. |",
+      "new": "| `server/lib/vault/controllers.ex` | Create | Define the exact server-created Principal/Actor/Context/Input structs in IMPLEMENTATION_CONTRACTS; implement one-owner grants, explicit takeover, revocation and neutral/new-press requirements. Client IDs never construct authority. |",
+      "findings": [
+        "S9-01"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/assets/js/hooks/controller.js` | Create | Implement explicit logical actors, complete challenge echoes, discrete input, press IDs and all pointer/keyboard/cancel/visibility/reconnect clearing paths. |",
+      "new": "| `server/assets/js/hooks/controller.js` | Create | Implement IMPLEMENTATION_CONTRACTS vault:rebind/challenge/input/command/result/invalidate payloads and limits with separate host actors, connection counters, press IDs and complete pointer/keyboard/cancel/visibility/reconnect clearing. |",
+      "findings": [
+        "S9-01"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/simulated_box/store.ex` | Create | Provide standalone Exqlite storage for versioned bounded durable model state, explicit initialization, short durable transactions, operation readback and separate per-instance files; no server checkpoint access. |",
+      "new": "| `server/lib/vault/simulated_box/store.ex` | Create | Implement the exact independent schema-one singleton and <=512 KiB bounded JSON document in IMPLEMENTATION_CONTRACTS using Exqlite, explicit init_new/open_existing, one in-flight CAS patch, operation/revision/hash readback and inactive-only writes. Never overwrite newer evidence or restore old authority from completion. |",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/vault/game_store_test.exs` | Create | Verify commit-before-ack and atomic solve/intent uniqueness, then expand storage/crash cases in M2. |",
+      "new": "| `server/test/vault/game_store_test.exs` | Create | Assert actual schema/constraints, original-solve uniqueness across recovery sessions, strict checkpoint validation, operation receipt identity and append-only conflicting observations; verify commit-before-ack and atomic solve/intent, then expand crashes in M2. |",
+      "findings": [
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/vault/simulated_box/store_test.exs` | Create | Exercise real SQLite initialization, version/corruption refusal, persistence/commit-readback failures, crash/reload boundaries and retained clear authorization with isolated files. |",
+      "new": "| `server/test/vault/simulated_box/store_test.exs` | Create | Exercise exact singleton/record size and cardinality limits, full-journal recovery plus complete clear-copy budget, explicit initialization, missing/version/corruption refusal, CAS conflict, late completions, commit/readback failures, receipt aging without replay and isolated crash/reload. |",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/test/vault/recovery_test.exs` | Create | Crash/restart sessions during recovery and preserve original identity, retirement, disposition and service inhibition while replacing bindings and invalidating current evidence. |",
+      "new": "| `server/test/vault/recovery_test.exs` | Create | Assert exact Begin/replacement/Close receipts and predicates, same-request retry after supersession, Close/replacement races and restart resealing through current host context; preserve original identity, all late conflicting observations, retirement/disposition and local inhibition. |",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "| `server/lib/vault/game_store/assignment.ex` | Create | Store desired role assignments without persisting active authority. |",
+      "new": "| `server/lib/vault/game_store/assignment.ex` | Create | Store desired role assignments without persisting active authority. |\n| `server/lib/vault/game_store/metadata.ex` | Create | Map the singleton schema/store identity and refuse missing or incompatible initialized stores. |\n| `server/lib/vault/game_store/release_observation.ex` | Create | Map permanent exact-report rows, including changed-content conflicts under the same status sequence; keep current authority volatile. |\n| `server/lib/vault/game_store/recovery_preparation.ex` | Create | Map immutable preparation generations, prior links, original request IDs and historical session/operator evidence. |\n| `server/lib/vault/game_store/release_disposition.ex` | Create | Map one immutable closed_no_replay disposition per command with complete reason, evidence and observation reference. |\n| `server/lib/vault/game_store/operation.ex` | Create | Map durable request hash/result/checkpoint-revision receipts for exact retry and uncertain-commit readback without effect replay. |",
+      "findings": [
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/designs/watchmakers-vault.md",
+      "old": "Implement the complete box-local contract for M1; M2 adds the external adapter and transport conformance, not a second semantic model. A pure model transition takes state, a validated event and current local monotonic time. Adapters establish event provenance; the model checks supplied boot/session/connection/generation, command freshness and recovery context. Volatile bindings, arms, reservations, motion, challenge times and timer generations never reload as authority. Persist accepted identities/outcomes and versioned service/reconciliation/clear state; historical binding references remain evidence only.",
+      "new": "Implement the complete box-local contract for M1; M2 adds the external adapter and transport conformance, not a second semantic model. A pure model transition takes state, a validated event and current local monotonic time. Adapters establish event provenance; the model checks supplied boot/session/connection/generation, command freshness and recovery context. Volatile bindings, arms, reservations, motion, challenge times and timer generations never reload as authority. Persist accepted identities/outcomes and versioned service/reconciliation/clear state; historical binding references remain evidence only. The exact State/Event/Effect and persistence patch/completion shapes, size/cardinality budgets and generation/readback rules are normative in [Internal interfaces and durable state](../specs/IMPLEMENTATION_CONTRACTS.md#pure-simulated-box-interface). The M0 model defines its own pure nested types and depends on no M1 process, Repo or Games struct. Adapter completion adopts only committed durable changes, never an old volatile state snapshot.",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "Use these minimum records; names can follow an existing repository convention.",
+      "new": "[Internal interfaces and durable state, version 1](IMPLEMENTATION_CONTRACTS.md) fixes the exact server schema, checkpoint encoding, Games/browser/model interfaces, independent simulated-store payload and operation/readback identities. The table below summarizes those records; the implementation contract supplies the normative columns, constraints, bounds and transaction predicates. Preserve original identity and all retained observations through recovery and later migrations.",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/specs/WATCHMAKERS_VAULT_SPEC.md",
+      "old": "Use a thin compiled `Vault.SimulatedBox.Store` over Exqlite/SQLite for the bounded durable subset, with one separate file/connection per box instance outside the server checkpoint. Explicit initialization creates a new store; reopening an expected store never silently replaces missing, corrupt or unsupported history. Run the same protocol-derived traces with literal expected observations through both adapters; agreement between adapters alone is insufficient because the model is shared.",
+      "new": "Use a thin compiled `Vault.SimulatedBox.Store` over Exqlite/SQLite for the bounded durable subset, with one separate file/connection per box instance outside the server checkpoint. Explicit initialization creates a new store; reopening an expected store never silently replaces missing, corrupt or unsupported history. Run the same protocol-derived traces with literal expected observations through both adapters; agreement between adapters alone is insufficient because the model is shared. The version-one singleton uses the exact strict payload and <=512 KiB host-only limit in IMPLEMENTATION_CONTRACTS, separate from firmware NVS representation and unchanged network/service-frame budgets. Revision/operation/hash CAS and generation-checked completion preserve later evidence without reviving reservations or interrupted motion.",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M1-01 — One game, multiple views.** Create one game, open separate A/B participant sessions and the host console, then reload each. Expected: one authoritative game process, preserved state, no per-mount game creation, and a clearly labeled simulated box. Start is host-only and requires both controllers plus simulated readiness. Run the in-process adapter against protocol-derived literal conformance expectations; verify its independent runtime and durable store survive a GameSession-only restart. Load the compiled model/store from the locked Mix environment without starting :vault, Phoenix or the server Repo.",
+      "new": "**M1-01 — One game, multiple views.** Create one game, open separate A/B participant sessions and the host console, then reload each. Expected: one authoritative game process, preserved state, no per-mount game creation, and a clearly labeled simulated box. Start is host-only and requires both controllers plus simulated readiness. Run the in-process adapter against protocol-derived literal conformance expectations; verify its independent runtime and durable store survive a GameSession-only restart. Load the compiled model/store from the locked Mix environment without starting :vault, Phoenix or the server Repo. Assert the fixed principal/actor/API/hook structures and explicit rebind semantics in IMPLEMENTATION_CONTRACTS; independent consumers use the same signatures and result allowlists.",
+      "findings": [
+        "S9-01"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M2-04 — Persistence failure.** Use the initial 100 ms SQLite `busy_timeout`; hold a write lock and separately inject a write failure. Measure a bounded error path targeting less than the 400 ms input lease on the tested machine, without claiming hard real-time guarantees. No success, uncommitted state, or actuator effect may escape. Enter a volatile recovery pause with a `storage_error` diagnostic; retain the committed checkpoint. No transaction waits on the network. Record measured latency and configuration changes. Exercise each independent simulator SQLite store: expected-file missing/corrupt/version refusal, failures before/after commit, lost commit reply and crash/reload. Verify effective durability settings and measured latency without treating the busy timeout as a disk-I/O bound.",
+      "new": "**M2-04 — Persistence failure.** Use the initial 100 ms SQLite `busy_timeout`; hold a write lock and separately inject a write failure. Measure a bounded error path targeting less than the 400 ms input lease on the tested machine, without claiming hard real-time guarantees. No success, uncommitted state, or actuator effect may escape. Enter a volatile recovery pause with a `storage_error` diagnostic; retain the committed checkpoint. No transaction waits on the network. Record measured latency and configuration changes. Exercise each independent simulator SQLite store: expected-file missing/corrupt/version refusal, failures before/after commit, lost commit reply and crash/reload. Verify effective durability settings and measured latency without treating the busy timeout as a disk-I/O bound. Assert the exact version-one SQL constraints/checkpoint codec, singleton identity/version and per-record/whole-document limits; full journal, all reconciliation records, clear copies and retained service receipts must fit together. Reject implicit empty initialization and stale revision/hash writes. A late successful persistence completion after stop/rebind adopts history only and permits zero revived steps.",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M2-05 — Atomic winning transition.** Inject crashes before commit, after commit/before dispatch, and after dispatch/before acknowledgement. Before commit: no solved checkpoint or command. After commit: the restored checkpoint references the same durable `command_id`; no replacement ID or automatic replay. Recovery queries the box and preserves uncertainty when execution cannot be established. Complete commit-before-dispatch/unknown_command and accepted/interrupted recovery through explicit closed_no_replay, Reset and a new simulated round. The old identity/outcome remain, no old-ID redelivery or replacement command for the old solve occurs, and only the new solve creates a new intent.",
+      "new": "**M2-05 — Atomic winning transition.** Inject crashes before commit, after commit/before dispatch, and after dispatch/before acknowledgement. Before commit: no solved checkpoint or command. After commit: the restored checkpoint references the same durable `command_id`; no replacement ID or automatic replay. Recovery queries the box and preserves uncertainty when execution cannot be established. Complete commit-before-dispatch/unknown_command and accepted/interrupted recovery through explicit closed_no_replay, Reset and a new simulated round. The old identity/outcome remain, no old-ID redelivery or replacement command for the old solve occurs, and only the new solve creates a new intent. Assert the database one-solve unique key against the original game/session/round after several later recovery sessions; verify durable request hash/receipt readback and one-time dispatch claim without reconstructed win tickets.",
+      "findings": [
+        "S9-02"
+      ]
+    },
+    {
+      "path": "docs/specs/ACCEPTANCE.md",
+      "old": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected. After Begin recovery, deliver a late terminal outcome and assert Reset still requires that recovery's host disposition; terminal observations cannot bypass active recovery. Run the same literal expected recovery traces through both simulator adapters with separate state/store/timing fixtures; expectation generation never invokes the model. Separately terminate transport, box runtime and GameSession and inspect persisted history and modeled-step counts. Adapter agreement alone cannot validate their shared semantics.",
+      "new": "**M2-06 — State separation and reconciliation.** Report `accepted`, `motion_complete`, `position_confirmed`, `uncertain`, and `failed` for the current command. Puzzle phase stays `solved`; neither motor completion nor latch confirmation implies an open lid. A null-command readiness report cannot overwrite persisted release intent. Pending/moving/uncertain outcome disables Pause/Reset until reconciled. Exercise protocol recovery preparation, persistent service inhibit, sealed all-motion evidence, mandatory boot/session fence, explicit host closure and local acknowledgement. Readiness alone cannot close an intent. Test valid terminal results, wrong identity, conflicting historical/current evidence, missing journals and unavailable server records. Inject failed writes/crashes/lost replies at each durable boundary; retry idempotently. Deliver original queued effects/envelopes throughout. Race Close against replacement preparation: only one generation wins, local invalidation alone cannot unseal, and old evidence is rejected. After Begin recovery, deliver a late terminal outcome and assert Reset still requires that recovery's host disposition; terminal observations cannot bypass active recovery. Run the same literal expected recovery traces through both simulator adapters with separate state/store/timing fixtures; expectation generation never invokes the model. Separately terminate transport, box runtime and GameSession and inspect persisted history and modeled-step counts. Adapter agreement alone cannot validate their shared semantics. Assert same-request Begin retry returns its original receipt after replacement, while a new replacement requires the expected prior recovery ID. Reseal after GameSession restart using current committed host context without rewriting the original preparation receipt. Append late/conflicting status evidence during checkpoint/Close persistence, including changed content at one status sequence; neither a disposition nor a stale full-state write can erase it or restore delivery.",
+      "findings": [
+        "S9-01",
+        "S9-02"
+      ]
+    }
+  ]
+}
