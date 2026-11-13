@@ -14,6 +14,7 @@ secrets/
 *.db
 *.db-*
 vault.owner
+box-runtime.owner
 erl_crash.dump
 server/_build/
 server/deps/

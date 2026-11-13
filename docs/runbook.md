@@ -1,6 +1,6 @@
 # Watchmaker’s Vault operator runbook
 
-M1 runs the two-player game and simulated mechanism locally. A completed simulated stroke reports modeled motion. Physical position, lid state, and hardware operation require their own evidence.
+The browser game supports an internal simulated mechanism or a separately running raw-protocol simulator. A completed simulated stroke reports modeled motion. Physical position, lid state, and hardware operation require their own evidence.
 
 ## Set up and start
 
@@ -71,3 +71,52 @@ If the GameSession restarts during recovery, use the current session and binding
 ## Verify changes
 
 Run `tools/test-server` from the repository root. It creates and cleans its own protected test root. For browser tests and native-event procedures, follow the [browser verification guide](testing/browser-cases.md). The [implementation ledger](implementation-status.md) records executed checks and remaining verification.
+
+## Run the external protocol simulator
+
+Use a separate deployment for this mode. The manifest records the selection; changing an environment variable cannot convert an existing deployment or replace its history. From the repository root, with the pinned dependencies and assets already installed:
+
+```sh
+export VAULT_DATA_DIR="$PWD/data/external"
+export VAULT_SIMULATOR_TRANSPORT=external
+export VAULT_BOX_MODE=simulated
+export VAULT_BIND=127.0.0.1
+export VAULT_PORT=4001
+export VAULT_ORIGIN=http://localhost:4001
+mkdir -p "$VAULT_DATA_DIR"
+chmod 700 "$VAULT_DATA_DIR"
+(cd server && mix vault.init --external-simulator)
+(cd server && PHX_SERVER=true mix phx.server)
+```
+
+This creates browser keys and protected `box.key`, `cyd-a.key`, and `cyd-b.key` files. Their registered identities are `simulated_box`, `sim_cyd_a`, and `sim_cyd_b`. The server stores only credential digests. Repeat `--external-simulator` when verifying this setup with `vault.init`; it does not rotate keys. The internal browser-only deployment still uses the default `internal` transport.
+
+In a separate terminal at the repository root, set the same absolute data directory. Read the nonsecret instance ID from its manifest, then run the independent box:
+
+```sh
+SIMULATOR_INSTANCE_ID=$(python3 -c 'import json,os; print(json.load(open(os.path.join(os.environ["VAULT_DATA_DIR"],"deployment.json")))["simulator_instance_id"])')
+tools/device-simulator --endpoint ws://127.0.0.1:4001/device/v1 --allow-ws \
+  --device-id simulated_box --credentials-file "$VAULT_DATA_DIR/box.key" \
+  --scenario box-console --isolated-simulation \
+  --box-db "$VAULT_DATA_DIR/simulated-box.sqlite3" --instance-id "$SIMULATOR_INSTANCE_ID"
+```
+
+The console accepts bounded local service JSON requests, such as `{"command":"inspect","args":{"section":"status"}}`. The `box` scenario instead performs explicit modeled preparation/service exit and runs for `--duration-ms` (up to 60,000). The host shows external preparation instructions; local service controls are in this process. Browser players can control A and B while this box supplies the raw protocol. Use `controller-smoke --role a` or `controller-script --role a --steps up,down` with `cyd-a.key` to exercise a raw controller; B uses its own identity/key. An unavailable role requires explicit host takeover. See [simulator commands and measured limits](verification/m2/simulator.md).
+
+The client starts only its transport/storage dependencies under `mix run --no-start`. Its own runtime, database worker and watchdog remain independent of the socket owner and server. `box-runtime.owner` prevents a second box process or credential maintenance from opening that journal. EOF closes the socket/runtime and waits for the store worker before removing the owning marker. A crash may retain the marker; remove it only after confirming all processes for that box database have stopped. Stop both server and external box before backing up the manifest, protected keys, both SQLite databases and any sidecars together. Do not copy a live database file alone.
+
+For additional controllers, stop both processes and use `mix vault.device.add --id ID --class controller --roles a --output PATH` from `server/`. Existing independent registrations support `--rotate` with a new protected output file. These tasks acquire both ownership guards. Reserved simulator identities come from initialization.
+
+## LAN and WSS
+
+Loopback WS is available in development/test. A deliberate trusted-LAN WS demonstration additionally requires `VAULT_TRUSTED_LAN_WS=true` at the server and `--allow-ws` at the controller client. External fake-box and fault scenarios restrict plaintext WS to loopback. Production raw endpoints require TLS.
+
+For a direct HTTPS/WSS listener, set `VAULT_ORIGIN=https://HOST:PORT`, matching `VAULT_PORT`, `VAULT_TLS_CERT_FILE` and `VAULT_TLS_KEY_FILE`, then start Phoenix. The certificate must cover HOST; the private key must be an owned regular file with mode `0600`. This selects an HTTPS listener and disables plaintext HTTP. Both file variables are required for HTTPS and must be unset for HTTP. The client verifies the certificate chain and hostname; `--ca-file FILE` adds a deliberate test CA without disabling verification. Connect to `wss://HOST:PORT/device/v1`. The configured browser origin remains exact.
+
+## External release recovery
+
+Use the same Begin/Replace/Close host workflow, but perform local service in the box console using [LOCAL_SERVICE_V1](specs/LOCAL_SERVICE_V1.md). Enter recovery with the committed preparation/intent, reboot, inspect the same local record and refresh its binding, then seal. The host's box diagnostics and recovery preparation show the current context. Keep the console running after sealing so the boot/connection stays current.
+
+In **Release recovery**, transcribe the sealed local record ID, service epoch and seal operation ID and explicitly confirm that its release identity, recovery generation, boot, connection and session match. **Request fresh box observation** sends a query for the original command. Only a newer stopped/disarmed observation from that binding enables **Close release without replay**. Readiness alone, a stale status or elapsed time cannot close it. The attestation is an operator statement, not cryptographic proof of the local record; no new wire fields carry this metadata.
+
+After Close commits, read back its original operation receipt if needed and attest that exact disposition locally with `recovery.attest_disposition`. Deliberately unfreeze with `service.prepare`, establish the new session's modeled reference, exit service and arm for another round. The original outcome remains uncertain, the command stays retired, and Reset never redelivers it. A connection/session/boot change requires current resealing and a fresh query. A replacement preparation races with Close under the durable transaction; whichever committed first determines the required local acknowledgement path.

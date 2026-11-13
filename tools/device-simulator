@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+vault_root=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+export MIX_HOME="$vault_root/.cache/mix"
+export HEX_HOME="$vault_root/.cache/hex"
+export ELIXIR_MAKE_CACHE_DIR="$vault_root/.cache/elixir_make"
+export MIX_ENV="${MIX_ENV:-dev}"
+case "$MIX_ENV" in
+    dev|test) ;;
+    *) printf '%s\n' 'device-simulator requires MIX_ENV=dev or test.' >&2; exit 2 ;;
+esac
+cd "$vault_root/server"
+exec mix run --no-start --no-halt ../tools/simulator/cli.exs -- "$@"

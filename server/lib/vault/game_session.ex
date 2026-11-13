@@ -1,7 +1,7 @@
 defmodule Vault.GameSession do
   @moduledoc "Single game authority: validate, commit, adopt, then publish or dispatch."
   use GenServer
-  alias Vault.{Clock, Controllers, Games, GameStore, Projections, Puzzle, Updates}
+  alias Vault.{BoxLink, Clock, Controllers, Games, GameStore, Projections, Puzzle, Updates}
   alias Vault.Controllers.{Actor, Context, Input, Principal}
   alias Vault.Games.{CommandResult, InputResult, Receipt}
   alias Vault.SimulatedBox.Adapter
@@ -100,6 +100,21 @@ defmodule Vault.GameSession do
     {:reply, result, s}
   end
 
+  def handle_call({:device_scope, actor}, {caller, _}, s) do
+    {:reply, device_scope(s, actor, caller), s}
+  end
+
+  def handle_call({:device_snapshot, actor}, {caller, _}, s) do
+    s = expire(s) |> sync_controller_readiness()
+
+    result =
+      with {:ok, {_session, audience, _epoch}} <- device_scope(s, actor, caller) do
+        {:ok, Projections.snapshot(s, audience, now(s))}
+      end
+
+    {:reply, result, s}
+  end
+
   def handle_call({:bind, principal, opts}, {caller, _}, s) do
     panel = Map.get(opts, :panel)
     source = Map.get(opts, :source)
@@ -109,7 +124,10 @@ defmodule Vault.GameSession do
       Controllers.valid?(principal) and is_pid(opts[:owner_pid]) and opts[:owner_pid] == caller and
         Controllers.id?(opts[:boot_id]) and map_size(s.actors) < 32 and
         ((source == :browser and principal.kind in [:host, :player]) or
-           (source == :cyd and principal.kind == :device)) and
+           (source == :cyd and Vault.Auth.device_class(principal) == :controller) or
+           (source == :box and external_box_configured?() and
+              Vault.Auth.device_class(principal) == :box and
+              principal.subject_id == s.record.game.box_device_id)) and
         (principal.kind == :host or principal.game_id == s.checkpoint.game_id) and
         (panel == nil or panel in principal.allowed_roles) and
         (Map.has_key?(s.press_history, boot_key) or map_size(s.press_history) < 512)
@@ -118,7 +136,8 @@ defmodule Vault.GameSession do
       s =
         Enum.reduce(s.actors, s, fn {id, b}, acc ->
           if b.actor.principal.subject_id == principal.subject_id and
-               b.actor.boot_id == opts.boot_id and b.panel == panel,
+               ((principal.kind == :device and b.actor.source in [:cyd, :box]) or
+                  (b.actor.boot_id == opts.boot_id and b.panel == panel)),
              do: remove_actor(acc, id, :replaced),
              else: acc
         end)
@@ -141,6 +160,7 @@ defmodule Vault.GameSession do
       b = %{
         actor: actor,
         panel: panel,
+        delivery: Map.get(opts, :device_delivery),
         monitor: Process.monitor(caller),
         next_seq: 1,
         results: %{},
@@ -164,6 +184,28 @@ defmodule Vault.GameSession do
             press_history: Map.put_new(s.press_history, boot_key, 0)
         }
         |> visible()
+
+      s =
+        if source == :box do
+          box = %{
+            empty_box()
+            | transport: :external,
+              actor_id: actor.actor_id,
+              boot_id: actor.boot_id,
+              connection_id: actor.connection_id,
+              binding_generation: generation,
+              runtime_pid: caller,
+              connected: true,
+              bound_at_ms: now(s)
+          }
+
+          send(self(), {:query_bound_box, generation})
+
+          %{s | box: box, query: nil, close_evidence: nil, seal_check: nil, seal_attestation: nil}
+          |> visible()
+        else
+          s
+        end
 
       {:reply, {:ok, {actor, Controllers.context(actor, s.checkpoint)}}, s}
     else
@@ -317,6 +359,17 @@ defmodule Vault.GameSession do
 
   def handle_call({:prepare_simulated, host}, from, s), do: start_service(s, host, :prepare, from)
 
+  def handle_call({:attest_sealed_record, host, args}, _from, s) do
+    s = expire_query(s)
+
+    if host?(host) do
+      {result, next} = Vault.Recovery.attest_sealed_record(s, host, args)
+      {:reply, result, next}
+    else
+      {:reply, Games.error(:not_authorized), s}
+    end
+  end
+
   def handle_call({:service, host, request}, from, s),
     do: start_service(s, host, {:request, request}, from)
 
@@ -343,7 +396,7 @@ defmodule Vault.GameSession do
   end
 
   def handle_call({:fault_simulated, host, :reconnect}, _from, s) do
-    if host?(host) and simulated?(s) do
+    if host?(host) and simulated?(s) and not external_box_configured?() do
       send(self(), {:connect_box, s.checkpoint.session_id})
       {:reply, :ok, s}
     else
@@ -352,14 +405,51 @@ defmodule Vault.GameSession do
   end
 
   def handle_call({:fault_simulated, host, fault}, _from, s) do
-    if host?(host) and simulated?(s) and fault in [:disconnect, :reboot, :lost_ack, :interrupt] do
+    if host?(host) and simulated?(s) and not external_box_configured?() and
+         fault in [:disconnect, :reboot, :lost_ack, :interrupt] do
       {:reply, Adapter.fault(s.runtime, fault), s}
     else
       {:reply, Games.error(:not_authorized), s}
     end
   end
 
-  def handle_call({:box_observation, _actor, _report, _query}, _from, s),
+  def handle_call(
+        {:box_observation, actor, %{status: report, comparison: comparison} = validated, query},
+        {caller, _},
+        s
+      ) do
+    s = expire_query(s)
+
+    with {:ok, %{actor: %{source: :box}}} <- actor_binding(s, actor, caller),
+         true <- actor.actor_id == s.box.actor_id and s.box.connected,
+         true <-
+           report.connection_id == actor.connection_id and report.box_boot_id == actor.boot_id and
+             report.session_id == s.checkpoint.session_id,
+         true <- truthful_simulation?(s, report) do
+      cached = s.box.status_cache[report.status_seq]
+      stale = report.status_seq <= s.box.status_seq and cached == nil
+      next = accept_box_status(s, actor.binding_generation, validated, query)
+
+      cond do
+        cached != nil and cached != comparison ->
+          {:reply, Games.error(:invalid_binding), remove_actor(next, actor.actor_id, :closed)}
+
+        stale ->
+          {:reply, {:ok, %{status_seq: report.status_seq, accepted: false, code: :stale_status}},
+           next}
+
+        Map.get(next.box.status_cache, report.status_seq) == comparison ->
+          {:reply, {:ok, %{status_seq: report.status_seq, accepted: true, code: :ok}}, next}
+
+        true ->
+          {:reply, Games.error(:storage_error), next}
+      end
+    else
+      _ -> {:reply, Games.error(:not_authorized), s}
+    end
+  end
+
+  def handle_call({:box_observation, _, _, _}, _from, s),
     do: {:reply, Games.error(:not_authorized), s}
 
   def handle_call(_, _from, s), do: {:reply, Games.error(:not_authorized), s}
@@ -382,19 +472,32 @@ defmodule Vault.GameSession do
             |> Map.new()
             |> Map.put(seq, issued)
 
-          send(
-            b.actor.owner_pid,
+          challenge =
             {:vault_challenge, id, b.actor.connection_id, b.actor.binding_generation, seq}
-          )
 
-          put_in(acc.actors[id], %{b | heartbeat_seq: seq, challenges: challenges})
+          challenge =
+            if b.delivery,
+              do:
+                Tuple.insert_at(
+                  challenge,
+                  tuple_size(challenge),
+                  System.monotonic_time(:millisecond) + 400
+                ),
+              else: challenge
+
+          notify_actor(b, challenge)
+          acc = put_in(acc.actors[id], %{b | heartbeat_seq: seq, challenges: challenges})
+
+          if b.actor.source == :box,
+            do: %{acc | box: %{acc.box | heartbeat_seq: seq, challenges: challenges}},
+            else: acc
         else
           remove_actor(acc, id, :expired)
         end
       end)
 
     s =
-      if s.box.connected do
+      if s.box.connected and not BoxLink.external?(s) do
         issued = now(s)
         seq = s.box.heartbeat_seq + 1
         Adapter.challenge(s.runtime, s.box.binding_generation, seq, issued)
@@ -456,7 +559,8 @@ defmodule Vault.GameSession do
   end
 
   def handle_info({:connect_box, session_id}, s) do
-    if simulated?(s) and session_id == s.checkpoint.session_id and not s.box.connected do
+    if simulated?(s) and not external_box_configured?() and session_id == s.checkpoint.session_id and
+         not s.box.connected do
       case Adapter.boot_id(s.runtime) do
         {:ok, boot_id} ->
           generation = System.unique_integer([:positive, :monotonic])
@@ -492,7 +596,7 @@ defmodule Vault.GameSession do
                   seal_check: nil
               }
 
-              Adapter.query(s.runtime, generation, s.checkpoint.release_command_id, nil)
+              BoxLink.query(s, s.checkpoint.release_command_id, nil)
               {:noreply, visible(s)}
 
             _ ->
@@ -507,6 +611,32 @@ defmodule Vault.GameSession do
     else
       {:noreply, s}
     end
+  end
+
+  def handle_info({:query_bound_box, generation}, s) do
+    s =
+      if s.box.connected and generation == s.box.binding_generation do
+        if s.checkpoint.release_command_id do
+          {_, next} = Vault.Recovery.request_query(s)
+          next
+        else
+          BoxLink.query(s, nil, nil)
+          s
+        end
+      else
+        s
+      end
+
+    {:noreply, s}
+  end
+
+  def handle_info({:box_query_timeout, session, id}, s) do
+    next =
+      if session == s.checkpoint.session_id and s.query != nil and s.query.query_id == id,
+        do: expire_query(s),
+        else: s
+
+    {:noreply, next}
   end
 
   def handle_info({:simulated_box, :heartbeat, generation, boot_id, seq, input_seq}, s) do
@@ -782,6 +912,8 @@ defmodule Vault.GameSession do
         {s, false, :must_release}
 
       true ->
+        before_sample = s
+
         b = %{
           b
           | press_high:
@@ -796,6 +928,22 @@ defmodule Vault.GameSession do
         s = put_in(s.actors[b.actor.actor_id], b)
         s = put_in(s.press_history[b.boot_key], b.press_high)
 
+        s =
+          if b.actor.source == :box do
+            %{
+              s
+              | box: %{
+                  s.box
+                  | last_seen_ms: now(s),
+                    lease_until_ms: issued + 400,
+                    input_seq: input.input_seq,
+                    last_challenge: input.heartbeat_seq
+                }
+            }
+          else
+            s
+          end
+
         if b.actor.role == nil do
           {clear_offline(s), true, if(s.rules.paused, do: :paused, else: :ok)}
         else
@@ -806,6 +954,9 @@ defmodule Vault.GameSession do
           {rules, {_status, code, _}, effects} =
             Puzzle.transition(s.puzzle, s.rules, action, now(s))
 
+          # A syntactically fresh but rejected input (for example, a press
+          # before its neutral baseline) cannot renew transport liveness.
+          s = if code in [:ok, :paused], do: s, else: before_sample
           changed = visible_input(s.rules, now(s)) != visible_input(rules, now(s))
           s = run_effects(%{s | rules: rules}, effects)
           s = if changed, do: visible(s), else: s
@@ -871,7 +1022,7 @@ defmodule Vault.GameSession do
                ) do
             {:ok, next, receipt} ->
               if action == :arm,
-                do: Adapter.arm(s.runtime, s.box.binding_generation, arm),
+                do: BoxLink.arm(s, arm),
                 else: maybe_disarm(s, arm)
 
               {{:ok, receipt}, visible(next, false)}
@@ -1159,15 +1310,7 @@ defmodule Vault.GameSession do
                      command.command_id,
                      json_value(binding)
                    ) do
-                Adapter.release(
-                  s.runtime,
-                  binding.binding_generation,
-                  binding.box_boot_id,
-                  binding.arm_id,
-                  binding.heartbeat_seq,
-                  command.command_id,
-                  %{session_id: binding.session_id, action: "set_latch", target: "released"}
-                )
+                BoxLink.release(s, binding, command.command_id)
               end
 
             _ ->
@@ -1197,13 +1340,14 @@ defmodule Vault.GameSession do
     cached = s.box.status_cache[seq]
 
     if current and cached == comparison do
-      Adapter.ack_status(s.runtime, generation, seq)
+      BoxLink.ack(s, seq)
       s
     else
       classification =
         cond do
-          not current or seq < s.box.status_seq -> "stale"
+          not current -> "stale"
           cached != nil or seq == s.box.status_seq -> "content_conflict"
+          seq < s.box.status_seq -> "stale"
           true -> "admitted"
         end
 
@@ -1251,17 +1395,17 @@ defmodule Vault.GameSession do
 
             s =
               if report.motor_active or report.readiness.arm_id != nil,
-                do: %{s | close_evidence: nil, query: nil},
+                do: %{s | close_evidence: nil, seal_attestation: nil},
                 else: s
 
             s = Vault.Recovery.query_observation(s, stored, report, query)
-            Adapter.ack_status(s.runtime, generation, seq)
+            BoxLink.ack(s, seq)
             if Projections.box(s) != old_view or query != nil, do: visible(s), else: s
           else
             # Retain evidence, but a conflict never grants readiness or closure.
             s =
               if stored.classification in ["identity_conflict", "content_conflict"],
-                do: %{s | close_evidence: nil, query: nil},
+                do: %{s | close_evidence: nil, seal_attestation: nil},
                 else: s
 
             if Projections.box(s) != old_view, do: visible(s), else: s
@@ -1279,7 +1423,8 @@ defmodule Vault.GameSession do
   defp accept_box_status(s, _, _, _), do: s
 
   defp start_service(s, host, kind, from) do
-    if host?(host) and simulated?(s) and map_size(s.service_pending) < 2 do
+    if host?(host) and simulated?(s) and not external_box_configured?() and
+         map_size(s.service_pending) < 2 do
       tag = make_ref()
 
       s =
@@ -1346,6 +1491,7 @@ defmodule Vault.GameSession do
   defp actor_binding(_, _, _, _), do: :error
 
   defp expire(s) do
+    s = expire_query(s)
     before = visible_input(s.rules, now(s) - 1)
     {rules, _, effects} = Puzzle.transition(s.puzzle, s.rules, :expire_inputs, now(s))
     s = run_effects(%{s | rules: rules}, effects)
@@ -1365,7 +1511,7 @@ defmodule Vault.GameSession do
       end)
 
     if s.box.connected and now(s) >= (s.box.last_seen_ms || s.box.bound_at_ms) + 1500 do
-      Adapter.unbind(s.runtime, s.box.binding_generation, :expired)
+      BoxLink.unbind(s, :expired)
 
       offline_pause(
         %{
@@ -1380,6 +1526,22 @@ defmodule Vault.GameSession do
         },
         :box_offline
       )
+    else
+      s
+    end
+  end
+
+  defp expire_query(s) do
+    if s.query != nil and now(s) >= s.query.deadline_ms do
+      s = %{s | query: nil, seal_attestation: nil, close_evidence: nil}
+      # V1 has no echoed query ID. Retire the binding before another request so
+      # a late reply cannot be mistaken for the next recovery observation.
+      if BoxLink.external?(s) do
+        remove_actor(s, s.box.actor_id, :closed)
+      else
+        BoxLink.unbind(s, :query_timeout)
+        offline_pause(s, :box_offline)
+      end
     else
       s
     end
@@ -1436,6 +1598,22 @@ defmodule Vault.GameSession do
         send(b.actor.owner_pid, {:vault_disconnect, id, reason})
         Process.demonitor(b.monitor, [:flush])
         s = if b.actor.role != nil, do: revoke(s, b.actor.role, reason), else: s
+
+        s =
+          if b.actor.source == :box and s.box.actor_id == id do
+            %{
+              s
+              | box: %{empty_box() | transport: :external},
+                query: nil,
+                close_evidence: nil,
+                seal_check: nil,
+                seal_attestation: nil
+            }
+            |> offline_pause(:box_offline)
+          else
+            s
+          end
+
         %{s | actors: Map.delete(s.actors, id)} |> visible()
     end
   end
@@ -1494,7 +1672,7 @@ defmodule Vault.GameSession do
         do: send(b.actor.owner_pid, {:vault_disconnect, b.actor.actor_id, :session_changed})
 
     for {_id, b} <- s.actors, do: Process.demonitor(b.monitor, [:flush])
-    Adapter.unbind(s.runtime, s.box.binding_generation, :replaced)
+    if not BoxLink.external?(s), do: BoxLink.unbind(s, :session_changed)
     if s.box.monitor, do: Process.demonitor(s.box.monitor, [:flush])
     Updates.session_changed(s.checkpoint.game_id, old_session, s.checkpoint.session_id)
     send(self(), {:connect_box, s.checkpoint.session_id})
@@ -1514,10 +1692,35 @@ defmodule Vault.GameSession do
 
   defp context_message(s, actor, reason),
     do:
-      send(
-        actor.owner_pid,
+      notify_actor(
+        s.actors[actor.actor_id],
         {:vault_context, actor, Controllers.context(actor, s.checkpoint), reason}
       )
+
+  defp notify_actor(%{delivery: delivery}, message) when not is_nil(delivery),
+    do: VaultWeb.DeviceSocket.deliver(delivery, message)
+
+  defp notify_actor(%{actor: actor}, message), do: send(actor.owner_pid, message)
+
+  defp device_scope(s, %Actor{session_id: session}, _caller)
+       when session != s.checkpoint.session_id,
+       do: Games.error(:stale_session)
+
+  defp device_scope(s, actor, caller) do
+    with {:ok, %{actor: saved}} <- actor_binding(s, actor, caller),
+         true <- saved.source in [:cyd, :box] do
+      audience =
+        cond do
+          saved.source == :box and saved.actor_id == s.box.actor_id -> :box
+          saved.role != nil and s.owners[saved.role] == saved.actor_id -> {:player, saved.role}
+          true -> :public
+        end
+
+      {:ok, {s.checkpoint.session_id, audience, saved.control_epoch}}
+    else
+      _ -> Games.error(:not_authorized)
+    end
+  end
 
   defp run_effects(s, effects) do
     Enum.reduce(effects, s, fn
@@ -1651,7 +1854,8 @@ defmodule Vault.GameSession do
   defp armable?(s) do
     r = get_in(s.box.report || %{}, [:readiness]) || %{}
 
-    box_fresh?(s) and s.box.service_ready and r[:calibration_valid] == true and
+    box_fresh?(s) and (BoxLink.external?(s) or s.box.service_ready) and
+      r[:calibration_valid] == true and
       r[:start_verified] == true and
       s.box.report[:motor_active] == false
   end
@@ -1664,13 +1868,23 @@ defmodule Vault.GameSession do
   defp host?(%Principal{kind: :host} = p), do: Controllers.valid?(p)
   defp host?(_), do: false
   defp simulated?(s), do: s.record.game.box_mode == "simulated"
+
+  defp truthful_simulation?(s, report) do
+    not simulated?(s) or
+      (report.latch_position == :unknown and report.position_basis == :unverified and
+         report.command_confirmation == nil and report.release_status != :position_confirmed)
+  end
+
+  defp external_box_configured?,
+    do: Application.get_env(:vault, :simulator_transport, :internal) == :external
+
   defp reset_or_pause_allowed?(%{release: nil}, _), do: true
   defp reset_or_pause_allowed?(s, :reset), do: Vault.Recovery.reset_allowed?(s)
   defp reset_or_pause_allowed?(_, _), do: false
 
   defp maybe_disarm(s, arm \\ nil) do
     arm = arm || get_in(s.box.report || %{}, [:readiness, :arm_id])
-    if arm && s.box.connected, do: Adapter.disarm(s.runtime, s.box.binding_generation, arm)
+    if arm && s.box.connected, do: BoxLink.disarm(s, arm)
     :ok
   end
 
@@ -1696,6 +1910,8 @@ defmodule Vault.GameSession do
   defp empty_box,
     do: %{
       boot_id: nil,
+      transport: :internal,
+      actor_id: nil,
       monitor: nil,
       runtime_pid: nil,
       service_ready: false,

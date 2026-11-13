@@ -7,6 +7,7 @@ defmodule Vault.Application do
   def start(_type, _args) do
     with :ok <- configuration(),
          {:ok, paths} <- MaintenanceGuard.admit(),
+         :ok <- transport_configuration(paths),
          :ok <- Credentials.test_admission(paths),
          {:ok, secret} <- Credentials.secret_key_base(paths),
          {:ok, guard} <- MaintenanceGuard.acquire(paths.root) do
@@ -21,6 +22,13 @@ defmodule Vault.Application do
     end
   end
 
+  defp transport_configuration(paths) do
+    if Map.get(paths, :simulator_transport, :internal) ==
+         Application.get_env(:vault, :simulator_transport, :internal),
+       do: :ok,
+       else: {:error, :simulator_transport_mismatch}
+  end
+
   defp configuration do
     origin = Application.get_env(:vault, :origin)
     uri = if is_binary(origin), do: URI.parse(origin)
@@ -30,22 +38,55 @@ defmodule Vault.Application do
          is_integer(Application.get_env(:vault, :port)) and
          uri != nil and uri.scheme in ["http", "https"] and is_binary(uri.host) and
          uri.userinfo == nil and uri.query == nil and uri.fragment == nil and
-         uri.path in [nil, "", "/"],
+         uri.path in [nil, "", "/"] and tls_configuration?(uri.scheme),
        do: :ok,
        else: {:error, :invalid_runtime_configuration}
   end
+
+  defp tls_configuration?("http"),
+    do:
+      is_nil(Application.get_env(:vault, :tls_cert_file)) and
+        is_nil(Application.get_env(:vault, :tls_key_file))
+
+  defp tls_configuration?("https") do
+    cert = Application.get_env(:vault, :tls_cert_file)
+    key = Application.get_env(:vault, :tls_key_file)
+
+    is_binary(cert) and File.regular?(cert) and is_binary(key) and
+      MaintenanceGuard.protected_file(key) == :ok
+  end
+
+  defp tls_configuration?(_), do: false
 
   defp start_guarded(paths, secret) do
     endpoint = Application.get_env(:vault, VaultWeb.Endpoint, [])
     uri = URI.parse(Application.fetch_env!(:vault, :origin))
 
+    listener = [
+      ip: Application.fetch_env!(:vault, :bind),
+      port: Application.fetch_env!(:vault, :port),
+      thousand_island_options: [
+        silent_terminate_on_error: true,
+        transport_options: [send_timeout: 100, send_timeout_close: true]
+      ]
+    ]
+
+    {http, https} =
+      if uri.scheme == "https" do
+        {false,
+         Keyword.merge(listener,
+           certfile: Application.fetch_env!(:vault, :tls_cert_file),
+           keyfile: Application.fetch_env!(:vault, :tls_key_file)
+         )}
+      else
+        {listener, false}
+      end
+
     endpoint =
       Keyword.merge(endpoint,
         secret_key_base: secret,
-        http: [
-          ip: Application.fetch_env!(:vault, :bind),
-          port: Application.fetch_env!(:vault, :port)
-        ],
+        http: http,
+        https: https,
         url: [host: uri.host, port: uri.port, scheme: uri.scheme],
         check_origin: [Application.fetch_env!(:vault, :origin)]
       )
@@ -62,23 +103,30 @@ defmodule Vault.Application do
           with :ok <- GameStore.verify_open(paths.store_id),
                {:ok, %{game: game}} <- GameStore.active(),
                true <-
-                 game.box_device_id == paths.simulator_device_id and game.box_mode == "simulated" do
+                 game.box_device_id == paths.simulator_device_id and game.box_mode == "simulated",
+               device <- Repo.get(Vault.GameStore.Device, game.box_device_id),
+               true <-
+                 device.transport ==
+                   if(paths.simulator_transport == :external, do: "raw", else: "internal") do
             children = [
               {Phoenix.PubSub, name: Vault.PubSub},
               {Registry, keys: :unique, name: Vault.Registry},
               {DynamicSupervisor, name: Vault.GameSupervisor, strategy: :one_for_one},
               {DynamicSupervisor, name: Vault.ControllerSupervisor, strategy: :one_for_one},
-              {Vault.SimulatedBox,
-               path: paths.simulator_database,
-               instance_id: paths.simulator_instance_id,
-               device_id: paths.simulator_device_id,
-               clock: Application.get_env(:vault, :clock, Vault.Clock.system())},
+              if(paths.simulator_transport == :internal,
+                do:
+                  {Vault.SimulatedBox,
+                   path: paths.simulator_database,
+                   instance_id: paths.simulator_instance_id,
+                   device_id: paths.simulator_device_id,
+                   clock: Application.get_env(:vault, :clock, Vault.Clock.system())}
+              ),
               Vault.Auth,
               Vault.Recovery,
               VaultWeb.Endpoint
             ]
 
-            Enum.reduce_while(children, :ok, fn child, :ok ->
+            Enum.reduce_while(Enum.reject(children, &is_nil/1), :ok, fn child, :ok ->
               case Supervisor.start_child(supervisor, child) do
                 {:ok, _} -> {:cont, :ok}
                 {:ok, _, _} -> {:cont, :ok}

@@ -24,7 +24,7 @@ See the [operator runbook](docs/runbook.md) for replaying a round, host takeover
 
 ## Verify
 
-From the repository root, run `tools/test-server`. It runs the pure M0 gate, prepares isolated fixture stores, and runs the M1 integration suite. Follow the [browser verification commands](docs/testing/browser-cases.md) for Chromium, including headed input lifecycle checks.
+From the repository root, run `tools/test-server`. It runs the pure M0 gate, prepares isolated fixture stores, and runs the application, raw protocol, failure and simulator suites. Run `.venv/bin/python tools/check-json-conformance` for the independent production wire oracle. Follow the [browser verification commands](docs/testing/browser-cases.md) for Chromium. Native hidden-tab verification is deferred by the user.
 
 For the independent contract check, set up the Python 3.13 environment once:
 
@@ -46,6 +46,6 @@ The M0 test command requires no prepared database, credentials, Vault applicatio
 
 ## Hardware milestones
 
-The M1 browser demo uses an in-process simulator. M2 adds the raw `/device/v1` transport. Later milestones cover verified CYD and box firmware, followed by installed-box acceptance. Hardware identification and pending bench checks are in the [board audit](docs/hardware/board-audit.md).
+The default browser demo uses an in-process simulator. The raw `/device/v1` endpoint and independent Mint simulator use the same game authority and box model. Follow the [external simulator runbook](docs/runbook.md#run-the-external-protocol-simulator) for protected provisioning, local service and WSS. Later milestones cover verified CYD and box firmware, followed by installed-box acceptance. Hardware identification and pending bench checks are in the [board audit](docs/hardware/board-audit.md).
 
 `contracts/` holds the shared schema and public fixtures. The full maze and hidden answers stay in the server-private puzzle fixture. Runtime data, generated assets, caches, and credential files belong outside source control.

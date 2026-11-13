@@ -41,7 +41,10 @@ defmodule Vault.Projections do
           projection: :host,
           panels: Map.new([:a, :b], &{&1, snapshot(session, {:player, &1}, now_ms)}),
           actors: actor_list(session, now_ms),
-          simulated_service_ready: Map.get(session.box, :service_ready, false),
+          simulated_service_ready:
+            Map.get(session.box, :transport) == :external or
+              Map.get(session.box, :service_ready, false),
+          external_box: Application.get_env(:vault, :simulator_transport, :internal) == :external,
           controllers_ready: Map.get(session, :controllers_ready, false),
           assignments: session.owners,
           diagnostics: session.diagnostics,

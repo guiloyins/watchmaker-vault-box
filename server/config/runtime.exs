@@ -26,6 +26,15 @@ root = System.get_env("VAULT_DATA_DIR", default_root)
 config :vault,
   test_mode: config_env() == :test,
   box_mode: mode,
+  simulator_transport:
+    (case System.get_env("VAULT_SIMULATOR_TRANSPORT", "internal") do
+       "internal" -> :internal
+       "external" -> :external
+       _ -> :invalid
+     end),
+  trusted_lan_ws: System.get_env("VAULT_TRUSTED_LAN_WS") == "true",
+  tls_cert_file: System.get_env("VAULT_TLS_CERT_FILE"),
+  tls_key_file: System.get_env("VAULT_TLS_KEY_FILE"),
   bind: bind,
   port: port,
   origin: System.get_env("VAULT_ORIGIN", "http://localhost:4000"),

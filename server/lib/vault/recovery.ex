@@ -378,10 +378,84 @@ defmodule Vault.Recovery do
   defp valid_reason?(value),
     do: is_binary(value) and String.valid?(value) and byte_size(value) in 1..512
 
+  @doc "Host attestation of a separately inspected local seal; it grants only a fresh query."
+  def attest_sealed_record(s, host, args) when is_map(args) do
+    prep = s.record.preparation
+
+    valid =
+      host.kind == :host and Controllers.valid?(host) and Vault.BoxLink.external?(s) and
+        prep != nil and s.record.disposition == nil and s.record.command.dispatch_retired and
+        fresh?(s) and s.box.report != nil and not s.box.report.motor_active and
+        s.box.report.readiness.arm_id == nil and args[:operator_confirmed] == true and
+        args[:current_session_id] == s.checkpoint.session_id and
+        args[:box_boot_id] == s.box.boot_id and args[:connection_id] == s.box.connection_id and
+        args[:recovery_id] == prep.recovery_id and args[:recovery_generation] == prep.generation and
+        Controllers.id?(args[:local_record_id]) and Controllers.id?(args[:seal_operation_id]) and
+        Controllers.number?(args[:service_epoch], 1)
+
+    if valid and s.query == nil do
+      evidence =
+        Map.merge(binding(s), %{
+          "local_record_id" => args.local_record_id,
+          "service_epoch" => args.service_epoch,
+          "seal_operation_id" => args.seal_operation_id,
+          "recovery_id" => prep.recovery_id,
+          "recovery_generation" => prep.generation
+        })
+
+      s = clear_seal_authority(s)
+
+      case request_query(s, evidence) do
+        {:ok, next} -> {{:ok, %{query_id: next.query.query_id}}, next}
+        {:error, next} -> {Games.error(:box_not_ready), next}
+      end
+    else
+      {Games.error(if(valid, do: :query_pending, else: :invalid_evidence)), s}
+    end
+  end
+
+  def attest_sealed_record(s, _host, _args), do: {Games.error(:invalid_evidence), s}
+
+  @doc false
+  def request_query(s, evidence \\ nil) do
+    if s.query == nil do
+      query = %{
+        query_id: Controllers.id("query"),
+        binding_generation: s.box.binding_generation,
+        minimum_status_seq: s.box.status_seq,
+        deadline_ms: GameSession.now(s) + 3_000
+      }
+
+      case Vault.BoxLink.query(s, s.checkpoint.release_command_id, query) do
+        :ok ->
+          Clock.schedule_at(
+            s.clock,
+            self(),
+            {:box_query_timeout, s.checkpoint.session_id, query.query_id},
+            query.deadline_ms
+          )
+
+          {:ok, %{s | query: query, seal_attestation: evidence}}
+
+        {:error, _} ->
+          {:error, s}
+      end
+    else
+      {:error, s}
+    end
+  end
+
   def query_observation(s, attrs, report, query) do
     evidence = s.seal_attestation
 
-    if is_map(query) and query == s.query and evidence != nil and
+    matched =
+      is_map(query) and query == s.query and GameSession.now(s) < query.deadline_ms and
+        report.command_id == s.checkpoint.release_command_id and
+        report.status_seq > query.minimum_status_seq
+
+    s = if matched, do: %{s | query: nil}, else: s
+
+    if matched and GameSession.now(s) < query.deadline_ms and evidence != nil and
          report.command_id == s.checkpoint.release_command_id and
          report.status_seq > query.minimum_status_seq and report.motor_active == false and
          report.readiness.arm_id == nil and
@@ -536,15 +610,9 @@ defmodule Vault.Recovery do
           "recovery_generation" => prep.generation
         })
 
-      query = %{
-        query_id: Controllers.id("query"),
-        binding_generation: s.box.binding_generation,
-        minimum_status_seq: s.box.status_seq
-      }
-
-      case Adapter.query(s.runtime, s.box.binding_generation, s.record.command.command_id, query) do
-        :ok -> %{s | seal_attestation: evidence, query: query}
-        {:error, _} -> s
+      case request_query(s, evidence) do
+        {:ok, next} -> next
+        {:error, next} -> next
       end
     else
       s

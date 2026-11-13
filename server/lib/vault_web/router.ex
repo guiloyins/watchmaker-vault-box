@@ -25,6 +25,7 @@ defmodule VaultWeb.Router do
 
   scope "/", VaultWeb do
     get "/health", HealthController, :show, log: false
+    get "/device/v1", DeviceUpgrade, :upgrade, log: false
   end
 
   scope "/", VaultWeb do

@@ -72,6 +72,15 @@ defmodule Vault.Controllers do
       do: valid?(principal) and role in roles
 
   def scope?(%Principal{game_id: game} = principal, game, :public), do: valid?(principal)
+
+  def scope?(%Principal{kind: :device, game_id: game} = principal, game, {:player, role}),
+    do:
+      valid?(principal) and role in principal.allowed_roles and
+        Vault.Auth.device_class(principal) == :controller
+
+  def scope?(%Principal{kind: :device, game_id: game} = principal, game, :box),
+    do: valid?(principal) and Vault.Auth.device_class(principal) == :box
+
   def scope?(%Principal{kind: :internal_box} = principal, _game, :box), do: valid?(principal)
   def scope?(_, _, _), do: false
 

@@ -1,0 +1,7 @@
+# M2 work log
+
+The user deferred native hidden-tab observation and authorized M2. Three Sol agents completed exact protocol validation/timing/persistence, authenticated raw device sockets/subscriptions, and independent Mint simulators/backpressure/runtime work. The coordinator integrated game authority, external box effects, provisioning, WSS, recovery/operator data and verification. No hardware was needed.
+
+The complete server gate passed 51 M0 tests and 141 application tests. The final independent protocol oracle passed 2,210 cases. Browser regression passed 15 headless scenarios with two headed-only skips. Production compile/assets, formatting, source-copy/projection checks and baseline hashes passed. The final manifest ownership fix additionally passed all four external CLI/recovery tests, including internal journal nonmutation. Detailed scope and command metadata are recorded in result.json and the linked evidence.
+
+Independent review findings were resolved: accepted-null fresh refusal scope, one-outstanding-query and deadline retirement, copyable local-service receipt/context data, and internal/external journal isolation. Earlier integration failures and the intermediate concurrent-assets browser failure were corrected or rerun with their scope recorded; only the final successful runs close acceptance. All M2 software acceptance rows are Passed. Native C++/firmware/physical checks remain later milestones. Native hidden-tab observation remains deferred and unverified.

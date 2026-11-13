@@ -1,6 +1,6 @@
 # The Watchmaker's Vault implementation and verification status
 
-Recorded 12 November 2026 (verification continued into 13 November UTC). Current phase: **M1 implemented; final verification has one native visibility gate pending**. The complete Phoenix browser game and independent simulated box are runnable. M0 remains verified. M1 software evidence is recorded below; no firmware or physical acceptance is claimed. The finalized design and specification package are unchanged. The local Git repository remains on `main`, with no remote.
+Recorded 12 November 2026 (verification continued into 13 November UTC). Current phase: **M2 software complete and verified**. The user explicitly deferred M1 native hidden-tab verification; it remains unverified and does not block M2. The complete Phoenix browser game and independent simulated box are runnable. M0 remains verified. M1 software evidence is recorded below; no firmware or physical acceptance is claimed. The finalized design and specification package are unchanged. The local Git repository remains on `main`, with no remote.
 
 ## Design review history
 
@@ -50,6 +50,18 @@ Actual produced projections passed the independent Python oracle: 16 audience/ph
 Integration review fixed readiness and authorization after writer waits, mismatch takeover before eviction, same-boot press high-water retention, synchronous recovered-session admission before HTTP, stale sealed-record callbacks, bounded service wait/readback, box runtime monitoring and service-exit confirmation tied to the current binding before arming. The M0 guard now registers only when its tests are selected; it still verifies no runtime startup in the exact no-start gate and permits an existing unrelated development data directory.
 
 The M1 implementation is complete, but full milestone verification remains open for the named native hidden-tab case. No power-cut durability, interruption inside SQLite COMMIT, external device WebSocket conformance, real touchscreen, flash or motor test is claimed. The raw `/device/v1` transport and authenticated external adapter boundary remain M2; the in-process simulator uses its private adapter messages. No boards are needed yet.
+
+## M2 implementation and verification
+
+The raw v1 `/device/v1` endpoint, exact production validator/encoder, independent Mint controller/box clients and server-owned external-simulation selection are implemented. Protected external initialization supplies separate raw credentials and journal identity. Mint clients verify server certificates and hostnames over WSS; plaintext device traffic is limited to deliberate development/test use. The default browser demonstration retains its internal simulator.
+
+Three Sol agents implemented protocol/timing/persistence cases, endpoint/subscription bounds and independent simulator transport/runtime work. The coordinator integrated authority, original-binding box dispatch, host attestation/query recovery, exact copyable local-service receipts, guarded provisioning and milestone evidence. Independent review fixes prevent overlapping recovery queries, retain uncertainty for an absent command, admit only correctly bound fresh refusals, and prevent rejected presses or mismatched snapshots from refreshing authority.
+
+The full server gate passed **51 pure M0 tests plus 141 application/protocol/recovery tests**, zero failures. Production v1 decode/encode/comparison passed **2,210 independent oracle cases**; actual projection checks passed 16 audience/phase cases and 40 schema fragments. Final browser checks passed **15 headless scenarios**, with two headed-only skips; native hidden-tab observation is deferred. Formatting, warning-free test/production compilation and the Phoenix-managed production asset/privacy build passed. One retained intermediate browser run failed initial LiveView connection while assets were rebuilt concurrently; its precise cause was not isolated, and the final serialized run passed. [Full evidence](verification/m2/README.md), [protocol coverage](protocol-conformance.md).
+
+Real writer contention returned an error in **235–253 ms** with 100 ms SQLite busy timeout. Actual stalled WS and verified WSS Mint writes returned socket timeouts after **101 ms**, separately from tested 200 ms whole-write and 100 ms error-only teardown limits. The live blocked transport/watchdog test and queued final-step deadline test stopped modeled motion without reporting success. Both internal and external unknown/interrupted recovery traces closed without replay and solved a new round with a distinct ID. Thirty local recovery cases cover six durable operations across rollback, ambiguous commit results and process termination before/after commit. All original wire/schema/fixture and finalized-design bytes remain unchanged. Measurements are host scheduling observations; no physical timing, sensing or firmware acceptance is claimed.
+
+The final four-case external CLI/recovery regression passed after adding manifest checks that refuse internal or mismatched deployments before opening their journal. M2 software acceptance is complete. No boards are required for this milestone.
 
 ## Hardware correction pass
 
@@ -116,22 +128,22 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 | M1-04 | Passed | Scoped route/event authorization, CSRF, expiry/logout, stopped key replacement and old-cookie rejection; real guard/file/SQLite races and readback. Inside-COMMIT/power-cut injection not claimed. |
 | M1-05 | Passed | Browser/simulated-CYD pairing in both directions, separate host A/B actors, form-safe shortcuts, observer closure, deliberate takeover and stale/mismatched actor rejection. |
 | M1-06 | Passed | No initial selections; correct role clues, wrong paired holds reveal no individual correctness, pause preserves choices, fresh native overlap creates one intent; lost acknowledgement recovery closes without replay. |
-| M1-07 | Blocked | Pointer release/capture loss, trusted touch cancellation, navigation, transport loss, neutral rebind and form typing pass. Trusted headed blur passes; native hidden-tab event remains unobserved on this runner. |
-| M2-T1 | Not run | M1 real session/store proves 1,999/2,000 ms with one intent/claim and no earlier intent. Repeat through the M2 external transport before closing its milestone. |
-| M2-T2 | Not run | Execute the session/protocol 399/400 ms challenge boundary; the pure reducer deadline is tested in M0. |
-| M2-T3 | Not run | Execute expired/reordered/duplicate input cases. |
-| M2-T4 | Not run | Execute lease expiry and 1,500 ms silence recovery. |
-| M2-T5 | Not run | Execute canceled-attempt queued completion through the real session; the M0 reducer/fake-clock case passes. |
-| M2-T6 | Not run | Prove heartbeats do not create full snapshots or visible-state revisions. |
-| M2-T7 | Not run | Verify active zero-time hold through session/protocol/UI; the M0 pure projection distinguishes it. |
-| M2-01 | Not run | Implement sequence/result-cache and stale board-version tests. |
-| M2-02 | Not run | M1 browser/session restart and old-owner fences pass; device close code/welcome and raw queued-envelope cases await M2. |
-| M2-03 | Not run | M1 authorized subscribe/bootstrap and logout cleanup pass; full reordered/equal revision transport conformance remains M2. |
-| M2-04 | Not run | M1 real SQLite locks, receipt/CAS/constraints and independent box failure/readback tests pass; complete measured M2 failure/transport matrix pending. |
-| M2-05 | Not run | M1 atomic win, no restart replay and browser lost-ack closure pass. All precommit/postcommit/predispatch boundaries and fresh post-closure solve await M2. |
-| M2-06 | Not run | M1 immutable observations, Begin/Replace/Close and local seal/acknowledgement flows implemented/tested. External adapter, complete interleaving and cross-adapter traces await M2. |
-| M2-07 | Not run | Mint.WebSocket selected; implement bounded normal clients plus separate raw fault injection and execute protocol bounds/malformed-input cases. |
-| M2-08 | Not run | Implement specified write/operation/teardown guards; prove actual WS/WSS backpressure and independent modeled watchdog behavior, plus queue/acknowledgement cases. |
+| M1-07 | Not run | Deferred native hidden-tab observation at user request when authorizing M2. Other lifecycle checks remain verified: Pointer release/capture loss, trusted touch cancellation, navigation, transport loss, neutral rebind and form typing pass. Trusted headed blur passes; native hidden-tab event remains unobserved on this runner. |
+| M2-T1 | Passed | Authoritative injected-clock 1,999/2,000 boundary and staggered overlap; exactly one intent. Both raw external recovery traces also solve a fresh round with a new ID. |
+| M2-T2 | Passed | Production-validated response at 399 ms expires at 400; equality is rejected, with no receipt-time lease extension. |
+| M2-T3 | Passed | Expired high sequences, duplicates/reordering and a press before neutral preserve accepted liveness/sequence/lease and cannot revive a hold. |
+| M2-T4 | Passed | Actual session hold expiry at 400 ms, silence recovery at 1,500 ms, immediate owner-close pause and observer isolation. |
+| M2-T5 | Passed | Captured canceled timers delivered twice after release, pause and restart create no solve or intent; deadline ties expire first. |
+| M2-T6 | Passed | Five steady heartbeat rounds alter no board/puzzle/UI revision and publish no full snapshot. |
+| M2-T7 | Passed | Inactive and new active holds both show elapsed zero with distinct active flags; progress advances only for the active attempt and clears on cancellation. |
+| M2-01 | Passed | Real raw endpoint exact retries/changed extensions/gaps/128 cache, stale board decisions and reconnect fences; status16 comparison tested independently. |
+| M2-02 | Passed | Actual GameSession death/reset produces 4003, new paused welcome and browser rebind; original connection/session/epoch effects remain fenced. |
+| M2-03 | Passed | Subscribe-before-fetch with exact authority PID/scope, ordered revisions, one replaceable authorized snapshot slot and browser mismatch rejection. |
+| M2-04 | Passed | Real 235–253 ms writer-lock error, staged-win rollback, unchanged checkpoint/no effects, independent SQLite identity/codec/CAS/readback/failure tests and inactive late commits. |
+| M2-05 | Passed | Actual precommit/postcommit/predispatch/postdispatch failures preserve one original intent with no replay. Both adapters close unknown/interrupted releases and solve again with a distinct ID. |
+| M2-06 | Passed | Durable Begin/Replace/Close, lost replies, reseal and local acknowledgements; 30 local recovery write/crash cases; truthful statuses, append-only conflicts, one fresh query and current receipt/binding UI isolation. |
+| M2-07 | Passed | 2,210 independent server validator vectors and real auth/class/framing/rate/size/depth/sequence tests; verified WSS endpoint. Native/ESP-IDF validator remains later firmware work. |
+| M2-08 | Passed | Actual WS/WSS pressure, 100/200/100 ms guards, bounded producer/queue/coalescing, three identical retries, cosmetic-only feedback, independent watchdog and late-completion/commit fences. |
 | M3-01 | Blocked | Verified profiles, target locks and explicit physical device/port identities missing; build/flash wrapper not implemented. |
 | M3-02 | Blocked | Both CYD profiles and actual power-bank model/output/connector evidence missing; display/touch and active/idle tests pending. |
 | M3-03 | Blocked | Verified physical touch/runtime targets missing; host fake tests remain independent and unrun. |
@@ -149,4 +161,4 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 
 ## Next work
 
-Close M1-07's native hidden-tab observation on a browser/window environment that exposes it. Continue M2 independent software work when requested: raw device transport, external simulator conformance, complete persistence/dispatch fault matrix and measured WS/WSS deadlines. Keep the browser demonstration runnable. Notify Rafa which board and power setup to connect when firmware and its test procedure are ready; rediscover identity and the explicit serial port after connection and before flashing. No boards are needed for M1 or independent M2 software verification.
+Prepare M3 shared firmware and verified CYD profiles while hardware identification continues. Native hidden-tab observation remains deferred by the user. Notify Rafa which board and power setup to connect when firmware and its test procedure are ready; rediscover identity and the explicit serial port before flashing. No board connection is required for the completed independent M2 software checks.

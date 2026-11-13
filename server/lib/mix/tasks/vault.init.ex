@@ -7,15 +7,21 @@ defmodule Mix.Tasks.Vault.Init do
   def run(args) do
     Mix.Task.run("app.config")
 
-    case OptionParser.parse(args, strict: [output: :string]) do
+    case OptionParser.parse(args, strict: [output: :string, external_simulator: :boolean]) do
       {options, [], []} ->
         case Vault.Credentials.init(options) do
           {:ok, %{credential_paths: paths}} ->
             Mix.shell().info("Initialized Vault. Protected credential files:")
 
-            Enum.each([:host, :player_a, :player_b, :secret_key_base], fn kind ->
-              Mix.shell().info("  " <> Map.fetch!(paths, kind))
-            end)
+            Enum.each(
+              Enum.filter(
+                [:host, :player_a, :player_b, :secret_key_base, :box, :cyd_a, :cyd_b],
+                &Map.has_key?(paths, &1)
+              ),
+              fn kind ->
+                Mix.shell().info("  " <> Map.fetch!(paths, kind))
+              end
+            )
 
           {:ok, _} ->
             Mix.shell().info("Existing Vault setup verified.")
@@ -25,7 +31,7 @@ defmodule Mix.Tasks.Vault.Init do
         end
 
       _ ->
-        Mix.raise("Usage: mix vault.init [--output PATH]")
+        Mix.raise("Usage: mix vault.init [--output PATH] [--external-simulator]")
     end
   end
 end

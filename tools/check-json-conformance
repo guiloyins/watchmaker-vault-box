@@ -1,0 +1,107 @@
+#!/usr/bin/env python3
+"""Compare production Elixir wire acceptance, allowlists and bytes with an independent oracle."""
+
+from base64 import b64decode, b64encode
+from collections import Counter
+from hashlib import sha256
+from importlib import metadata
+from pathlib import Path
+import json
+import os
+import subprocess
+import sys
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools/conformance"))
+
+try:
+    if metadata.version("jsonschema") != "4.26.0":
+        raise SystemExit("Use the repository venv with locked jsonschema 4.26.0.")
+except metadata.PackageNotFoundError as exc:
+    raise SystemExit("Use .venv/bin/python tools/check-json-conformance.") from exc
+
+from json_cases import cases
+from wire_oracle import Oracle, WireError, WIRE_LIMITS, comparison
+
+
+def check_case(case, observed, oracle):
+    try:
+        parsed = oracle.parse(case.raw, case.direction)
+    except WireError as exc:
+        if case.valid:
+            return f"oracle rejected an expected-valid case ({exc})"
+        if case.category and case.category != "number" and str(exc) != case.category:
+            return f"oracle category {exc} differs from expected {case.category}"
+        if "error" not in observed:
+            return "production accepted an expected-invalid case"
+        if case.category and observed["error"] != case.category:
+            return f"production category {observed['error']} differs from expected {case.category}"
+        return None
+
+    if not case.valid:
+        return "oracle accepted an expected-invalid case"
+    if "error" in observed:
+        return f"production rejected an expected-valid case ({observed['error']})"
+
+    normalized = oracle.normalize(parsed)
+    if observed["message"] != normalized:
+        return "production normalized message differs from schema-known fields"
+    try:
+        observed_comparison = b64decode(observed["comparison"], validate=True)
+        encoded = b64decode(observed["encoded"], validate=True)
+        reencoded = oracle.parse(encoded, case.direction)
+    except (ValueError, WireError) as exc:
+        return f"independent oracle rejected production encode output ({exc})"
+    if observed_comparison != comparison(parsed):
+        return "production comparison bytes differ from the independent exact encoding"
+    if len(observed_comparison) > 8 * WIRE_LIMITS[case.direction] + 64:
+        return "production comparison exceeded its bound"
+    if reencoded != normalized:
+        return "production encode output differs from the allowlisted message"
+    return None
+
+
+def main():
+    schema_bytes = (ROOT / "contracts/protocol-v1.schema.json").read_bytes()
+    fixtures = json.loads((ROOT / "contracts/fixtures/protocol-examples.json").read_bytes())
+    corpus = cases(fixtures)
+    oracle = Oracle(json.loads(schema_bytes))
+    feed = b"".join(case.direction.encode() + b"\t" + b64encode(case.raw) + b"\n" for case in corpus)
+    env = {name: value for name, value in os.environ.items() if not name.startswith("VAULT_")}
+    env.update({"MIX_ENV": "test", "MIX_HOME": str(ROOT / ".cache/mix"), "HEX_HOME": str(ROOT / ".cache/hex")})
+    process = subprocess.run(
+        ["mix", "run", "--no-start", str(ROOT / "tools/conformance/elixir_runner.exs")],
+        cwd=ROOT / "server", env=env, input=feed, capture_output=True, timeout=120
+    )
+    if process.returncode:
+        print("Production wire runner failed; no conformance check is claimed.", file=sys.stderr)
+        sys.stderr.buffer.write(process.stderr)
+        return 1
+
+    lines = process.stdout.splitlines()
+    observations = [json.loads(line.removeprefix(b"VAULT_JSON ")) for line in lines
+                    if line.startswith(b"VAULT_JSON ")]
+    if len(observations) != len(corpus) or lines.count(b"VAULT_JSON_NO_START_OK") != 1:
+        print("Missing bounded production observations or no-start verification.", file=sys.stderr)
+        return 1
+    failures = 0
+    for case, observed in zip(corpus, observations):
+        failure = check_case(case, observed, oracle)
+        if failure:
+            if failures < 30:
+                print(f"{case.name}: {failure}", file=sys.stderr)
+            failures += 1
+    if failures:
+        print(f"Wire conformance failed: {failures}/{len(corpus)} cases.", file=sys.stderr)
+        return 1
+
+    totals = Counter(case.valid for case in corpus)
+    print(f"Protocol schema SHA-256 {sha256(schema_bytes).hexdigest()}")
+    print(f"M2 wire oracle passed {len(corpus)} cases ({totals[True]} accepted, {totals[False]} rejected).")
+    print("Normalized values, re-encoded envelopes and complete comparison bytes agree on all accepted cases.")
+    print("No-start runtime guard passed.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

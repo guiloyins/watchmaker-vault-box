@@ -12,7 +12,10 @@ defmodule Vault.Credentials do
     host: "host.key",
     player_a: "player-a.key",
     player_b: "player-b.key",
-    secret_key_base: "secret-key-base.key"
+    secret_key_base: "secret-key-base.key",
+    box: "box.key",
+    cyd_a: "cyd-a.key",
+    cyd_b: "cyd-b.key"
   }
   @simulator_device_id "simulated_box"
 
@@ -71,7 +74,7 @@ defmodule Vault.Credentials do
          :ok <- prepare_test_root(paths, opts[:test] == true or test_mode?()) do
       with_guard(paths, fn ->
         case File.lstat(MaintenanceGuard.manifest_path(paths.root)) do
-          {:ok, _} -> verify_existing(paths)
+          {:ok, _} -> verify_existing_transport(paths, opts)
           {:error, :enoent} -> initialize(paths, opts)
           _ -> {:error, :invalid_deployment}
         end
@@ -79,8 +82,8 @@ defmodule Vault.Credentials do
     end
   end
 
-  def prepare_test do
-    with {:ok, paths} <- init(test: true),
+  def prepare_test(opts \\ []) do
+    with {:ok, paths} <- init(Keyword.put(opts, :test, true)),
          :ok <- write_test_marker(paths) do
       {:ok, paths}
     end
@@ -177,6 +180,13 @@ defmodule Vault.Credentials do
       secret_key_base: Path.expand(secret_output)
     }
 
+    external = opts[:external_simulator] == true
+
+    targets =
+      if external,
+        do: Enum.reduce([:box, :cyd_a, :cyd_b], targets, &Map.put(&2, &1, file(paths, &1))),
+        else: targets
+
     with :ok <- ensure_fresh(paths, targets),
          tokens = %{
            host: key(),
@@ -184,12 +194,18 @@ defmodule Vault.Credentials do
            player_b: key(),
            secret_key_base: Base.url_encode64(:crypto.strong_rand_bytes(64), padding: false)
          },
+         tokens =
+           if(external,
+             do: Enum.reduce([:box, :cyd_a, :cyd_b], tokens, &Map.put(&2, &1, device_key())),
+             else: tokens
+           ),
          :ok <- write_setup_keys(targets, tokens),
          paths =
            Map.merge(paths, %{
              store_id: id("store_"),
              simulator_instance_id: id("sim_"),
-             simulator_device_id: @simulator_device_id
+             simulator_device_id: @simulator_device_id,
+             simulator_transport: if(external, do: :external, else: :internal)
            }),
          :ok <- MaintenanceGuard.write_protected(paths.database, ""),
          :ok <- with_repo(paths.database, fn -> initialize_server(paths, tokens) end),
@@ -218,7 +234,7 @@ defmodule Vault.Credentials do
   end
 
   defp write_setup_keys(targets, tokens) do
-    Enum.reduce_while([:host, :player_a, :player_b, :secret_key_base], :ok, fn field, :ok ->
+    Enum.reduce_while(Enum.sort(Map.keys(targets)), :ok, fn field, :ok ->
       case MaintenanceGuard.write_protected(
              Map.fetch!(targets, field),
              Map.fetch!(tokens, field) <> "\n"
@@ -253,9 +269,33 @@ defmodule Vault.Credentials do
              })
 
              insert_browser(host_id, "host", nil, nil, tokens.host, now)
-             insert_device(paths.simulator_device_id, "box", "internal", nil, 0, now)
-             insert_device("sim_cyd_a", "controller", "raw", device_key(), 1, now)
-             insert_device("sim_cyd_b", "controller", "raw", device_key(), 2, now)
+
+             insert_device(
+               paths.simulator_device_id,
+               "box",
+               if(paths.simulator_transport == :external, do: "raw", else: "internal"),
+               Map.get(tokens, :box),
+               0,
+               now
+             )
+
+             insert_device(
+               "sim_cyd_a",
+               "controller",
+               "raw",
+               Map.get_lazy(tokens, :cyd_a, &device_key/0),
+               1,
+               now
+             )
+
+             insert_device(
+               "sim_cyd_b",
+               "controller",
+               "raw",
+               Map.get_lazy(tokens, :cyd_b, &device_key/0),
+               2,
+               now
+             )
 
              case GameStore.create(
                     game_id,
@@ -296,6 +336,18 @@ defmodule Vault.Credentials do
       {:ok, deployment}
     else
       _ -> {:error, :invalid_deployment}
+    end
+  end
+
+  defp verify_existing_transport(paths, opts) do
+    requested = if opts[:external_simulator] == true, do: :external, else: :internal
+
+    with {:ok, deployment} <- MaintenanceGuard.admit(),
+         true <- deployment.simulator_transport == requested do
+      verify_existing(paths)
+    else
+      false -> {:error, :simulator_transport_mismatch}
+      error -> error
     end
   end
 
@@ -538,7 +590,19 @@ defmodule Vault.Credentials do
   defp with_guard(paths, fun) do
     with {:ok, guard} <- MaintenanceGuard.acquire(paths.root) do
       # A nonlocal exit intentionally leaves the marker. Resources must be closed before release.
-      result = fun.()
+      result =
+        case MaintenanceGuard.acquire(paths.root, "box-runtime.owner") do
+          {:ok, box_guard} ->
+            result = fun.()
+
+            case MaintenanceGuard.release(box_guard) do
+              :ok -> result
+              error -> error
+            end
+
+          error ->
+            error
+        end
 
       case MaintenanceGuard.release(guard) do
         :ok -> result

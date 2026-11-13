@@ -45,7 +45,8 @@ defmodule VaultWeb.GameLive do
       current = socket.assigns.projection
 
       if game_id == socket.assigns.game_id and audience == socket.assigns.audience and
-           session_id == current.session_id and revision(projection) > revision(current) do
+           session_id == current.session_id and projection.session_id == session_id and
+           revision(projection) > revision(current) do
         {:noreply, assign(socket, :projection, projection)}
       else
         {:noreply, socket}

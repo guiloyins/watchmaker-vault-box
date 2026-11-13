@@ -48,6 +48,9 @@ defmodule Vault.SimulatedBox.Adapter do
     end
   end
 
+  def barrier(runtime), do: call(runtime, :adapter_barrier)
+  def store_worker(runtime), do: call(runtime, :adapter_store_worker)
+
   def challenge(runtime, generation, heartbeat_seq, original_issue_ms),
     do: deliver(runtime, {:challenge, generation, heartbeat_seq, original_issue_ms})
 
@@ -90,16 +93,26 @@ defmodule Vault.SimulatedBox.Adapter do
   catch
     :exit, {:timeout, _} ->
       case message do
-        {:bind, _, _} -> {:error, :unavailable}
-        call when call in [:boot_id, :adapter_owner] -> {:error, :unavailable}
-        _ -> Service.error(:commit_uncertain)
+        {:bind, _, _} ->
+          {:error, :unavailable}
+
+        call when call in [:boot_id, :adapter_owner, :adapter_barrier, :adapter_store_worker] ->
+          {:error, :unavailable}
+
+        _ ->
+          Service.error(:commit_uncertain)
       end
 
     :exit, _ ->
       case message do
-        {:bind, _, _} -> {:error, :unavailable}
-        call when call in [:boot_id, :adapter_owner] -> {:error, :unavailable}
-        _ -> Service.error(:storage_error)
+        {:bind, _, _} ->
+          {:error, :unavailable}
+
+        call when call in [:boot_id, :adapter_owner, :adapter_barrier, :adapter_store_worker] ->
+          {:error, :unavailable}
+
+        _ ->
+          Service.error(:storage_error)
       end
   end
 

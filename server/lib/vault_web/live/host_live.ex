@@ -35,6 +35,7 @@ defmodule VaultWeb.HostLive do
     assigns =
       assign(assigns,
         box: projection.box,
+        external_box: projection[:external_box] == true,
         ready: ready?(projection),
         box_armed: !!projection.box.readiness.arm_id,
         armable: box_armable?(projection) and controllers_ready?(projection),
@@ -132,7 +133,7 @@ defmodule VaultWeb.HostLive do
           </dl>
           <div class="box-actions">
             <button
-              :if={@box.simulated}
+              :if={@box.simulated && !@external_box}
               class="button"
               type="button"
               phx-click="sim_prepare"
@@ -141,7 +142,7 @@ defmodule VaultWeb.HostLive do
               Prepare simulated reference
             </button>
             <button
-              :if={@box.simulated}
+              :if={@box.simulated && !@external_box}
               class="button"
               type="button"
               phx-click="sim_exit"
@@ -167,6 +168,7 @@ defmodule VaultWeb.HostLive do
             />
           </div>
           <p class="host-help">Reset restarts the puzzle and leaves the mechanism unchanged.</p>
+          <p :if={@external_box} class="host-help">Prepare the reference and exit service at the external simulator before arming here.</p>
           <details id="box-diagnostics" phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}>
             <summary>Box diagnostics</summary>
             <dl class="diagnostic-grid">
@@ -177,7 +179,7 @@ defmodule VaultWeb.HostLive do
               <dt>Protocol</dt><dd>Version 1</dd>
             </dl>
           </details>
-          <details :if={@box.simulated} id="box-faults" phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}>
+          <details :if={@box.simulated && !@external_box} id="box-faults" phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}>
             <summary>Simulated faults</summary>
             <div class="box-actions">
               <button :for={{fault, label} <- fault_controls()} type="button" class="button quiet" phx-click="sim_fault" phx-value-fault={fault}>
@@ -191,7 +193,9 @@ defmodule VaultWeb.HostLive do
             request={@request_id}
             unresolved={@unresolved}
             pending={!!@pending_operation}
-            simulated={@box.simulated}
+            simulated={@box.simulated && !@external_box}
+            external={@external_box}
+            binding={@projection[:box_binding] || %{}}
           />
         </section>
         <.host_terminal
@@ -347,6 +351,8 @@ defmodule VaultWeb.HostLive do
   attr :pending, :boolean, required: true
 
   attr :simulated, :boolean, required: true
+  attr :external, :boolean, required: true
+  attr :binding, :map, required: true
 
   defp recovery(assigns) do
     preparation = assigns.release && assigns.release[:preparation]
@@ -372,9 +378,28 @@ defmodule VaultWeb.HostLive do
       <p :if={@preparation} class="host-help">
         Preparation {recovery_field(@preparation, :recovery_id)} · generation {recovery_field(@preparation, :recovery_generation)}
       </p>
+      <details :if={@external && @preparation} id="external-recovery-data" phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}>
+        <summary>Copy local recovery data</summary>
+        <p class="host-help">Use these committed receipts and current context in the local service console. Recheck the binding after a reconnect or reboot.</p>
+        <label :for={{label, value} <- service_documents(@release, @session, @binding)}>
+          {label}<textarea readonly rows="8" spellcheck="false">{value}</textarea>
+        </label>
+      </details>
       <p :if={@unresolved && @preparation && !@evidence} class="host-help">
         Seal the local service record and obtain a current box observation before closing recovery.
       </p>
+      <form :if={@external && @unresolved && @preparation && !@evidence} class="operator-form" phx-submit="attest_sealed_record">
+        <input type="hidden" name="session" value={@session} />
+        <input type="hidden" name="recovery" value={recovery_field(@preparation, :recovery_id)} />
+        <input type="hidden" name="generation" value={recovery_field(@preparation, :recovery_generation)} />
+        <input type="hidden" name="boot" value={@binding[:boot_id]} />
+        <input type="hidden" name="connection" value={@binding[:connection_id]} />
+        <label>Sealed local record ID<input name="local_record_id" required maxlength="64" /></label>
+        <label>Local service epoch<input name="service_epoch" required inputmode="numeric" maxlength="16" /></label>
+        <label>Seal operation ID<input name="seal_operation_id" required maxlength="64" /></label>
+        <label class="confirm"><input type="checkbox" name="confirmed" value="yes" required /> I inspected the sealed record and checked its release identity, recovery generation and current box binding.</label>
+        <button type="submit" class="button">Request fresh box observation</button>
+      </form>
       <details :if={@simulated && @preparation} id="simulated-recovery" phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}>
         <summary>Simulated recovery service</summary>
         <div class="box-actions">
@@ -407,6 +432,33 @@ defmodule VaultWeb.HostLive do
       </form>
     </section>
     """
+  end
+
+  defp service_documents(release, session, binding) do
+    preparation = release[:preparation]
+    disposition = release[:disposition]
+
+    current = %{
+      session_id: session,
+      recovery_id: recovery_field(preparation, :recovery_id),
+      recovery_generation: recovery_field(preparation, :recovery_generation),
+      disposition_id: disposition && recovery_field(disposition, :disposition_id)
+    }
+
+    bound = %{
+      box_boot_id: binding[:boot_id],
+      connection_id: binding[:connection_id],
+      current_session_id: session
+    }
+
+    [
+      {"Committed preparation", preparation},
+      {"Current host context", current},
+      {"Current box binding", bound},
+      {"Committed closed disposition", disposition}
+    ]
+    |> Enum.reject(fn {_, value} -> is_nil(value) end)
+    |> Enum.map(fn {label, value} -> {label, Jason.encode!(value, pretty: true)} end)
   end
 
   @impl true
@@ -517,6 +569,36 @@ defmodule VaultWeb.HostLive do
           reason: reason
         })
       end)
+    else
+      _ -> assign(socket, :operator_feedback, "Enter the matching sealed local evidence.")
+    end
+  end
+
+  defp operate("attest_sealed_record", %{"confirmed" => "yes"} = params, socket) do
+    with true <-
+           Enum.all?(
+             ~w(session recovery boot connection local_record_id seal_operation_id),
+             &Controllers.id?(params[&1])
+           ),
+         true <-
+           is_binary(params["service_epoch"]) and byte_size(params["service_epoch"]) in 1..16,
+         true <- is_binary(params["generation"]) and byte_size(params["generation"]) in 1..16,
+         {epoch, ""} <- Integer.parse(params["service_epoch"] || ""),
+         {generation, ""} <- Integer.parse(params["generation"] || ""),
+         true <- Controllers.number?(epoch, 1) and Controllers.number?(generation, 1) do
+      args = %{
+        current_session_id: params["session"],
+        recovery_id: params["recovery"],
+        recovery_generation: generation,
+        box_boot_id: params["boot"],
+        connection_id: params["connection"],
+        local_record_id: params["local_record_id"],
+        service_epoch: epoch,
+        seal_operation_id: params["seal_operation_id"],
+        operator_confirmed: true
+      }
+
+      operation(socket, &Games.attest_sealed_record(&1, &2, args))
     else
       _ -> assign(socket, :operator_feedback, "Enter the matching sealed local evidence.")
     end

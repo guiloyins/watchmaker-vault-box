@@ -1,0 +1,10 @@
+{
+  "baseline": "a9d360e86d5266c6d2b31f9b5b7609ac367d9d5c",
+  "canonical_files_checked": 18,
+  "baseline_changed": [],
+  "wire_and_fixture_sha256": {
+    "contracts/fixtures/protocol-examples.json": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+    "contracts/fixtures/timing-cases.json": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d",
+    "contracts/protocol-v1.schema.json": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712"
+  }
+}

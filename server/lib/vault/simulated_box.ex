@@ -114,6 +114,18 @@ defmodule Vault.SimulatedBox do
 
   def handle_call(:adapter_owner, _from, state), do: {:reply, {:error, :invalid_binding}, state}
 
+  def handle_call(:adapter_barrier, {caller, _}, %{owner: caller} = state),
+    do: {:reply, :ok, state}
+
+  def handle_call(:adapter_store_worker, {caller, _}, %{maintenance_owner: caller} = state),
+    do: {:reply, {:ok, state.store_worker}, state}
+
+  def handle_call(:adapter_store_worker, _from, state),
+    do: {:reply, {:error, :invalid_binding}, state}
+
+  def handle_call(:adapter_barrier, _from, state),
+    do: {:reply, {:error, :invalid_binding}, state}
+
   def handle_call(request, {caller, _} = from, state) do
     if local_owner?(state, caller) and is_nil(state.reboot_boot) do
       {:noreply, local_request(state, request, {:call, from})}

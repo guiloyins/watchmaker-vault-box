@@ -23,6 +23,18 @@ defmodule Vault.Games do
   def scope(principal, game_id, audience), do: call(game_id, {:scope, principal, audience})
   def bind(principal, game_id, options), do: call(game_id, {:bind, principal, options})
 
+  def bind_device(principal, game_id, %{source: source} = options) when source in [:cyd, :box] do
+    with {:ok, pid} <- ensure(game_id),
+         {:ok, {actor, context}} <- GenServer.call(pid, {:bind, principal, options}, 10_000) do
+      {:ok, {actor, context, pid}}
+    end
+  catch
+    :exit, _ -> error(:readback_required)
+  end
+
+  def device_scope(actor, game_id), do: call(game_id, {:device_scope, actor})
+  def device_snapshot(actor, game_id), do: call(game_id, {:device_snapshot, actor})
+
   def command(actor, game_id, seq, context, action),
     do: call(game_id, {:command, actor, seq, context, action})
 
@@ -39,6 +51,9 @@ defmodule Vault.Games do
 
   def close_recovery(host, game_id, request_id, args),
     do: call(game_id, {:recovery, :close_recovery, host, request_id, args})
+
+  def attest_sealed_record(host, game_id, args),
+    do: call(game_id, {:attest_sealed_record, host, args})
 
   def read_operation(host, game_id, request_id),
     do: call(game_id, {:read_operation, host, request_id})

@@ -133,6 +133,39 @@ defmodule Vault.Auth do
     end)
   end
 
+  def authenticate_device(token) do
+    GameStore.guarded(fn ->
+      with true <- Credentials.device_key?(token),
+           %Device{transport: "raw", enabled: true} = device <-
+             Repo.get_by(Device, credential_sha256: Credentials.digest(token)),
+           %Game{} = game <- Repo.one(from g in Game, where: g.active_slot == 1),
+           principal = device_principal(device, game.game_id),
+           true <- valid?(principal) do
+        {:ok,
+         %{
+           principal: principal,
+           game_id: game.game_id,
+           device_class: if(device.device_class == "controller", do: :controller, else: :box)
+         }}
+      else
+        _ -> {:error, :not_authorized}
+      end
+    end)
+  end
+
+  def device_class(%Principal{kind: :device} = principal) do
+    GameStore.guarded(fn ->
+      with true <- valid?(principal),
+           %Device{device_class: class} <- Repo.get(Device, principal.subject_id) do
+        if class == "controller", do: :controller, else: :box
+      else
+        _ -> nil
+      end
+    end)
+  end
+
+  def device_class(_), do: nil
+
   defp device_principal(device, game_id) do
     %Principal{
       kind: :device,

@@ -7,6 +7,7 @@ defmodule Vault.GameStoreTest do
     ActuatorCommand,
     BrowserCredential,
     Checkpoint,
+    Device,
     Game,
     Operation,
     RecoveryPreparation,
@@ -245,6 +246,102 @@ defmodule Vault.GameStoreTest do
     assert Repo.get!(Game, seal.game.game_id).checkpoint_revision == seal.game.checkpoint_revision
   end
 
+  for failure <- ~w(not_armed unknown_position stale_binding busy history_full) do
+    test "a claimed dispatch admits an unjournaled #{failure} refusal under its original binding",
+         %{current: current, host: host} do
+      {solved, binding} = solve(current, host)
+      command = solved.command
+      failure = unquote(failure)
+
+      assert {:ok, :claimed} =
+               GameStore.claim_dispatch(solved.game.game_id, command.command_id, binding)
+
+      attrs =
+        report_attrs(solved, command, 1, "failed", false, nil, %{
+          "failure_code" => failure,
+          "command_session_id" => nil
+        })
+
+      assert {:ok, %{status: :committed, observation: %{classification: "admitted"} = saved}} =
+               GameStore.observe(attrs)
+
+      assert {:ok, %{status: :replayed, observation: ^saved}} = GameStore.observe(attrs)
+      assert {:ok, reloaded} = GameStore.load(solved.game.game_id)
+      assert reloaded.checkpoint.phase == :solved
+      assert reloaded.checkpoint.release_command_id == command.command_id
+
+      assert %{status: :failed, failure_code: ^failure, uncertain: false} =
+               GameStore.Records.release_summary(reloaded.observations)
+    end
+  end
+
+  test "unbound refusals and missing fingerprints remain conflicting evidence", %{
+    current: current,
+    host: host
+  } do
+    {solved, binding} = solve(current, host)
+    command = solved.command
+    refusal = %{"failure_code" => "busy", "command_session_id" => nil}
+    unclaimed = report_attrs(solved, command, 1, "failed", false, nil, refusal)
+
+    assert {:ok, %{observation: %{classification: "identity_conflict"}}} =
+             GameStore.observe(unclaimed)
+
+    assert {:ok, :claimed} =
+             GameStore.claim_dispatch(solved.game.game_id, command.command_id, binding)
+
+    for {change, seq} <-
+          Enum.with_index(
+            [
+              %{"box_boot_id" => "other_boot"},
+              %{"connection_id" => "other_connection"},
+              %{"session_id" => "other_session"},
+              %{"failure_code" => "driver_fault"},
+              %{"command_session_id" => "other_original_session"}
+            ],
+            2
+          ) do
+      attrs = report_attrs(solved, command, seq, "failed", false, nil, Map.merge(refusal, change))
+
+      assert {:ok, %{observation: %{classification: "identity_conflict"}}} =
+               GameStore.observe(attrs)
+    end
+
+    stale = report_attrs(solved, command, 7, "failed", false, nil, refusal)
+
+    assert {:ok, %{observation: %{classification: "stale"}}} =
+             GameStore.observe(%{stale | classification: "stale"})
+
+    now = Credentials.audit_ms()
+
+    assert {:ok, _} =
+             Repo.insert(%Device{
+               device_id: "different_box",
+               device_class: "box",
+               transport: "internal",
+               credential_sha256: nil,
+               allowed_roles_mask: 0,
+               enabled: true,
+               capabilities_json: "{}",
+               created_at_ms: now,
+               updated_at_ms: now
+             })
+
+    wrong_device = report_attrs(solved, command, 8, "failed", false, nil, refusal)
+
+    assert {:ok, %{observation: %{classification: "identity_conflict"}}} =
+             GameStore.observe(%{wrong_device | source_device_id: "different_box"})
+
+    {begin_request, options} = prepare(solved, host, "begin_refusal_recovery", "refusal_recovery")
+    assert {:ok, _} = GameStore.commit(begin_request, options)
+    assert {:ok, recovering} = GameStore.load(solved.game.game_id)
+
+    after_rebind = report_attrs(recovering, command, 1, "failed", false, nil, refusal)
+
+    assert {:ok, %{observation: %{classification: "identity_conflict"}}} =
+             GameStore.observe(after_rebind)
+  end
+
   for {reported, durable_status} <- [
         {"motion_complete", :motion_complete},
         {"accepted", :accepted}
@@ -385,32 +482,36 @@ defmodule Vault.GameStoreTest do
     {args, [command: command, qualify: fn -> true end], binding}
   end
 
-  defp report_attrs(current, command, sequence, status, motor, query_id) do
+  defp report_attrs(current, command, sequence, status, motor, query_id, fields \\ %{}) do
     now = Credentials.audit_ms()
     current_session = current.checkpoint.session_id
 
-    raw = %{
-      "v" => 1,
-      "type" => "box_status",
-      "connection_id" => "connection",
-      "box_boot_id" => "box_boot",
-      "session_id" => current_session,
-      "status_seq" => sequence,
-      "command_id" => command.command_id,
-      "command_session_id" => command.original_session_id,
-      "release_status" => status,
-      "motor_active" => motor,
-      "latch_position" => "unknown",
-      "position_basis" => "unverified",
-      "readiness" => %{
-        "arm_id" => nil,
-        "armed_session_id" => nil,
-        "calibration_valid" => false,
-        "start_verified" => false
-      },
-      "failure_code" => if(status == "failed", do: "driver_fault"),
-      "command_confirmation" => nil
-    }
+    raw =
+      Map.merge(
+        %{
+          "v" => 1,
+          "type" => "box_status",
+          "connection_id" => "connection",
+          "box_boot_id" => "box_boot",
+          "session_id" => current_session,
+          "status_seq" => sequence,
+          "command_id" => command.command_id,
+          "command_session_id" => command.original_session_id,
+          "release_status" => status,
+          "motor_active" => motor,
+          "latch_position" => "unknown",
+          "position_basis" => "unverified",
+          "readiness" => %{
+            "arm_id" => nil,
+            "armed_session_id" => nil,
+            "calibration_valid" => false,
+            "start_verified" => false
+          },
+          "failure_code" => if(status == "failed", do: "driver_fault"),
+          "command_confirmation" => nil
+        },
+        fields
+      )
 
     {:ok, encoded} = Vault.JSON.canonical(raw)
     {:ok, comparison} = Vault.JSON.comparison(raw, 4096)
@@ -419,9 +520,9 @@ defmodule Vault.GameStoreTest do
       observation_id: Credentials.id("obs_"),
       command_id: command.command_id,
       source_device_id: command.intended_box_id,
-      box_boot_id: "box_boot",
-      connection_id: "connection",
-      current_session_id: current_session,
+      box_boot_id: raw["box_boot_id"],
+      connection_id: raw["connection_id"],
+      current_session_id: raw["session_id"],
       status_seq: sequence,
       report_json: encoded,
       comparison: comparison,

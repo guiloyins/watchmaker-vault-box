@@ -12,7 +12,7 @@ repo = Path(__file__).resolve().parent.parent
 root = Path(tempfile.mkdtemp(prefix="watchmaker-test-"))
 root.chmod(0o700)
 env = os.environ.copy()
-for name in ["VAULT_HOST_KEY_FILE", "VAULT_SECRET_KEY_BASE_FILE", "MIX_BUILD_PATH", "MIX_DEPS_PATH"]:
+for name in ["VAULT_HOST_KEY_FILE", "VAULT_SECRET_KEY_BASE_FILE", "VAULT_TLS_CERT_FILE", "VAULT_TLS_KEY_FILE", "MIX_BUILD_PATH", "MIX_DEPS_PATH"]:
     env.pop(name, None)
 env.update({
     "MIX_ENV": "test", "MIX_HOME": str(repo / ".cache/mix"), "HEX_HOME": str(repo / ".cache/hex"),
@@ -20,6 +20,7 @@ env.update({
     "VAULT_DATA_DIR": str(root), "VAULT_DATABASE": str(root / "vault.sqlite3"),
     "VAULT_SIMULATOR_DATABASE": str(root / "simulated-box.sqlite3"),
     "VAULT_BOX_MODE": "simulated", "VAULT_BIND": "127.0.0.1", "VAULT_PORT": "4000",
+    "VAULT_SIMULATOR_TRANSPORT": "internal", "VAULT_TRUSTED_LAN_WS": "false",
     "VAULT_ORIGIN": "http://127.0.0.1:4000", "PHX_SERVER": "false",
 })
 child = None

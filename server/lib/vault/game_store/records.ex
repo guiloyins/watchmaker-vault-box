@@ -23,7 +23,9 @@ defmodule Vault.GameStore.Records do
   alias Vault.JSON.Number
 
   @terminal ~w(motion_complete position_confirmed failed)
-  @failure ~w(unknown_command not_armed unknown_position stale_binding busy history_full connection_lost reboot_interrupted freshness_lost travel_timeout limit_fault driver_fault)
+  @refusal ~w(not_armed unknown_position stale_binding busy history_full)
+  @failure @refusal ++
+             ~w(unknown_command connection_lost reboot_interrupted freshness_lost travel_timeout limit_fault driver_fault)
   @close_ids ~w(local_record_id seal_operation_id recovery_id box_boot_id connection_id current_session_id observation_id query_id)
   @close_positive ~w(service_epoch recovery_generation status_seq)
 
@@ -226,17 +228,11 @@ defmodule Vault.GameStore.Records do
   end
 
   def classify_report(attrs, report, command, same_sequence?) do
-    reported_session = report["command_session_id"]
-
-    absent? =
-      report["release_status"] == "uncertain" and report["failure_code"] == "unknown_command"
-
     cond do
       attrs.source_device_id != command.intended_box_id ->
         "identity_conflict"
 
-      reported_session != command.original_session_id and
-          not (is_nil(reported_session) and absent?) ->
+      not report_matches_intent?(attrs, report, command) ->
         "identity_conflict"
 
       same_sequence? ->
@@ -252,6 +248,41 @@ defmodule Vault.GameStore.Records do
         "admitted"
     end
   end
+
+  defp report_matches_intent?(
+         _attrs,
+         %{"command_session_id" => session},
+         %{original_session_id: session}
+       )
+       when is_binary(session),
+       do: true
+
+  defp report_matches_intent?(
+         _attrs,
+         %{
+           "command_session_id" => nil,
+           "release_status" => "uncertain",
+           "failure_code" => "unknown_command"
+         },
+         _command
+       ),
+       do: true
+
+  # A refusal has no journal fingerprint. Attribute it to the captured
+  # dispatch binding, which cannot be reconstructed on another connection.
+  defp report_matches_intent?(
+         %{box_boot_id: boot, connection_id: connection, current_session_id: session},
+         %{"command_session_id" => nil, "release_status" => "failed", "failure_code" => code},
+         %{dispatch_claimed: true, original_session_id: session, dispatch_binding_json: binding}
+       )
+       when code in @refusal do
+    match?(
+      {:ok, %{"box_boot_id" => ^boot, "connection_id" => ^connection, "session_id" => ^session}},
+      Codec.decode(binding, 1024)
+    )
+  end
+
+  defp report_matches_intent?(_, _, _), do: false
 
   def report(json) do
     with {:ok,
@@ -472,17 +503,6 @@ defmodule Vault.GameStore.Records do
 
   defp advance_history(summary, %{"release_status" => "accepted"}) do
     if summary.status == :pending, do: %{summary | status: :accepted}, else: summary
-  end
-
-  defp advance_history(summary, %{
-         "release_status" => "uncertain",
-         "failure_code" => "unknown_command"
-       }) do
-    if summary.status == :pending do
-      summary
-    else
-      %{summary | uncertain: true, failure_code: summary.failure_code || "unknown_command"}
-    end
   end
 
   defp advance_history(summary, %{"release_status" => "uncertain", "failure_code" => failure}) do

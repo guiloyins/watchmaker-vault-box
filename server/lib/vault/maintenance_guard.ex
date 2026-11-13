@@ -15,21 +15,26 @@ defmodule Vault.MaintenanceGuard do
          {:ok, manifest} <- read_protected(Path.join(paths.root, @manifest), 2048),
          {:ok,
           %{
-            "schema_version" => 1,
+            "schema_version" => version,
             "store_id" => store_id,
             "simulator_instance_id" => instance_id,
             "simulator_device_id" => device_id,
             "database" => database,
             "simulator_database" => simulator
           } = document} <- Codec.decode(manifest, 2048),
-         true <- map_size(document) == 6,
+         true <-
+           (version == 1 and map_size(document) == 6) or
+             (version == 2 and map_size(document) == 7 and
+                document["simulator_transport"] in ["internal", "external"]),
          true <- database == paths.database and simulator == paths.simulator_database,
          true <- Enum.all?([store_id, instance_id, device_id], &Codec.id?/1) do
       {:ok,
        Map.merge(paths, %{
          store_id: store_id,
          simulator_instance_id: instance_id,
-         simulator_device_id: device_id
+         simulator_device_id: device_id,
+         simulator_transport:
+           if(document["simulator_transport"] == "external", do: :external, else: :internal)
        })}
     else
       _ -> {:error, :invalid_deployment}
@@ -62,16 +67,23 @@ defmodule Vault.MaintenanceGuard do
         :simulator_device_id
       ])
 
-    with {:ok, bytes} <- Codec.encode(Map.put(document, :schema_version, 1), 2048) do
+    document =
+      if Map.get(paths, :simulator_transport, :internal) == :external,
+        do: Map.merge(document, %{schema_version: 2, simulator_transport: "external"}),
+        else: Map.put(document, :schema_version, 1)
+
+    with {:ok, bytes} <- Codec.encode(document, 2048) do
       write_protected(Path.join(paths.root, @manifest), bytes)
     end
   end
 
   def manifest_path(root), do: Path.join(root, @manifest)
 
-  def acquire(root) do
+  def acquire(root, name \\ @guard)
+
+  def acquire(root, name) when name in [@guard, "box-runtime.owner"] do
     with {:ok, root} <- owned_directory(root),
-         path = Path.join(root, @guard),
+         path = Path.join(root, name),
          token = Base.encode16(:crypto.strong_rand_bytes(16), case: :lower),
          :ok <- write_protected(path, token <> "\npid=" <> List.to_string(:os.getpid()) <> "\n"),
          {:ok, stat} <- File.lstat(path) do
@@ -81,6 +93,8 @@ defmodule Vault.MaintenanceGuard do
       _ -> {:error, :guard_unavailable}
     end
   end
+
+  def acquire(_, _), do: {:error, :guard_unavailable}
 
   def release(%__MODULE__{path: path, token: token, inode: inode, device: device}) do
     with {:ok, %File.Stat{inode: ^inode, major_device: ^device}} <- File.lstat(path),
@@ -263,7 +277,7 @@ defmodule Vault.MaintenanceGuard do
     end
   end
 
-  defp reserved_names, do: [@guard, @manifest, ".vault-test-prepared"]
+  defp reserved_names, do: [@guard, "box-runtime.owner", @manifest, ".vault-test-prepared"]
 
   defp distinct_files?(left, right) do
     case {File.lstat(left), File.lstat(right)} do

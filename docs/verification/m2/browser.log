@@ -1,0 +1,23 @@
+
+> test
+> playwright test
+
+{"type":"environment","node":"20.17.0","npm":"11.4.2","playwright":"1.64.1","browser":"Chrome Headless Shell","browserVersion":"156.0.8078.4","browserRevision":"1248","platform":"darwin","architecture":"x64","headed":false}
+{"type":"scenario","id":"M1-06","title":"M1-06 lost simulated release acknowledgement closes without replay through the host","status":"passed","durationMs":11490}
+{"type":"scenario","id":"M1-01","title":"M1-01 isolated views reload into one game and the box is simulated","status":"passed","durationMs":6753}
+{"type":"scenario","id":"M1-02","title":"M1-02 movement is accepted once per decision and wall/bounds preserve the board","status":"passed","durationMs":7923}
+{"type":"scenario","id":"M1-06","title":"M1-06 correct fresh overlap qualifies once and only the simulated mechanism moves","status":"passed","durationMs":11652}
+{"type":"scenario","id":"M1-07","title":"M1-07 native pointer release and lost capture stop the shared hold","status":"passed","durationMs":8213}
+{"type":"scenario","id":"M1-07","title":"M1-07 trusted touch cancel clears capture and requires a new contact","status":"passed","durationMs":8638}
+{"type":"scenario","id":"M1-07","title":"M1-07 native navigation and socket loss clear control; reload needs a fresh press","status":"passed","durationMs":14185}
+{"type":"scenario","id":"M1-07","title":"M1-07 trusted headed tab blur clears active input","status":"skipped","durationMs":6829}
+{"type":"scenario","id":"M1-07","title":"M1-07 trusted hidden tab clears active input","status":"skipped","durationMs":4813}
+{"type":"scenario","id":"M1-05","title":"M1-05 browser A and opposite simulated CYD mirror real assignments","status":"passed","durationMs":7653}
+{"type":"scenario","id":"M1-05","title":"M1-05 browser B and opposite simulated CYD mirror real assignments","status":"passed","durationMs":7407}
+{"type":"scenario","id":"M1-05","title":"M1-05 host A/B controls use distinct bindings and shortcut focus excludes forms","status":"passed","durationMs":6097}
+{"type":"scenario","id":"M1-03","title":"M1-03 player HTML, diffs, DOM and assets contain only scoped puzzle data","status":"passed","durationMs":9109}
+{"type":"scenario","id":"M1-04","title":"M1-04 forged role routes and host actions cannot elevate a player or observer","status":"passed","durationMs":7708}
+{"type":"scenario","id":"M1-04","title":"M1-04 old cookie and key are rejected after stopped host key replacement","status":"passed","durationMs":10815}
+{"type":"scenario","id":"M1-04","title":"M1-04 sign out removes a held controller without affecting the partner session","status":"passed","durationMs":8584}
+{"type":"scenario","id":"M1-01","title":"M1-01 a GameSession-only crash restores paused progress under a new session","status":"passed","durationMs":7306}
+{"type":"summary","status":"passed"}
