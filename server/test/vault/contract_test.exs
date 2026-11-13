@@ -2,22 +2,29 @@ defmodule Vault.ContractTest do
   use ExUnit.Case, async: false
   @moduletag :m0
   @root Path.expand("../../..", __DIR__)
+  @initial_data_exists File.exists?(Path.join(@root, "data"))
   @types ~w(hello welcome command command_result snapshot heartbeat_request heartbeat heartbeat_ack box_arm box_disarm box_command box_query box_status box_status_ack box_feedback)
 
-  # Registered while test files load, before any selected test executes.
-  initial_apps = Application.started_applications() |> Enum.map(&elem(&1, 0)) |> MapSet.new()
+  unless Enum.any?(ExUnit.configuration()[:exclude], &(&1 in [:m0, {:m0, true}])) do
+    # Register only for the selected pure gate. Excluded M0 files are still loaded
+    # by ordinary integration tests, whose application is intentionally running.
+    initial_apps = Application.started_applications() |> Enum.map(&elem(&1, 0)) |> MapSet.new()
 
-  ExUnit.after_suite(fn _ ->
-    final_apps = Application.started_applications() |> Enum.map(&elem(&1, 0)) |> MapSet.new()
-    if final_apps != initial_apps, do: raise("M0 changed the started application set")
+    ExUnit.after_suite(fn _ ->
+      final_apps = Application.started_applications() |> Enum.map(&elem(&1, 0)) |> MapSet.new()
+      if final_apps != initial_apps, do: raise("M0 changed the started application set")
 
-    resources =
-      Process.registered()
-      |> Enum.filter(fn name -> String.starts_with?(Atom.to_string(name), "Elixir.Vault") end)
+      resources =
+        Process.registered()
+        |> Enum.filter(fn name -> String.starts_with?(Atom.to_string(name), "Elixir.Vault") end)
 
-    if resources != [], do: raise("M0 left a named Vault runtime resource running")
-    IO.puts("M0 runtime guard passed: started applications unchanged; no named Vault resources.")
-  end)
+      if resources != [], do: raise("M0 left a named Vault runtime resource running")
+
+      IO.puts(
+        "M0 runtime guard passed: started applications unchanged; no named Vault resources."
+      )
+    end)
+  end
 
   test "authoritative schema and fixtures are copied exactly" do
     for {source, copy} <- [
@@ -61,7 +68,7 @@ defmodule Vault.ContractTest do
     for app <- [:vault, :phoenix, :ecto_sql, :exqlite, :mint], do: refute(app in apps)
     assert Application.get_env(:vault, :database) == nil
     assert Application.get_env(:vault, :simulator_database) == nil
-    refute File.exists?(Path.join(@root, "data"))
+    assert File.exists?(Path.join(@root, "data")) == @initial_data_exists
     refute File.exists?(Path.join(@root, "server/priv/static/maze-v1.private.json"))
   end
 

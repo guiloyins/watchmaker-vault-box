@@ -13,12 +13,26 @@ defmodule Vault.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      aliases: aliases()
     ]
   end
 
-  # M0 has no supervision tree. M1 introduces the real application callback.
-  def application, do: [extra_applications: [:logger, :crypto]]
+  def application, do: [mod: {Vault.Application, []}, extra_applications: [:logger, :crypto]]
+
+  defp aliases do
+    [
+      setup: ["deps.get", "assets.setup", "assets.build", "vault.init"],
+      "assets.setup": ["esbuild.install --if-missing"],
+      "assets.build": ["esbuild vault --sourcemap", "vault.assets.check"],
+      "assets.deploy": [
+        "vault.assets.clean",
+        "esbuild vault --minify",
+        "vault.assets.check --production",
+        "phx.digest"
+      ]
+    ]
+  end
 
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""M0 source-contract and private/public copy checks; no production wire claims."""
+"""Source-copy checks plus independent M1 production projection-fragment checks."""
 import importlib.metadata
 from pathlib import Path
 import subprocess
@@ -40,7 +40,9 @@ def main():
 
     print("Four authoritative contract/fixture copies are byte-identical; private fixture is outside public/client trees.", flush=True)
     result = subprocess.run([sys.executable, str(ROOT / "docs/specs/verify_contracts.py")], cwd=ROOT)
-    return result.returncode
+    if result.returncode:
+        return result.returncode
+    return subprocess.run([sys.executable, str(ROOT / "tools/conformance/json_oracle.py")], cwd=ROOT).returncode
 
 
 if __name__ == "__main__":

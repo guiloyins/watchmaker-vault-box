@@ -24,6 +24,7 @@ default_root = if config_env() == :test, do: nil, else: Path.expand("../../data"
 root = System.get_env("VAULT_DATA_DIR", default_root)
 
 config :vault,
+  test_mode: config_env() == :test,
   box_mode: mode,
   bind: bind,
   port: port,
@@ -35,3 +36,14 @@ config :vault,
   host_key_file: System.get_env("VAULT_HOST_KEY_FILE"),
   secret_key_base_file: System.get_env("VAULT_SECRET_KEY_BASE_FILE"),
   test_root: System.get_env("VAULT_TEST_ROOT")
+
+serve_endpoint =
+  case System.get_env("PHX_SERVER") do
+    nil -> Application.get_env(:phoenix, :serve_endpoints, false)
+    value -> value == "true"
+  end
+
+config :vault, VaultWeb.Endpoint,
+  server: serve_endpoint,
+  debug_errors: false,
+  code_reloader: false

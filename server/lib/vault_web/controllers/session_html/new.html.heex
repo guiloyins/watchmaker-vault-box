@@ -1,0 +1,41 @@
+<main class="access-shell">
+  <.brand caption="A cooperative puzzle for two" />
+  <section class="access-card panel">
+    <div class="eyebrow">{if @kind == :host, do: "Host console", else: "Player terminal"}</div>
+    <h1>{if @kind == :host, do: "Open the workshop", else: "Enter the vault"}</h1>
+    <p>
+      {if @kind == :host,
+        do: "Enter the access key from your protected local setup file.",
+        else: "Enter the join token provided for your terminal."}
+    </p>
+    <p :if={Phoenix.Flash.get(assigns[:flash] || %{}, :error)} class="callout error" role="alert">
+      {Phoenix.Flash.get(assigns[:flash] || %{}, :error)}
+    </p>
+    <form
+      method="post"
+      action={if @kind == :host, do: ~p"/login", else: ~p"/join"}
+      class="access-form"
+      autocomplete="off"
+    >
+      <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
+      <label for="access-token">{if @kind == :host, do: "Host access key", else: "Join token"}</label>
+      <input
+        id="access-token"
+        name="access_token"
+        type="password"
+        required
+        maxlength="64"
+        autocomplete="off"
+        spellcheck="false"
+        autocapitalize="off"
+      />
+      <p :if={@failed?} class="callout error" role="alert">Access denied. Check your key and try again.</p>
+      <button class="button primary" type="submit">
+        {if @kind == :host, do: "Sign in", else: "Join game"}
+      </button>
+    </form>
+  </section>
+  <a class="secondary-link" href={if @kind == :host, do: ~p"/join", else: ~p"/login"}>
+    {if @kind == :host, do: "Joining as a player?", else: "Sign in as host"}
+  </a>
+</main>

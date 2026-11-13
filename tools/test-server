@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+"""Run pure checks, prepare one owned fixture, then start ordinary Mix integration tests."""
+from pathlib import Path
+import os
+import shutil
+import signal
+import subprocess
+import sys
+import tempfile
+
+repo = Path(__file__).resolve().parent.parent
+root = Path(tempfile.mkdtemp(prefix="watchmaker-test-"))
+root.chmod(0o700)
+env = os.environ.copy()
+for name in ["VAULT_HOST_KEY_FILE", "VAULT_SECRET_KEY_BASE_FILE", "MIX_BUILD_PATH", "MIX_DEPS_PATH"]:
+    env.pop(name, None)
+env.update({
+    "MIX_ENV": "test", "MIX_HOME": str(repo / ".cache/mix"), "HEX_HOME": str(repo / ".cache/hex"),
+    "ELIXIR_MAKE_CACHE_DIR": str(repo / ".cache/elixir_make"), "VAULT_TEST_ROOT": str(root),
+    "VAULT_DATA_DIR": str(root), "VAULT_DATABASE": str(root / "vault.sqlite3"),
+    "VAULT_SIMULATOR_DATABASE": str(root / "simulated-box.sqlite3"),
+    "VAULT_BOX_MODE": "simulated", "VAULT_BIND": "127.0.0.1", "VAULT_PORT": "4000",
+    "VAULT_ORIGIN": "http://127.0.0.1:4000", "PHX_SERVER": "false",
+})
+child = None
+
+def run(arguments, pure=False):
+    global child
+    run_env = {key: value for key, value in env.items() if not (pure and key.startswith("VAULT_"))}
+    child = subprocess.Popen(arguments, cwd=repo / "server", env=run_env, start_new_session=True)
+    code = child.wait()
+    child = None
+    if code:
+        raise SystemExit(code)
+
+try:
+    run(["mix", "test", "--no-start", "--only", "m0", "test/vault/puzzle_test.exs",
+         "test/vault/projections_test.exs", "test/vault/contract_test.exs", "test/vault/json_test.exs",
+         "test/vault/simulated_box/model_test.exs"], pure=True)
+    run(["mix", "vault.test.prepare"])
+    run(["mix", "test", "--exclude", "m0", *sys.argv[1:]])
+finally:
+    if child is not None and child.poll() is None:
+        os.killpg(child.pid, signal.SIGTERM)
+        try:
+            child.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            os.killpg(child.pid, signal.SIGKILL)
+            child.wait()
+    # This exact root was created above; no caller-supplied path is removed.
+    shutil.rmtree(root)
