@@ -1,0 +1,153 @@
+{
+  "recorded_at_utc": "2026-11-13T02:12:23.292243+00:00",
+  "milestone": "M2",
+  "status": "software complete and verified",
+  "implementation_commit": "a069fb60383adeea70486cadeace2b9dce417695",
+  "baseline_commit": "a9d360e86d5266c6d2b31f9b5b7609ac367d9d5c",
+  "specification_and_design_files_unchanged": 18,
+  "source_scope_note": "Full suite preceded the final CLI manifest-isolation check; the four-case executable/recovery regression then passed on that final CLI. The only subsequent code edit removed a blank EOF line from the Python oracle.",
+  "checks": {
+    "full_server": {
+      "status": "passed",
+      "command": "VAULT_TEST_TRANSPORT_EVIDENCE=true VAULT_SIMULATOR_TRANSPORT=external VAULT_TLS_CERT_FILE=/nonexistent/test-cert.pem VAULT_TLS_KEY_FILE=/nonexistent/test-key.pem tools/test-server",
+      "pure_tests": 51,
+      "application_tests_executed": 141,
+      "mix_integration_report": {
+        "tests": 192,
+        "excluded_m0": 51,
+        "failures": 0
+      },
+      "seeds": [
+        952223,
+        806336
+      ]
+    },
+    "final_external_cli_recovery": {
+      "status": "passed",
+      "command": "cd server && MIX_ENV=test MIX_HOME=../.cache/mix HEX_HOME=../.cache/hex mix test --no-start test/vault/external_recovery_test.exs",
+      "tests": 4,
+      "failures": 0,
+      "seed": 530058,
+      "scope": "Actual external unknown/interrupted closure and new solves, executable no-start CLI, wrong external identity and internal manifest refusal with unchanged journal/guard cleanup"
+    },
+    "wire_oracle": {
+      "status": "passed",
+      "command": ".venv/bin/python tools/check-json-conformance",
+      "cases": 2210,
+      "accepted": 166,
+      "rejected": 2044,
+      "checks": [
+        "production normalized values",
+        "complete exact comparison bytes",
+        "independently parsed production encode output",
+        "no-start runtime guard"
+      ]
+    },
+    "contracts_and_projections": {
+      "status": "passed",
+      "command": ".venv/bin/python tools/check-contracts",
+      "identical_copies": 4,
+      "valid_examples": 51,
+      "invalid_examples": 15,
+      "production_projection_cases": 16,
+      "production_schema_fragments": 40
+    },
+    "browser": {
+      "status": "passed",
+      "command": "VAULT_SIMULATOR_TRANSPORT=external VAULT_TLS_CERT_FILE=/nonexistent/test-cert.pem VAULT_TLS_KEY_FILE=/nonexistent/test-key.pem PLAYWRIGHT_BROWSERS_PATH=\"$PWD/.cache/ms-playwright\" asdf exec npm --prefix tools/browser test",
+      "passed": 15,
+      "headed_only_skipped": 2,
+      "environment": {
+        "type": "environment",
+        "node": "20.17.0",
+        "npm": "11.4.2",
+        "playwright": "1.64.1",
+        "browser": "Chrome Headless Shell",
+        "browserVersion": "156.0.8078.4",
+        "browserRevision": "1248",
+        "platform": "darwin",
+        "architecture": "x64",
+        "headed": false
+      },
+      "intermediate_failed_run": "browser-concurrent-assets.log; one initial LiveView-connect failure while assets rebuilt concurrently; precise cause not isolated"
+    },
+    "formatting": {
+      "status": "passed",
+      "commands": [
+        "cd server && MIX_ENV=test mix format --check-formatted",
+        "cd server && MIX_ENV=test mix format --check-formatted ../tools/simulator/*.exs ../tools/conformance/elixir_runner.exs"
+      ]
+    },
+    "compile_assets": {
+      "status": "passed",
+      "commands": [
+        "cd server && MIX_ENV=test mix compile --warnings-as-errors",
+        "cd server && MIX_ENV=prod mix compile --warnings-as-errors",
+        "cd server && MIX_ENV=prod mix assets.deploy"
+      ],
+      "privacy_audit": "passed"
+    },
+    "local_service_recovery_matrix": {
+      "status": "passed",
+      "cases": 30,
+      "operations": 6,
+      "fault_modes": 5
+    },
+    "wss_endpoint": {
+      "status": "passed",
+      "scope": "Real guarded HTTPS listener and certificate-verified WSS upgrade; plaintext listener disabled"
+    },
+    "latency_observations": {
+      "server_sqlite_lock_ms": [
+        253,
+        250,
+        243,
+        235
+      ],
+      "busy_timeout_ms": 100,
+      "client_ws_send_timeout_ms": 101,
+      "client_wss_send_timeout_ms": 101,
+      "whole_write_deadline_ms": 200,
+      "error_only_close_deadline_ms": 100,
+      "independent_box_silence_deadline_modeled_ms": 1500,
+      "hard_real_time_claim": false
+    }
+  },
+  "acceptance": {
+    "M2-T1": "Passed",
+    "M2-T2": "Passed",
+    "M2-T3": "Passed",
+    "M2-T4": "Passed",
+    "M2-T5": "Passed",
+    "M2-T6": "Passed",
+    "M2-T7": "Passed",
+    "M2-01": "Passed",
+    "M2-02": "Passed",
+    "M2-03": "Passed",
+    "M2-04": "Passed",
+    "M2-05": "Passed",
+    "M2-06": "Passed",
+    "M2-07": "Passed",
+    "M2-08": "Passed"
+  },
+  "deferred": [
+    "Native hidden-tab observation at user request",
+    "Native C++/ESP-IDF conformance and serial provisioning in later milestones",
+    "Physical boards, flashing, electrical and mechanism acceptance"
+  ],
+  "wire_schema_sha256": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+  "evidence_sha256": {
+    "README.md": "21239ae30495c3a227edb48e32d9ec01acd91f8e9def85bf9533b42cbf96accc",
+    "baseline.json": "673338fad369876b5511692db09da4b067331291b9382631f8841e675ec76311",
+    "browser-concurrent-assets.log": "d94e542628ca25894c7a254efc861b4c6cf1d88e658c95b60dddac3809543a41",
+    "browser.log": "8db07380b7dbc36d05546e9f960bbb3d4cfff627a95b3cb9a647854c50ddaf10",
+    "contracts.log": "ec9aa93135541218bc6187e0030c5d00d82b4c63327fcb817d71421d51ab42b3",
+    "domain-timing-storage.md": "07601bff0c8438a1959627171cc917504652aa79b6ff47a9c298d9cd74ecbffd",
+    "protocol.md": "b8d05bd222dea8b4f47889d487c161e37f05efc64f6cc0ec3a593a21827630aa",
+    "release-recovery.md": "54bbc7803204bbaad93701929c1b5da150eda4eda48162918fbd6b11d0fcebce",
+    "server-checks.log": "58349b1972db7c81bc6f0d18b1af73e5a49d59120dffc754e8625d525ae61daf",
+    "simulator.md": "5098b96a2c3264ca04abd04ae6894dca3fce11c7dafa170131f39ccfe9c7b8b7",
+    "wire-hashes.json": "419f7db14904c1533eaee5129e3ff2e7b05c55d2b2345632a1373a3912ecbe77",
+    "work-log.md": "fe1bf6d69a3c618557624958b0c0ae83958a18123f7052ada3d0783cc49273fd"
+  }
+}

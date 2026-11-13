@@ -53,6 +53,8 @@ The M1 implementation is complete, but full milestone verification remains open 
 
 ## M2 implementation and verification
 
+Implementation source: `a069fb60383adeea70486cadeace2b9dce417695`.
+
 The raw v1 `/device/v1` endpoint, exact production validator/encoder, independent Mint controller/box clients and server-owned external-simulation selection are implemented. Protected external initialization supplies separate raw credentials and journal identity. Mint clients verify server certificates and hostnames over WSS; plaintext device traffic is limited to deliberate development/test use. The default browser demonstration retains its internal simulator.
 
 Three Sol agents implemented protocol/timing/persistence cases, endpoint/subscription bounds and independent simulator transport/runtime work. The coordinator integrated authority, original-binding box dispatch, host attestation/query recovery, exact copyable local-service receipts, guarded provisioning and milestone evidence. Independent review fixes prevent overlapping recovery queries, retain uncertainty for an absent command, admit only correctly bound fresh refusals, and prevent rejected presses or mismatched snapshots from refreshing authority.
