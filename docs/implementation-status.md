@@ -1,10 +1,10 @@
 # The Watchmaker's Vault implementation and verification status
 
-Recorded 12 November 2026. Current phase: **M0 complete — implemented and verified within its host-software/documentary scope**. The finalized design remains the baseline. Pure rules, role projections, exact JSON handling, pure box/service/durable logic, clock seams, shared contract copies and locked host dependencies now exist. The Phoenix application/runtime and firmware remain M1+ work. A local Git repository on `main` is initialized with no remote.
+Recorded 12 November 2026 (verification continued into 13 November UTC). Current phase: **M1 implemented; final verification has one native visibility gate pending**. The complete Phoenix browser game and independent simulated box are runnable. M0 remains verified. M1 software evidence is recorded below; no firmware or physical acceptance is claimed. The finalized design and specification package are unchanged. The local Git repository remains on `main`, with no remote.
 
 ## Design review history
 
-The following checkpoints describe the design before implementation. Their statements about pending work and unexecuted checks apply to those historical stages; the M0 section and acceptance matrix below record current implementation evidence.
+The following checkpoints describe the design before implementation. Their statements about pending work and unexecuted checks apply to those historical stages; the M0/M1 sections and acceptance matrix below record current implementation evidence.
 
 The user approved all design sections and **D1: audience-specific PubSub snapshots**, **D2: generated firmware configuration from reviewed board profiles**, **D3: generated host access key**, **D4: automated browser checks with Playwright**, **D5: Phoenix-managed asset builds** and **D6: Mint.WebSocket simulator clients**. The approved [Detailed Implementation Plan](./designs/watchmakers-vault.md#detailed-implementation-plan) is saved at the requested path. Stage 5 used all 17 approved local files and all 12 saved external pages. Both fresh-context reviewers completed: **0 Blocker, 3 Major, 0 Nit**. The original findings concerned the operator reconciliation exit, live key-rotation complexity and the boundary between box simulators. Stage 6 then reviewed the target alone and completed with **no comprehension findings**; its complete paraphrase and receipt are saved. S5-01 is now resolved by the accepted Stage 7 recovery edits; S5-02 and S5-03 were open at that checkpoint and are now resolved through Stage 8. See the [Stage 5 report](../zoom_out_report.md), [Stage 6 report](../comprehension_report.md) and [review state](../egm_review_state.md).
 
@@ -32,7 +32,24 @@ Source validation passed 51 accepted/15 rejected examples, 15 wire types, 16 pro
 
 M0 clarified internal historical record IDs to avoid a self-referential store digest, represented a pending local-service travel deadline without allowing motion, and specified same-batch refusal diagnostic/status handling. These are recorded in IMPLEMENTATION_CONTRACTS.md and model tests; protocol v1, schema, all fixtures and the finalized design remain unchanged. No hardware identity, GPIO, physical reference, flash or bench acceptance was invented. Rafa will be told which board and power setup to connect when its firmware and test procedure are ready; identity and the explicit serial port will be checked after connection. No board connection is required now.
 
-Final fresh-checkout verification passed **all 14 steps** at source commit `3c6ded1197962045def0b029bc759d0dba748b7c` using empty Mix, Python, npm and browser caches. Both lockfiles remained unchanged and the checkout stayed clean. The Playwright/Chromium launch, keyboard-input and context-isolation probe passed; its original pointer-click timeout remains an unresolved M1 input check. See the [final result](verification/m0/result.json), [checkout report](verification/m0/clean-checkout.json) and [execution log](verification/m0/clean-checkout.log). M0 is complete; M1 has not started.
+Final fresh-checkout verification passed **all 14 steps** at source commit `3c6ded1197962045def0b029bc759d0dba748b7c` using empty Mix, Python, npm and browser caches. Both lockfiles remained unchanged and the checkout stayed clean. The Playwright/Chromium launch, keyboard-input and context-isolation probe passed; its original pointer-click timeout was retained for M1 investigation. M1 now passes trusted pointer clicks; the historical intermittent cause was not isolated. See the [final result](verification/m0/result.json), [checkout report](verification/m0/clean-checkout.json) and [execution log](verification/m0/clean-checkout.log). M0 is complete. M1 implementation and its current verification are recorded below.
+
+
+## M1 implementation and verification
+
+Implementation source: `821ccdc985568875330bc43247f20f3d7b84774e`. Three Sol agents implemented guarded storage/credentials, the independent simulated-box runtime/store, and Phoenix UI/browser checks. The coordinator integrated session authority, scoped subscriptions/projections, service/release recovery, supervision, build auditing and evidence. Follow the [launch instructions](../README.md#run-the-browser-game) and [operator runbook](runbook.md).
+
+Implemented separate A/B logins and host observers/controllers, the full role-specific maze and seal, explicit ownership/takeover, generated access keys, private audience updates, durable progress and operation receipts, restart-to-paused recovery, exactly one committed release intent, and a separately supervised simulator with its own SQLite journal. The host provides explicit simulated reference/service exit/arm, fault injection and administrative release closure without replay. Simulated motion never establishes a physical latch position or lid state.
+
+`tools/test-server` passed **51 pure M0 tests plus 40 application/store/runtime tests**. The guarded session test executes the literal golden route: zero release intents at 1,999 ms and one committed/claimed intent at 2,000 ms. It tests actual GameSession termination, independent box history, obsolete actor rejection, new paused sessions, same-boot press replay rejection across ownership and session changes, and full interrupted-release closure through local acknowledgement and Reset. Async service calls expire at 3,000 ms; stale completion cannot establish fresh recovery evidence. Writer-time authorization, protected credential maintenance, independent OS-process guard races and subscription/readback logout races passed. See [server log](verification/m1/server-checks.log) and [storage scope and limits](verification/m1/storage-checks.json).
+
+The final browser run passed **15 headless scenarios** (two headed-only skips), and the headed run passed **one trusted blur scenario**, with the hidden-tab case blocked. The browser suite exercises real routes, independent cookie jars, native clicks/holds, the complete game, both browser/simulated-CYD pairings, observer takeover, private served surfaces, stopped host-key replacement, logout and loss recovery. The controlled original pointer probe now produces trusted clicks with and without a doctype; no actionability bypass or synthetic click replaced the timeout. The original intermittent failure remains unexplained. Native hidden-tab observation is separately blocked: the pinned headed Chromium reports blur but keeps document visibility `visible` after tab changes/minimization. The CUA app selector could not target the isolated fixture process. This does not count as a hidden-tab pass. [Browser evidence and procedures](testing/browser-cases.md).
+
+Actual produced projections passed the independent Python oracle: 16 audience/phase cases and 40 schema fragments. The original 51 valid/15 invalid examples, four exact copies and all source hashes remain valid. Development JS/CSS/maps and production minified/digested assets passed the Phoenix-managed input/output privacy audit. A normal `mix phx.server` launch served health/login/join and released its ownership marker after orderly SIGTERM. [Verification record](verification/m1/README.md), [contract log](verification/m1/contracts.log), [launch check](verification/m1/launch-check.log).
+
+Integration review fixed readiness and authorization after writer waits, mismatch takeover before eviction, same-boot press high-water retention, synchronous recovered-session admission before HTTP, stale sealed-record callbacks, bounded service wait/readback, box runtime monitoring and service-exit confirmation tied to the current binding before arming. The M0 guard now registers only when its tests are selected; it still verifies no runtime startup in the exact no-start gate and permits an existing unrelated development data directory.
+
+The M1 implementation is complete, but full milestone verification remains open for the named native hidden-tab case. No power-cut durability, interruption inside SQLite COMMIT, external device WebSocket conformance, real touchscreen, flash or motor test is claimed. The raw `/device/v1` transport and authenticated external adapter boundary remain M2; the in-process simulator uses its private adapter messages. No boards are needed yet.
 
 ## Hardware correction pass
 
@@ -69,7 +86,7 @@ The active enclosure is the green PASCAL hinged cardboard box with user-reported
 
 Evidence bookkeeping correction during Stage 8: the validator prints to stdout unless `--report` is supplied. The candidate/applied evidence copies initially contained the original 14:45 source report; they now retain the actual observed 21:04/21:10 results. The original copy is archived and the correction is recorded in `reviews/stage7-resolution/application.json`. Reviewed source `specs/SPEC_VALIDATION.md` remains unchanged; no validator was rerun.
 
-At those design-review checkpoints, no application tests or builds had run. M0 has since compiled and tested the pure providers as recorded above; its executed rules and projection assertions satisfy M0-02. The validator's timing-fixture result remains structural only and does not satisfy M2 timing acceptance. Application integration, browser gameplay, firmware host tests, target builds, flashing and bench checks remain pending.
+At those design-review checkpoints, no application tests or builds had run. M0 has since compiled and tested the pure providers as recorded above; its executed rules and projection assertions satisfy M0-02. The validator's timing-fixture result remains structural only and does not satisfy M2 timing acceptance. M1 application integration and browser gameplay are now exercised as recorded above. Full external transport, firmware host tests, target builds, flashing and bench checks remain pending.
 
 ### Preserved contract baseline
 
@@ -85,22 +102,22 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 
 ## Acceptance matrix
 
-**Not run** means the implementation or procedure has not been executed. **Blocked** identifies additional missing physical evidence; it does not imply that the software portion has been implemented. All physical device identities, profile/calibration hashes, firmware versions and measured results are currently unavailable. A future pass must add its date, exact command/procedure, source revision, configuration and evidence path.
+**Not run** means the implementation or procedure has not been executed. **Blocked** identifies a specific unavailable observation or physical dependency. Partial evidence is stated explicitly. All physical device identities, profile/calibration hashes, firmware versions and measured results are currently unavailable. A future pass must add its date, exact command/procedure, source revision, configuration and evidence path.
 
 | Case | Status | Current evidence or specific next requirement |
 | --- | --- | --- |
-| M0-01 | Passed | Final clean checkout: all 14 setup/check steps passed with empty local caches, unchanged locks and clean Git state; host compilation, native primitives and scoped browser probe passed. The original pointer timeout remains a named M1 input gap. ESP-IDF/CMake unavailable; firmware locks and verified target profiles remain later gates. |
+| M0-01 | Passed | Final clean checkout: all 14 setup/check steps passed with empty local caches, unchanged locks and clean Git state; host compilation, native primitives and scoped browser probe passed. M1 now passes real pointer clicks; the original intermittent cause remains unisolated. ESP-IDF/CMake unavailable; firmware locks and verified target profiles remain later gates. |
 | M0-02 | Passed | Executed pure fixture/rules/projection assertions for 16 cells, 15 passages, golden route, dead end, exact role walls/axes/clues/selections, plus byte-identical shared/private copies. |
 | M0-03 | Passed | M0 audit scope: supplied identities/candidate profiles and unknown facts are recorded; no GPIOs or physical target is selected. Hardware acceptance remains blocked. Incomplete-profile build rejection is Not run until the planned firmware wrapper exists in M3. |
 | M0-04 | Passed | Required no-start gate: 51 tests/0 failures; explicit monotonic clock and queued stale timers, literal pure box effects/persistence completions, strict JSON/durable regressions; no application/runtime startup. Real storage/transport/touch/actuator adapters remain later milestones. |
-| M1-01 | Not run | Implement browser A/B/host sessions and simulated readiness. |
-| M1-02 | Not run | Integrate the tested pure movement and role/phase/version rejection behavior with the application and real browser controls. |
-| M1-03 | Not run | Expand the tested pure projections and inspect real served surfaces, including Mix/esbuild input metadata, bundles and development maps. No game asset build or served-surface privacy test has run. |
-| M1-04 | Not run | Generated host access key selected; implement provisioning/login/rotation/revocation and adversarial authorization checks. Drafting review is not executed security verification. |
-| M1-05 | Not run | Implement explicit ownership/takeover and separate demonstration actors. |
-| M1-06 | Not run | Integrate the tested pure seal/hold rules with authenticated session leases, persistence and browser controls. |
-| M1-07 | Not run | Playwright selected; implement automated lifecycle checks and observe named native blur/visibility/cancellation cases. Synthetic events or headless checks cannot stand in for missing native evidence. |
-| M2-T1 | Not run | Integrate the pure 1,999/2,000 ms boundary proof with session leases, committed solve and dispatch. |
+| M1-01 | Passed | Independent A/B/host contexts, one game across reload, simulated readiness, supervised restart and independent SQLite journal; guarded runtime/conformance and browser scenarios. |
+| M1-02 | Passed | Real movement buttons and native keyboard repeat test, golden route and single board increments; pure/session rejection coverage preserves position. |
+| M1-03 | Passed | Exact role walls/clues; initial HTML, DOM, sampled LiveView diffs/events, bundles and development maps inspected; 16 produced projection cases/40 schema fragments; private fixture excluded. |
+| M1-04 | Passed | Scoped route/event authorization, CSRF, expiry/logout, stopped key replacement and old-cookie rejection; real guard/file/SQLite races and readback. Inside-COMMIT/power-cut injection not claimed. |
+| M1-05 | Passed | Browser/simulated-CYD pairing in both directions, separate host A/B actors, form-safe shortcuts, observer closure, deliberate takeover and stale/mismatched actor rejection. |
+| M1-06 | Passed | No initial selections; correct role clues, wrong paired holds reveal no individual correctness, pause preserves choices, fresh native overlap creates one intent; lost acknowledgement recovery closes without replay. |
+| M1-07 | Blocked | Pointer release/capture loss, trusted touch cancellation, navigation, transport loss, neutral rebind and form typing pass. Trusted headed blur passes; native hidden-tab event remains unobserved on this runner. |
+| M2-T1 | Not run | M1 real session/store proves 1,999/2,000 ms with one intent/claim and no earlier intent. Repeat through the M2 external transport before closing its milestone. |
 | M2-T2 | Not run | Execute the session/protocol 399/400 ms challenge boundary; the pure reducer deadline is tested in M0. |
 | M2-T3 | Not run | Execute expired/reordered/duplicate input cases. |
 | M2-T4 | Not run | Execute lease expiry and 1,500 ms silence recovery. |
@@ -108,11 +125,11 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 | M2-T6 | Not run | Prove heartbeats do not create full snapshots or visible-state revisions. |
 | M2-T7 | Not run | Verify active zero-time hold through session/protocol/UI; the M0 pure projection distinguishes it. |
 | M2-01 | Not run | Implement sequence/result-cache and stale board-version tests. |
-| M2-02 | Not run | Implement session fencing and restart-to-paused tests. |
-| M2-03 | Not run | Audience-specific snapshots selected; implement and test authorized subscribe/bootstrap/revision ordering and scope fencing. |
-| M2-04 | Not run | Implement and measure SQLite lock/write-failure handling. |
-| M2-05 | Not run | Approved recovery exit is specified; implement commit/dispatch fault injection and closure through a newly solved simulated round. |
-| M2-06 | Not run | Recovery disposition, inhibition/seal/acknowledgement, late terminal and Close/preparation race cases are specified; implement and execute them. |
+| M2-02 | Not run | M1 browser/session restart and old-owner fences pass; device close code/welcome and raw queued-envelope cases await M2. |
+| M2-03 | Not run | M1 authorized subscribe/bootstrap and logout cleanup pass; full reordered/equal revision transport conformance remains M2. |
+| M2-04 | Not run | M1 real SQLite locks, receipt/CAS/constraints and independent box failure/readback tests pass; complete measured M2 failure/transport matrix pending. |
+| M2-05 | Not run | M1 atomic win, no restart replay and browser lost-ack closure pass. All precommit/postcommit/predispatch boundaries and fresh post-closure solve await M2. |
+| M2-06 | Not run | M1 immutable observations, Begin/Replace/Close and local seal/acknowledgement flows implemented/tested. External adapter, complete interleaving and cross-adapter traces await M2. |
 | M2-07 | Not run | Mint.WebSocket selected; implement bounded normal clients plus separate raw fault injection and execute protocol bounds/malformed-input cases. |
 | M2-08 | Not run | Implement specified write/operation/teardown guards; prove actual WS/WSS backpressure and independent modeled watchdog behavior, plus queue/acknowledgement cases. |
 | M3-01 | Blocked | Verified profiles, target locks and explicit physical device/port identities missing; build/flash wrapper not implemented. |
@@ -127,9 +144,9 @@ Paths below are relative to `docs/specs/`. These are the historical hashes after
 | M4-06 | Blocked | Measured release travel/rate/timeout and reference missing. Homing tests apply only if a verified home sensor is installed and enabled. |
 | M5-01 | Blocked | Full installed dry-fit, rigid mounts, calibrated clearance, manual release, power and closed-lid radio evidence missing; ten cycles not run. |
 | M5-02 | Not run | No running system for the 30-minute connected observation; later physical evidence must name exact devices. |
-| M5-03 | Not run | Browser game, recovery and demonstration runbook not implemented. |
+| M5-03 | Not run | Browser game and recovery runbook now exist; final hardware demonstration and interview handoff remain later work. |
 | M5-04 | Not run | This initial record exists; final implementation, operational instructions and measured acceptance evidence remain pending. |
 
 ## Next work
 
-Implement M1’s complete Phoenix browser game and explicitly labeled simulated box using the finalized contracts and tested M0 providers. Add the real storage/session/runtime adapters, generated-key authentication, scoped LiveViews and input hooks, then execute application and browser acceptance, including investigation of the retained pointer-click timeout. Continue independent software work while hardware identification remains pending. Notify Rafa which board and power setup to connect when firmware and its test procedure are ready; rediscover identity and the explicit serial port after connection and before flashing. No boards are needed for M1 software verification.
+Close M1-07's native hidden-tab observation on a browser/window environment that exposes it. Continue M2 independent software work when requested: raw device transport, external simulator conformance, complete persistence/dispatch fault matrix and measured WS/WSS deadlines. Keep the browser demonstration runnable. Notify Rafa which board and power setup to connect when firmware and its test procedure are ready; rediscover identity and the explicit serial port after connection and before flashing. No boards are needed for M1 or independent M2 software verification.

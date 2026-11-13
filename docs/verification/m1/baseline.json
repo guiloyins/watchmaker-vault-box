@@ -1,0 +1,25 @@
+{
+  "started_at_utc": "2026-11-13T00:12:20.830908+00:00",
+  "source_commit": "9ba5eb06cd876f372249df49f73376b74d93f8d2",
+  "files": {
+    "docs/designs/watchmakers-vault.md": "5969db47c3e233f0aaa6e82a8cf8cb6164f3c53ef4c988629f8bd477abaf9845",
+    "docs/specs/JSON_VALIDATION.md": "861e945e0ae613458a4e2b916061e20b50d309dc8981640518596842c96e78ee",
+    "docs/specs/SPEC_VALIDATION.md": "d7e9430d131b82a0549891ed48e0275b4d57635c130e01d60901085ba78343a4",
+    "docs/specs/CODEX_START_HERE.md": "fd9f4956f3f92256772ca7827e4f126c0f02203bd029f87edb526f0ba9c21159",
+    "docs/specs/PROTOCOL_V1.md": "c75ed1c7cc0b51ae4acd9006b924fb88bdef5b01ec73ccbba7b1e47817324444",
+    "docs/specs/README.md": "5151140ef280071ea365a2d41fc2a9a407ebee977d492c09bb4b923693a55878",
+    "docs/specs/requirements-spec.txt": "756cc9e506ae4ee1a6f6c0507088b5cfc0dc8ba350fb2d2d46f1ffa72033adb6",
+    "docs/specs/WATCHMAKERS_VAULT_HARDWARE_UPDATE.md": "231866dab52e05b814cee6b049614d10a8faba95e19b491d0c44c04daf215f8d",
+    "docs/specs/LOCAL_SERVICE_V1.md": "e2f8b78bf045c0cc8e8d54199962cbf7367696a37dbf54b0f3b65dcf733bc816",
+    "docs/specs/IMPLEMENTATION_CONTRACTS.md": "384516983f9b362d00b2dccc8714000402815f233bee73d56af9960f26dce49f",
+    "docs/specs/HARDWARE_AUDIT.md": "cc9dd35c457e41bc1179e670b35799433dce7e7b61da02fe90f6879ac58f9cd1",
+    "docs/specs/WATCHMAKERS_VAULT_SPEC.md": "e4024dd5cdd095be256a08de4cf49f67d645bf8e5b9f7a6d4430ef596ae12625",
+    "docs/specs/verify_contracts.py": "cccb9f54056b5c1658981a246e044a35a0d7bd29d973f0477caa10ba1ff9a42b",
+    "docs/specs/ACCEPTANCE.md": "fe8c4cabab90243c563fd73066b416f07b01057f2ad429a73e472ce1e4dc4113",
+    "docs/specs/contracts/protocol-v1.schema.json": "ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712",
+    "docs/specs/fixtures/protocol-examples.json": "f14ab4045ad809ed7df813841c09fb6925f61d2e8938301c27b43bbcb49fcaca",
+    "docs/specs/fixtures/maze-v1.private.json": "d81ad5c348811bb323006c7a1c71683550dc5946d8aa070d7dc90c79792e073d",
+    "docs/specs/fixtures/timing-cases.json": "e334943193ba829788d773a4c006ba4ff04e64f101fc8a896018e1a8498d632d"
+  },
+  "scope": "M1 application/browser/simulated box; hardware not requested"
+}

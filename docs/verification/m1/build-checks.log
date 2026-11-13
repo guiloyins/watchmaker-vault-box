@@ -1,0 +1,23 @@
+Final build verification (2026-11-13 UTC, macOS x86_64)
+Commands run from server/ with repository-local MIX_HOME and HEX_HOME.
+
+MIX_ENV=test mix format --check-formatted
+Exit 0.
+
+MIX_ENV=test mix compile --force --warnings-as-errors
+Exit 0: Compiling 65 files (.ex); Generated vault app. No warnings.
+
+MIX_ENV=test mix assets.build
+Exit 0: app.js 344.2 kB, app.css 15.7 kB, app.js.map 650.5 kB, app.css.map 26.2 kB.
+Asset inputs and generated outputs passed the privacy check.
+
+MIX_ENV=prod mix compile --warnings-as-errors
+Exit 0: Compiling 8 changed files (.ex); Generated vault app. No warnings.
+
+MIX_ENV=prod mix assets.deploy
+Exit 0: app.js 154.7 kB, app.css 12.8 kB; privacy audit and phx.digest passed.
+No maps retained. Raw deployment output is in release-assets.log.
+
+A concurrent verification attempt force-recompiled the same test build while a test VM admitted the app,
+causing a missing BEAM error. The final server suite was rerun alone after compilation; its separate log
+is the result of that corrected execution order. This was a runner collision, not a passing test run.

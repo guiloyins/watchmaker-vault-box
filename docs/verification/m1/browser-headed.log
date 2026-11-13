@@ -1,0 +1,8 @@
+
+> test:headed
+> VAULT_HEADED=1 playwright test --grep trusted headed tab blur|trusted hidden tab
+
+{"type":"environment","node":"20.17.0","npm":"11.4.2","playwright":"1.64.1","browser":"Chrome for Testing","browserVersion":"156.0.8078.4","browserRevision":"1248","platform":"darwin","architecture":"x64","headed":true}
+{"type":"scenario","id":"M1-07","title":"M1-07 trusted headed tab blur clears active input","status":"passed","durationMs":9960}
+{"type":"scenario","id":"M1-07","title":"M1-07 trusted hidden tab clears active input","status":"skipped","durationMs":11510,"nativeBlocked":true}
+{"type":"summary","status":"passed"}

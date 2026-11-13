@@ -1,0 +1,90 @@
+{
+  "milestone": "M1",
+  "recorded_at_utc": "2026-11-13T00:47:10.367319+00:00",
+  "source_commit": "821ccdc985568875330bc43247f20f3d7b84774e",
+  "implementation": "complete",
+  "verification": "incomplete: native hidden-tab observation blocked",
+  "test_results": {
+    "pure_m0": {
+      "passed": 51,
+      "failed": 0
+    },
+    "application_storage_runtime": {
+      "passed": 40,
+      "failed": 0
+    },
+    "headless_browser": {
+      "passed": 15,
+      "skipped": 2
+    },
+    "headed_native": {
+      "passed": 1,
+      "skipped": 1
+    },
+    "format": "passed",
+    "test_compile_warnings_as_errors": "passed",
+    "production_compile_warnings_as_errors": "passed",
+    "development_assets_and_maps": "passed",
+    "production_assets_digest_no_maps": "passed",
+    "projection_oracle": {
+      "cases": 16,
+      "schema_fragments": 40,
+      "status": "passed"
+    },
+    "normal_phoenix_launch_and_guard_cleanup": "passed"
+  },
+  "cases": {
+    "M1-01": "Passed",
+    "M1-02": "Passed",
+    "M1-03": "Passed",
+    "M1-04": "Passed",
+    "M1-05": "Passed",
+    "M1-06": "Passed",
+    "M1-07": "Blocked"
+  },
+  "pointer_timeout": {
+    "current_trusted_pointer_tests": "passed",
+    "original_minimal_markup_with_and_without_doctype": "passed",
+    "historical_cause": "not isolated; timeout did not recur"
+  },
+  "native_gap": "Pinned Chromium remained visible after tab activation and minimization; trusted blur passed. Native CUA selection could not target the isolated process. No synthetic hidden event substituted.",
+  "simulated_only": true,
+  "boards_needed_now": false,
+  "source_contracts_and_design_unchanged": true,
+  "not_claimed": [
+    "physical latch position or lid state",
+    "firmware compile, flash or board testing",
+    "power-cut durability or interruption inside SQLite COMMIT",
+    "M2 raw device transport, WS/WSS pressure and complete crash matrix"
+  ],
+  "demo": {
+    "url": "http://localhost:4000/login",
+    "data_directory": "data/",
+    "credentials": "mode-0600 files in mode-0700 data directory; excluded from version control",
+    "observed_http_routes": [
+      "/health",
+      "/login",
+      "/join",
+      "/assets/app.js",
+      "/assets/app.css"
+    ]
+  },
+  "evidence_sha256": {
+    "README.md": "bd6dc0ea451dbeb45efb6506eeb6183d2639ecc5e34cf0cd747b83fa132cb771",
+    "baseline.json": "39c68beb6997ab77727d5858ed140b31d95355dd02860555a3dcd4173ef55d24",
+    "browser-headed.log": "a35c8a7a55b119876a7f3dc8153e4cf33093633dd72f398e1a159834a5ec0ce8",
+    "browser-headless.log": "d9917425b4dc8e44da0f2a4373cd17f9c7768a85135c67568a46f63f8c20418b",
+    "browser-logout.log": "4c85536d2235ef36b9d7996f4c9985ce6f1e3b8e611f1f2abbb1c17ffadbc3e1",
+    "browser-ownership-restart.log": "ae89abc32c266b2ad8ddcefae52f00454ea9457155d14bf0ea5e3e2317fa6a2b",
+    "build-checks.log": "98cdea3c7e54b21203fe75849c8f435588dff34f18a722b06b54c5915bec9497",
+    "contracts.log": "f11f3a17e85d26a1d2792be8fdb30e3136b1990d6697e659ab79bf6bcd61c2d4",
+    "launch-check.log": "188cebaae4168171bb9209910be117ad1c846ccd010b8d81eece99dacf830f42",
+    "pointer-probe.log": "7cf74b5ecb876a193b8d7b7000a02a5917b52f6b03e6e969e6bd6cf777e464c0",
+    "release-assets.log": "798aa00769b3be37762ba4f88b9ed6503c8107857f525ce391f3d925c819f890",
+    "server-checks.log": "87bd7d7878e5e11746fce75a246be3b07bdf0799702efbe8cfbad510aca96b16",
+    "storage-checks.json": "4ea6918ca58a74030fb2c87a91c47d441f3c984f598d4de619ddf9a515d7f4c9",
+    "storage-checks.log": "19807585d4c1ecc8c5f074ec7c89ae5740567aede456f3190b49359accbf93cc",
+    "updates-checks.log": "a6f3ada6b6a63d6481ad4d4201368fbc6740f46a1b938f46f6a03074916d3683",
+    "work-log.md": "4bd2538f99bb5441d5dd1d5e71beeb2961e8b52b5782985b20f9d29a97cfbebb"
+  }
+}

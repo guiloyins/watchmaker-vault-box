@@ -1,0 +1,38 @@
+{
+  "suite": "M1 server SQLite, guarded setup, and credential maintenance",
+  "command": "cd server && MIX_HOME=\"$PWD/../.cache/mix\" HEX_HOME=\"$PWD/../.cache/hex\" MIX_ENV=test mix test --no-start test/vault/{maintenance_guard,credentials,game_store}_test.exs",
+  "runtime": {
+    "os": "macOS 26.6.2 (25G83)",
+    "filesystem": "APFS",
+    "elixir": "1.18.4",
+    "otp": "28.0.1",
+    "ecto_sql": "3.14.0",
+    "ecto_sqlite3": "0.26.0",
+    "exqlite": "0.43.0",
+    "sqlite": "3.54.1"
+  },
+  "result": {
+    "status": "Passed",
+    "tests": 14,
+    "failures": 0,
+    "seed": 648821,
+    "elapsed_seconds": 34.5,
+    "output": "storage-checks.log"
+  },
+  "observed": [
+    "Version-one Ecto migration, exact declared schema and immutable history constraints, and effective WAL/FULL/foreign key/100 ms settings.",
+    "Checkpoint compare-and-swap and original request receipt readback; one solve per original attempt and one claim per original binding.",
+    "Durable exact-report deduplication and same-sequence contradiction retention; Begin retry after replacement, serialized Close/replacement, and rejection of Reset before required closure.",
+    "Independent VM contention, owner crash and partial markers, explicit recovery, canonical directory alias, and ownership-checked cleanup.",
+    "Exclusive mode-0600 key file creation and file/directory synchronization, rejected existing/symlink/bad output, guarded local simulator stop and stopped host replacement.",
+    "A real competing SQLite writer prevented activation after protected output creation. Status preserved the old active epoch and reported the orphan inactive. A separate run lost the task reply after commit and status verified the new active epoch.",
+    "Host, player and device credentials retain independent scopes. Browser session validation rejects invalid scope/epoch, logout and expired or forged session values; attempt throttling bounds repeated exchanges.",
+    "Stopped lost-key replacement preserved terminal and unresolved release history across paused checkpoint restart, including no reconstructed dispatch and the distinct Reset gates.",
+    "Revocation during a held SQLite writer prevented both a new checkpoint and retrieval of an earlier private operation receipt."
+  ],
+  "limits": [
+    "The lost-reply case terminates the task VM after successful activation and before reporting success. An interruption inside SQLite COMMIT with unknown durability was not injected.",
+    "SQLite settings and APFS file/directory sync were observed. Power-cut survival and storage-device guarantees were not tested.",
+    "The suite exercises real SQLite and the in-process simulated box. Browser route and hardware verification are separate."
+  ]
+}
