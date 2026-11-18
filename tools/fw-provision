@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+if [ -n "${VAULT_SERVICE_PYTHON:-}" ]; then
+  exec "$VAULT_SERVICE_PYTHON" "$repo/tools/firmware/$(basename "$0")_cli.py" "$@"
+fi
+if [ -x "$repo/.venv/bin/python" ]; then
+  exec "$repo/.venv/bin/python" "$repo/tools/firmware/$(basename "$0")_cli.py" "$@"
+fi
+exec python3 "$repo/tools/firmware/$(basename "$0")_cli.py" "$@"

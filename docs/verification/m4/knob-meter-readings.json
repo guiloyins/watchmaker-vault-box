@@ -1,0 +1,60 @@
+{
+  "record_version": 1,
+  "recorded_on": "2026-11-15",
+  "source": "Rafa user-reported B10K bench measurements",
+  "instrument_model": "FNIRSI DMT-99",
+  "requested_setup": "Potentiometer completely disconnected from power and C5; resistance function selected",
+  "outer_terminals": {
+    "reported_reading": "10.02",
+    "reported_unit": "kΩ",
+    "constant_while_turning": true,
+    "resistance_ohms": 10020
+  },
+  "middle_to_outer_minimum": {
+    "reported_reading": "1.800",
+    "reported_unit": "Ω",
+    "resistance_ohms": 1.8
+  },
+  "middle_to_outer_maximum": {
+    "reported_reading": "10.02",
+    "reported_unit": "kΩ",
+    "resistance_ohms": 10020
+  },
+  "assessment": "User-reported 10.02 kΩ track, middle resistance sweep and powered wiper voltages approximately 0/2/3.3 V establish a functional potentiometer. Middle-position voltage is approximate, not a linearity calibration. Exact upper input envelope, wiring inspection, ADC raw range/noise and firmware activation remain pending.",
+  "wiper_verified": true,
+  "wired_to_c5": true,
+  "adc_enabled": false,
+  "wiper_verification_scope": "User-reported disconnected resistance sweep and powered functional voltage sweep; no ADC conversion or linearity acceptance",
+  "next_requested_setup": "Leave middle wiper disconnected from GPIO1; motor/LED/external power disconnected. Identify actual motor driver traces/jumper and separate 5 V breakout before final enabled profile/ADC work.",
+  "powered_wiper_volts": {
+    "minimum_approx": 0,
+    "middle_approx": 2,
+    "maximum_approx": 3.3,
+    "absolute_rotation_direction_confirmed": false,
+    "exact_full_scale_maximum_verified": false,
+    "source": "Rafa user-reported end/middle/end sweep",
+    "raw_report": "I could read now. It's around 3.3 at full, 2 round the middle and zero when turn the other way"
+  },
+  "wiring_confirmation_pending": false,
+  "powered_wiper_check": {
+    "recorded_on": "2026-11-15",
+    "raw_report": "im only reading 0v",
+    "reported_volts": 0,
+    "positions_confirmed": false,
+    "status": "Earlier zero-only report superseded by explicit functional voltage sweep"
+  },
+  "powered_terminal_diagnostics": {
+    "recorded_on": "2026-11-15",
+    "source": "Rafa user report",
+    "c5_3v3_to_ground_volts": 3.3,
+    "middle_to_c5_ground_volts": 0,
+    "outer_1_to_c5_ground_volts": 3.3,
+    "outer_2_to_c5_ground_volts": 0,
+    "knob_position": null,
+    "outer_labels": "outer_1 is the first reported outer terminal; physical left/right orientation unspecified",
+    "outer_2_connection": "User identifies this as the terminal connected to C5 G",
+    "assessment": "User-reported outer voltages match intended supply: 3.3 V and 0 V, referenced to C5 G. This does not establish the wiper sweep or independent continuity/load testing."
+  },
+  "wiring_scope": "User-reported outer-terminal supply and wiper measurements; wiper remains disconnected from GPIO1 per requested setup, not visually inspected",
+  "functional_voltage_sweep_passed": true
+}

@@ -1,0 +1,22 @@
+{
+  "observed_at": "2026-11-14T02:07:16.589700+00:00",
+  "session": "session_f27025abe735b7434d6c075659f22cc7",
+  "round": 1,
+  "phase": "solved",
+  "paused": false,
+  "command_id": "command_03296b5e9103ad32b6542755c91a1649",
+  "release_intents": 1,
+  "dispatch_claimed": true,
+  "dispatch_retired": false,
+  "simulator_session_entries": 1,
+  "simulator_matching_entries": 1,
+  "simulator_accepted": 1,
+  "simulator_completed": 1,
+  "simulator_errors": 0,
+  "simulator_conflicted": false,
+  "release_status": "motion_complete",
+  "motor_active": false,
+  "latch_position": "unknown",
+  "position_basis": "unverified",
+  "command_confirmation": null
+}

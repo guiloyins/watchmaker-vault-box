@@ -1,0 +1,26 @@
+{
+  "recorded_at": "2026-11-13T23:40:18.733541+00:00",
+  "user_report": "Stayed connected after 10 seconds on table, pickup/hold and return without touchscreen input",
+  "firmware": "vault-cyd-m3-network-diagnostics",
+  "diagnostics_version": 2,
+  "usb_capture": "cyd-a-disconnect-netdiag-v2-pickup-01.json",
+  "host_capture": "dual-cyd-pickup-observer-01.json",
+  "sample_count": 239,
+  "requested_window_seconds": 120,
+  "boot_count": 1,
+  "transport_generations": [
+    1
+  ],
+  "failure_count_before": 0,
+  "failure_count_after": 0,
+  "all_samples_online": true,
+  "rssi_dbm_range": [
+    -77,
+    -62
+  ],
+  "channel": 1,
+  "diagnostic_heap_minimum_bytes": 48832,
+  "physical_move_accepted": false,
+  "release_requested": false,
+  "interpretation": "User-reported pickup retest passed with uninterrupted diagnostic observation. Does not establish original cause or normal-image acceptance."
+}

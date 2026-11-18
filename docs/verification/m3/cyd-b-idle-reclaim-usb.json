@@ -1,0 +1,140 @@
+[
+  {
+    "observed_at": "2026-11-13T19:33:26.551164+00:00",
+    "status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": {
+          "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+          "connection_id": "conn_d69e1d0615a38ca88f02926f0aa92e6b",
+          "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+        },
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 1,
+        "service_inhibited": false,
+        "service_revision": 4,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "bd7a2e5a3ca0c78854c515065c1ccbb5",
+      "service_revision": 4,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    }
+  },
+  {
+    "observed_at": "2026-11-13T19:33:31.811666+00:00",
+    "status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": {
+          "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+          "connection_id": "conn_d69e1d0615a38ca88f02926f0aa92e6b",
+          "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+        },
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 1,
+        "service_inhibited": false,
+        "service_revision": 4,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "b943cb622e6a100bc09e2f48caaaf12b",
+      "service_revision": 4,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    }
+  },
+  {
+    "observed_at": "2026-11-13T19:33:37.088313+00:00",
+    "status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": {
+          "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+          "connection_id": "conn_d69e1d0615a38ca88f02926f0aa92e6b",
+          "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+        },
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 1,
+        "service_inhibited": false,
+        "service_revision": 4,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "8980d4cfc9f048659cc897eb12f3c715",
+      "service_revision": 4,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    }
+  }
+]

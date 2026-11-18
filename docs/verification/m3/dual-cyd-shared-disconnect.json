@@ -1,0 +1,46 @@
+{
+  "recorded_at": "2026-11-13T23:54:14.967984+00:00",
+  "user_report": "Both had disconnected; user tapped the role on each; both now paused. No successful swipe reported.",
+  "host_state": "dual-cyd-after-role-loss-host.json",
+  "device_capture": "cyd-a-disconnect-netdiag-v2-after-role-loss.json",
+  "server_events": [
+    {
+      "time": "2026-11-13T18:46:51.214-05:00",
+      "role": "a",
+      "cause": "transport_closed",
+      "binding_generation": 170,
+      "admission_age_ms": 1094,
+      "tokens_after_admit": 9000
+    },
+    {
+      "time": "2026-11-13T18:46:51.222-05:00",
+      "role": "b",
+      "cause": "transport_closed",
+      "binding_generation": 168,
+      "admission_age_ms": 1102,
+      "tokens_after_admit": 9000
+    }
+  ],
+  "cyd_a_failure": {
+    "same_boot": true,
+    "generation": 1,
+    "uptime_ms": 637311,
+    "stage": 24,
+    "origin": "sdk_event",
+    "send_phase": 6,
+    "send_phase_label": "raw_error",
+    "send_ms": 27,
+    "sdk_error": 0,
+    "socket_errno": 0,
+    "controller_reason": 0,
+    "ack_age_ms": null,
+    "websocket_close_code": null
+  },
+  "mac_checks": {
+    "sleep_wake_incident_interval": "No sleep/wake event in bounded 18:35-18:49 EST log query; current no-idle-sleep assertion held by desktop app",
+    "active_route": "Wi-Fi en0",
+    "ethernet_adapter": "en5, inactive physical link",
+    "wifi_incident_log": "No disassociation/roam event identified in bounded interval; numeric link metrics do not identify outage cause"
+  },
+  "interpretation": "A failed during raw socket write; not an owner/touch retirement. Its byte-delivery stage is ambiguous, so no replay or deadline relaxation. B close reason unavailable; near-simultaneous server closes motivate shared network path investigation. First swipe remains unverified."
+}

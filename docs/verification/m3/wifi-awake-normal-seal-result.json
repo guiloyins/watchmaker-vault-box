@@ -1,0 +1,17 @@
+{
+  "status": "passed for normal-image final seal in resumed mixed session",
+  "user_report": "Yes, Puzzle Solved appears",
+  "observer": "cyd-a-wifi-awake-normal-seal-observer.json",
+  "observed_shared_hold_to_solved_ms": 2042,
+  "observed_solved_to_motion_complete_ms": 1223,
+  "sampling_resolution_ms": 100,
+  "release_intents": 1,
+  "simulator_accepted": 1,
+  "simulator_completed": 1,
+  "errors": 0,
+  "physical_latch_position": "unknown / unverified",
+  "normal_usb_firmware": true,
+  "before": "wifi-awake-release-before.json",
+  "after": "wifi-awake-release-after.json",
+  "limitation": "Resumed mixed session across firmware updates; clean full round from lobby on final image and CYD B still pending. Journal does not count transport retries or individual simulated motor steps."
+}

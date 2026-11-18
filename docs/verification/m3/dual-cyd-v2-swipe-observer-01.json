@@ -1,0 +1,36 @@
+{
+  "started_at": "2026-11-13T23:40:22.797Z",
+  "reason": "timeout",
+  "records": [
+    {
+      "elapsed_ms": 21,
+      "phase": "maze",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "cell": 12,
+          "board": 0,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "cell": 12,
+          "board": 0,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    }
+  ]
+}

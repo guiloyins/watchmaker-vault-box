@@ -1,0 +1,35 @@
+{
+  "profile_version": 1,
+  "verified": false,
+  "test_only": false,
+  "target": null,
+  "reserved_gpio": null,
+  "memory": null,
+  "serial": null,
+  "display": null,
+  "touch": null,
+  "actuator": null,
+  "partitions": null,
+  "profile_id": "cyd-yellow-candidate",
+  "app": "cyd",
+  "evidence": {
+    "observed": [
+      "One board marked ESP32-2432S028 with Micro-USB and USB-C, ESP-32 module, CH340C and TPM408-2.8 markings."
+    ],
+    "documented_candidate": [
+      "Maintainer ESP32-2432S028Rv3 definition: ST7789, XPT2046 and 240 x 320; revision and pin map remain unresolved."
+    ],
+    "sources": [
+      "docs/hardware/board-audit.md",
+      "docs/specs/WATCHMAKERS_VAULT_HARDWARE_UPDATE.md"
+    ],
+    "pin_sources": {},
+    "unresolved": [
+      "Second terminal match and exact board revision",
+      "Target, flash, PSRAM and partition layout",
+      "LCD and touch chip identity, buses and GPIOs",
+      "Backlight, orientation, color order and calibration",
+      "USB adapter reset behavior and 5 V source"
+    ]
+  }
+}

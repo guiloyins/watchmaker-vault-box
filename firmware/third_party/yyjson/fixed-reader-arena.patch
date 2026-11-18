@@ -1,0 +1,49 @@
+--- a/yyjson.c
++++ b/yyjson.c
+@@ -5349,6 +5349,21 @@
+ #undef return_err
+ }
+ 
++/* Vault uses strict, bounded-depth, in-situ complete-document parsing.
++   Clamp geometric over-allocation without reducing the valid value capacity.
++   At most half the input bytes plus one can be values in a complete document.
++   For malformed prefixes, reserve one slot per live container (at most 64)
++   and eight additional slots for root, lookahead and partial tokens. */
++#if defined(YYJSON_VAULT_FIXED_ARENA)
++#define yyjson_fixed_arena_growth() do { \
++    usize fixed_limit = hdr_len + dat_len / 2 + 72; \
++    alc_len = yyjson_min(alc_len, fixed_limit); \
++    if (alc_len <= alc_old) goto fail_alloc; \
++} while (false)
++#else
++#define yyjson_fixed_arena_growth() ((void)0)
++#endif
++
+ /** Read JSON document (accept all style, but optimized for minify). */
+ static_inline yyjson_doc *read_root_minify(u8 *hdr, u8 *cur, u8 *eof,
+                                            yyjson_alc alc,
+@@ -5375,6 +5390,7 @@
+         usize val_ofs = (usize)(val - val_hdr); \
+         usize ctn_ofs = (usize)(ctn - val_hdr); \
+         alc_len += alc_len / 2; \
++        yyjson_fixed_arena_growth(); \
+         if ((sizeof(usize) < 8) && (alc_len >= alc_max)) goto fail_alloc; \
+         val_tmp = (yyjson_val *)alc.realloc(alc.ctx, (void *)val_hdr, \
+             alc_old * sizeof(yyjson_val), \
+@@ -5802,6 +5818,7 @@
+         usize val_ofs = (usize)(val - val_hdr); \
+         usize ctn_ofs = (usize)(ctn - val_hdr); \
+         alc_len += alc_len / 2; \
++        yyjson_fixed_arena_growth(); \
+         if ((sizeof(usize) < 8) && (alc_len >= alc_max)) goto fail_alloc; \
+         val_tmp = (yyjson_val *)alc.realloc(alc.ctx, (void *)val_hdr, \
+             alc_old * sizeof(yyjson_val), \
+@@ -6251,6 +6268,8 @@
+ /*==============================================================================
+  * MARK: - JSON Reader (Public)
+  *============================================================================*/
++
++#undef yyjson_fixed_arena_growth
+ 
+ yyjson_doc *yyjson_read_opts(char *dat, usize len,
+                              yyjson_read_flag flg,

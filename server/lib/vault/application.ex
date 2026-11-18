@@ -1,7 +1,7 @@
 defmodule Vault.Application do
   @moduledoc "Guarded application admission; storage is validated before games or HTTP."
   use Application
-  alias Vault.{Credentials, GameStore, MaintenanceGuard, Repo}
+  alias Vault.{Credentials, MaintenanceGuard, Repo}
 
   @impl true
   def start(_type, _args) do
@@ -33,7 +33,7 @@ defmodule Vault.Application do
     origin = Application.get_env(:vault, :origin)
     uri = if is_binary(origin), do: URI.parse(origin)
 
-    if Application.get_env(:vault, :box_mode) == :simulated and
+    if Application.get_env(:vault, :box_mode) in [:simulated, :physical] and
          is_tuple(Application.get_env(:vault, :bind)) and
          is_integer(Application.get_env(:vault, :port)) and
          uri != nil and uri.scheme in ["http", "https"] and is_binary(uri.host) and
@@ -100,20 +100,13 @@ defmodule Vault.Application do
          ) do
       {:ok, supervisor} ->
         result =
-          with :ok <- GameStore.verify_open(paths.store_id),
-               {:ok, %{game: game}} <- GameStore.active(),
-               true <-
-                 game.box_device_id == paths.simulator_device_id and game.box_mode == "simulated",
-               device <- Repo.get(Vault.GameStore.Device, game.box_device_id),
-               true <-
-                 device.transport ==
-                   if(paths.simulator_transport == :external, do: "raw", else: "internal") do
+          with :ok <- Credentials.verify_server(paths) do
             children = [
               {Phoenix.PubSub, name: Vault.PubSub},
               {Registry, keys: :unique, name: Vault.Registry},
               {DynamicSupervisor, name: Vault.GameSupervisor, strategy: :one_for_one},
               {DynamicSupervisor, name: Vault.ControllerSupervisor, strategy: :one_for_one},
-              if(paths.simulator_transport == :internal,
+              if(Map.get(paths, :simulator_transport) == :internal,
                 do:
                   {Vault.SimulatedBox,
                    path: paths.simulator_database,

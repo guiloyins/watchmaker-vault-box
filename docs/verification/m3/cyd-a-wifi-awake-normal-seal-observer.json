@@ -1,0 +1,160 @@
+{
+  "started_at": "2026-11-13T18:49:10.795Z",
+  "reason": "stop",
+  "records": [
+    {
+      "elapsed_ms": 4,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 10807,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": true,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 72084,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": true,
+          "hold_ms": 1,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": true,
+          "hold_ms": 1,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 74126,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": false,
+      "box": "Armed",
+      "release": "pending",
+      "roles": {
+        "a": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 74328,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": false,
+      "box": "Setup required",
+      "release": "accepted",
+      "roles": {
+        "a": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 74431,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Setup required",
+      "release": "accepted",
+      "roles": {
+        "a": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 75349,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Setup required",
+      "release": "motion_complete",
+      "roles": {
+        "a": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    }
+  ]
+}

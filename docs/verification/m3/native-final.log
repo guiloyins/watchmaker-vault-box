@@ -1,0 +1,83 @@
+-- The C compiler identification is AppleClang 21.0.0.21000101
+-- The CXX compiler identification is AppleClang 21.0.0.21000101
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done (2.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: /workspace/watchmaker_vault/firmware/build/native-final
+[ 11%] Building CXX object components/vault_json/CMakeFiles/vault_json.dir/json_number.cpp.o
+[ 11%] Building CXX object components/vault_json/CMakeFiles/vault_json.dir/vault_json.cpp.o
+[ 11%] Building CXX object components/vault_display/CMakeFiles/vault_display.dir/vault_display.cpp.o
+[ 11%] Building CXX object components/vault_transport/CMakeFiles/vault_transport.dir/vault_transport.cpp.o
+[ 14%] Linking CXX static library libvault_transport.a
+[ 17%] Building CXX object components/vault_display/CMakeFiles/vault_display.dir/touch_state.cpp.o
+[ 20%] Building CXX object components/vault_display/CMakeFiles/vault_display.dir/self_test.cpp.o
+[ 22%] Building CXX object components/vault_json/CMakeFiles/vault_json.dir/json_writer.cpp.o
+[ 22%] Built target vault_transport
+[ 25%] Building C object components/vault_json/CMakeFiles/vault_json.dir/__/__/third_party/yyjson/yyjson.c.o
+[ 28%] Linking CXX static library libvault_display.a
+[ 28%] Built target vault_display
+[ 31%] Linking CXX static library libvault_json.a
+[ 31%] Built target vault_json
+[ 34%] Building CXX object components/vault_protocol/CMakeFiles/vault_protocol.dir/vault_protocol.cpp.o
+[ 37%] Linking CXX static library libvault_protocol.a
+[ 37%] Built target vault_protocol
+[ 48%] Building CXX object tests/CMakeFiles/json_conformance_runner.dir/json_conformance_runner.cpp.o
+[ 48%] Building CXX object components/vault_device/CMakeFiles/vault_device.dir/vault_service.cpp.o
+[ 48%] Building CXX object components/vault_device/CMakeFiles/vault_device.dir/vault_storage.cpp.o
+[ 48%] Building CXX object components/vault_device/CMakeFiles/vault_device.dir/vault_device.cpp.o
+[ 51%] Linking CXX static library libvault_device.a
+[ 51%] Built target vault_device
+[ 54%] Linking CXX executable json_conformance_runner
+[ 62%] Building CXX object tests/CMakeFiles/device_test.dir/device_test.cpp.o
+[ 62%] Building CXX object tests/CMakeFiles/protocol_test.dir/protocol_test.cpp.o
+[ 62%] Building CXX object tests/CMakeFiles/json_test.dir/json_test.cpp.o
+[ 62%] Built target json_conformance_runner
+[ 65%] Building CXX object tests/CMakeFiles/touch_test.dir/touch_test.cpp.o
+[ 68%] Linking CXX executable protocol_test
+[ 71%] Linking CXX executable json_test
+[ 71%] Built target protocol_test
+[ 74%] Linking CXX executable touch_test
+[ 77%] Building CXX object tests/CMakeFiles/display_test.dir/display_test.cpp.o
+[ 77%] Built target json_test
+[ 80%] Building CXX object tests/CMakeFiles/transport_test.dir/transport_test.cpp.o
+[ 80%] Built target touch_test
+[ 82%] Building CXX object tests/CMakeFiles/service_test.dir/service_test.cpp.o
+[ 85%] Linking CXX executable device_test
+[ 85%] Built target device_test
+[ 88%] Building CXX object tests/CMakeFiles/controller_runner.dir/controller_runner.cpp.o
+[ 91%] Linking CXX executable transport_test
+[ 91%] Built target transport_test
+[ 94%] Linking CXX executable service_test
+[ 97%] Linking CXX executable display_test
+[ 97%] Built target display_test
+[ 97%] Built target service_test
+[100%] Linking CXX executable controller_runner
+[100%] Built target controller_runner
+Test project /workspace/watchmaker_vault/firmware/build/native-final
+    Start 1: json
+1/7 Test #1: json .............................   Passed    3.82 sec
+    Start 2: protocol
+2/7 Test #2: protocol .........................   Passed    0.46 sec
+    Start 3: device
+3/7 Test #3: device ...........................   Passed    0.49 sec
+    Start 4: touch
+4/7 Test #4: touch ............................   Passed    0.39 sec
+    Start 5: display
+5/7 Test #5: display ..........................   Passed    0.53 sec
+    Start 6: transport
+6/7 Test #6: transport ........................   Passed    0.42 sec
+    Start 7: service
+7/7 Test #7: service ..........................   Passed    0.57 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) =   6.68 sec

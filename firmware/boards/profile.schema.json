@@ -1,0 +1,955 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vault firmware board profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "profile_version",
+    "profile_id",
+    "app",
+    "verified",
+    "test_only",
+    "target",
+    "evidence",
+    "reserved_gpio",
+    "memory",
+    "serial",
+    "display",
+    "touch",
+    "actuator",
+    "partitions"
+  ],
+  "properties": {
+    "profile_version": {
+      "const": 1
+    },
+    "profile_id": {
+      "$ref": "#/$defs/id"
+    },
+    "app": {
+      "enum": [
+        "cyd",
+        "box"
+      ]
+    },
+    "verified": {
+      "enum": [
+        true,
+        false
+      ]
+    },
+    "test_only": {
+      "enum": [
+        true,
+        false
+      ]
+    },
+    "target": {
+      "anyOf": [
+        {
+          "enum": [
+            "esp32",
+            "esp32s3",
+            "esp32c5"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "reserved_gpio": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gpio"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "memory": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/memory"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "serial": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/serial"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "display": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/display"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "touch": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/touch"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "actuator": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/actuator"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "partitions": {
+      "anyOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/partition"
+          },
+          "minItems": 2,
+          "maxItems": 16,
+          "uniqueItems": false
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "verified_unit_macs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(?:[0-9a-f]{2}:){5}[0-9a-f]{2}$"
+      }
+    },
+    "provisioning_predecessor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile_id",
+        "profile_sha256"
+      ],
+      "properties": {
+        "profile_id": {
+          "$ref": "#/$defs/id"
+        },
+        "profile_sha256": {
+          "type": "string",
+          "minLength": 64,
+          "maxLength": 64,
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verified": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "memory": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "serial": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "reserved_gpio": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "partitions": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "test_only": {
+            "const": false
+          },
+          "evidence": {
+            "properties": {
+              "unresolved": {
+                "maxItems": 0
+              },
+              "observed": {
+                "minItems": 1
+              },
+              "sources": {
+                "minItems": 1
+              },
+              "pin_sources": {
+                "minProperties": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "test_only": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "memory": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "serial": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "reserved_gpio": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "partitions": {
+            "not": {
+              "type": "null"
+            }
+          },
+          "verified": {
+            "const": false
+          },
+          "evidence": {
+            "properties": {
+              "unresolved": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "app": {
+            "const": "cyd"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "target": {
+            "anyOf": [
+              {
+                "enum": [
+                  "esp32",
+                  "esp32s3"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actuator": {
+            "type": "null"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "target": {
+            "anyOf": [
+              {
+                "enum": [
+                  "esp32c5"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "display": {
+            "type": "null"
+          },
+          "touch": {
+            "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {
+            "properties": {
+              "app": {
+                "const": "cyd"
+              }
+            }
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "verified": {
+                    "const": true
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "test_only": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "display": {
+            "$ref": "#/$defs/display"
+          },
+          "touch": {
+            "$ref": "#/$defs/touch"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {
+            "properties": {
+              "app": {
+                "const": "box"
+              }
+            }
+          },
+          {
+            "anyOf": [
+              {
+                "properties": {
+                  "verified": {
+                    "const": true
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "test_only": {
+                    "const": true
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "actuator": {
+            "$ref": "#/$defs/actuator"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verified": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "verified_unit_macs"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "verified_unit_macs"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "provisioning_predecessor"
+        ]
+      },
+      "then": {
+        "properties": {
+          "app": {
+            "const": "cyd"
+          },
+          "verified": {
+            "const": true
+          },
+          "test_only": {
+            "const": false
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "gpio": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 48
+    },
+    "spi": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "host",
+        "sclk",
+        "mosi",
+        "miso",
+        "cs",
+        "hz"
+      ],
+      "properties": {
+        "host": {
+          "enum": [
+            2,
+            3
+          ]
+        },
+        "sclk": {
+          "$ref": "#/$defs/gpio"
+        },
+        "mosi": {
+          "$ref": "#/$defs/gpio"
+        },
+        "miso": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/gpio"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cs": {
+          "$ref": "#/$defs/gpio"
+        },
+        "hz": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 80000000
+        }
+      }
+    },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "flash_mb",
+        "flash_mode",
+        "flash_freq_mhz",
+        "psram",
+        "table_offset"
+      ],
+      "properties": {
+        "flash_mb": {
+          "enum": [
+            2,
+            4,
+            8,
+            16,
+            32
+          ]
+        },
+        "flash_mode": {
+          "enum": [
+            "dio",
+            "qio",
+            "dout",
+            "qout"
+          ]
+        },
+        "flash_freq_mhz": {
+          "enum": [
+            20,
+            26,
+            40,
+            80
+          ]
+        },
+        "psram": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "table_offset": {
+          "type": "integer",
+          "minimum": 32768,
+          "maximum": 65536
+        }
+      }
+    },
+    "serial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "backend",
+        "uart",
+        "tx",
+        "rx"
+      ],
+      "properties": {
+        "backend": {
+          "enum": [
+            "uart",
+            "usb_cdc"
+          ]
+        },
+        "uart": {
+          "anyOf": [
+            {
+              "enum": [
+                0,
+                1,
+                2
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tx": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/gpio"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rx": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/gpio"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "partition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "type",
+        "subtype",
+        "offset",
+        "size"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{0,14}$"
+        },
+        "type": {
+          "enum": [
+            "app",
+            "data"
+          ]
+        },
+        "subtype": {
+          "enum": [
+            "factory",
+            "ota_0",
+            "ota_1",
+            "nvs",
+            "phy",
+            "ota"
+          ]
+        },
+        "offset": {
+          "type": "integer",
+          "minimum": 36864,
+          "maximum": 33550336
+        },
+        "size": {
+          "type": "integer",
+          "minimum": 4096,
+          "maximum": 33554432
+        }
+      }
+    },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "driver",
+        "spi",
+        "dc",
+        "reset",
+        "backlight",
+        "backlight_active_high",
+        "width",
+        "height",
+        "swap_xy",
+        "mirror_x",
+        "mirror_y",
+        "invert_colors",
+        "bgr"
+      ],
+      "properties": {
+        "driver": {
+          "enum": [
+            "st7789",
+            "ili9341"
+          ]
+        },
+        "spi": {
+          "$ref": "#/$defs/spi"
+        },
+        "dc": {
+          "$ref": "#/$defs/gpio"
+        },
+        "reset": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/gpio"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "backlight": {
+          "$ref": "#/$defs/gpio"
+        },
+        "backlight_active_high": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1024
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1024
+        },
+        "swap_xy": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "mirror_x": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "mirror_y": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "invert_colors": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "bgr": {
+          "enum": [
+            true,
+            false
+          ]
+        }
+      }
+    },
+    "touch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "driver",
+        "spi",
+        "irq"
+      ],
+      "properties": {
+        "driver": {
+          "enum": [
+            "xpt2046"
+          ]
+        },
+        "spi": {
+          "$ref": "#/$defs/spi"
+        },
+        "irq": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/gpio"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "actuator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coils",
+        "active_high",
+        "sequence_id",
+        "led",
+        "home"
+      ],
+      "properties": {
+        "coils": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/gpio"
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "uniqueItems": true
+        },
+        "active_high": {
+          "enum": [
+            true,
+            false
+          ]
+        },
+        "sequence_id": {
+          "$ref": "#/$defs/id"
+        },
+        "led": {
+          "$ref": "#/$defs/gpio"
+        },
+        "home": {
+          "anyOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "gpio",
+                "sensor_id",
+                "active_high"
+              ],
+              "properties": {
+                "gpio": {
+                  "$ref": "#/$defs/gpio"
+                },
+                "sensor_id": {
+                  "$ref": "#/$defs/id"
+                },
+                "active_high": {
+                  "enum": [
+                    true,
+                    false
+                  ]
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "electrical_verified": {
+          "type": "boolean"
+        },
+        "led_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 8
+        },
+        "led_max_brightness": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 255
+        },
+        "led_color_order": {
+          "enum": [
+            "grb",
+            "rgb"
+          ]
+        },
+        "led_interface_verified": {
+          "type": "boolean"
+        },
+        "setup_knob": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "gpio",
+                "input_max_mv",
+                "verified"
+              ],
+              "properties": {
+                "gpio": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 6
+                },
+                "input_max_mv": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 3300
+                },
+                "verified": {
+                  "type": "boolean"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "observed",
+        "documented_candidate",
+        "sources",
+        "pin_sources",
+        "unresolved"
+      ],
+      "properties": {
+        "observed": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": false
+        },
+        "documented_candidate": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": false
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        },
+        "pin_sources": {
+          "type": "object",
+          "maxProperties": 32,
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]{0,47}$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/text"
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/text"
+          },
+          "minItems": 0,
+          "maxItems": 64,
+          "uniqueItems": true
+        }
+      }
+    }
+  }
+}

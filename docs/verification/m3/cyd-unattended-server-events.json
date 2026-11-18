@@ -1,0 +1,219 @@
+{
+  "date": "2026-11-13",
+  "timezone": "America/New_York",
+  "source_log": ".cache/m3-hardware-server-assignment.log",
+  "scope": "Observed close events before final freshness fix deployment; deliberate resets and firmware flash are included. Normal-image full compilation coincided with repeated both-role disconnects; this does not establish a unique cause.",
+  "events": [
+    {
+      "local_time": "17:13:47.705",
+      "code": 4003,
+      "cause": "session_reset",
+      "binding_generation": 2,
+      "role_mask": 2,
+      "admission_age_ms": 7,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 334658
+    },
+    {
+      "local_time": "17:13:47.705",
+      "code": 4003,
+      "cause": "session_reset",
+      "binding_generation": 3,
+      "role_mask": 1,
+      "admission_age_ms": 110,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 334658
+    },
+    {
+      "local_time": "17:17:11.500",
+      "cause": "transport_closed",
+      "binding_generation": 44,
+      "role_mask": 1,
+      "admission_age_ms": 723,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 203443
+    },
+    {
+      "local_time": "17:17:11.800",
+      "cause": "transport_closed",
+      "binding_generation": 43,
+      "role_mask": 2,
+      "admission_age_ms": 673,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 203800
+    },
+    {
+      "local_time": "17:17:14.747",
+      "cause": "transport_closed",
+      "binding_generation": 54,
+      "role_mask": 2,
+      "admission_age_ms": 588,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 2952
+    },
+    {
+      "local_time": "17:17:15.445",
+      "cause": "transport_closed",
+      "binding_generation": 55,
+      "role_mask": 1,
+      "admission_age_ms": 1060,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3605
+    },
+    {
+      "local_time": "17:17:18.726",
+      "cause": "transport_closed",
+      "binding_generation": 58,
+      "role_mask": 2,
+      "admission_age_ms": 768,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3692
+    },
+    {
+      "local_time": "17:17:19.173",
+      "cause": "transport_closed",
+      "binding_generation": 59,
+      "role_mask": 1,
+      "admission_age_ms": 4,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3083
+    },
+    {
+      "local_time": "17:17:25.082",
+      "cause": "transport_closed",
+      "binding_generation": 63,
+      "role_mask": 1,
+      "admission_age_ms": 795,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 4871
+    },
+    {
+      "local_time": "17:17:25.327",
+      "cause": "transport_closed",
+      "binding_generation": 62,
+      "role_mask": 2,
+      "admission_age_ms": 794,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 5650
+    },
+    {
+      "local_time": "17:17:29.822",
+      "cause": "transport_closed",
+      "binding_generation": 66,
+      "role_mask": 1,
+      "admission_age_ms": 799,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3062
+    },
+    {
+      "local_time": "17:17:30.019",
+      "cause": "transport_closed",
+      "binding_generation": 67,
+      "role_mask": 2,
+      "admission_age_ms": 595,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 2945
+    },
+    {
+      "local_time": "17:17:37.431",
+      "cause": "transport_closed",
+      "binding_generation": 70,
+      "role_mask": 2,
+      "admission_age_ms": 832,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3188
+    },
+    {
+      "local_time": "17:17:37.739",
+      "cause": "transport_closed",
+      "binding_generation": 71,
+      "role_mask": 1,
+      "admission_age_ms": 718,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3412
+    },
+    {
+      "local_time": "17:17:48.385",
+      "cause": "transport_closed",
+      "binding_generation": 75,
+      "role_mask": 1,
+      "admission_age_ms": 780,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 2214
+    },
+    {
+      "local_time": "17:17:49.040",
+      "cause": "transport_closed",
+      "binding_generation": 74,
+      "role_mask": 2,
+      "admission_age_ms": 326,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3256
+    },
+    {
+      "local_time": "17:17:59.688",
+      "cause": "transport_closed",
+      "binding_generation": 78,
+      "role_mask": 1,
+      "admission_age_ms": 1315,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 3222
+    },
+    {
+      "local_time": "17:18:00.008",
+      "cause": "transport_closed",
+      "binding_generation": 79,
+      "role_mask": 2,
+      "admission_age_ms": 719,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 2775
+    },
+    {
+      "local_time": "17:18:12.324",
+      "cause": "transport_closed",
+      "binding_generation": 83,
+      "role_mask": 2,
+      "admission_age_ms": 1263,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 4167
+    },
+    {
+      "local_time": "17:18:12.645",
+      "cause": "transport_closed",
+      "binding_generation": 82,
+      "role_mask": 1,
+      "admission_age_ms": 710,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 4895
+    },
+    {
+      "local_time": "17:19:11.788",
+      "cause": "transport_timeout",
+      "binding_generation": 86,
+      "role_mask": 2,
+      "admission_age_ms": 5505,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 51274
+    },
+    {
+      "local_time": "17:22:02.818",
+      "code": 4003,
+      "cause": "session_reset",
+      "binding_generation": 88,
+      "role_mask": 2,
+      "admission_age_ms": 21,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 29431
+    },
+    {
+      "local_time": "17:22:02.819",
+      "code": 4003,
+      "cause": "session_reset",
+      "binding_generation": 87,
+      "role_mask": 1,
+      "admission_age_ms": 25,
+      "tokens_after_admit": 9000,
+      "socket_age_ms": 221999
+    }
+  ]
+}

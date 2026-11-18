@@ -4,7 +4,7 @@ M0 compatibility and M1 application/browser verification are recorded separately
 
 | Component | Selected / observed | Evidence and boundary |
 | --- | --- | --- |
-| Erlang/OTP | 28.0.1, ERTS 16.0.1 | Installed and exercised by pure tests; pinned in `.tool-versions`. OTP >=27 is enforced by Mix. |
+| Erlang/OTP | 28.5.0.8, ERTS 16.4.0.7 | `.tool-versions` pins the patched runtime for TLS 1.3 client verification. The isolated server suite and WSS checks passed on this version. The M0 evidence used 28.0.1 with ERTS 16.0.1. Mix requires OTP 27 or later. [OTP 28.5.0.8](https://www.erlang.org/patches/OTP-28.5.0.8) |
 | Elixir / Mix | 1.18.4, compiled for OTP 28 | Installed; all locked dependencies compile. M1 adds and exercises guarded application startup. |
 | Hex | 2.2.1 | Used for resolution/fetch; repository-local MIX_HOME/HEX_HOME. |
 | Rebar3 | 3.28.0 | Used for telemetry compilation on OTP 28. `tools/bootstrap-elixir` pins the official OTP-28 download URL and SHA-512, verified against Hex’s signed-manifest-selected initial download. |

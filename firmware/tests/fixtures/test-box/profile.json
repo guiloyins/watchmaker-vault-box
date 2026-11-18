@@ -1,0 +1,79 @@
+{
+  "profile_version": 1,
+  "verified": false,
+  "test_only": true,
+  "target": "esp32c5",
+  "reserved_gpio": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22
+  ],
+  "memory": {
+    "flash_mb": 4,
+    "flash_mode": "dio",
+    "flash_freq_mhz": 40,
+    "psram": false,
+    "table_offset": 32768
+  },
+  "serial": {
+    "backend": "usb_cdc",
+    "uart": null,
+    "tx": null,
+    "rx": null
+  },
+  "display": null,
+  "touch": null,
+  "actuator": {
+    "coils": [
+      7,
+      8,
+      9,
+      10
+    ],
+    "active_high": true,
+    "sequence_id": "half-step-8-v1",
+    "led": 11,
+    "home": null,
+    "electrical_verified": false,
+    "led_count": 8,
+    "led_max_brightness": 16,
+    "led_color_order": "grb",
+    "led_interface_verified": false,
+    "setup_knob": {
+      "gpio": 1,
+      "input_max_mv": 3300,
+      "verified": false
+    }
+  },
+  "partitions": [
+    {
+      "name": "nvs",
+      "type": "data",
+      "subtype": "nvs",
+      "offset": 36864,
+      "size": 1011712
+    },
+    {
+      "name": "factory",
+      "type": "app",
+      "subtype": "factory",
+      "offset": 1048576,
+      "size": 3145728
+    }
+  ],
+  "profile_id": "test-box",
+  "app": "box",
+  "evidence": {
+    "observed": [],
+    "documented_candidate": [
+      "Synthetic compile-only assignments; no physical board or wiring authorization."
+    ],
+    "sources": [],
+    "pin_sources": {},
+    "unresolved": []
+  }
+}

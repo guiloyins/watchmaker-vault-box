@@ -2,6 +2,8 @@
 
 **Status — 12 November 2026: identification updated; physical verification pending.** Apply [hardware update 1](WATCHMAKERS_VAULT_HARDWARE_UPDATE.md) alongside the master specification. The current [hardware evidence ledger](../hardware/board-audit.md) records supplied markings, user-reported dimensions, documented candidates and remaining gates separately. This runbook describes checks to perform; it does not claim a completed build, flash, measurement, fit check or motor operation.
 
+**14 November implementation update:** both CYDs now have their own identification/calibration records; the initial table below preserves the original intake template and candidate status. Use the linked evidence ledger for current unit facts. The C5 is ROM-identified and backed up; Rafa reports ESP32-C5-KitC-A V1.3, and his Home Sensing logs match the exact unit to former receiver A. That project establishes working native USB and flash settings, with no application GPIO used. The purchase listing now corroborates V1.3 and six selected header labels for a restricted USB-only profile. Header continuity, carrier power/source isolation and physical M4 acceptance remain open. [Pin selection review](../hardware/c5-seller-profile-review.md) [C5 identification](../hardware/c5-identification.md) · [M4 checks](../verification/m4/README.md)
+
 Physical drivers must remain disabled until their profiles are verified. Hardware builds must reject unresolved GPIO mappings and incompatible targets. Software, browser controls and simulated-box development may continue independently.
 
 ## 1. Selected board records
@@ -33,12 +35,12 @@ Attach a pin table: **function, GPIO, active level, bus/address and source evide
 |---|---|---|
 | Enclosure | Green **PASCAL rigid cardboard presentation box**, existing hinged lid; Rafa reports **90 mm W × 85 mm D × 70 mm H** interior | Nominal **90 × 85 mm floor** only; installed fit, usable clearances and lid/catch geometry unverified |
 | Stepper | Update records **28BYJ-48, 5 V DC**, five-wire connector, two mounting ears and flat-sided shaft | Shaft/coupler dimensions, coil sequence, direction and installed travel |
-| Driver | Readable **ULN2003AN** + TI logo; populated IN1–IN4, unpopulated IN5–IN7, five-pin socket, four LEDs, −/+/5–12 V markings, installed jumper | Actual module wiring, jumper function and input compatibility at actual supply/coil current; jumper is not an established voltage selector |
+| Driver | **ULN2003AN/TI**; actual photos plus user-confirmed Freenove kit provenance. Supplied C tutorial pp. 199–200 documents IN1–IN4→A–D, motor connector and fitted **VCC–PWR supply link**; ground/COM continuity user measurements pass ([source/C5 wiring review](../hardware/freenove-kit-wiring.md)) | Completed C5 wiring, actual supply/load/input compatibility. No further pad tracing to identify the documented jumper; it is not a voltage selector |
 | LED module | **Freenove 8 RGB LED Module**, eight packages, both banks marked IN/OUT and S/V/G; documentation identifies WS2812 family, 3.5–5.5 V supply and example GRB order | Exact silicon revision, RGB channel order and electrical interface; plan a suitable 3.3 V-to-5 V data buffer unless documented input limits establish adequate direct-drive margin |
 | Sounder | Available; type and ratings unverified | Active/passive type and appropriate drive circuit; optional |
 | Position/lid sensing | No installed or verified sensor; existing pushbuttons are candidates only | Contact behavior, actual contact pair, wiring, installation and physical meaning; optional lid contact cannot prove latch position |
 | C5 antenna | Inventory advertises external antenna | Actual board/connector and clearance from motor, metal hardware and dense wiring; closed-lid connectivity |
-| Box supply | **Samsung EP-TA20JWE**, label **5 V / 2 A** or **9 V / 1.67 A**; normal **5 V USB mode selected** | Voltage at actual distribution point, load behavior with actual cables and USB service-power isolation; no 9 V trigger |
+| Box supply | Current bench candidate **Armstrong 56220**, user-reported **5 V DC / 3.1 A total**; photographed/vendor-confirmed **2.1 A / 1 A USB ports**. Samsung EP-TA20JWE remains an alternative at normal 5 V / 2 A ([power plan](../hardware/power-and-wiring.md#armstrong-56220-and-spare-usb-cable--18-november)) | Proposed spare USB-A cable preparation/identification, measured output/polarity, secure termination and actual loaded behavior; first motor bench keeps C5 on Mac. Later C5 uses 1 A USB port with Mac disconnected; no joined positive rails or 9 V trigger |
 | Terminal supplies | One USB bank per CYD; photographed **Clutch** brand | Exact model, connector, output ratings and capacity unknown; sustained display/Wi-Fi and idle operation on each actual pair |
 | Latch/cam | Light release mechanism still to be built | Rigid mounting, coupler, low-force travel, stable resting positions, manual release and complete motion envelope |
 
@@ -57,6 +59,8 @@ Use **IN S** for buffered/verified serial data, **IN V** for planned 5 V and **I
 Each CYD uses its own bank. Confirm 5 V output and the actual connector/cable; the Clutch name does not establish USB-C versus Lightning, capacity or runtime. Test display/Wi-Fi operation and intended idle behavior for low-load shutoff on each actual bank/CYD pair.
 
 ### Optional button gate
+
+Rafa also selected an optional potentiometer as a setup knob for latch travel. Before wiring, verify its terminals/resistance, a suitable exposed ADC input, actual 3.3 V range and noise. Keep it off the 5 V motor/LED rail. Filtered readings may propose bounded commissioning jogs only during eligible USB service; movement and calibration save remain explicit operations. The knob supplies no latch or lid-position feedback and has no gameplay authority. [Calibration and knob procedure](../hardware/box-calibration.md)
 
 Identify a candidate normally-open momentary contact by an unpowered **open → continuity while held → open after release** check, including the actual contact pair on multi-legged buttons. If no meter is available, a correctly wired low-voltage input test is an alternative later. A spring-return actuator alone is insufficient evidence. Mount a lid contact stably with a separate closing-force stop and debounce it if implemented.
 
@@ -80,7 +84,7 @@ Run each CYD's self-test: color blocks, orientation markers, corners and center 
 
 ### Step 3 — Verify power and driver
 
-With the mechanism accessible, measure the selected adapter's normal 5 V output at the actual breakout before connecting electronics; no 9 V negotiation trigger. Verify the C5's allowed input, parallel supply branches, common ground, driver/jumper wiring, input compatibility and LED data interface. Establish documented isolation before connecting computer USB alongside the box supply. Check the chosen GPIOs remain inactive through boot/reset. Connect the verified driver/motor arrangement, then use local service mode for a small bounded movement. Confirm coil order and direction before attaching a loaded cam. Record startup and concurrent Wi-Fi/LED/motor load measurements and any resets or voltage drop; a 5 V / 2 A label alone does not pass this gate.
+With the mechanism accessible, measure the selected adapter's normal 5 V output at the actual breakout before connecting electronics; no 9 V negotiation trigger. Use the [Freenove-to-C5 wiring table](../hardware/freenove-kit-wiring.md), retaining the documented VCC–PWR jumper. Check completed wiring, common ground, actual input/drive behavior and LED data interface; do not repeat the retired solder-pad identification exercise. For the first motor-only bench, keep the C5 on computer USB and the motor on the separate measured 5 V source, joining grounds only. The eventual shared supply still requires a documented C5 input and source isolation. Check the chosen GPIOs remain inactive through boot/reset. Connect the reviewed driver/motor arrangement, then use local service mode for a small bounded movement after electrical activation gates pass. Confirm actual direction before attaching a loaded cam. Record startup and concurrent Wi-Fi/LED/motor load measurements and any resets or voltage drop; a 5 V / 2 A label alone does not pass this gate.
 
 ### Step 4 — Calibrate locally
 
@@ -160,7 +164,7 @@ An explicit transport close stops at the next step boundary. Silent server loss 
 ## Primary hardware references
 
 - [Freenove ESP32 stepper/driver guidance](https://docs.freenove.com/projects/fnk0047/en/latest/fnk0047/codes/C/19_Stepper_Motor.html)
-- [TI ULN2003A datasheet—identified IC; module wiring still requires verification](https://www.ti.com/lit/ds/symlink/uln2003a.pdf)
+- [TI ULN2003A datasheet—identified IC; actual wired setup still requires checks](https://www.ti.com/lit/ds/symlink/uln2003a.pdf)
 - [Sunton board definitions—dual-USB Rv3 is a candidate only](https://github.com/rzeldent/platformio-espressif32-sunton)
 - [Freenove eight-pixel module documentation](https://docs.freenove.com/projects/fnk0047/en/latest/fnk0047/codes/C/6_LEDPixel.html)
 - [Freenove pushbutton documentation](https://docs.freenove.com/projects/fnk0047/en/latest/fnk0047/codes/C/2_Button_%26_LED.html)

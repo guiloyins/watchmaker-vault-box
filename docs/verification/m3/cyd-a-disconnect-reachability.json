@@ -1,0 +1,20 @@
+{
+  "recorded_at": "2026-11-13T23:23:09.388310+00:00",
+  "host_health": "ok",
+  "phoenix_listener_pid": 94192,
+  "cyd_a": {
+    "ip": "192.0.2.101",
+    "arp_mac": "02:00:00:00:fe:02",
+    "ping_sent": 3,
+    "ping_received": 0
+  },
+  "cyd_b": {
+    "ip": "192.0.2.104",
+    "arp_mac": "02:00:00:00:fe:01",
+    "ping_sent": 3,
+    "ping_received": 3,
+    "ping_average_ms": 5.929
+  },
+  "packet_header_capture": "unavailable: OS denies BPF device access; no packets captured",
+  "interpretation": "Bounded reachability observations only; no causal conclusion about prior touch/disconnect"
+}

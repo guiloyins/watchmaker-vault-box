@@ -1,0 +1,8 @@
+#!/bin/sh
+set -eu
+repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+. "$repo/tools/firmware/idf-env.sh"
+if [ -x "$repo/.venv/bin/python" ]; then
+  exec "$repo/.venv/bin/python" "$repo/tools/firmware/build_cli.py" "$@"
+fi
+exec python3 "$repo/tools/firmware/build_cli.py" "$@"

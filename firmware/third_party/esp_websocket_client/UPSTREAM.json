@@ -1,0 +1,27 @@
+{
+  "repository": "https://github.com/espressif/esp-protocols",
+  "component": "components/esp_websocket_client",
+  "release": "websocket-v1.8.0",
+  "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+  "license": "Apache-2.0",
+  "upstream_files": {
+    "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+    "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+    "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+    "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+  },
+  "files": {
+    "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+    "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+    "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+    "esp_websocket_client.c": "35db0370e55bbd3fa173facbd6c0f5feb95ca3f34cd282bd2a2b9c7512b1bfd5",
+    "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+    "include/esp_websocket_client.h": "04598de0b67a21ff2247339c73f342b58cac3ebfc42542c7d3d144a98e3cc599"
+  },
+  "patches": {
+    "no-redirects.patch": "79fcc260b330c91f96fe0bb1f25f6cde0f531365dec446ed4e8fed04064cbdcb",
+    "send-phase-diagnostics.patch": "6add52b6e04eccaf8f73c347a54ab57d2206de3b8823ffa2f90af8caf23393d9"
+  }
+}

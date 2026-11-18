@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/Bodmer/TFT_eSPI",
+  "release": "V2.5.43",
+  "revision": "6ae4c97c5a07bd64fce8993e9cfa95d9a81e7c81",
+  "upstream_files": {
+    "TFT_Drivers/ILI9341_Init.h": "bab700ac6b5de0490613ae280fac5e2c07b811404733e69b20b4777ff98ff1eb",
+    "license.txt": "f79bffc86315004815e4e7f11a23e757de0f25793022e6020938e2db1a495a9d"
+  },
+  "files": {
+    "LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+    "panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442"
+  },
+  "adaptation": "Alternate ILI9341_2 register values transcribed to esp_lcd_ili9341; the profile supplies MADCTL color order and panel orientation, and Board sends display-on after initialization. The local license copy trims trailing whitespace."
+}

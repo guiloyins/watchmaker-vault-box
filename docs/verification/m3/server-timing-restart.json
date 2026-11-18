@@ -1,0 +1,60 @@
+{
+  "stop_requested_at": "2026-11-14T00:10:33.562922+00:00",
+  "old_pid": 94192,
+  "reason": "Intentional restart to load verified optional timing diagnostics; saved A4 maze remains paused",
+  "before": "dual-cyd-pre-timing-restart-host.json",
+  "stop_verified_at": "2026-11-14T00:10:34.026315+00:00",
+  "owner_released": true,
+  "new_pid": 28876,
+  "new_log": ".cache/m3-hardware-server-timing.log",
+  "new_launcher": ".cache/m3-hardware-server-timing.py",
+  "server_listening_at": "2026-11-13T19:10:44.128-05:00",
+  "health": "ok",
+  "roles_reclaimed": "dual-cyd-timing-restart-reclaimed.json",
+  "game_state_after": {
+    "phase": "maze",
+    "paused": true,
+    "cell": 12,
+    "board": 0,
+    "release": "not_requested"
+  },
+  "cyd_a_after_restart": {
+    "capture": "cyd-a-after-server-timing-restart.json",
+    "same_boot": true,
+    "generation": 8,
+    "failure_count_baseline": 7,
+    "online_reports": 30,
+    "saved_board_calibration_ready": true
+  },
+  "tests": {
+    "pure": 51,
+    "integration": 151,
+    "distinct": 202,
+    "failures": 0,
+    "log": "server-timing-regression.log"
+  },
+  "source_sha256": {
+    "server/lib/vault/device_timing_diagnostics.ex": "fdea7073a81f42452dee955bb13d03646166e4086287864a52bc6b9f5d597c3b",
+    "server/lib/vault/game_session.ex": "68f5ad30fad7ef8b554fa0f850fd5a0aa9478c0d81af16634ee4407b12cb4a55",
+    "server/lib/vault_web/device_socket.ex": "d39255c989149c3136d6cb2c8bc6604a7daf8db98854a4aa94f4ade5dfc056c2",
+    "server/test/vault/device_timing_diagnostics_test.exs": "825049b21f02bdf5e522e92d77ba75d133d2853c5a79b6e351ce99f8d420994f"
+  },
+  "beam_sha256": {
+    "server/_build/dev/lib/vault/ebin/Elixir.Vault.DeviceTimingDiagnostics.beam": "720da327386da238d51f51f807899b656328ea2d72e364e4612b216074b91896",
+    "server/_build/dev/lib/vault/ebin/Elixir.Vault.GameSession.beam": "3a1715265186f4dcb742e989917a38d05af50a0263312dbc9cd15a567be6f72e",
+    "server/_build/dev/lib/vault/ebin/Elixir.VaultWeb.DeviceSocket.beam": "4e00a3075d77116ba7896217a89757ee6f61b926f6845f8e04bce005532421b4"
+  },
+  "post_reclaim_baseline": {
+    "capture": "cyd-a-server-timing-baseline.json",
+    "host": "dual-cyd-server-timing-baseline-host.json",
+    "reports": 59,
+    "all_online": true,
+    "generation": 8,
+    "failure_count": 7,
+    "new_failures": 0,
+    "host_both_fresh": true,
+    "paused": true,
+    "cell": 12,
+    "board": 0
+  }
+}

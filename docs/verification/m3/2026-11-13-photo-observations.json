@@ -1,0 +1,15 @@
+{
+  "recorded_at_utc": "2026-11-13T13:50:43.888235+00:00",
+  "source": "User-provided CYD photograph, November13 local",
+  "attachment_sha256": "04520443e84bf9d953c683dfc84f341bd3ae822a68b9d2584959b7cbf46a5f22",
+  "observations": [
+    "Both boards are powered; upper board still shows Guilo; lower board shows Vault display calibration.",
+    "Vault label Target3of5 proves at least two calibration contacts were accepted. Full calibration has not been confirmed.",
+    "Vault shows Fault / Wi-Fi init / SDK257. SDK esp_err.h maps257 to ESP_ERR_NO_MEM.",
+    "RED label appears over blue/cyan swatch; BLUE over red/orange; GREEN stays green and WHITE stays white. This supports testing the BGR color-order correction."
+  ],
+  "limits": [
+    "Photograph does not prove second USB data enumeration.",
+    "No physical calibration completion, game control, memory headroom or power-bank acceptance is inferred."
+  ]
+}

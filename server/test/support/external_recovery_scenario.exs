@@ -217,7 +217,12 @@ defmodule Vault.Test.ExternalRecoveryScenario do
       session = fetch(host, game).session_id
       a = Actors.bind(a_principal, game, :a) |> Actors.claim(:a)
       b = Actors.bind(b_principal, game, :b) |> Actors.claim(:b)
-      assert_receive {:simulator_client, 1, {:welcome, gate, %{"session_id" => ^session}}}, 2_000
+
+      assert_receive {:simulator_client, generation,
+                      {:welcome, gate, %{"session_id" => ^session}}},
+                     5_000
+
+      assert gate.generation == generation
       wait(fn -> fetch(host, game).box.connected end)
       assert :ok = FakeClock.advance_to(clock, 100)
       a = a |> Actors.challenge() |> Actors.sample_ok()
@@ -243,7 +248,7 @@ defmodule Vault.Test.ExternalRecoveryScenario do
       end
 
       Process.exit(gate.pid, :kill)
-      assert_receive {:simulator_runner, {:owner_down, 1}}, 1_000
+      assert_receive {:simulator_runner, {:owner_down, ^generation}}, 1_000
       original_boot = :sys.get_state(box).boot || elem(BoxRuntime.boot_id(box), 1)
       wait(fn -> not fetch(host, game).box.connected end)
 
@@ -320,12 +325,17 @@ defmodule Vault.Test.ExternalRecoveryScenario do
       assert %{"status" => "ok"} =
                BoxRuntime.service(box, "reboot", %{"reason" => "recovery"})
 
-      wait(fn ->
-        current_binding(box, recovery_session) and
-          BoxRuntime.binding(box)["box_boot_id"] != original_boot
-      end)
+      binding =
+        wait(fn ->
+          case BoxRuntime.binding(box) do
+            %{"current_session_id" => ^recovery_session, "box_boot_id" => boot} = current
+            when is_binary(boot) and boot != original_boot ->
+              current
 
-      binding = BoxRuntime.binding(box)
+            _ ->
+              nil
+          end
+        end)
 
       assert %{"status" => "ok", "data" => %{"receipt" => %{"operation_id" => seal}}} =
                BoxRuntime.service(box, "recovery.seal", %{
@@ -612,9 +622,13 @@ defmodule Vault.Test.ExternalRecoveryScenario do
   defp wait(_, 0), do: flunk("bounded condition did not become true")
 
   defp wait(predicate, remaining) do
-    unless predicate.() do
-      Process.sleep(3)
-      wait(predicate, (remaining - 3) |> max(0))
+    case predicate.() do
+      value when value in [false, nil] ->
+        Process.sleep(3)
+        wait(predicate, (remaining - 3) |> max(0))
+
+      value ->
+        value
     end
   end
 end

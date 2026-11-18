@@ -1,0 +1,82 @@
+{
+  "review_date": "2026-11-18",
+  "kit_root": "/example/local",
+  "provenance": "User identifies actual driver and motor as supplied with this kit.",
+  "sources": [
+    {
+      "path": "C/C_Tutorial.pdf",
+      "sha256": "380e80ffdb67e35ee3635210c3bc7347cf1e740643e6822492cc96b63a21205e",
+      "bytes": 23991580
+    },
+    {
+      "path": "Python/Python_Tutorial.pdf",
+      "sha256": "2990363cb074afa1b4ada13fe17cbb6708bc93d37dabccbd5d04039a652a44ed",
+      "bytes": 19607051
+    },
+    {
+      "path": "C/Sketches/Sketch_19.1_Drive_Stepper_Motor/Sketch_19.1_Drive_Stepper_Motor.ino",
+      "sha256": "9074e9d4cfa4958acaed7a111144a0a6bdd176f7b4b927f8e60951e547eeacea",
+      "bytes": 1643
+    },
+    {
+      "path": "Python/Python_Codes/19.1_Stepping_Motor/Stepping_Motor.py",
+      "sha256": "3fcaddf01f2f005b50b471539e6a02a4df0c4c3a46902204411b42fbbbbe7f84",
+      "bytes": 388
+    },
+    {
+      "path": "Python/Python_Codes/19.1_Stepping_Motor/stepmotor.py",
+      "sha256": "130929b0481d52c0cf3fed72e5a216a9bbf3b0837bbf75dc6d1d8625a038421d",
+      "bytes": 1879
+    }
+  ],
+  "c_tutorial_printed_stepper_pages": [
+    196,
+    197,
+    198,
+    199,
+    200,
+    201,
+    202,
+    203,
+    204
+  ],
+  "c_tutorial_visual_pages_1_based": [
+    200,
+    201,
+    202,
+    79,
+    80,
+    106
+  ],
+  "findings": {
+    "driver_inputs": [
+      "IN1:A",
+      "IN2:B",
+      "IN3:C",
+      "IN4:D"
+    ],
+    "c5_gpio_in_order": [
+      8,
+      9,
+      10,
+      23
+    ],
+    "jumper": "Documented VCC-PWR link; fitted for normal single 5 V motor supply.",
+    "motor_socket_from_power_end": [
+      "PWR",
+      "D",
+      "C",
+      "B",
+      "A"
+    ],
+    "supply": "Independent 5 V motor power, shared controller ground.",
+    "firmware_sequence": "Existing half-step-8-v1 matches tutorial alternative half-step sequence."
+  },
+  "verification_kind": "Static vendor document/diagram and source-code comparison, with independent Sol reviews.",
+  "motor_common_measurement_performed": false,
+  "new_hardware_test_performed": false,
+  "code_changed": false,
+  "profile_changed": false,
+  "firmware_flashed": false,
+  "motion_enabled": false
+}

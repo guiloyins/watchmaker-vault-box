@@ -1,0 +1,434 @@
+{
+  "status": "resumed mixed Browser A / CYD B game solved with one completed simulated release",
+  "physical_unit": "cyd_b",
+  "roles": {
+    "a": "browser",
+    "b": "CYD B pending claim"
+  },
+  "image_manifest_sha256": "a5849abcf545e42c116a0abfd7570ac73c8029d79eca4839290e6a4313b82dd1",
+  "calibration_and_service_evidence": "cyd-b-calibration.json",
+  "release_baseline_evidence": "cyd-b-mixed-release-before.json",
+  "host_lobby_observation": {
+    "command": "snapshot",
+    "state": {
+      "phase": "lobby",
+      "paused": false,
+      "controllers_ready": false,
+      "box": "Ready to arm",
+      "release": "not_requested",
+      "terminals": {
+        "a": {
+          "source": "browser",
+          "owner": "Browser controller \u00b7 Fresh",
+          "cell": null,
+          "board": 0,
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "hold_qualified": false,
+          "last_direction": null,
+          "last_result": "rune_selected"
+        },
+        "b": {
+          "source": "none",
+          "owner": "Unassigned \u00b7 Awaiting controller",
+          "cell": null,
+          "board": 0,
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "hold_qualified": false,
+          "last_direction": null,
+          "last_result": "rune_selected"
+        }
+      },
+      "browser_a": "Controller"
+    }
+  },
+  "physical_acceptance": "Five physical B swipes, MOON selection, and solved screen confirmed; exactly one simulated release verified. Interrupted/resumed run only.",
+  "notes": [
+    "Fresh game reset after previous simulated motion completed.",
+    "Role A is browser-owned and fresh; physical B unassigned at this observation.",
+    "Simulated reference preparation and service exit completed; game is not armed or started.",
+    "last_result is a retained mirror field from the preceding session and does not establish a new rune action."
+  ],
+  "first_gesture_report": "Yes, it stays at A4",
+  "connection_loss_user_report": "Role chooser; no restart noticed",
+  "reclaim_user_report": "Yes, Player B / paused maze",
+  "connection_loss_status": {
+    "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "code": "ok",
+    "data": {
+      "active_local_record_id": null,
+      "active_motion_operation_id": null,
+      "binding": {
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "connection_id": "conn_6495ba667bfbab16ebdfd9eb3e52933f",
+        "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+      },
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "clear_operation_id": null,
+      "device_id": "cyd_b",
+      "journal_count": 0,
+      "motion_frozen": false,
+      "motor_active": false,
+      "outputs_disabled": true,
+      "position": {
+        "latch_position": "unknown",
+        "position_basis": "unverified"
+      },
+      "preparation_operation_id": null,
+      "readiness": {
+        "arm_id": null,
+        "armed_session_id": null,
+        "calibration_valid": false,
+        "start_verified": false
+      },
+      "service_epoch": 1,
+      "service_inhibited": false,
+      "service_revision": 4,
+      "storage_fault": null,
+      "storage_version": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": null,
+    "request_id": "0ff1891cdff781ac0c0fac55f6aa128b",
+    "service_revision": 4,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "connection_loss_findings": [
+    "Boot ID unchanged from service exit; no reboot established for this incident.",
+    "Service remains exited at revision 4, storage fault null, current binding live.",
+    "Host preserved A4 and board version 0, paused and cleared CYD B ownership.",
+    "Attempted browser A step did not pass; no accepted move observed.",
+    "Reason for connection loss not yet established."
+  ],
+  "host_after_reclaim": [
+    {
+      "command": "snapshot",
+      "state": {
+        "phase": "maze",
+        "paused": true,
+        "controllers_ready": true,
+        "box": "Ready to arm",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          },
+          "b": {
+            "source": "cyd",
+            "owner": "CYD controller \u00b7 Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          }
+        },
+        "browser_a": "Controller"
+      }
+    }
+  ],
+  "host_after_idle_usb_check": [
+    {
+      "command": "snapshot",
+      "state": {
+        "phase": "maze",
+        "paused": true,
+        "controllers_ready": true,
+        "box": "Ready to arm",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          },
+          "b": {
+            "source": "cyd",
+            "owner": "CYD controller \u00b7 Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          }
+        },
+        "browser_a": "Controller"
+      }
+    }
+  ],
+  "idle_usb_evidence": "cyd-b-idle-reclaim-usb.json",
+  "resume": {
+    "phase": "maze",
+    "paused": false,
+    "cell": 8,
+    "board_version": 1,
+    "browser_a_step": "up 12 to 8 accepted",
+    "physical_b": "Fresh CYD controller",
+    "firmware_changes": "none"
+  },
+  "second_loss": {
+    "recorded_at": "2026-11-13T19:38:52.194854+00:00",
+    "user_report": "it says offline, no roles authorized -",
+    "host": {
+      "phase": "maze",
+      "paused": true,
+      "cell": 8,
+      "board_version": 1,
+      "a": "Browser Fresh",
+      "b": "Unassigned"
+    },
+    "usb_status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": null,
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 1,
+        "service_inhibited": false,
+        "service_revision": 4,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "bcab30f400aae7ebaa2488e2ba9534bc",
+      "service_revision": 4,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    },
+    "service_stop": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "operation_id": "svc_0000000000000005_6a80115f30f7c0c857a1a93bf26bdf1e",
+        "resulting_revision": 5,
+        "service_epoch": 2
+      },
+      "device_id": "cyd_b",
+      "operation_id": "svc_0000000000000005_6a80115f30f7c0c857a1a93bf26bdf1e",
+      "request_id": "e2ae88984995b61706aa6760abe77edc",
+      "service_revision": 5,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    },
+    "service_status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": {
+          "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+          "connection_id": "conn_921e35a2f879bc6269015b80075630bd",
+          "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+        },
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 2,
+        "service_inhibited": true,
+        "service_revision": 5,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "e4600d3c1792e29635d5ba42c7ace610",
+      "service_revision": 5,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    },
+    "interpretation": "Same boot as prior exit; binding absent at failure inspection, live again after service entry. Offline renderer clears connection-scoped roles; no key or permissions change established. No source correction installed.",
+    "service_screen_user_report": "online. but it flicked once moving to some socket and now its back online",
+    "service_idle_interpretation": "User reported transient socket stage and recovery while board was untouched in diagnostics; exact stage/number was not captured."
+  },
+  "diagnostic_server_restart": {
+    "recorded_at": "2026-11-13T19:45:25.478733+00:00",
+    "health": "ok",
+    "restored_phase": "maze",
+    "paused": true,
+    "cell": 8,
+    "board_version": 1,
+    "release": "not_requested",
+    "box": "Setup required",
+    "browser_a": "Reauthenticated and reclaimed Fresh",
+    "cyd_b": "Same boot, revision 5 service-inhibited",
+    "status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": {
+          "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+          "connection_id": "conn_e0f1806ade9566828ea54b49352cbee7",
+          "current_session_id": "session_3e0d2cb2f81edd4bd777f91cdae31b13"
+        },
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 2,
+        "service_inhibited": true,
+        "service_revision": 5,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "4ca03759e7b34699a5b1936b23ac3520",
+      "service_revision": 5,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    }
+  },
+  "post_diagnostic_server_idle": {
+    "evidence": "cyd-b-network-service-idle-02.json",
+    "samples": 31,
+    "offline_samples": 0,
+    "connections": 1,
+    "limitation": "Restart/session generation and info-level logging changed together; no cause established"
+  },
+  "network_reexit": {
+    "result": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "exited": true,
+        "operation_id": "svc_0000000000000006_f52ff68148e696d34cc8c2de7f548d32",
+        "resulting_revision": 6,
+        "service_epoch": 2
+      },
+      "device_id": "cyd_b",
+      "operation_id": "svc_0000000000000006_f52ff68148e696d34cc8c2de7f548d32",
+      "request_id": "7903367ed988bdbb2afc2cf7c30df59c",
+      "service_revision": 6,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    },
+    "status": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": {
+          "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+          "connection_id": "conn_e0f1806ade9566828ea54b49352cbee7",
+          "current_session_id": "session_3e0d2cb2f81edd4bd777f91cdae31b13"
+        },
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "clear_operation_id": null,
+        "device_id": "cyd_b",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 2,
+        "service_inhibited": false,
+        "service_revision": 6,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "cyd_b",
+      "operation_id": null,
+      "request_id": "a50141bc3311d8be997cf0214adc8b7b",
+      "service_revision": 6,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    }
+  },
+  "solved_evidence": "cyd-b-monitored-solved-result.json"
+}

@@ -1,0 +1,37 @@
+{
+  "capture": "cyd-a-touch-trace-swipes-01.json",
+  "capture_sha256": "b386931a075ada92cff8eb3692e9b02148c4f0f519978f9dd0323aa7641eb9c3",
+  "complete": true,
+  "samples": 1191,
+  "uart_dropped": 1,
+  "observed_down_episodes": 14,
+  "down_samples": 130,
+  "all_down_have_five_valid_pairs": true,
+  "io_errors": 0,
+  "lost_status_samples": 0,
+  "down_pressure_range": [
+    479,
+    3179
+  ],
+  "released_pressure_range": [
+    1,
+    47
+  ],
+  "max_poll_start_gap_ms": 143,
+  "poll_gaps_at_least_100ms": 26,
+  "down_rejection_counts": {
+    "0": 71,
+    "2": 59
+  },
+  "gesture_count": [
+    1,
+    1
+  ],
+  "board_version": [
+    17,
+    17
+  ],
+  "user_report": "More than six attempts, mostly DOWN from A3 to A4; could not make it move.",
+  "interpretation": "Observed gesture cancellation from >=100ms sampling gaps. Valid pressure and coordinate evidence does not support threshold changes. Timing correlates strongly with maze feedback outline repaint; per-stage CPU timing is not recorded.",
+  "next_check": "Measure four-strip border redraw using real LVGL and compare subsequent physical trace with unchanged touch thresholds and lost-input timeout."
+}

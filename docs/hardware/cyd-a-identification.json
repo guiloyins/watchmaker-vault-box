@@ -1,0 +1,164 @@
+{
+  "record_version": 1,
+  "device_label": "CYD A",
+  "observed_from": "2026-11-12T22:03:54-05:00",
+  "observed_through": "2026-11-12T22:06:48-05:00",
+  "user_report": {
+    "connected_over_usb_data_cable": true,
+    "second_yellow_unit_same_version": true
+  },
+  "prior_reported_board": {
+    "pcb_marking": "ESP32-2432S028",
+    "connectors": [
+      "Micro-USB",
+      "USB-C"
+    ],
+    "usb_bridge_marking": "CH340C",
+    "source": "docs/hardware/board-audit.md"
+  },
+  "rom_identification": {
+    "outcome": "read_only_identity_observed",
+    "esptool_version": "5.6.0",
+    "started_at": "2026-11-12T22:06:47-05:00",
+    "finished_at": "2026-11-12T22:06:48-05:00",
+    "command": ".cache/idf-python/bin/python -m esptool --chip auto --port /dev/cu.example-usb --baud 115200 --before default-reset --after hard-reset --no-stub --connect-attempts 3 flash-id",
+    "executed": true,
+    "exit_code": 0,
+    "bootloader_reset_attempted": true,
+    "post_read_reset_reported": "Hard resetting via RTS pin",
+    "chip_target": "esp32",
+    "chip": "ESP32-D0WD-V3",
+    "chip_revision": "v3.1",
+    "crystal_frequency_mhz": 40,
+    "mac": "02:00:00:00:fe:02",
+    "derived_factory_id": "factory_02000000fe02",
+    "flash_manufacturer_id": "0x68",
+    "flash_device_id": "0x4016",
+    "flash_capacity_bytes": 4194304,
+    "flash_strap_voltage_v": 3.3
+  },
+  "prior_usb_enumeration": {
+    "method": "macOS IORegistry IOUSB plane",
+    "expected_wch_vendor_id": "0x1a86",
+    "wch_bridge_visible": false,
+    "other_external_devices": [
+      {
+        "device": "USB2.1 Hub",
+        "vid_pid": "05e3:0610"
+      },
+      {
+        "device": "USB 10/100 LAN",
+        "vid_pid": "0bda:8152"
+      },
+      {
+        "device": "USB Receiver",
+        "vid_pid": "046d:c52b"
+      }
+    ],
+    "observed_through": "2026-11-12T22:04:55-05:00"
+  },
+  "prior_serial_enumeration": {
+    "method": "pyserial 3.5 list_ports and macOS IOSerialBSDClient",
+    "visible_ports_with_no_usb_vid_pid": [
+      "/dev/cu.BLTH",
+      "/dev/cu.Bluetooth-Incoming-Port",
+      "/dev/cu.EarFunFreePro"
+    ],
+    "selected_port": null
+  },
+  "usb_enumeration": {
+    "observed_at": "2026-11-12T22:06:30-05:00",
+    "method": "macOS IORegistry IOUSB plane",
+    "device": "USB Serial",
+    "vid_pid": "1a86:7523",
+    "location_id": "0x14210000"
+  },
+  "serial_enumeration": {
+    "observed_at": "2026-11-12T22:06:30-05:00",
+    "method": "pyserial 3.5 list_ports and macOS IOSerialBSDClient",
+    "description": "USB Serial",
+    "vid_pid": "1a86:7523",
+    "usb_location": "20-2.1",
+    "selected_port": "/dev/cu.example-usb"
+  },
+  "historical_match": {
+    "project": "CYD-AITamagochi",
+    "inspected_checkout_sha": "afaec3e4a69e686dd3d3d54d0f9fa9f0ca640154",
+    "historical_unit": "CYD B",
+    "matching_base_mac": "02:00:00:00:fe:02",
+    "identity_source": "docs/10-sd-card-sprite-engine-plan.md",
+    "display_driver_in_prior_configuration": "ILI9341_2_DRIVER",
+    "display_configuration_source": "docs/06-guilo-v0.1-mvp.md",
+    "touch_in_prior_configuration": "XPT2046 bitbang",
+    "physical_vault_driver_verified": false
+  },
+  "existing_flash_backup": {
+    "started_at": "2026-11-12T22:10:21-05:00",
+    "finished_at": "2026-11-12T22:16:42-05:00",
+    "serial_port": "/dev/cu.example-usb",
+    "base_mac": "02:00:00:00:fe:02",
+    "bytes": 4194304,
+    "sha256": "c6d543205b76dfb81ad0efcd5220f27e67c8011db24558329589fc75ae0511cf",
+    "file": "data/m3-hardware-backups/02000000fe02.bin",
+    "record": "data/m3-hardware-backups/02000000fe02.backup-record.json",
+    "ignored": true,
+    "parent_mode": "0700",
+    "file_mode": "0600",
+    "read_only": true,
+    "volatile_ram_stub": true
+  },
+  "existing_flash_layout": {
+    "partition_table_md5_verified": true,
+    "entries": [
+      {
+        "name": "nvs",
+        "type": 1,
+        "subtype": 2,
+        "offset": "0x9000",
+        "size": "0x5000",
+        "flags": 0
+      },
+      {
+        "name": "otadata",
+        "type": 1,
+        "subtype": 0,
+        "offset": "0xe000",
+        "size": "0x2000",
+        "flags": 0
+      },
+      {
+        "name": "app0",
+        "type": 0,
+        "subtype": 16,
+        "offset": "0x10000",
+        "size": "0x300000",
+        "flags": 0
+      },
+      {
+        "name": "spiffs",
+        "type": 1,
+        "subtype": 130,
+        "offset": "0x310000",
+        "size": "0xe0000",
+        "flags": 0
+      },
+      {
+        "name": "coredump",
+        "type": 1,
+        "subtype": 3,
+        "offset": "0x3f0000",
+        "size": "0x10000",
+        "flags": 0
+      }
+    ],
+    "vault_nvs_offset": "0x9000",
+    "vault_nvs_length": "0x17000",
+    "vault_nvs_preexisting_non_erased_sectors": 22
+  },
+  "vault_profile": {
+    "profile_id": "cyd-yellow-ili9341-unit-a",
+    "profile_sha256": "cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa",
+    "preflash_configuration_verified": true,
+    "physical_driver_self_test_verified": false
+  }
+}

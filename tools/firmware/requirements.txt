@@ -1,0 +1,4 @@
+# Shared profile checks, local USB service and explicit flashing.
+-r ../requirements-checks.lock
+pyserial==3.5
+esptool==5.6.0

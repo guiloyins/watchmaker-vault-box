@@ -1,0 +1,24 @@
+Running ExUnit with seed: 425924, max_cases: 32
+Excluding tags: [:test]
+Including tags: [:m0]
+
+...................................................
+Finished in 1.6 seconds (1.5s async, 0.02s sync)
+51 tests, 0 failures
+M0 runtime guard passed: started applications unchanged; no named Vault resources.
+Vault test stores prepared.
+Running ExUnit with seed: 352734, max_cases: 32
+Excluding tags: [:m0]
+
+........................................................
+17:31:13.234 [error] Exqlite.Connection (#PID<0.174.0> ("db_conn_1")) disconnected: ** (Exqlite.Error) database is locked
+BEGIN IMMEDIATE TRANSACTION
+server SQLite lock error in 289 ms
+
+17:31:13.363 [error] Exqlite.Connection (#PID<0.174.0> ("db_conn_1")) disconnected: ** (Exqlite.Error) database is locked
+BEGIN IMMEDIATE TRANSACTION
+.....................wss pressure: 909312 payload bytes attempted, blocked send 102 ms, effective sndbuf 65328
+.....ws pressure: 385024 payload bytes attempted, blocked send 101 ms, effective sndbuf 65328
+...................................................................
+Finished in 136.4 seconds (9.3s async, 127.0s sync)
+200 tests, 0 failures, 51 excluded

@@ -78,6 +78,89 @@ defmodule Vault.GameSessionTest do
     assert ^established = Recovery.seal_readback_timeout(established, current)
   end
 
+  test "the host sees an individual controller become fresh while the other role is unassigned" do
+    root = StorageFixture.temp_root()
+    assert {"ok\n", 0} = StorageFixture.task(root, "prepare")
+
+    checks = """
+    import ExUnit.Assertions
+    alias Vault.{Auth, Credentials, Games, Updates}
+    alias Vault.Test.{Actors, FakeClock, TimingCases}
+
+    Process.flag(:trap_exit, true)
+    {:ok, clock} = FakeClock.start_link(0)
+    Process.unlink(clock)
+    Application.put_env(:vault, :clock, FakeClock.handle(clock))
+    Application.put_env(:vault, :origin, "http://127.0.0.1:4000")
+    Application.put_env(:vault, :port, 4000)
+    Application.put_env(:vault, :bind, {127, 0, 0, 1})
+    Application.put_env(:vault, VaultWeb.Endpoint, server: false, adapter: Bandit.PhoenixAdapter,
+      render_errors: [formats: [html: VaultWeb.ErrorHTML, json: VaultWeb.ErrorJSON], layout: false],
+      pubsub_server: Vault.PubSub, live_view: [signing_salt: "vault-test"])
+    Logger.configure(level: :warning)
+    {:ok, _} = Application.ensure_all_started(:vault)
+
+    try do
+      {:ok, token} = Credentials.read_key(Path.join(root, "host.key"))
+      {:ok, host} = Auth.exchange(:host, token)
+      {:ok, game} = Games.active_id()
+      {:ok, authority} = Games.ensure(game)
+      fixture = %{clock: clock, authority: authority, host: host, game: game}
+      TimingCases.wait(fn -> TimingCases.fetch(fixture).box.connected end)
+      assert {:ok, %{session_id: session, assignments: %{b: nil}}} =
+        Updates.subscribe(host, game, :host)
+
+      a = host |> Actors.bind(game, :a) |> Actors.claim(:a)
+      TimingCases.advance(fixture, 100)
+
+      assert_receive {:vault_snapshot, ^game, ^session, :host,
+                      %{assignments: %{a: owner, b: nil}, controllers_ready: false,
+                        peers: [%{role: :a, connected: false}, %{role: :b, connected: false}]} = claim},
+                     1_000
+      assert owner == a.actor.actor_id
+
+      a = Actors.challenge(a)
+      {_rejected, %{input_accepted: false, code: :stale_challenge}} =
+        Actors.sample(%{a | heartbeat_seq: a.heartbeat_seq + 1}, nil)
+      assert TimingCases.fetch(fixture).state_revision == claim.state_revision
+
+      a = Actors.sample_ok(a)
+      TimingCases.advance(fixture, 200)
+      assert_receive {:vault_snapshot, ^game, ^session, :host,
+                      %{controllers_ready: false, assignments: %{a: ^owner, b: nil},
+                        peers: [%{role: :a, connected: true}, %{role: :b, connected: false}]} = fresh},
+                     1_000
+      assert fresh.state_revision == claim.state_revision + 1
+
+      a = a |> Actors.challenge() |> Actors.sample_ok()
+      TimingCases.advance(fixture, 300)
+      a = Actors.challenge(a)
+      assert TimingCases.fetch(fixture).state_revision == fresh.state_revision
+      refute_received {:vault_snapshot, ^game, ^session, :host, _}
+
+      TimingCases.advance(fixture, 1_700)
+      assert_receive {:vault_snapshot, ^game, ^session, :host,
+                      %{assignments: %{a: ^owner, b: nil},
+                        peers: [%{role: :a, connected: false}, %{role: :b, connected: false}]} = stale},
+                     1_000
+
+      a |> Actors.sync_context(:disconnected) |> Actors.challenge() |> Actors.sample_ok()
+      TimingCases.advance(fixture, 1_800)
+      assert_receive {:vault_snapshot, ^game, ^session, :host,
+                      %{controllers_ready: false, assignments: %{a: ^owner, b: nil},
+                        peers: [%{role: :a, connected: true}, %{role: :b, connected: false}]} = recovered},
+                     1_000
+      assert recovered.state_revision > stale.state_revision
+    after
+      assert :ok = Application.stop(:vault)
+      Agent.stop(clock)
+    end
+    IO.puts("individual freshness publication passed")
+    """
+
+    assert {"individual freshness publication passed\n", 0} = StorageFixture.vm(root, checks)
+  end
+
   test "public actors solve the golden route at exactly 2,000ms and a GameSession restart preserves box history" do
     root = StorageFixture.temp_root()
     assert {"ok\n", 0} = StorageFixture.task(root, "prepare")

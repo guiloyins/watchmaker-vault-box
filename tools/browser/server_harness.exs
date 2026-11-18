@@ -1,6 +1,6 @@
 # Test-process stdin only. This script is never loaded by a normal Vault server.
 unless Mix.env() == :test and
-         Application.fetch_env!(:vault, :box_mode) == :simulated and
+         Application.fetch_env!(:vault, :box_mode) in [:simulated, :physical] and
          Application.fetch_env!(:vault, :bind) == {127, 0, 0, 1} and
          Application.fetch_env!(:vault, :test_root) == Application.fetch_env!(:vault, :data_dir) do
   raise "Vault browser harness requires a prepared isolated loopback test root"

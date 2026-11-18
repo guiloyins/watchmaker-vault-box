@@ -1,0 +1,44 @@
+{
+  "profile_version": 1,
+  "verified": false,
+  "test_only": false,
+  "target": "esp32c5",
+  "reserved_gpio": null,
+  "memory": null,
+  "serial": null,
+  "display": null,
+  "touch": null,
+  "actuator": null,
+  "partitions": null,
+  "profile_id": "box-c5-candidate",
+  "app": "box",
+  "evidence": {
+    "observed": [
+      "User inventory identifies an ESP32-C5 family controller and advertised external antenna.",
+      "Supplied update records ULN2003AN, Freenove 8 RGB LED Module and Samsung EP-TA20JWE markings.",
+      "14 November ROM: ESP32-C5HF4 v1.0, base MAC 02:00:00:00:fe:03, 4 MiB flash, no embedded PSRAM, native USB-Serial/JTAG.",
+      "Front photograph shows two USB-C ports, BOOT/RESET and an attached external antenna cable; module consistent with DOIT ESPC5-32E-H4.",
+      "User reports carrier marking ESP32-C5-KitC-A V1.3. The seller gallery corroborates the marking and six header labels on the matching layout.",
+      "Home Sensing logs independently match this exact MAC to c5-rx-a; native USB and 4 MiB DIO/40 MHz flash worked. That project used no application GPIO.",
+      "The seller profile review supports a separate USB-only inactive-output profile for this unit. This candidate records the earlier unverified configuration."
+    ],
+    "documented_candidate": [
+      "Selected header labels for the separate profile are GPIO8/9/10/23 for coil outputs, GPIO6 for LED data and GPIO1 for ADC1_CH0.",
+      "Plan the WS2812 eight-pixel module on the 5 V supply with a verified data interface."
+    ],
+    "sources": [
+      "docs/hardware/board-audit.md",
+      "docs/specs/WATCHMAKERS_VAULT_HARDWARE_UPDATE.md",
+      "docs/hardware/c5-identification.md",
+      "docs/hardware/c5-identification.json",
+      "docs/hardware/c5-csi-source-review.md",
+      "docs/hardware/c5-seller-profile-review.md"
+    ],
+    "pin_sources": {},
+    "unresolved": [
+      "ESP32-C5-KitC-A V1.3 schematic, header continuity, documented power input/isolation and antenna rating",
+      "Inactive boot/reset levels and motor, LED and ADC electrical verification",
+      "Measured mechanism and service calibration; no verified home sensor"
+    ]
+  }
+}

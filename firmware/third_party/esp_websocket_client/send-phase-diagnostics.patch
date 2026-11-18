@@ -1,0 +1,164 @@
+--- a/esp_websocket_client.c
++++ b/esp_websocket_client.c
+@@ -2,7 +2,7 @@
+  * SPDX-FileCopyrightText: 2015-2026 Espressif Systems (Shanghai) CO LTD
+  *
+  * SPDX-License-Identifier: Apache-2.0
+- * Modified for Watchmaker's Vault. See no-redirects.patch.
++ * Modified for Watchmaker's Vault. See no-redirects.patch and send-phase-diagnostics.patch.
+  */
+ 
+ #include <stdio.h>
+@@ -690,41 +690,46 @@
+     return ESP_OK;
+ }
+ 
+-static int esp_websocket_client_send_with_exact_opcode(esp_websocket_client_handle_t client, ws_transport_opcodes_t opcode, const uint8_t *data, int len, TickType_t timeout)
++static int esp_websocket_client_send_with_exact_opcode(esp_websocket_client_handle_t client,
++                                                       ws_transport_opcodes_t opcode, const uint8_t *data,
++                                                       int len, TickType_t timeout, esp_websocket_send_phase_t *phase)
+ {
+     int ret = -1;
+     int need_write = len;
+     int wlen = 0, widx = 0;
+     bool contained_fin = opcode & WS_TRANSPORT_OPCODES_FIN;
++    bool short_write = false;
+ 
+     if (client == NULL || len < 0 || (data == NULL && len > 0)) {
++        if (phase) *phase = ESP_WS_SEND_INVALID_ARGUMENT;
+         ESP_LOGE(TAG, "Invalid arguments");
+         return -1;
+     }
+ 
+     if (!esp_websocket_client_is_connected(client)) {
++        if (phase) *phase = ESP_WS_SEND_NOT_CONNECTED;
+         ESP_LOGE(TAG, "Websocket client is not connected");
+         return -1;
+     }
+ 
+     if (client->transport == NULL) {
++        if (phase) *phase = ESP_WS_SEND_NO_TRANSPORT;
+         ESP_LOGE(TAG, "Invalid transport");
+         return -1;
+     }
+ 
+ #ifdef CONFIG_ESP_WS_CLIENT_SEPARATE_TX_LOCK
+     if (xSemaphoreTakeRecursive(client->tx_lock, timeout) != pdPASS) {
++#else
++    if (xSemaphoreTakeRecursive(client->lock, timeout) != pdPASS) {
++#endif
++        if (phase) *phase = ESP_WS_SEND_LOCK_BUSY;
+         ESP_LOGE(TAG, "Could not lock ws-client within %" PRIu32 " timeout", timeout);
+         return -1;
+     }
+-#else
+-    if (xSemaphoreTakeRecursive(client->lock, timeout) != pdPASS) {
+-        ESP_LOGE(TAG, "Could not lock ws-client within %" PRIu32 " timeout", timeout);
+-        return -1;
+-    }
+-#endif
+ 
+     if (esp_websocket_new_buf(client, true) != ESP_OK) {
++        if (phase) *phase = ESP_WS_SEND_BUFFER;
+         ESP_LOGE(TAG, "Failed to setup tx buffer");
+         goto unlock_and_return;
+     }
+@@ -741,6 +746,7 @@
+         wlen = esp_transport_ws_send_raw(client->transport, opcode, (char *)client->tx_buffer, need_write,
+                                          (timeout == portMAX_DELAY) ? -1 : timeout * portTICK_PERIOD_MS);
+         if (wlen < 0 || (wlen == 0 && need_write != 0)) {
++            if (phase) *phase = ESP_WS_SEND_RAW_ERROR;
+             ret = wlen;
+             esp_websocket_free_buf(client, true);
+ 
+@@ -768,12 +774,14 @@
+             goto unlock_and_return;
+ #endif
+         }
++        if (phase && wlen < need_write) short_write = true;
+         opcode = 0;
+         widx += wlen;
+         need_write = len - widx;
+     }
+     esp_websocket_free_buf(client, true);
+     ret = widx;
++    if (phase) *phase = short_write || widx != len ? ESP_WS_SEND_SHORT : ESP_WS_SEND_COMPLETE;
+ 
+ unlock_and_return:
+ #ifdef CONFIG_ESP_WS_CLIENT_SEPARATE_TX_LOCK
+@@ -1561,14 +1569,21 @@
+     return esp_websocket_client_send_with_opcode(client, WS_TRANSPORT_OPCODES_TEXT, (const uint8_t *)data, len, timeout);
+ }
+ 
++int esp_websocket_client_send_text_report(esp_websocket_client_handle_t client, const char *data,
++                                          int len, TickType_t timeout, esp_websocket_send_phase_t *phase)
++{
++    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_TEXT | WS_TRANSPORT_OPCODES_FIN,
++                                                       (const uint8_t *)data, len, timeout, phase);
++}
++
+ int esp_websocket_client_send_text_partial(esp_websocket_client_handle_t client, const char *data, int len, TickType_t timeout)
+ {
+-    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_TEXT, (const uint8_t *)data, len, timeout);
++    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_TEXT, (const uint8_t *)data, len, timeout, NULL);
+ }
+ 
+ int esp_websocket_client_send_cont_msg(esp_websocket_client_handle_t client, const char *data, int len, TickType_t timeout)
+ {
+-    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_CONT, (const uint8_t *)data, len, timeout);
++    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_CONT, (const uint8_t *)data, len, timeout, NULL);
+ }
+ 
+ int esp_websocket_client_send_bin(esp_websocket_client_handle_t client, const char *data, int len, TickType_t timeout)
+@@ -1578,17 +1593,17 @@
+ 
+ int esp_websocket_client_send_bin_partial(esp_websocket_client_handle_t client, const char *data, int len, TickType_t timeout)
+ {
+-    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_BINARY, (const uint8_t *)data, len, timeout);
++    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_BINARY, (const uint8_t *)data, len, timeout, NULL);
+ }
+ 
+ int esp_websocket_client_send_fin(esp_websocket_client_handle_t client, TickType_t timeout)
+ {
+-    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_FIN, NULL, 0, timeout);
++    return esp_websocket_client_send_with_exact_opcode(client, WS_TRANSPORT_OPCODES_FIN, NULL, 0, timeout, NULL);
+ }
+ 
+ int esp_websocket_client_send_with_opcode(esp_websocket_client_handle_t client, ws_transport_opcodes_t opcode, const uint8_t *data, int len, TickType_t timeout)
+ {
+-    return esp_websocket_client_send_with_exact_opcode(client, opcode | WS_TRANSPORT_OPCODES_FIN, data, len, timeout);
++    return esp_websocket_client_send_with_exact_opcode(client, opcode | WS_TRANSPORT_OPCODES_FIN, data, len, timeout, NULL);
+ }
+ 
+ bool esp_websocket_client_is_connected(esp_websocket_client_handle_t client)
+--- a/include/esp_websocket_client.h
++++ b/include/esp_websocket_client.h
+@@ -316,6 +316,28 @@
+  */
+ int esp_websocket_client_send_text(esp_websocket_client_handle_t client, const char *data, int len, TickType_t timeout);
+ 
++/** Numeric send diagnostics for the Vault diagnostic image. */
++typedef enum {
++    ESP_WS_SEND_NONE = 0,
++    ESP_WS_SEND_INVALID_ARGUMENT = 1,
++    ESP_WS_SEND_NOT_CONNECTED = 2,
++    ESP_WS_SEND_NO_TRANSPORT = 3,
++    ESP_WS_SEND_LOCK_BUSY = 4,
++    ESP_WS_SEND_BUFFER = 5,
++    ESP_WS_SEND_RAW_ERROR = 6,
++    ESP_WS_SEND_SHORT = 7,
++    ESP_WS_SEND_COMPLETE = 8,
++} esp_websocket_send_phase_t;
++
++/**
++ * @brief Same complete text send, timeout and return value as esp_websocket_client_send_text().
++ * @param[out] phase Optional numeric diagnostic. LOCK_BUSY is reported before any write.
++ *                   RAW_ERROR may follow a partial write. SHORT reports a positive short
++ *                   transport write even if the legacy loop returns the original length.
++ */
++int esp_websocket_client_send_text_report(esp_websocket_client_handle_t client, const char *data, int len,
++                                          TickType_t timeout, esp_websocket_send_phase_t *phase);
++
+ /**
+  * @brief      Write textual data to the WebSocket connection and sends it without setting the FIN flag(data send with WS OPCODE=01, i.e. text)
+  *

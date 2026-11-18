@@ -1,0 +1,41 @@
+[ 27%] Built target vault_display
+[ 27%] Built target vault_json
+[ 33%] Built target vault_transport
+[ 38%] Built target vault_protocol
+[ 55%] Built target json_conformance_runner
+[ 55%] Built target vault_device
+[ 61%] Linking CXX executable json_test
+[ 61%] Linking CXX executable protocol_test
+[ 66%] Built target json_test
+[ 66%] Built target protocol_test
+[ 69%] Linking CXX executable touch_test
+[ 75%] Built target device_test
+[ 77%] Building CXX object tests/CMakeFiles/display_test.dir/display_test.cpp.o
+[ 80%] Built target touch_test
+[ 86%] Built target transport_test
+[ 88%] Linking CXX executable service_test
+[ 91%] Built target service_test
+[ 94%] Building CXX object tests/CMakeFiles/controller_runner.dir/controller_runner.cpp.o
+[ 97%] Linking CXX executable display_test
+[ 97%] Built target display_test
+[100%] Linking CXX executable controller_runner
+[100%] Built target controller_runner
+Test project /workspace/watchmaker_vault/.cache/m3-touch-trace-native
+    Start 1: json
+1/7 Test #1: json .............................   Passed    0.52 sec
+    Start 2: protocol
+2/7 Test #2: protocol .........................   Passed    0.50 sec
+    Start 3: device
+3/7 Test #3: device ...........................   Passed    0.21 sec
+    Start 4: touch
+4/7 Test #4: touch ............................   Passed    0.53 sec
+    Start 5: display
+5/7 Test #5: display ..........................   Passed    0.47 sec
+    Start 6: transport
+6/7 Test #6: transport ........................   Passed    0.15 sec
+    Start 7: service
+7/7 Test #7: service ..........................   Passed    0.57 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) =   2.96 sec

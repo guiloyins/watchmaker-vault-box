@@ -1,0 +1,12 @@
+{
+  "verified_at_utc": "2026-11-13T14:00:39.424756+00:00",
+  "manifest_sha256": "bd282cd5f5b95ecd36d0cbfd492009e97a10910c06e0eb6d18645165217f4976",
+  "target_source_files_matched": 56,
+  "frozen_contract_files_unchanged": 13,
+  "actual_secret_matches_in_git_visible_files": 0,
+  "profile_tests": 18,
+  "serial_tests": 16,
+  "sanitizer_suites": 7,
+  "native_oracle_cases": 2210,
+  "actual_hardware": "First CYD active BGR profile/revision4/four receipts preserved; game binding absent. Updated screen/calibration/resource readings and second USB connection pending."
+}

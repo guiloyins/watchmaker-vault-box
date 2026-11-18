@@ -31,6 +31,9 @@ defmodule Vault.ExternalRecoveryTest do
     end
   end
 
+  # Four separate Mix/BEAM launches share this test budget. Individual
+  # connection and write deadlines remain enforced by the simulator.
+  @tag timeout: 60_000
   test "executable simulator connects from a separate no-start VM using provisioned files" do
     root = StorageFixture.temp_root()
 

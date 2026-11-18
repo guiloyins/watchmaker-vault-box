@@ -1,0 +1,41 @@
+{
+  "record_version": 1,
+  "recorded_at": "2026-11-14T21:19:58.519351-05:00",
+  "device_mac": "02:00:00:00:fe:03",
+  "source": "Rafa user-reported multimeter readings",
+  "requested_setup": "Bare board powered only by computer USB; black probe at top-right G pad; all peripherals disconnected",
+  "instrument_model": "FNIRSI DMT-99",
+  "mode_confirmation_pending": false,
+  "reported_rail_volts": {
+    "3V3": 3.323,
+    "5V": 4.85
+  },
+  "reported_gpio_readings": {
+    "8": "31 ohm",
+    "9": "31 ohm",
+    "10": "31 ohm",
+    "23": "31 ohm"
+  },
+  "gpio_voltage_verified": true,
+  "assessment": "Follow-up voltage readings pass the bare-board steady check: 3V3=3.32 V, GPIO8/9/10/23=0 V. Earlier resistance readings retained as invalid for the voltage gate. Boot/reset pulses, loaded behavior, power source isolation and driver compatibility remain unverified.",
+  "peripheral_enable_authorized_by_this_record": false,
+  "instrument_model_source": "Rafa user report",
+  "manual_source": "https://www.docs.beti.com.tr/FNIRSI/DMT-99/DMT-99_ing.pdf",
+  "manual_pages": "Printed pages 12-14, 18 (PDF pages 3-5, 9)",
+  "mode_guidance": "Select the voltage function with the right-hand voltage/resistance function key, keeping leads in COM and V/ohm. AUTO function selection can choose voltage, resistance or continuity; the voltage range and AC/DC detection are automatic. Verify DC voltage on the known 3V3 rail, then repeat GPIO8/9/10/23 readings in volts.",
+  "followup_voltage_measurement": {
+    "recorded_at": "2026-11-14T21:50:29.884041-05:00",
+    "source": "Rafa user-reported follow-up to explicit voltage-function instructions",
+    "rail_3v3_volts": 3.32,
+    "gpio_volts": {
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "23": 0
+    },
+    "steady_unloaded_check": "passed",
+    "reset_transients_measured": false,
+    "loaded_outputs_measured": false
+  },
+  "gpio_voltage_evidence": "User-reported steady unloaded readings only"
+}

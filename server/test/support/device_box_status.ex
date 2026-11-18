@@ -23,8 +23,137 @@ defmodule Vault.Test.DeviceBoxStatus do
   # Runs only in the isolated child VM. Seed an existing durable intent through
   # the store before starting the server, so recovery exercises a prior solve.
   def exercise(root) do
+    with_box(root, :simulated, fn fixture, host, key, command, clock ->
+      status_recovery(fixture, host, command, clock)
+      host_page_recovery(fixture, host, command, clock, root, key)
+    end)
+
+    IO.puts("raw box status checks passed")
+  end
+
+  def physical_recovery(root) do
+    with_box(root, :physical, fn fixture, host, key, command, clock ->
+      game = fixture.game_id
+      host_route = "/games/#{game}/host"
+      host_conn = sign_in("/login", key, host_route)
+
+      assert {:ok, %{session_id: session, release: %{status: :pending}}} =
+               Games.fetch(host, game, :host)
+
+      assert {:ok, prep} =
+               Games.begin_recovery(host, game, Controllers.id("begin"), %{
+                 command_id: command,
+                 expected_session_id: session
+               })
+
+      pending = host_conn |> recycle() |> get(host_route) |> html_response(200)
+      assert pending =~ "Copy local recovery data"
+      assert recovery_documents(pending)["Committed preparation"] == prep
+      assert pending =~ ~s(phx-submit="attest_sealed_record")
+      refute pending =~ ~s(id="simulated-recovery")
+
+      {box, welcome, boot} = connect_box(fixture, command)
+      report = confirmed_report(game, welcome, boot, command)
+      box = status(box, report, "ok")
+      box = heartbeat(box, welcome, clock, 100, 1)
+
+      assert {:ok, %{session_id: recovery_session, release: %{status: :position_confirmed}}} =
+               Games.fetch(host, game, :host)
+
+      terminal = host_conn |> recycle() |> get(host_route) |> html_response(200)
+      assert terminal =~ "Copy local recovery data"
+      assert recovery_documents(terminal)["Committed preparation"] == prep
+      assert terminal =~ ~s(phx-submit="attest_sealed_record")
+      assert terminal =~ ~r/<button[^>]+phx-value-action="reset"[^>]+disabled[^>]*>/
+
+      assert {:error, %{code: :unresolved_release}} =
+               Games.host(host, game, Controllers.id("reset"), recovery_session, :reset)
+
+      assert {:ok, %{query_id: query}} =
+               Games.attest_sealed_record(host, game, attestation(prep, welcome, boot))
+
+      assert {%{"command_id" => ^command}, box} = DeviceEndpoint.receive_type(box, "box_query")
+      box = status(box, %{report | "status_seq" => 2}, "ok")
+
+      assert {:ok, %{release: %{close_evidence: %{query_id: ^query} = evidence}}} =
+               Games.fetch(host, game, :host)
+
+      ready = host_conn |> recycle() |> get(host_route) |> html_response(200)
+      assert ready =~ ~s(phx-submit="close_recovery")
+
+      assert {:ok, %{"disposition" => "closed_no_replay"}} =
+               Games.close_recovery(host, game, Controllers.id("close"), %{
+                 command_id: command,
+                 expected_recovery_id: prep["recovery_id"],
+                 evidence: evidence,
+                 reason: "Verified matching local record"
+               })
+
+      closed = host_conn |> recycle() |> get(host_route) |> html_response(200)
+      assert closed =~ "Closed without replay"
+      refute closed =~ ~s(phx-submit="close_recovery")
+      refute closed =~ ~r/<button[^>]+phx-value-action="reset"[^>]+disabled[^>]*>/
+
+      assert {:ok, _} = Games.host(host, game, Controllers.id("reset"), recovery_session, :reset)
+      assert {:ok, %{release: nil}} = Games.fetch(host, game, :host)
+      DeviceEndpoint.close(box)
+    end)
+
+    IO.puts("physical recovery checks passed")
+  end
+
+  def physical_reconnect(root) do
+    with_box(root, :physical, fn fixture, host, _key, command, _clock ->
+      {box, welcome, boot} = connect_box(fixture, command)
+      report = confirmed_report(fixture.game_id, welcome, boot, command)
+      confirmation = report["command_confirmation"]
+      box = status(box, report, "ok")
+      DeviceEndpoint.close(box)
+
+      {box, welcome, new_boot, snapshot} = box_snapshot(fixture, command)
+      assert new_boot != boot
+
+      assert %{"release_status" => "position_confirmed", "command_confirmation" => ^confirmation} =
+               snapshot["box"]
+
+      # A rebooted box may lose access to the original journal entry. The new
+      # report creates uncertainty while the prior confirmation stays in history.
+      box = status(box, report(welcome, new_boot, command, 1), "ok")
+
+      assert {:ok, %{release: %{status: :uncertain, observations: observations}}} =
+               Games.fetch(host, fixture.game_id, :host)
+
+      assert Enum.any?(observations, &(&1.command_confirmation == confirmation))
+      DeviceEndpoint.close(box)
+
+      {reconnected, rejoined, _, snapshot} = box_snapshot(fixture, command)
+      assert rejoined["connection_id"] != welcome["connection_id"]
+
+      assert %{"release_status" => "uncertain", "command_confirmation" => nil} = snapshot["box"]
+
+      DeviceEndpoint.close(reconnected)
+    end)
+
+    IO.puts("physical reconnect checks passed")
+  end
+
+  defp with_box(root, box_mode, scenario) do
     Logger.configure(level: :warning)
-    {:ok, %{simulator_device_id: device_id}} = Credentials.prepare_test(external_simulator: true)
+    external_simulator = box_mode == :simulated
+    Application.put_env(:vault, :box_mode, box_mode)
+
+    if box_mode == :physical,
+      do: Application.put_env(:vault, :box_device_id, "fixture_physical_box")
+
+    Application.put_env(
+      :vault,
+      :simulator_transport,
+      if(external_simulator, do: :external, else: :internal)
+    )
+
+    {:ok, %{box_device_id: device_id}} =
+      Credentials.prepare_test(external_simulator: external_simulator)
+
     repo = StorageFixture.start_repo(root)
     {game, command} = seed_intent(device_id)
     {:ok, %{store_id: store_id}} = MaintenanceGuard.admit()
@@ -35,7 +164,6 @@ defmodule Vault.Test.DeviceBoxStatus do
     {:ok, clock} = FakeClock.start_link(0)
     Application.put_env(:vault, :clock, FakeClock.handle(clock))
     Application.put_env(:vault, :environment, :test)
-    Application.put_env(:vault, :simulator_transport, :external)
     Application.put_env(:vault, :origin, "http://127.0.0.1:4000")
     Application.put_env(:vault, :port, 0)
     Application.put_env(:vault, :bind, {127, 0, 0, 1})
@@ -63,12 +191,17 @@ defmodule Vault.Test.DeviceBoxStatus do
 
     {:ok, key} = Credentials.read_key(Path.join(root, "host.key"))
     {:ok, host} = Auth.exchange(:host, key)
-    fixture = %{port: port, device_id: device_id, secret: secret, game_id: game}
+
+    fixture = %{
+      port: port,
+      device_id: device_id,
+      secret: secret,
+      game_id: game,
+      box_mode: box_mode
+    }
 
     try do
-      status_recovery(fixture, host, command, clock)
-      host_page_recovery(fixture, host, command, clock, root, key)
-      IO.puts("raw box status checks passed")
+      scenario.(fixture, host, key, command, clock)
     after
       :ok = Supervisor.stop(listener)
       :ok = Application.stop(:vault)
@@ -321,20 +454,7 @@ defmodule Vault.Test.DeviceBoxStatus do
     after_timeout = query_timeout(fixture, host, command, prep, clock, after_conflict)
 
     {client, welcome, boot} = connect_box(fixture, command)
-    {:ok, %{command: persisted}} = GameStore.load(game)
-
-    physical =
-      report(welcome, boot, command, 1)
-      |> Map.merge(%{
-        "command_session_id" => persisted.original_session_id,
-        "release_status" => "position_confirmed",
-        "failure_code" => nil,
-        "latch_position" => "released",
-        "position_basis" => "endstop",
-        "command_confirmation" => %{"basis" => "endstop", "box_boot_id" => boot}
-      })
-
-    client = DeviceEndpoint.send_json(client, physical)
+    client = DeviceEndpoint.send_json(client, confirmed_report(game, welcome, boot, command))
     assert {{:close, 1008, "binding_ended"}, client} = receive_close(client)
     DeviceEndpoint.close(client)
     assert ^after_timeout = observations(command)
@@ -500,7 +620,7 @@ defmodule Vault.Test.DeviceBoxStatus do
         "capabilities" => %{
           "latch" => "stepper",
           "home_sensor" => false,
-          "released_sensor" => false,
+          "released_sensor" => fixture.box_mode == :physical,
           "led_count" => 8,
           "buzzer" => false,
           "max_message_bytes" => 8192
@@ -542,6 +662,19 @@ defmodule Vault.Test.DeviceBoxStatus do
       },
       "extension" => %{"counter" => 2}
     }
+  end
+
+  defp confirmed_report(game, welcome, boot, command) do
+    {:ok, %{command: persisted}} = GameStore.load(game)
+
+    Map.merge(report(welcome, boot, command, 1), %{
+      "command_session_id" => persisted.original_session_id,
+      "release_status" => "position_confirmed",
+      "failure_code" => nil,
+      "latch_position" => "released",
+      "position_basis" => "endstop",
+      "command_confirmation" => %{"basis" => "endstop", "box_boot_id" => boot}
+    })
   end
 
   defp status(client, report, code),

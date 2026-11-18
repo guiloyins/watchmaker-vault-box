@@ -1,0 +1,514 @@
+{
+  "scope": "CYD A normal firmware plus browser B and simulated box",
+  "firmware_evidence": "swipe-normal-build.json",
+  "status": "Resumed mixed session completed; final normal-image seal solved with one simulated release",
+  "normal_firmware_start": {
+    "cell": 8,
+    "board_version": 27
+  },
+  "events": [
+    {
+      "recorded_at": "2026-11-13T17:38:31.486Z",
+      "action": "normal_firmware_role_reclaimed",
+      "source": "user report and live host snapshot",
+      "state": {
+        "phase": "maze",
+        "paused": true,
+        "controllers_ready": true,
+        "cell": 8,
+        "board_version": 27,
+        "cyd_a": "Fresh",
+        "browser_b": "Fresh",
+        "box": "Ready to arm"
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:39:12.213Z",
+      "action": "resume_and_browser_b_right",
+      "source": "live host/browser assertion",
+      "cell": 9,
+      "board_version": 28,
+      "paused": false,
+      "box": "Armed"
+    },
+    {
+      "recorded_at": "2026-11-13T17:39:16.511Z",
+      "action": "snapshot",
+      "observation": {
+        "command": "snapshot",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 5,
+              "board": 29,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 5,
+              "board": 29,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "right",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:39:20.407Z",
+      "action": "step-b left 5 4",
+      "observation": {
+        "command": "step-b",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 4,
+              "board": 30,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 4,
+              "board": 30,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "left",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:40:02.991Z",
+      "action": "snapshot",
+      "observation": {
+        "command": "snapshot",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 0,
+              "board": 31,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 0,
+              "board": 31,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "left",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:40:06.568Z",
+      "action": "step-b right 0 1",
+      "observation": {
+        "command": "step-b",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 1,
+              "board": 32,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 1,
+              "board": 32,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "right",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:40:10.216Z",
+      "action": "step-b right 1 2",
+      "observation": {
+        "command": "step-b",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 2,
+              "board": 33,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 2,
+              "board": 33,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "right",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:40:41.831Z",
+      "action": "snapshot",
+      "observation": {
+        "command": "snapshot",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 10,
+              "board": 35,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "down",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 10,
+              "board": 35,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "right",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:40:45.266Z",
+      "action": "step-b right 10 11",
+      "observation": {
+        "command": "step-b",
+        "state": {
+          "phase": "maze",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": 11,
+              "board": 36,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "down",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": 11,
+              "board": 36,
+              "selected": null,
+              "held": false,
+              "hold_ms": null,
+              "hold_qualified": false,
+              "last_direction": "right",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:41:45.198Z",
+      "action": "snapshot",
+      "observation": {
+        "command": "snapshot",
+        "state": {
+          "phase": "seal",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": null,
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": null,
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": "right",
+              "last_result": "moved"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:41:48.664Z",
+      "action": "select-b moon",
+      "observation": {
+        "command": "select-b",
+        "state": {
+          "phase": "seal",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": null,
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": "up",
+              "last_result": "moved"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": "moon",
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": null,
+              "last_result": "rune_selected"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:42:57.104Z",
+      "action": "physical_star_selected",
+      "observation": {
+        "command": "snapshot",
+        "state": {
+          "phase": "seal",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": "star",
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": null,
+              "last_result": "rune_selected"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": "moon",
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": null,
+              "last_result": "rune_selected"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    },
+    {
+      "recorded_at": "2026-11-13T17:47:19.389Z",
+      "action": "browser_b_hold_after_helper_selector_fix",
+      "observation": {
+        "command": "hold-b",
+        "state": {
+          "phase": "seal",
+          "paused": false,
+          "controllers_ready": true,
+          "box": "Armed",
+          "release": "not_requested",
+          "terminals": {
+            "a": {
+              "source": "cyd",
+              "owner": "CYD controller \u00b7 Fresh",
+              "cell": null,
+              "board": 38,
+              "selected": "star",
+              "held": false,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": null,
+              "last_result": "rune_selected"
+            },
+            "b": {
+              "source": "browser",
+              "owner": "Browser controller \u00b7 Fresh \u00b7 Holding seal",
+              "cell": null,
+              "board": 38,
+              "selected": "moon",
+              "held": true,
+              "hold_ms": 0,
+              "hold_qualified": false,
+              "last_direction": null,
+              "last_result": "rune_selected"
+            }
+          },
+          "browser_b": "Controller"
+        }
+      }
+    }
+  ],
+  "seal_test": {
+    "user_report": "Right after pressing HOLD SEAL, Controls disabled appears and seal progress restarts",
+    "observer": "cyd-a-mixed-seal-observer-02.json",
+    "observed_A_hold_pulses": 18,
+    "all_observed_transports_fresh": true,
+    "phase": "seal",
+    "release": "not_requested",
+    "acceptance": "failed; these are not accepted intentional early-release results",
+    "browser_helper_note": "Initial exact accessible button name did not match visible keyboard shortcut text. Fixed helper selector and reconnected only browser B; puzzle and both runes retained. No production browser change."
+  },
+  "final_seal": {
+    "status": "passed for normal-image final seal in resumed mixed session",
+    "user_report": "Yes, Puzzle Solved appears",
+    "observer": "cyd-a-wifi-awake-normal-seal-observer.json",
+    "observed_shared_hold_to_solved_ms": 2042,
+    "observed_solved_to_motion_complete_ms": 1223,
+    "sampling_resolution_ms": 100,
+    "release_intents": 1,
+    "simulator_accepted": 1,
+    "simulator_completed": 1,
+    "errors": 0,
+    "physical_latch_position": "unknown / unverified",
+    "normal_usb_firmware": true,
+    "before": "wifi-awake-release-before.json",
+    "after": "wifi-awake-release-after.json",
+    "limitation": "Resumed mixed session across firmware updates; clean full round from lobby on final image and CYD B still pending. Journal does not count transport retries or individual simulated motor steps."
+  },
+  "final_firmware_evidence": "wifi-awake-normal-build.json"
+}

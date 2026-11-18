@@ -1,11 +1,98 @@
 defmodule VaultWeb.DeviceSocketTest do
   use ExUnit.Case, async: false
 
-  alias Vault.{Auth, Controllers, Credentials, GameStore, Games}
+  import ExUnit.CaptureLog
+
+  alias Vault.{Auth, Controllers, Credentials, GameStore, Games, Repo}
+  alias Vault.GameStore.Device
   alias Vault.Test.DeviceEndpoint, as: Client
 
   @moduletag :m2
   setup do: Client.start()
+
+  describe "socket close diagnostics" do
+    setup do
+      flag = "VAULT_DEVICE_SOCKET_DIAGNOSTICS"
+      previous = System.get_env(flag)
+
+      on_exit(fn ->
+        if previous, do: System.put_env(flag, previous), else: System.delete_env(flag)
+      end)
+
+      System.put_env(flag, "true")
+      %{diagnostics_flag: flag}
+    end
+
+    test "logs a server policy code with the registered role and leaves the close frame unchanged",
+         fixture do
+      fixture.device_id
+      |> then(&Repo.get!(Device, &1))
+      |> Ecto.Changeset.change(allowed_roles_mask: 2)
+      |> Repo.update!()
+
+      hello = Client.hello(fixture)
+      {client, welcome, _} = Client.connect(fixture, hello)
+      marker = "private invalid message"
+
+      log =
+        capture_log(fn ->
+          client = Client.send_frame(client, {:text, marker})
+          assert {{:close, 1002, "invalid_message"}, client} = close_frame(client)
+          Client.close(client)
+        end)
+
+      assert [_, admission_age, tokens, socket_age] =
+               Regex.run(
+                 ~r/Device socket server close code=1002 cause=invalid_message binding_generation=\d+ role_mask=2 admission_age_ms=(\d+) tokens_after_admit=(\d+) socket_age_ms=(\d+)/,
+                 log
+               )
+
+      assert String.to_integer(admission_age) <= String.to_integer(socket_age)
+      assert String.to_integer(tokens) in 8_000..9_000
+
+      refute log =~ "Device socket terminated"
+      refute log =~ marker
+      refute log =~ fixture.secret
+      refute log =~ fixture.device_id
+      refute log =~ hello["boot_id"]
+      refute log =~ welcome["connection_id"]
+      refute log =~ welcome["session_id"]
+    end
+
+    test "classifies a peer close without logging the peer close payload", fixture do
+      {client, _, _} = Client.connect(fixture)
+      marker = "private peer close payload"
+
+      log =
+        capture_log(fn ->
+          client = Client.send_frame(client, {:close, 1000, marker})
+          assert {{:close, 1000, _}, client} = close_frame(client)
+          Client.close(client)
+        end)
+
+      assert log =~
+               ~r/Device socket terminated cause=peer_close_frame binding_generation=\d+ role_mask=1 admission_age_ms=\d+ tokens_after_admit=9000 socket_age_ms=\d+/
+
+      refute log =~ "Device socket server close"
+      refute log =~ marker
+      refute log =~ fixture.secret
+      refute log =~ fixture.device_id
+    end
+
+    test "is quiet without opt-in", fixture do
+      System.delete_env(fixture.diagnostics_flag)
+      {:ok, client} = Client.mint_open(fixture, Client.bearer(fixture))
+
+      log =
+        capture_log(fn ->
+          client = Client.send_frame(client, {:binary, "invalid binary"})
+          assert {{:close, 1003, "text_required"}, client} = close_frame(client)
+          Client.close(client)
+        end)
+
+      refute log =~ "Device socket"
+    end
+  end
 
   test "validates bearer credentials before upgrade and binds the registered role scope",
        fixture do
@@ -235,6 +322,88 @@ defmodule VaultWeb.DeviceSocketTest do
     :gen_tcp.close(socket)
   end
 
+  @tag timeout: 10_000
+  test "paced unclaimed heartbeat replies stay usable but compressed delivery hits the burst limit",
+       fixture do
+    {paced, welcome, _} = Client.connect(fixture)
+    assert welcome["assigned_role"] == nil
+    assert welcome["heartbeat_interval_ms"] == 100
+    inputs = 1..14
+
+    paced =
+      Enum.reduce(inputs, paced, fn input_seq, client ->
+        {challenge, client} = Client.receive_type(client, "heartbeat_request")
+        client = Client.send_json(client, unclaimed_heartbeat(challenge, input_seq))
+
+        assert {%{"input_accepted" => true, "input_seq" => ^input_seq}, client} =
+                 Client.receive_type(client, "heartbeat_ack")
+
+        client
+      end)
+
+    paced = Client.send_json(paced, Client.command(welcome, 1, "request_snapshot"))
+    assert {%{"code" => "snapshot_sent"}, paced} = Client.receive_type(paced, "command_result")
+    Client.close(paced)
+
+    {buffered, welcome, _} = Client.connect(fixture)
+    assert welcome["assigned_role"] == nil
+
+    {frames, {buffered, _sequence}} =
+      Enum.map_reduce(inputs, {buffered, 0}, fn input_seq, {client, previous} ->
+        {%{"heartbeat_seq" => sequence} = challenge, client} =
+          Client.receive_type(client, "heartbeat_request")
+
+        assert sequence > previous
+        payload = Jason.encode!(unclaimed_heartbeat(challenge, input_seq))
+        {Client.raw_frame(1, true, payload), {client, sequence}}
+      end)
+
+    # Each reply was built on receipt of a real challenge. Flush them in one
+    # write to reproduce delivery compression with margin for token refill
+    # while the server processes the first ten frames.
+    assert {:ok, conn} = Mint.WebSocket.stream_request_body(buffered.conn, buffered.ref, frames)
+    buffered = %{buffered | conn: conn}
+
+    {closed, buffered} =
+      Enum.reduce_while(inputs, {false, buffered}, fn input_seq, {false, client} ->
+        {reply, client} =
+          Client.receive_message(
+            client,
+            &(match?(%{"type" => "heartbeat_ack"}, &1) or match?({:close, _, _}, &1))
+          )
+
+        case reply do
+          {:close, 1008, "rate_limit"} ->
+            assert input_seq > 5
+            {:halt, {true, client}}
+
+          %{"type" => "heartbeat_ack", "input_seq" => ^input_seq} ->
+            if input_seq <= 5 do
+              assert %{"code" => "stale_challenge", "input_accepted" => false} = reply
+            end
+
+            {:cont, {false, client}}
+
+          _ ->
+            flunk("Unexpected reply while draining compressed heartbeat delivery")
+        end
+      end)
+
+    assert closed
+    Client.close(buffered)
+  end
+
+  defp unclaimed_heartbeat(challenge, input_seq) do
+    %{
+      "v" => 1,
+      "type" => "heartbeat",
+      "connection_id" => challenge["connection_id"],
+      "heartbeat_seq" => challenge["heartbeat_seq"],
+      "input_seq" => input_seq,
+      "input" => nil
+    }
+  end
+
   test "replacement across boots fences the old connection and a GameSession crash rotates authority",
        fixture do
     {old, welcome, _} = Client.connect(fixture)
@@ -279,6 +448,71 @@ defmodule VaultWeb.DeviceSocketTest do
     Client.close(client)
     assert {:ok, %{checkpoint: checkpoint}} = GameStore.load(fixture.game_id)
     assert checkpoint.session_id != welcome["session_id"]
+  end
+
+  test "a reset queued between socket preflight and heartbeat dispatch closes with session_reset",
+       fixture do
+    root = Application.fetch_env!(:vault, :data_dir)
+    {:ok, key} = Credentials.read_key(Path.join(root, "host.key"))
+    {:ok, host} = Auth.exchange(:host, key, {127, 0, 0, :erlang.phash2(make_ref(), 254) + 1})
+    on_exit(fn -> Auth.logout(host) end)
+
+    {client, welcome, _} = Client.connect(fixture)
+    {%{"heartbeat_seq" => seq}, client} = Client.receive_type(client, "heartbeat_request")
+    handler = Client.handler_pid(fixture, welcome)
+    {:ok, authority} = Games.ensure(fixture.game_id)
+    marker = self()
+    request = Controllers.id("reset")
+    session = welcome["session_id"]
+
+    # Suspend authority while putting the socket's scope check immediately
+    # before reset in its mailbox. The follow-up :sample arrives after reset,
+    # while the socket is still processing the frame (not its disconnect event).
+    :ok = :sys.suspend(authority)
+
+    client =
+      try do
+        client =
+          Client.send_json(client, %{
+            "v" => 1,
+            "type" => "heartbeat",
+            "connection_id" => welcome["connection_id"],
+            "heartbeat_seq" => seq,
+            "input_seq" => 1,
+            "input" => nil
+          })
+
+        assert await_scope_preflight(authority, handler, Client.now_ms() + 1_000)
+
+        send(
+          authority,
+          {:"$gen_call", {marker, request}, {:host, host, request, session, :reset}}
+        )
+
+        client
+      after
+        :ok = :sys.resume(authority)
+      end
+
+    assert_receive {^request, {:ok, _}}, 1_000
+    assert {{:close, 4003, "session_reset"}, client} = close_frame(client)
+    Client.close(client)
+  end
+
+  defp await_scope_preflight(authority, handler, deadline) do
+    {:messages, queued} = Process.info(authority, :messages)
+
+    cond do
+      Enum.any?(queued, &match?({:"$gen_call", {^handler, _}, {:device_scope, _}}, &1)) ->
+        true
+
+      Client.now_ms() >= deadline ->
+        false
+
+      true ->
+        Process.sleep(1)
+        await_scope_preflight(authority, handler, deadline)
+    end
   end
 
   defp close_frame(client, timeout \\ 1_000),

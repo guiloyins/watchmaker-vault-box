@@ -1,0 +1,21 @@
+{
+  "observer": "cyd-a-mixed-seal-observer-03.json",
+  "observation_resolution_ms": 100,
+  "completed_A_hold_intervals_ms": [
+    3389,
+    1436,
+    7601,
+    4707,
+    8524,
+    7689
+  ],
+  "last_A_hold_open_at_observer_stop": true,
+  "shared_B_pulse_observed_ms": 612,
+  "B_release_cleared_shared_progress": true,
+  "A_still_held_at_B_release": true,
+  "all_observed_controllers_fresh": true,
+  "release_requested": false,
+  "user_interpretation": "User confirms hold ends with Controls disabled while finger remains down",
+  "continuous_15_second_acceptance": "failed",
+  "full_qualification": "pending"
+}

@@ -2,6 +2,8 @@
 
 Two players guide one key through a maze using different wall views, then exchange clues to open a cooperative seal. The Phoenix application has one authoritative game session, separate player logins, a host console, and an explicitly simulated release mechanism. See the [specification package](docs/specs/README.md) and the [implementation and verification ledger](docs/implementation-status.md).
 
+M4 adds the C5 box firmware, bounded local calibration/recovery service and optional setup-knob workflow. Native/software checks, C5 target builds and initial USB bring-up are recorded in [M4 verification](docs/verification/m4/README.md); the corrected USB image passes initial identity, stable-open and stop/reboot persistence checks, and physical wiring, calibration and release acceptance remain pending. [Physical-box service/run instructions](docs/hardware/box-service.md).
+
 ## Run the browser game
 
 Select the versions in [.tool-versions](.tool-versions) with `asdf install` or your version manager. From the repository root, run:
@@ -46,6 +48,6 @@ The M0 test command requires no prepared database, credentials, Vault applicatio
 
 ## Hardware milestones
 
-The default browser demo uses an in-process simulator. The raw `/device/v1` endpoint and independent Mint simulator use the same game authority and box model. Follow the [external simulator runbook](docs/runbook.md#run-the-external-protocol-simulator) for protected provisioning, local service and WSS. Later milestones cover verified CYD and box firmware, followed by installed-box acceptance. Hardware identification and pending bench checks are in the [board audit](docs/hardware/board-audit.md).
+The default browser demo uses an in-process simulator. The raw `/device/v1` endpoint and independent Mint simulator use the same game authority and box model. Follow the [external simulator runbook](docs/runbook.md#run-the-external-protocol-simulator) for protected provisioning, local service and WSS. The [M3 CYD firmware](firmware/README.md) implements permitted-direction swipes, shared protocol validation and USB provisioning; native checks, locked target builds and the first unit’s verified flash are recorded separately from pending display, touch, network and power acceptance. The [board audit](docs/hardware/board-audit.md) and [CYD bring-up procedure](docs/hardware/cyd-bringup.md) track the next device steps. Box firmware is M4.
 
 `contracts/` holds the shared schema and public fixtures. The full maze and hidden answers stay in the server-private puzzle fixture. Runtime data, generated assets, caches, and credential files belong outside source control.

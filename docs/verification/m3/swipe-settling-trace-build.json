@@ -1,0 +1,287 @@
+{
+  "recorded_at": "2026-11-13T17:00:00.082278+00:00",
+  "purpose": "Initial unconfirmed maze-touch settling restart plus stable key renderer slots; diagnostic image for physical verification",
+  "manifest_sha256": "2a122e86319a17fb9fd6fa5cfe011c6995c2a563b73fd56da929f53ec3614b4a",
+  "manifest": {
+    "app": "cyd",
+    "flash_options": {
+      "flash_freq": "40m",
+      "flash_mode": "dio",
+      "flash_size": "4MB"
+    },
+    "flashable": true,
+    "images": [
+      {
+        "offset": 4096,
+        "path": "idf/bootloader/bootloader.bin",
+        "sha256": "5f9698cbe870284e0a2b3167ef164748d9a0c4b443797394fb617e9852248a14",
+        "size": 18368
+      },
+      {
+        "offset": 32768,
+        "path": "idf/partition_table/partition-table.bin",
+        "sha256": "ac9f8b96998aaf942d3f08fe3983d71a80d978bb8f7e775207c021d1f871a2ca",
+        "size": 3072
+      },
+      {
+        "offset": 131072,
+        "path": "idf/watchmakers_vault_cyd.bin",
+        "sha256": "de203f75c480ba4d642a464ccbc6bf57b45f1841d7dad3fd05c0b1f3e95436df",
+        "size": 1187280
+      }
+    ],
+    "managed_lock_sha256": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+    "manifest_version": 1,
+    "memory": {
+      "flash_freq_mhz": 40,
+      "flash_mb": 4,
+      "flash_mode": "dio",
+      "psram": false,
+      "table_offset": 32768
+    },
+    "metadata_sha256": {
+      "generated/board_config.cmake": "e0928d9031c17cc25869be82ed53334fb33a4110f260887f5a2c92970242c07d",
+      "generated/board_config.h": "4eac26ad1d55a4454c3c3a5eb948fb340fc5416c670f9a312022b5842e2c8472",
+      "generated/partitions.csv": "2d25c93e533feffa15665290204cf5ea0fd79f53d4872969415039008b600ed1",
+      "generated/profile-manifest.json": "465c42d9f3467847085ccaae946a897cb57ac6e1daae4b0f1168e7192d95a05b",
+      "generated/sdkconfig.board.defaults": "342401d0a653d8a584bad76bae408ff08c6e500a4b88129155c1b41e88320346",
+      "idf/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "idf/flasher_args.json": "dc735478d8ed8abaf53ca0cefdafd8def3c27f4f84960fb0a03a16a2e8cc82b5",
+      "idf/sdkconfig": "323b0246b100cd256bb110908d19cc47069a5d726dbe43dcd106b11ff8bea8de"
+    },
+    "partitions": [
+      {
+        "name": "nvs",
+        "offset": 36864,
+        "size": 94208,
+        "subtype": "nvs",
+        "type": "data"
+      },
+      {
+        "name": "factory",
+        "offset": 131072,
+        "size": 3145728,
+        "subtype": "factory",
+        "type": "app"
+      }
+    ],
+    "profile_file_sha256": "f0e875999f04e4366f0dec1dd776074235c5102da5b0e8f0bcc9849fe1037079",
+    "profile_id": "cyd-yellow-ili9341-unit-a-bgr",
+    "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+    "protocol_version": 1,
+    "source": {
+      "dirty": true,
+      "git_sha": "29c6497bed056869ab7f3be81e6d9b3c4b33e80a"
+    },
+    "source_sha256": {
+      "firmware/apps/cyd/CMakeLists.txt": "b1e1646a0fd4c5daa5a7eb2fbf08c437ba9fd70781b77c785aec8c7b26fe7f5c",
+      "firmware/apps/cyd/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "firmware/apps/cyd/main/CMakeLists.txt": "cf9d64e25b96dba7f7997dbbcafe608626646ca2c9ae45e6111ab299e378710d",
+      "firmware/apps/cyd/main/app_main.cpp": "bafaa7a8370ca91779ea2b974779d4c7543bd1acc5ed935107af8faf86c38306",
+      "firmware/apps/cyd/main/board_adapter.cpp": "cce2ca4094b2927bad38dad185a2195a2f43dd7f007d8eaec46624113a02f672",
+      "firmware/apps/cyd/main/board_adapter.hpp": "faaca8b33bf65df4aa629d0c59a528d409b9601695b1473316797e1d5373b526",
+      "firmware/apps/cyd/main/idf_component.yml": "0da0b72ff53570230ac7f249c66b27c42befad2d223446b58b2553491d392eec",
+      "firmware/apps/cyd/main/ili9341_2/LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+      "firmware/apps/cyd/main/ili9341_2/UPSTREAM.json": "a29d611fe600758ea031f530ae0c8d34886e6f5032fad1adc4c5ace36f9a99b5",
+      "firmware/apps/cyd/main/ili9341_2/panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442",
+      "firmware/apps/cyd/main/network_adapter.cpp": "afa4f454902ebf66e495db36d512b36bbb57b4bfe246d6cebc6bf2190f970a7e",
+      "firmware/apps/cyd/main/network_adapter.hpp": "86aadb5046fe46253e5df0435591bb5e16dcfb6f65bd84cd314f8df5db39bbcb",
+      "firmware/apps/cyd/main/nvs_adapter.cpp": "1f6a6696db084c18398e1469e4a047ba79a38c7fd6e94c46fa3b75a239e0e1b3",
+      "firmware/apps/cyd/main/nvs_adapter.hpp": "7ac780e2f61d8d21b28f5040ae24217f3331fffff9ea75a641c16eaee8af9fc5",
+      "firmware/apps/cyd/main/touch_trace_config.hpp": "f870eba9713907563d040fa1167298bff9f3b6671b2e264c4a38614c465c844b",
+      "firmware/apps/cyd/sdkconfig.defaults": "e0856928519a1f3cf98c09ae185e4345f6e0761f9b2f5d56b199fd381f94e738",
+      "firmware/components/vault_device/CMakeLists.txt": "e968bd7f3befda1a430b2202c77db86a0fed826c8111bea326dea3a08de724ec",
+      "firmware/components/vault_device/include/vault_device.hpp": "ecbeab74ce6e3dd08c3e69dbceb29785f4d213c970b3cff0c608e406a05dbc49",
+      "firmware/components/vault_device/include/vault_service.hpp": "0a70faa553a2387a796a54258e1b6cc3c3b154936a42843922306b7b19848f1b",
+      "firmware/components/vault_device/include/vault_storage.hpp": "e00b23e6a07129b1db04b6c21c1e311865706f7caa94c057993fbe2564f7803a",
+      "firmware/components/vault_device/service_fields.hpp": "1b446f1263e66062d1ea3b590ecc5c17460906b63cf7622f598e77d70a060071",
+      "firmware/components/vault_device/vault_device.cpp": "5653bc8b0542a83be17136d73c63b3eb723479856bb843dba30bd264be086400",
+      "firmware/components/vault_device/vault_service.cpp": "1e0f8b0c692771d1e80877bf1c1c752fd50efa7f0b4e9c3c27695cc3985e1970",
+      "firmware/components/vault_device/vault_storage.cpp": "b58687052815c2b198332072809c0d3d0f123e1a5a1a1c268fa759160b662a1a",
+      "firmware/components/vault_display/CMakeLists.txt": "988392fc8e426bced587d735002b67635e0b0bba7405517544859f492121e693",
+      "firmware/components/vault_display/diagnostics.cpp": "8a9c2f459b5dc26a6e92441ccffa1f38da452cc6c1fab1874d856e81be158f77",
+      "firmware/components/vault_display/include/vault_display.hpp": "9532640e7d9eeefb8720522cf1223db9b3ff1c8c3ba836276fdd011b23f6a08d",
+      "firmware/components/vault_display/self_test.cpp": "dbefb7fb90a9f96347754d976ecdb28e9e8dc44641e0e45d159c94e777dc1ec8",
+      "firmware/components/vault_display/touch_state.cpp": "965bc90ae6f8bc9f8e76b6171f695cac3b24f084b437b0b8c8e678fb963b2218",
+      "firmware/components/vault_display/vault_display.cpp": "59bcc9e68c90c4af6e4cc9d849291d767fd0b7dafc65c08d00f3887bb09fa4e8",
+      "firmware/components/vault_json/CMakeLists.txt": "69c8704456de7cb639eadb1ee3dc83540afa42f324d67be9b5bf7af93a74b968",
+      "firmware/components/vault_json/include/vault_json.hpp": "4cfa4c661a39f69775b02baf9529d1e5f49b4768b89955bcdd38505bd9495c16",
+      "firmware/components/vault_json/json_internal.hpp": "0a5d2ff0f791644dcb1e4176f2f1333513baecb71263750a76efb068573e8ca4",
+      "firmware/components/vault_json/json_number.cpp": "deea3fb35abfca7a00763849be005936dc3c2be20764a193a2becceac1d32751",
+      "firmware/components/vault_json/json_writer.cpp": "d9d9e18ffcdd195f09348b8a98910afc3268106757d00f8b4cd74af21ea8214b",
+      "firmware/components/vault_json/vault_json.cpp": "365dc5c6d2356e5dbebf9f4bd43fdc532ada4f834dab1347649b6af3ef7d0aae",
+      "firmware/components/vault_protocol/CMakeLists.txt": "55de5cd849e03a764d3dc5c59916e2b71d2fbcf11856151f49a5f2b59478cab9",
+      "firmware/components/vault_protocol/idf_component.yml": "f5c656d0abd53860ca5adb202e6e2a1edf7780ed0512404cd4a3d9b3e1fc2be1",
+      "firmware/components/vault_protocol/include/vault_protocol.hpp": "c327a326d2f8ea6f65edec23afb206bc52ac329901058b8bde0d96f7705ec418",
+      "firmware/components/vault_protocol/vault_protocol.cpp": "94e820a452e52068dd12f9d7a48ed2dcb372df1d46b1a134a3b6a1765d39bec5",
+      "firmware/components/vault_transport/CMakeLists.txt": "ad233e6511dd0eebaf45547a43b1a9b1a2ff6c6170566679b78c622df97e4b32",
+      "firmware/components/vault_transport/idf_component.yml": "f19bd8f93a767d8d05ff0ffeba314e022e19d8277c9a339ede853919f4b6a36a",
+      "firmware/components/vault_transport/include/vault_transport.hpp": "f2901015716ed036d0332807e3d83855599e35f2eeea151b24e9c26a0ff586b1",
+      "firmware/components/vault_transport/vault_transport.cpp": "291bbc4168422458b4e09e0bb20b86c47fe4eb19bc3b4f5a9a19104fe327962c",
+      "firmware/third_party/esp_websocket_client/CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+      "firmware/third_party/esp_websocket_client/Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+      "firmware/third_party/esp_websocket_client/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "firmware/third_party/esp_websocket_client/UPSTREAM.json": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+      "firmware/third_party/esp_websocket_client/esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+      "firmware/third_party/esp_websocket_client/idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+      "firmware/third_party/esp_websocket_client/include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa",
+      "firmware/third_party/esp_websocket_client/no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7",
+      "firmware/third_party/yyjson/LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+      "firmware/third_party/yyjson/UPSTREAM.json": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+      "firmware/third_party/yyjson/fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a",
+      "firmware/third_party/yyjson/yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+      "firmware/third_party/yyjson/yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+    },
+    "target": "esp32",
+    "test_only": false,
+    "toolchain": {
+      "cmake": "cmake version 3.30.2",
+      "compiler": {
+        "sha256": "fcdd657c002c92a3f28e1c947c5acbfbd1085e182ff9ab49b241f21f870671d3",
+        "version": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+      },
+      "esp_idf": "ESP-IDF v6.0.0",
+      "esp_idf_version_cmake_sha256": "3e812348ccd61b318c8f035623d94cb5d8c100ca03ac9ddb6ef937306c0a3616",
+      "esptool": "5.6.0",
+      "ninja": "1.13.2",
+      "python": "Python 3.11.7"
+    },
+    "vendor_provenance": {
+      "esp_websocket_client": {
+        "component": "components/esp_websocket_client",
+        "files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        },
+        "license": "Apache-2.0",
+        "patches": {
+          "no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7"
+        },
+        "provenance_sha256": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+        "release": "websocket-v1.8.0",
+        "repository": "https://github.com/espressif/esp-protocols",
+        "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+        "upstream_files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        }
+      },
+      "yyjson": {
+        "files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        },
+        "license": "MIT",
+        "patches": {
+          "fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a"
+        },
+        "provenance_sha256": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+        "release": "0.13.0",
+        "repository": "https://github.com/ibireme/yyjson",
+        "revision": "6447536015f3d600f3d65323b10976103b337ca7",
+        "upstream_files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        }
+      }
+    },
+    "verified_unit_macs": [
+      "02:00:00:00:fe:02"
+    ]
+  },
+  "source_files_verified": 57,
+  "checks": {
+    "native_sanitizer_suites": 7,
+    "physical_replay_cases": "Both previously missed swipe sequences now emit once; guard cases pass",
+    "lvgl_key_redraw_evidence": "key-redraw.md",
+    "target_build": "passed",
+    "independent_review": "no blocker"
+  },
+  "flash": {
+    "status": "passed",
+    "nvs_initialization": false,
+    "port": "/dev/cu.example-usb",
+    "verified_image_hashes": 3,
+    "reboot": true,
+    "attempts": 2,
+    "first_attempt": "Handshake failed before any write"
+  },
+  "physical_swipes": {
+    "status": "six-stroke vertical test passed on first CYD diagnostic image",
+    "user_report": "Yes, all six work once each",
+    "captures": [
+      {
+        "file": "cyd-a-touch-trace-settling-fixed-01.json",
+        "sha256": "876c92446fbff2f04ad9c5f2a4acebd766a41c976823077aac888b601d3a5c93",
+        "boot_id": "boot_394ab2da4548cef285e6312b18a7eef5",
+        "complete": true,
+        "samples": 1306,
+        "down_samples": 51,
+        "dropped": 0,
+        "max_poll_start_gap_ms": 83,
+        "gesture_count": [
+          1,
+          5
+        ],
+        "board_version": [
+          21,
+          25
+        ],
+        "down_rejections": 0,
+        "io_errors": 0
+      },
+      {
+        "file": "cyd-a-touch-trace-settling-fixed-02.json",
+        "sha256": "e162ee1aa385249953d5bccdb371752fa7baaaa84037bfc5e52fdce32284e641",
+        "boot_id": "boot_394ab2da4548cef285e6312b18a7eef5",
+        "complete": true,
+        "samples": 1307,
+        "down_samples": 17,
+        "dropped": 1,
+        "max_poll_start_gap_ms": 88,
+        "gesture_count": [
+          5,
+          7
+        ],
+        "board_version": [
+          25,
+          27
+        ],
+        "down_rejections": 0,
+        "io_errors": 0
+      }
+    ],
+    "directions": [
+      "down",
+      "up",
+      "down",
+      "up",
+      "down",
+      "up"
+    ],
+    "board_advances": 6,
+    "max_interval_after_down_ms": 61,
+    "onset_bounce_recovery": "Covered by native replay of previous hardware traces; no raw rebound occurred in this six-stroke hardware run",
+    "host_posttest": {
+      "cell": "A3",
+      "board_version": 27,
+      "paused": false,
+      "controllers_ready": true,
+      "simulated_box": "Armed",
+      "a": "CYD Fresh",
+      "b": "Browser Fresh"
+    },
+    "test_conditions": "Compilation stopped throughout both captures. Game explicitly paused after the captures before normal firmware rebuild.",
+    "normal_image": "Normal USB v1 image restored and read back; see swipe-normal-build.json. Further physical play pending."
+  }
+}

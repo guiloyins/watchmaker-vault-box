@@ -72,7 +72,7 @@ D1–D6 are settled; the remaining dependencies are tested versions and hardware
 
 - **Tested toolchain:** Which installed Elixir/OTP, Phoenix dependencies, browser-test tooling and ESP-IDF/component versions pass the M0 compatibility checks? Record tested locks and unavailable tools before claiming a reproducible build. Board-dependent display/driver locks require the chosen hardware baseline.
 - **Hardware identity:** The observed yellow PCB is marked ESP32-2432S028 with Micro-USB, USB-C, CH340C and TPM408-2.8 panel marking. Does the second unit match, and which working driver/pin configuration applies? The documented ESP32-2432S028Rv3 ST7789/XPT2046 profile is a candidate only. Exact C5 board, flash/PSRAM and both targets' pins remain unresolved. Candidate profiles cannot enable a hardware build.
-- **Mechanism and sensing:** ULN2003AN and the 5 V 28BYJ-48 are identified in the update; module jumper/wiring, supply load, actual reference method, optional sensors and travel remain unverified. The Samsung EP-TA20JWE is selected in normal 5 V mode, while the Clutch bank model/connector/ratings need confirmation. The plan requires local service and current starting-position verification.
+- **Mechanism and sensing:** ULN2003AN and the 5 V 28BYJ-48 are identified in the update. The 18 November kit-source review resolves the intended module connector map and VCC–PWR jumper; actual completed wiring, supply load, reference method, optional sensors and travel remain physical verification work. [Vendor/C5 wiring](../hardware/freenove-kit-wiring.md). The Samsung EP-TA20JWE is selected in normal 5 V mode, while the Clutch bank model/connector/ratings need confirmation. The plan requires local service and current starting-position verification.
 
 
 ## Critical User Journeys (CUJs)
@@ -781,6 +781,10 @@ Generated layout names are fixed by D2; actual target values and approved profil
 
 Use the yellow pair as the reported baseline, subject to confirming the second unit matches. Obtain a working vendor configuration and verify LCD/touch/flash/memory/rotation; neither ILI9341 nor ST7789 is selected merely from a family name or connector layout. Keep the black S3 boards as a separately identified alternative.
 
+CYD maze movement uses swipes: up/down on A and left/right on B. One deliberate contact can send one move after stable lift. Diagonal, forbidden-axis and interrupted confirmed contacts do not move; lifecycle loss requires a new neutral interval and contact. Seal rune taps and the separate HOLD SEAL target remain distinct. Browser direction buttons, keyboard shortcuts and the wire protocol stay unchanged.
+
+During initial maze-contact settling, exactly one raw released sample may restart the candidate if it was not yet confirmed, had no established swipe direction, and returns inside the maze in less than 50 ms with the same allowed-move mask. Discard its previous origin and time; require a new continuous 30 ms down interval, at least 24 pixels of new travel, and the normal stable lift. Repeated release samples, interrupted confirmed contacts, driver loss, a 100 ms sample gap and context changes still cancel; this adjustment does not apply to role taps, runes or HOLD SEAL.
+
 | File | Action | Change and reason |
 | --- | --- | --- |
 | `firmware/apps/cyd/CMakeLists.txt` | Create | Select the CYD application and required components; require the generated board settings/partition paths and isolated build configuration. |
@@ -792,15 +796,17 @@ Use the yellow pair as the reported baseline, subject to confirming the second u
 | `firmware/components/vault_display/idf_component.yml` | Create after driver selection | Pin the working driver/LVGL combination instead of a floating latest dependency. |
 | `firmware/components/vault_display/include/vault_display.hpp` | Create | Define portrait rendering, calibrated touch and self-test interfaces separate from board pins. |
 | `firmware/components/vault_display/vault_display.cpp` | Create | Render permitted maze/rune/status projections, connecting/offline overlays and readable unknown boundaries without local puzzle authority. |
-| `firmware/components/vault_display/touch_state.cpp` | Create | Implement stable down/up input, one action per tap, drag suppression, touch-loss clearing and observed neutral interval before rearming. |
+| `firmware/components/vault_display/touch_state.cpp` | Create | Implement stable down/up input, one move per permitted-axis swipe, rune taps, separate holds, touch-loss clearing and observed neutral interval before rearming. |
 | `firmware/components/vault_display/self_test.cpp` | Create | Provide colors, orientation marks, corner/center targets and profile-bound calibration records. |
-| `firmware/tests/touch_test.cpp` | Create | Test single taps, dragging, lost samples, held contact through reconnect and profile changes with fake touch. |
+| `firmware/tests/touch_test.cpp` | Create | Test both swipe axes, invalid strokes, one move per contact, rune taps, separate holds, lost samples and lifecycle neutralization with fake touch. |
 | `docs/hardware/cyd-bringup.md` | Create | Record per-unit identity, actual driver revision, profile hash, power-bank rating/connector and physical self-test results. |
 | `docs/hardware/board-audit.md` | Update | Promote only facts proved by evidence; distinguish candidate, compiled, flashed and physically observed results. |
 
 Update the selected profile with evidenced values only after identity resolution. Record the final profile/adapter files in this manifest before enabling the build; the source filename cannot truthfully encode a verified board revision yet. Then run M3-01–M3-04: build/manifest mismatch refusal, actual display/touch tests, lift/repress through failures and all controller combinations. Check sustained/idle power-bank operation. A successful compile cannot pass a physical case.
 
 ### 6. M4 — Box service, bounded actuator and bench evidence
+
+**Approved setup-knob amendment, 14 November 2026:** Rafa selected an optional potentiometer for commissioning the lock's closed/open travel. A verified ADC input supplies filtered proposals in eligible USB maintenance mode. Knob movement alone never moves or saves: the operator explicitly admits each bounded `motion.jog`, observes the result and saves measured calibration through existing service operations. It supplies no latch or lid position evidence. The lid remains manually lifted. See [calibration workflow](../hardware/box-calibration.md) and the `setup_knob` inspect extension in [LOCAL_SERVICE_V1](../specs/LOCAL_SERVICE_V1.md). Network protocol v1 and shared fixtures remain unchanged.
 
 Before peripheral activation, verify the C5 board profile/input/pins, ULN2003AN module wiring and jumper, ground/power and USB-source isolation, inactive boot outputs, signal compatibility and accessible manual release. Then use bounded local-service movement to establish calibration under the staged [hardware procedure](../specs/HARDWARE_AUDIT.md). Measured release travel/rate/time limits and current locked-position verification are required before gameplay motion. Keep all earlier software checks runnable with the fake actuator.
 

@@ -11,26 +11,60 @@ defmodule Vault.MaintenanceGuard do
   def admit do
     with {:ok, paths} <- paths(),
          :ok <- protected_file(paths.database),
-         :ok <- protected_file(paths.simulator_database),
          {:ok, manifest} <- read_protected(Path.join(paths.root, @manifest), 2048),
-         {:ok,
-          %{
-            "schema_version" => version,
-            "store_id" => store_id,
-            "simulator_instance_id" => instance_id,
-            "simulator_device_id" => device_id,
-            "database" => database,
-            "simulator_database" => simulator
-          } = document} <- Codec.decode(manifest, 2048),
+         {:ok, document} <- Codec.decode(manifest, 2048),
+         {:ok, deployment} <- decode_deployment(paths, document),
+         true <- deployment.box_mode == Application.get_env(:vault, :box_mode) do
+      {:ok, deployment}
+    else
+      _ -> {:error, :invalid_deployment}
+    end
+  end
+
+  defp decode_deployment(
+         %{database: database} = paths,
+         %{
+           "schema_version" => 3,
+           "store_id" => store_id,
+           "box_mode" => "physical",
+           "box_device_id" => device_id,
+           "database" => database
+         } = document
+       )
+       when map_size(document) == 5 do
+    configured = Application.get_env(:vault, :box_device_id)
+
+    if Codec.id?(store_id) and Codec.id?(device_id) and configured in [nil, device_id] and
+         Application.get_env(:vault, :simulator_transport, :internal) == :internal do
+      {:ok,
+       Map.merge(paths, %{store_id: store_id, box_mode: :physical, box_device_id: device_id})}
+    else
+      {:error, :invalid_deployment}
+    end
+  end
+
+  defp decode_deployment(
+         %{database: database, simulator_database: simulator} = paths,
+         %{
+           "schema_version" => version,
+           "store_id" => store_id,
+           "simulator_instance_id" => instance_id,
+           "simulator_device_id" => device_id,
+           "database" => database,
+           "simulator_database" => simulator
+         } = document
+       ) do
+    with :ok <- protected_file(simulator),
          true <-
            (version == 1 and map_size(document) == 6) or
              (version == 2 and map_size(document) == 7 and
                 document["simulator_transport"] in ["internal", "external"]),
-         true <- database == paths.database and simulator == paths.simulator_database,
          true <- Enum.all?([store_id, instance_id, device_id], &Codec.id?/1) do
       {:ok,
        Map.merge(paths, %{
          store_id: store_id,
+         box_mode: :simulated,
+         box_device_id: device_id,
          simulator_instance_id: instance_id,
          simulator_device_id: device_id,
          simulator_transport:
@@ -40,6 +74,8 @@ defmodule Vault.MaintenanceGuard do
       _ -> {:error, :invalid_deployment}
     end
   end
+
+  defp decode_deployment(_, _), do: {:error, :invalid_deployment}
 
   def paths(opts \\ []) do
     root = Application.get_env(:vault, :data_dir)
@@ -57,6 +93,13 @@ defmodule Vault.MaintenanceGuard do
     end
   end
 
+  def write_manifest(%{box_mode: :physical} = paths) do
+    paths
+    |> Map.take([:database, :store_id, :box_mode, :box_device_id])
+    |> Map.merge(%{schema_version: 3, box_mode: "physical"})
+    |> write_deployment(paths.root)
+  end
+
   def write_manifest(paths) do
     document =
       Map.take(paths, [
@@ -72,9 +115,12 @@ defmodule Vault.MaintenanceGuard do
         do: Map.merge(document, %{schema_version: 2, simulator_transport: "external"}),
         else: Map.put(document, :schema_version, 1)
 
-    with {:ok, bytes} <- Codec.encode(document, 2048) do
-      write_protected(Path.join(paths.root, @manifest), bytes)
-    end
+    write_deployment(document, paths.root)
+  end
+
+  defp write_deployment(document, root) do
+    with {:ok, bytes} <- Codec.encode(document, 2048),
+         do: write_protected(Path.join(root, @manifest), bytes)
   end
 
   def manifest_path(root), do: Path.join(root, @manifest)

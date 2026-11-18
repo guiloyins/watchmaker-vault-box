@@ -1,0 +1,111 @@
+{
+  "record_version": 1,
+  "recorded_at": "2026-11-14T19:26:01.970065-05:00",
+  "device_label": "C5 box controller",
+  "rom_identification": {
+    "chip": "ESP32-C5HF4",
+    "chip_revision": "v1.0",
+    "target": "esp32c5",
+    "base_mac": "02:00:00:00:fe:03",
+    "ieee802154_mac": "02:00:00:00:fe:04:9b:94",
+    "usb_mode": "USB-Serial/JTAG",
+    "crystal_mhz": 48,
+    "embedded_flash_bytes": 4194304,
+    "embedded_psram": false,
+    "flash_manufacturer_id": "0x46",
+    "flash_device_id": "0x4016",
+    "esptool_version": "5.6.0",
+    "port": "/dev/cu.example-usb",
+    "usb_vid_pid": "303a:1001",
+    "usb_serial": "02:00:00:00:fe:03",
+    "read_only": true,
+    "bootloader_reset": true
+  },
+  "original_flash_backup": {
+    "relative_path": "data/m4-hardware-backups/02000000fe03.bin",
+    "size_bytes": 4194304,
+    "sha256": "01a48de8cbae796e5d596b1e08067949a6c564717be32e984d1ac6e720b5ae58",
+    "file_mode": "0600",
+    "directory_mode": "0700",
+    "read_only": true,
+    "ram_stub_used": true,
+    "post_read_reset": "hard reset via RTS"
+  },
+  "development_board": {
+    "model": "ESP32-C5-KitC-A",
+    "power_input": null,
+    "exposed_pins": {
+      "coil_outputs": [
+        8,
+        9,
+        10,
+        23
+      ],
+      "led_data": 6,
+      "setup_knob_adc": 1,
+      "scope": "USB-only bring-up; inactive-low coils, LED and ADC disabled; header continuity and electrical operation unmeasured"
+    },
+    "antenna": null,
+    "reported_marking": "2BB77-espc5-32e",
+    "module_candidate": "DOIT ESPC5-32E-H4",
+    "photo": "docs/verification/m4/c5-front.jpg",
+    "observed_features": [
+      "two USB-C connectors",
+      "BOOT and RESET buttons",
+      "attached external antenna cable",
+      "red illuminated indicator"
+    ],
+    "module_source": "https://atta.szlcsc.com/upload/public/pdf/source/20251016/AE26C73F5F73E1BD024C1C95B3A92329.pdf",
+    "carrier_identity_verified": true,
+    "revision": "V1.3",
+    "model_evidence": "User-reported V1.3 marking, owned front photograph and matching seller front/rear gallery for ASIN B0GYWC1XLW; independently reviewed 14 November 2026",
+    "seller_url": "https://www.amazon.com/dp/B0GYWC1XLW",
+    "pin_review": "docs/hardware/c5-seller-profile-review.md"
+  },
+  "flashed": true,
+  "peripherals_activated": false,
+  "prior_project": {
+    "project": "Home Sensing",
+    "root": "/example/local Sensing",
+    "logical_node": "c5-rx-a",
+    "exact_mac_match": true,
+    "evidence": "docs/hardware/c5-csi-source-review.md",
+    "application_gpio_used": false
+  },
+  "vault_installation": {
+    "profile_id": "box-c5-kitca-v13-reference-usb",
+    "profile_sha256": "40d8e140f9be8b021e4d31ff6c54f830fe2b893ffca2d0fc422e26e43ac4a3fc",
+    "initial_app_sha256": "8aa87baef2f99f1741b2e67fba4c2a64737f9aed775a2d728fe166fb9e74e7da",
+    "corrected_app_sha256": "bcaaccf7db7d18831514f7d91ffc9f9b1b585a55702acc67c467c610f897565f",
+    "corrected_image_installed": true,
+    "provisioned": false,
+    "nvs_initialized_once": true,
+    "usb_status": "Corrected factory identity/open/stop/reboot checks passed. Post-knob-wiring read on a new boot retains revision 2, healthy storage, inhibited service and disabled reported outputs; no provisioning or peripheral activation.",
+    "evidence": "docs/verification/m4/c5-usb-bringup.md",
+    "updated_at": "2026-11-14T21:06:54.123364-05:00",
+    "corrected_flash_log": "docs/verification/m4/c5-usb-flash-manual-boot.log",
+    "service_revision": 2,
+    "service_epoch": 1,
+    "storage_fault": null,
+    "outputs_disabled_reported": true,
+    "boot_id": "boot_620a07e63651cfda88d6e46164e341f3",
+    "persistence_evidence": "docs/verification/m4/c5-usb-persistence-checks.json",
+    "latest_observed_on": "2026-11-15",
+    "latest_status_evidence": "docs/verification/m4/c5-usb-after-knob-wiring-status.json"
+  },
+  "bare_board_measurements": {
+    "source": "Rafa user-reported DMT-99 voltage-function follow-up",
+    "rail_3v3_volts": 3.32,
+    "prior_5v_pad_volts": 4.85,
+    "gpio_volts": {
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "23": 0
+    },
+    "steady_unloaded_check": "passed",
+    "boot_reset_transients_verified": false,
+    "loaded_behavior_verified": false,
+    "evidence": "docs/verification/m4/c5-meter-readings.json"
+  }
+}

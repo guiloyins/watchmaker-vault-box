@@ -1,10 +1,25 @@
 defmodule Vault.GameSession do
   @moduledoc "Single game authority: validate, commit, adopt, then publish or dispatch."
   use GenServer
-  alias Vault.{BoxLink, Clock, Controllers, Games, GameStore, Projections, Puzzle, Updates}
+
+  alias Vault.{
+    BoxFeedback,
+    BoxLink,
+    Clock,
+    Controllers,
+    DeviceTimingDiagnostics,
+    Games,
+    GameStore,
+    Projections,
+    Puzzle,
+    Updates
+  }
+
   alias Vault.Controllers.{Actor, Context, Input, Principal}
   alias Vault.Games.{CommandResult, InputResult, Receipt}
   alias Vault.SimulatedBox.Adapter
+
+  @controller_freshness_ms 1500
 
   def start_link(opts) do
     record = Keyword.fetch!(opts, :record)
@@ -50,6 +65,8 @@ defmodule Vault.GameSession do
         release: Vault.Recovery.release(record),
         diagnostics: [],
         qualification_timer: nil,
+        timing_diagnostics: clock == Clock.system() and DeviceTimingDiagnostics.enabled?(),
+        heartbeat_tick_due_ms: nil,
         publish_timer: nil,
         last_publish_ms: nil,
         service_pending: %{},
@@ -63,8 +80,7 @@ defmodule Vault.GameSession do
       }
 
       send(self(), {:connect_box, record.checkpoint.session_id})
-      Clock.schedule_at(clock, self(), :tick, now(s) + 100)
-      {:ok, s}
+      {:ok, schedule_heartbeat_tick(s)}
     else
       _ -> {:stop, :invalid_game_store}
     end
@@ -125,7 +141,7 @@ defmodule Vault.GameSession do
         Controllers.id?(opts[:boot_id]) and map_size(s.actors) < 32 and
         ((source == :browser and principal.kind in [:host, :player]) or
            (source == :cyd and Vault.Auth.device_class(principal) == :controller) or
-           (source == :box and external_box_configured?() and
+           (source == :box and (not simulated?(s) or external_box_configured?()) and
               Vault.Auth.device_class(principal) == :box and
               principal.subject_id == s.record.game.box_device_id)) and
         (principal.kind == :host or principal.game_id == s.checkpoint.game_id) and
@@ -196,7 +212,8 @@ defmodule Vault.GameSession do
               binding_generation: generation,
               runtime_pid: caller,
               connected: true,
-              bound_at_ms: now(s)
+              bound_at_ms: now(s),
+              feedback: if(not simulated?(s), do: BoxFeedback.new(opts[:box_feedback]))
           }
 
           send(self(), {:query_bound_box, generation})
@@ -243,6 +260,11 @@ defmodule Vault.GameSession do
 
             true ->
               {s, status, code, data} = controller_command(s, b, context, action)
+
+              s =
+                if code == :wall,
+                  do: update_in(s.box.feedback, &BoxFeedback.wall(&1, now(s))),
+                  else: s
 
               s =
                 if status == :applied and code in [:moved, :rune_selected] do
@@ -456,6 +478,9 @@ defmodule Vault.GameSession do
 
   @impl true
   def handle_info(:tick, s) do
+    started = DeviceTimingDiagnostics.start(s.timing_diagnostics)
+    DeviceTimingDiagnostics.finish(:room_tick, s.heartbeat_tick_due_ms)
+
     s = expire(s)
 
     s =
@@ -513,8 +538,9 @@ defmodule Vault.GameSession do
         s
       end
 
-    Clock.schedule_at(s.clock, self(), :tick, now(s) + 100)
-    {:noreply, sync_controller_readiness(s)}
+    s = s |> schedule_heartbeat_tick() |> sync_controller_readiness() |> box_feedback()
+    DeviceTimingDiagnostics.finish(:room_tick_work, started)
+    {:noreply, s}
   end
 
   def handle_info({:qualify, session_id, generation}, s) do
@@ -781,6 +807,12 @@ defmodule Vault.GameSession do
 
   def handle_info(_, s), do: {:noreply, s}
 
+  defp schedule_heartbeat_tick(s) do
+    due = now(s) + 100
+    Clock.schedule_at(s.clock, self(), :tick, due)
+    %{s | heartbeat_tick_due_ms: if(s.timing_diagnostics, do: due)}
+  end
+
   defp controller_command(s, b, %Context{} = context, action) do
     cond do
       context.connection_id != b.actor.connection_id or
@@ -913,6 +945,8 @@ defmodule Vault.GameSession do
 
       true ->
         before_sample = s
+        sample_at = now(s)
+        was_fresh = controller_sample_fresh?(b, sample_at)
 
         b = %{
           b
@@ -920,7 +954,7 @@ defmodule Vault.GameSession do
               if(input.pressed, do: max(b.press_high, input.press_id), else: b.press_high),
             input_seq: input.input_seq,
             last_challenge: input.heartbeat_seq,
-            last_seen_ms: now(s),
+            last_seen_ms: sample_at,
             neutral: not input.pressed,
             lease_until_ms: issued + 400
         }
@@ -956,14 +990,18 @@ defmodule Vault.GameSession do
 
           # A syntactically fresh but rejected input (for example, a press
           # before its neutral baseline) cannot renew transport liveness.
-          s = if code in [:ok, :paused], do: s, else: before_sample
-          changed = visible_input(s.rules, now(s)) != visible_input(rules, now(s))
+          accepted = code in [:ok, :paused]
+          s = if accepted, do: s, else: before_sample
+          # One peer can become fresh while aggregate readiness stays false.
+          changed =
+            (accepted and not was_fresh) or
+              visible_input(s.rules, now(s)) != visible_input(rules, now(s))
+
           s = run_effects(%{s | rules: rules}, effects)
           s = if changed, do: visible(s), else: s
           s = clear_offline(s)
 
-          {s, code in [:ok, :paused],
-           if(code in [:ok, :paused, :must_release], do: code, else: :stale_context)}
+          {s, accepted, if(code in [:ok, :paused, :must_release], do: code, else: :stale_context)}
         end
     end
   end
@@ -1181,33 +1219,39 @@ defmodule Vault.GameSession do
       |> Keyword.put(:qualify, qualify)
       |> Keyword.put(:authorize, fn -> is_nil(host) or host?(host) end)
 
-    case GameStore.commit(args, store_options) do
-      {:ok, %{status: :replayed} = saved} ->
-        {:ok, s, receipt_from(saved.result, operation)}
+    started = DeviceTimingDiagnostics.start(s.timing_diagnostics and !opts[:no_checkpoint])
 
-      {:ok, saved} ->
-        {:ok, record} = GameStore.load(checkpoint.game_id)
+    try do
+      case GameStore.commit(args, store_options) do
+        {:ok, %{status: :replayed} = saved} ->
+          {:ok, s, receipt_from(saved.result, operation)}
 
-        next = %{
-          s
-          | rules: rules,
-            checkpoint: if(opts[:no_checkpoint], do: s.checkpoint, else: checkpoint),
-            checkpoint_revision: saved.checkpoint_revision,
-            record: record,
-            release: Vault.Recovery.release(record),
-            last_active_ms: now(s)
-        }
+        {:ok, saved} ->
+          {:ok, record} = GameStore.load(checkpoint.game_id)
 
-        {:ok, next, if(Keyword.has_key?(opts, :result), do: saved.result, else: receipt)}
+          next = %{
+            s
+            | rules: rules,
+              checkpoint: if(opts[:no_checkpoint], do: s.checkpoint, else: checkpoint),
+              checkpoint_revision: saved.checkpoint_revision,
+              record: record,
+              release: Vault.Recovery.release(record),
+              last_active_ms: now(s)
+          }
 
-      {:error, :readback_required} ->
-        {:error, uncertain_commit(s, args, host), :readback_required}
+          {:ok, next, if(Keyword.has_key?(opts, :result), do: saved.result, else: receipt)}
 
-      {:error, :storage_error} ->
-        {:error, storage_fault(s), :storage_error}
+        {:error, :readback_required} ->
+          {:error, uncertain_commit(s, args, host), :readback_required}
 
-      {:error, code} ->
-        {:error, s, fixed_error(code)}
+        {:error, :storage_error} ->
+          {:error, storage_fault(s), :storage_error}
+
+        {:error, code} ->
+          {:error, s, fixed_error(code)}
+      end
+    after
+      DeviceTimingDiagnostics.finish(:room_checkpoint, started)
     end
   end
 
@@ -1502,9 +1546,10 @@ defmodule Vault.GameSession do
         if id != nil do
           b = acc.actors[id]
 
-          if b != nil and now(acc) >= (b.last_seen_ms || b.bound_at_ms) + 1500,
-            do: offline_pause(acc, :controller_offline),
-            else: acc
+          if b != nil and
+               now(acc) >= (b.last_seen_ms || b.bound_at_ms) + @controller_freshness_ms,
+             do: offline_pause(acc, :controller_offline),
+             else: acc
         else
           acc
         end
@@ -1765,6 +1810,23 @@ defmodule Vault.GameSession do
     if s.controllers_ready == controllers_ready?(s), do: s, else: visible(s)
   end
 
+  defp box_feedback(%{box: %{feedback: nil}} = s), do: s
+
+  defp box_feedback(s) do
+    {next, packet} =
+      BoxFeedback.tick(
+        s.box.feedback,
+        s.rules,
+        s.puzzle.overlap_ms,
+        s.controllers_ready,
+        s.release,
+        now(s)
+      )
+
+    if packet, do: BoxLink.feedback(s, packet)
+    put_in(s.box.feedback, next)
+  end
+
   defp publish(s) do
     for audience <- [:host, :public, :box, {:player, :a}, {:player, :b}] do
       Updates.publish(
@@ -1832,9 +1894,14 @@ defmodule Vault.GameSession do
       Enum.all?([:a, :b], fn role ->
         b = s.actors[s.owners[role]]
 
-        b != nil and b.last_seen_ms != nil and now(s) < b.last_seen_ms + 1500 and
+        controller_sample_fresh?(b, now(s)) and
           Controllers.valid?(b.actor.principal) and Process.alive?(b.actor.owner_pid)
       end)
+
+  defp controller_sample_fresh?(%{last_seen_ms: last_seen}, at) when is_integer(last_seen),
+    do: at < last_seen + @controller_freshness_ms
+
+  defp controller_sample_fresh?(_, _), do: false
 
   defp controllers_ready?(s),
     do:
@@ -1927,7 +1994,8 @@ defmodule Vault.GameSession do
       bound_at_ms: nil,
       challenges: %{},
       status_seq: 0,
-      status_cache: %{}
+      status_cache: %{},
+      feedback: nil
     }
 
   defp retry_box(s),

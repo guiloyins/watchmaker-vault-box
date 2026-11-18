@@ -103,7 +103,8 @@ async function start(env) {
 }
 
 export const test = base.extend({
-  vault: async ({ browser }, use) => {
+  vaultBoxMode: ["simulated", { option: true }],
+  vault: async ({ browser, vaultBoxMode }, use) => {
     const testRoot = await realpath(await mkdtemp(join(tmpdir(), "vault-browser-")));
     await chmod(testRoot, 0o700);
     let server;
@@ -118,7 +119,8 @@ export const test = base.extend({
         HEX_HOME: join(repository, ".cache/hex"),
         ELIXIR_MAKE_CACHE_DIR: join(repository, ".cache/elixir_make"),
         MIX_ENV: "test",
-        VAULT_BOX_MODE: "simulated",
+        VAULT_BOX_MODE: vaultBoxMode,
+        VAULT_BOX_DEVICE_ID: vaultBoxMode === "physical" ? "native_box" : undefined,
         VAULT_SIMULATOR_TRANSPORT: "internal",
         VAULT_TRUSTED_LAN_WS: "false",
         VAULT_TLS_CERT_FILE: undefined,
@@ -137,6 +139,14 @@ export const test = base.extend({
       };
 
       await completed(mixProcess(["vault.test.prepare"], env), "isolated store preparation");
+      if (process.env.VAULT_NATIVE_CONTROLLER_RUNNER) {
+        for (const role of ["a", "b"]) {
+          await completed(mixProcess([
+            "vault.device.add", "--id", `native_cyd_${role}`, "--class", "controller",
+            "--roles", role, "--output", join(testRoot, `native-${role}.key`),
+          ], env), "isolated native controller registration");
+        }
+      }
       server = await start(env);
       const gameId = server.gameId;
       const gamePath = `/games/${gameId}`;
@@ -172,6 +182,14 @@ export const test = base.extend({
         login,
         submitCredential,
         command: (command) => server.command(command),
+        async nativeControllerKey(role) {
+          assert(["a", "b"].includes(role));
+          return (await readFile(join(testRoot, `native-${role}.key`), "utf8")).trim();
+        },
+        async nativeBoxKey() {
+          assert.equal(vaultBoxMode, "physical");
+          return (await readFile(join(testRoot, "box.key"), "utf8")).trim();
+        },
         async rotateHostKey() {
           await server.stop();
           await completed(mixProcess(["vault.host.rotate", "--output", join(testRoot, "rotated.key")], env), "isolated host rotation");

@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-11-13T23:06:53.669Z",
+  "phase": "maze",
+  "paused": true,
+  "controllers_ready": true,
+  "box": "Ready to arm",
+  "release": "not_requested",
+  "roles": {
+    "a": {
+      "cell": 12,
+      "board": 60,
+      "owner_source": "cyd",
+      "owner_freshness": "fresh",
+      "selected": null,
+      "held": false,
+      "hold_ms": null,
+      "qualified": false
+    },
+    "b": {
+      "cell": 12,
+      "board": 60,
+      "owner_source": "cyd",
+      "owner_freshness": "fresh",
+      "selected": null,
+      "held": false,
+      "hold_ms": null,
+      "qualified": false
+    }
+  }
+}

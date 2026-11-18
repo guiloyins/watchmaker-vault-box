@@ -3,7 +3,7 @@ defmodule Vault.Credentials do
 
   import Ecto.Query
 
-  alias Vault.{GameStore, MaintenanceGuard, Repo, SimulatedBox}
+  alias Vault.{GameStore, MaintenanceGuard, PhysicalBoxStop, Repo, SimulatedBox}
   alias Vault.GameStore.{BrowserCredential, Codec, Device, Metadata}
   alias Vault.SimulatedBox.{Adapter, Store}
 
@@ -70,13 +70,18 @@ defmodule Vault.Credentials do
 
   def init(opts \\ []) do
     with {:ok, paths} <- MaintenanceGuard.paths(create: opts[:test] != true and not test_mode?()),
-         :ok <- setup_mode(),
          :ok <- prepare_test_root(paths, opts[:test] == true or test_mode?()) do
       with_guard(paths, fn ->
         case File.lstat(MaintenanceGuard.manifest_path(paths.root)) do
-          {:ok, _} -> verify_existing_transport(paths, opts)
-          {:error, :enoent} -> initialize(paths, opts)
-          _ -> {:error, :invalid_deployment}
+          {:ok, _} ->
+            verify_existing_transport(paths, opts)
+
+          {:error, :enoent} ->
+            with {:ok, deployment} <- new_deployment(paths, opts),
+                 do: initialize(deployment, opts)
+
+          _ ->
+            {:error, :invalid_deployment}
         end
       end)
     end
@@ -114,7 +119,9 @@ defmodule Vault.Credentials do
 
   defp prepare_test_root(paths, true) do
     with {:ok, root} <- MaintenanceGuard.owned_directory(Application.get_env(:vault, :test_root)),
-         true <- root == paths.root and Application.get_env(:vault, :box_mode) == :simulated,
+         true <-
+           root == paths.root and
+             Application.get_env(:vault, :box_mode) in [:simulated, :physical],
          true <-
            Path.dirname(paths.database) == root and Path.dirname(paths.simulator_database) == root,
          true <-
@@ -129,6 +136,14 @@ defmodule Vault.Credentials do
       _ -> {:error, :invalid_test_root}
     end
   end
+
+  defp test_marker(%{box_mode: :physical} = paths),
+    do: %{
+      "schema_version" => 2,
+      "root" => paths.root,
+      "store_id" => paths.store_id,
+      "box_device_id" => paths.box_device_id
+    }
 
   defp test_marker(paths),
     do: %{
@@ -166,6 +181,37 @@ defmodule Vault.Credentials do
     end
   end
 
+  defp new_deployment(paths, opts) do
+    mode = Application.get_env(:vault, :box_mode)
+    external = opts[:external_simulator] == true
+    device_id = Application.get_env(:vault, :box_device_id)
+    paths = Map.merge(paths, %{store_id: id("store_"), box_mode: mode})
+
+    case mode do
+      :simulated ->
+        {:ok,
+         Map.merge(paths, %{
+           simulator_device_id: @simulator_device_id,
+           box_device_id: @simulator_device_id,
+           simulator_instance_id: id("sim_"),
+           simulator_transport: if(external, do: :external, else: :internal)
+         })}
+
+      :physical ->
+        if Codec.id?(device_id) and
+             device_id not in [@simulator_device_id, "sim_cyd_a", "sim_cyd_b"] and
+             not external and
+             Application.get_env(:vault, :simulator_transport, :internal) == :internal do
+          {:ok, Map.put(paths, :box_device_id, device_id)}
+        else
+          {:error, :invalid_physical_box_configuration}
+        end
+
+      _ ->
+        {:error, :invalid_box_mode}
+    end
+  end
+
   defp initialize(paths, opts) do
     host_output =
       opts[:output] || Application.get_env(:vault, :host_key_file) || file(paths, :host)
@@ -180,12 +226,14 @@ defmodule Vault.Credentials do
       secret_key_base: Path.expand(secret_output)
     }
 
-    external = opts[:external_simulator] == true
+    device_keys =
+      case paths do
+        %{box_mode: :physical} -> [:box]
+        %{simulator_transport: :external} -> [:box, :cyd_a, :cyd_b]
+        _ -> []
+      end
 
-    targets =
-      if external,
-        do: Enum.reduce([:box, :cyd_a, :cyd_b], targets, &Map.put(&2, &1, file(paths, &1))),
-        else: targets
+    targets = Enum.reduce(device_keys, targets, &Map.put(&2, &1, file(paths, &1)))
 
     with :ok <- ensure_fresh(paths, targets),
          tokens = %{
@@ -194,32 +242,27 @@ defmodule Vault.Credentials do
            player_b: key(),
            secret_key_base: Base.url_encode64(:crypto.strong_rand_bytes(64), padding: false)
          },
-         tokens =
-           if(external,
-             do: Enum.reduce([:box, :cyd_a, :cyd_b], tokens, &Map.put(&2, &1, device_key())),
-             else: tokens
-           ),
+         tokens = Enum.reduce(device_keys, tokens, &Map.put(&2, &1, device_key())),
          :ok <- write_setup_keys(targets, tokens),
-         paths =
-           Map.merge(paths, %{
-             store_id: id("store_"),
-             simulator_instance_id: id("sim_"),
-             simulator_device_id: @simulator_device_id,
-             simulator_transport: if(external, do: :external, else: :internal)
-           }),
          :ok <- MaintenanceGuard.write_protected(paths.database, ""),
          :ok <- with_repo(paths.database, fn -> initialize_server(paths, tokens) end),
-         :ok <-
+         :ok <- initialize_simulator(paths),
+         :ok <- MaintenanceGuard.sync_directory(paths.root),
+         :ok <- MaintenanceGuard.write_manifest(paths) do
+      {:ok, Map.put(paths, :credential_paths, targets)}
+    end
+  end
+
+  defp initialize_simulator(%{box_mode: :physical}), do: :ok
+
+  defp initialize_simulator(paths) do
+    with :ok <-
            Store.init_new(
              paths.simulator_database,
              paths.simulator_instance_id,
              paths.simulator_device_id
            ),
-         :ok <- MaintenanceGuard.protected_file(paths.simulator_database),
-         :ok <- MaintenanceGuard.sync_directory(paths.root),
-         :ok <- MaintenanceGuard.write_manifest(paths) do
-      {:ok, Map.put(paths, :credential_paths, targets)}
-    end
+         do: MaintenanceGuard.protected_file(paths.simulator_database)
   end
 
   defp ensure_fresh(paths, targets) do
@@ -270,40 +313,35 @@ defmodule Vault.Credentials do
 
              insert_browser(host_id, "host", nil, nil, tokens.host, now)
 
-             insert_device(
-               paths.simulator_device_id,
-               "box",
-               if(paths.simulator_transport == :external, do: "raw", else: "internal"),
-               Map.get(tokens, :box),
-               0,
-               now
-             )
+             insert_device(paths.box_device_id, "box", box_transport(paths), tokens[:box], 0, now)
 
-             insert_device(
-               "sim_cyd_a",
-               "controller",
-               "raw",
-               Map.get_lazy(tokens, :cyd_a, &device_key/0),
-               1,
-               now
-             )
+             if paths.box_mode == :simulated do
+               insert_device(
+                 "sim_cyd_a",
+                 "controller",
+                 "raw",
+                 Map.get_lazy(tokens, :cyd_a, &device_key/0),
+                 1,
+                 now
+               )
 
-             insert_device(
-               "sim_cyd_b",
-               "controller",
-               "raw",
-               Map.get_lazy(tokens, :cyd_b, &device_key/0),
-               2,
-               now
-             )
+               insert_device(
+                 "sim_cyd_b",
+                 "controller",
+                 "raw",
+                 Map.get_lazy(tokens, :cyd_b, &device_key/0),
+                 2,
+                 now
+               )
+             end
 
              case GameStore.create(
                     game_id,
-                    :simulated,
-                    paths.simulator_device_id,
+                    paths.box_mode,
+                    paths.box_device_id,
                     host_id,
                     id("request_"),
-                    %{box_mode: :simulated, box_device_id: paths.simulator_device_id}
+                    Map.take(paths, [:box_mode, :box_device_id])
                   ) do
                {:ok, _} -> :ok
                {:error, code} -> GameStore.rollback(code)
@@ -313,50 +351,64 @@ defmodule Vault.Credentials do
              insert_browser(id("credential_"), "player", game_id, "b", tokens.player_b, now)
              :ok
            end),
-         :ok <- GameStore.verify_open(paths.store_id) do
+         :ok <- verify_server(paths) do
       :ok
     else
       _ -> {:error, :setup_failed}
     end
   end
 
-  defp verify_existing(paths) do
-    with {:ok, deployment} <- MaintenanceGuard.admit(),
-         true <- deployment.root == paths.root,
-         :ok <-
-           with_repo(deployment.database, fn -> GameStore.verify_open(deployment.store_id) end),
-         {:ok, handle} <-
-           Store.open_existing(
-             deployment.simulator_database,
-             deployment.simulator_instance_id,
-             deployment.simulator_device_id
-           ),
-         :ok <- Store.close(handle),
-         {:ok, _} <- secret_key_base(deployment) do
-      {:ok, deployment}
+  def verify_server(paths) do
+    with :ok <- GameStore.verify_open(paths.store_id),
+         {:ok, %{game: game}} <- GameStore.active(),
+         true <-
+           game.box_mode == to_string(paths.box_mode) and
+             game.box_device_id == paths.box_device_id,
+         %Device{device_class: "box", transport: transport, allowed_roles_mask: 0} <-
+           Repo.get(Device, game.box_device_id),
+         true <- transport == box_transport(paths) do
+      :ok
     else
       _ -> {:error, :invalid_deployment}
     end
+  end
+
+  defp box_transport(%{simulator_transport: :internal}), do: "internal"
+  defp box_transport(_), do: "raw"
+
+  defp verify_simulator(%{box_mode: :physical}), do: :ok
+
+  defp verify_simulator(paths) do
+    with {:ok, handle} <-
+           Store.open_existing(
+             paths.simulator_database,
+             paths.simulator_instance_id,
+             paths.simulator_device_id
+           ),
+         do: Store.close(handle)
   end
 
   defp verify_existing_transport(paths, opts) do
     requested = if opts[:external_simulator] == true, do: :external, else: :internal
 
     with {:ok, deployment} <- MaintenanceGuard.admit(),
-         true <- deployment.simulator_transport == requested do
-      verify_existing(paths)
+         true <- Map.get(deployment, :simulator_transport, :internal) == requested,
+         true <- deployment.root == paths.root,
+         :ok <- with_repo(deployment.database, fn -> verify_server(deployment) end),
+         :ok <- verify_simulator(deployment),
+         {:ok, _} <- secret_key_base(deployment) do
+      {:ok, deployment}
     else
       false -> {:error, :simulator_transport_mismatch}
       error -> error
     end
   end
 
-  def rotate_host(output) do
-    with :ok <- setup_mode(),
-         {:ok, paths} <- MaintenanceGuard.paths() do
+  def rotate_host(output, physical_stop \\ nil) do
+    with {:ok, paths} <- MaintenanceGuard.paths() do
       with_guard(paths, fn ->
         with {:ok, deployment} <- admitted_maintenance(),
-             :ok <- verify_stopped_simulator(deployment),
+             :ok <- verify_stopped_box(deployment, physical_stop),
              :ok <- with_repo(deployment.database, fn -> activate_host(deployment, output) end) do
           :ok
         end
@@ -364,8 +416,16 @@ defmodule Vault.Credentials do
     end
   end
 
+  defp verify_stopped_box(%{box_mode: :physical, box_device_id: id}, evidence),
+    do: PhysicalBoxStop.attest(id, evidence)
+
+  defp verify_stopped_box(%{box_mode: :simulated} = deployment, nil),
+    do: verify_stopped_simulator(deployment)
+
+  defp verify_stopped_box(_, _), do: {:error, :local_stop_required}
+
   defp activate_host(paths, output) do
-    with :ok <- GameStore.verify_open(paths.store_id),
+    with :ok <- verify_server(paths),
          %BrowserCredential{} = previous <- host_record(),
          true <- previous.auth_epoch < Codec.max_integer(),
          replacement = key(),

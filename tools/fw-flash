@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+repo=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+. "$repo/tools/firmware/idf-env.sh"
+exec "${VAULT_IDF_PYTHON:-python3}" "$repo/tools/firmware/flash_cli.py" "$@"

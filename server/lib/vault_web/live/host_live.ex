@@ -168,7 +168,11 @@ defmodule VaultWeb.HostLive do
             />
           </div>
           <p class="host-help">Reset restarts the puzzle and leaves the mechanism unchanged.</p>
-          <p :if={@external_box} class="host-help">Prepare the reference and exit service at the external simulator before arming here.</p>
+          <p :if={@external_box} class="host-help">
+            {if @box.simulated,
+              do: "Prepare the reference and exit service at the external simulator before arming here.",
+              else: "Verify the locked reference and exit local box service before arming here."}
+          </p>
           <details id="box-diagnostics" phx-mounted={Phoenix.LiveView.JS.ignore_attributes("open")}>
             <summary>Box diagnostics</summary>
             <dl class="diagnostic-grid">
@@ -758,7 +762,7 @@ defmodule VaultWeb.HostLive do
   defp unresolved?(release),
     do:
       is_nil(release[:disposition]) and
-        (release[:uncertain] == true or
+        (not is_nil(release[:preparation]) or release[:uncertain] == true or
            to_string(release.status) in ["pending", "requested", "accepted", "uncertain"])
 
   defp reset_disabled?(%{release: nil}), do: false
@@ -777,7 +781,7 @@ defmodule VaultWeb.HostLive do
   defp box_visual_state(_), do: "idle"
 
   defp candidate?(actor, role, owner) do
-    actor.actor_id != owner and actor.role in [nil, role] and
+    actor.actor_id != owner and role in actor.allowed_roles and actor.role in [nil, role] and
       (is_nil(actor[:panel]) or actor[:panel] == role)
   end
 
@@ -788,8 +792,16 @@ defmodule VaultWeb.HostLive do
   defp source_label(_), do: "Unassigned"
   defp candidate_label(%{actor_id: id}, %{actor_id: id}), do: "This host panel"
 
-  defp candidate_label(candidate, _),
-    do: "#{source_label(candidate)} · #{String.slice(candidate.actor_id, -6, 6)}"
+  defp candidate_label(candidate, _) do
+    source = source_label(candidate)
+
+    label =
+      if source == "CYD controller",
+        do: candidate.subject_id,
+        else: String.slice(candidate.actor_id, -6, 6)
+
+    "#{source} · #{label}"
+  end
 
   defp elapsed(ms) when is_integer(ms) do
     seconds = div(max(ms, 0), 1_000)

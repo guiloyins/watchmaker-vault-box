@@ -1,0 +1,362 @@
+[
+  {
+    "observed_at": "2026-11-13T19:40:07.676083+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_4acef698d446d712ec9b3177eac42d82",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:08.941053+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_4acef698d446d712ec9b3177eac42d82",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:10.249299+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_4acef698d446d712ec9b3177eac42d82",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:11.491285+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": null,
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:12.801136+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:14.086144+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:15.357937+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:16.626951+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:17.927859+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:19.234769+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:20.507662+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:21.876703+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:23.165028+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:24.453676+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:25.750605+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:27.034920+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:28.438703+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:29.718982+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:30.992314+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:32.252145+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:33.513644+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_f466dcaa3eab69b4926937d718ccaffd",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:34.785655+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": null,
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:36.090052+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_a585760b9ef8728d967a5618483cb49b",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:37.355842+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_a585760b9ef8728d967a5618483cb49b",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:38.638741+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_a585760b9ef8728d967a5618483cb49b",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:39.896187+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_a585760b9ef8728d967a5618483cb49b",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:41.158855+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_a585760b9ef8728d967a5618483cb49b",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:42.407368+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": null,
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:43.675587+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_c9a93f183f30365d10d820d6c2b828b6",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:44.926951+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_c9a93f183f30365d10d820d6c2b828b6",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  },
+  {
+    "observed_at": "2026-11-13T19:40:46.206963+00:00",
+    "boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "binding": {
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "connection_id": "conn_c9a93f183f30365d10d820d6c2b828b6",
+      "current_session_id": "session_9bb20be39f05c0313a9a67a596d17921"
+    },
+    "service_revision": 5,
+    "service_inhibited": true,
+    "storage_fault": null
+  }
+]

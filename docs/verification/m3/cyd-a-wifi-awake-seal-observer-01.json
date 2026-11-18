@@ -1,0 +1,116 @@
+{
+  "started_at": "2026-11-13T18:39:50.441Z",
+  "reason": "stop",
+  "records": [
+    {
+      "elapsed_ms": 5,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 23162,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": true,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 35380,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 39077,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": true,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 51831,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    }
+  ]
+}

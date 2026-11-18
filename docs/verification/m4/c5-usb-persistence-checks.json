@@ -1,0 +1,187 @@
+{
+  "before_boot_id": "boot_47bafea5b2678c30521095b32c24aebb",
+  "checks": [
+    {
+      "check": "status",
+      "exit_code": 0,
+      "reply": {
+        "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": null,
+          "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+          "clear_operation_id": null,
+          "device_id": "factory_02000000fe03",
+          "journal_count": 0,
+          "motion_frozen": true,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": true,
+          "service_revision": 2,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "factory_02000000fe03",
+        "operation_id": null,
+        "request_id": "19b787ccf85d0bd9beae5a74735923b3",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "stderr": ""
+    },
+    {
+      "check": "stop_receipt",
+      "exit_code": 0,
+      "reply": {
+        "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+        "code": "ok",
+        "data": {
+          "receipt": {
+            "command": "stop",
+            "completion": null,
+            "decision": {
+              "code": "ok",
+              "data": {
+                "operation_id": "svc_0000000000000001_95a8798e047bcf40b5b6abf7fe9fb4b2",
+                "resulting_revision": 1,
+                "service_epoch": 1
+              },
+              "status": "ok"
+            },
+            "expected_revision": 0,
+            "operation_id": "svc_0000000000000001_95a8798e047bcf40b5b6abf7fe9fb4b2",
+            "resulting_revision": 1,
+            "storage_version": 1
+          }
+        },
+        "device_id": "factory_02000000fe03",
+        "operation_id": null,
+        "request_id": "77cdc754c2d8f5f4818f52cc682e9130",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "stderr": ""
+    },
+    {
+      "check": "reboot_receipt",
+      "exit_code": 0,
+      "reply": {
+        "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+        "code": "ok",
+        "data": {
+          "receipt": {
+            "command": "reboot",
+            "completion": null,
+            "decision": {
+              "code": "ok",
+              "data": {
+                "operation_id": "svc_0000000000000002_078e1fdabeedc242d2d39add756dfd81",
+                "reboot_required": true,
+                "resulting_revision": 2
+              },
+              "status": "ok"
+            },
+            "expected_revision": 1,
+            "operation_id": "svc_0000000000000002_078e1fdabeedc242d2d39add756dfd81",
+            "resulting_revision": 2,
+            "storage_version": 1
+          }
+        },
+        "device_id": "factory_02000000fe03",
+        "operation_id": null,
+        "request_id": "071257bd5157915cccca8935d12340c8",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "stderr": ""
+    },
+    {
+      "check": "reopen_status",
+      "exit_code": 0,
+      "reply": {
+        "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": null,
+          "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+          "clear_operation_id": null,
+          "device_id": "factory_02000000fe03",
+          "journal_count": 0,
+          "motion_frozen": true,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": true,
+          "service_revision": 2,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "factory_02000000fe03",
+        "operation_id": null,
+        "request_id": "72195c2d6ba9182aafccd1984cf2281c",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "stderr": ""
+    },
+    {
+      "check": "provisioning",
+      "exit_code": 0,
+      "reply": {
+        "box_boot_id": "boot_d2acc6e3fcd27384f580e8969003ef7a",
+        "code": "ok",
+        "data": {
+          "configured": false,
+          "device_class": null,
+          "device_id": "factory_02000000fe03",
+          "profile_sha256": null,
+          "provisioning_operation_id": null,
+          "reboot_required": false
+        },
+        "device_id": "factory_02000000fe03",
+        "operation_id": null,
+        "request_id": "990b12dc338b748e6c575ce07832c07b",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "stderr": ""
+    }
+  ]
+}

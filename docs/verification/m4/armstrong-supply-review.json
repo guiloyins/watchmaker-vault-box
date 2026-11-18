@@ -1,0 +1,32 @@
+{
+  "record_version": 1,
+  "recorded_on": "2026-11-18",
+  "model": "Armstrong 56220",
+  "user_reported_output": {
+    "volts_dc": 5,
+    "total_amps": 3.1
+  },
+  "photo_visible_ports": {
+    "left_amps": 2.1,
+    "right_amps": 1.0
+  },
+  "photo": "../../hardware/photos/armstrong-56220-front.jpg",
+  "photo_sha256": "35266cfaa5f232183c47b2e26454cbbf79e75bfe504060ce264b318b02f11e99",
+  "primary_source": "https://www.harborfreight.com/3-Outlet-2-USB-Rapid-Charging-Wall-Adapter-56220.html",
+  "primary_source_confirms": "Model and separate 2.1 A / 1 A USB port ratings; 5 V / 3.1 A total is supplied by Rafa.",
+  "plan": {
+    "motor": "Left 2.1 A port via proposed adapted spare USB-A cable",
+    "c5_first_test": "Mac USB for local service",
+    "c5_after_setup": "Right 1 A port via intact USB-A-to-USB-C cable; Mac disconnected",
+    "reference": "Explicit C5 GND to driver GND; motor return directly to its USB supply",
+    "positive_rails": "No connection to C5 5V/3V3 header; no paralleling of USB positive outputs"
+  },
+  "assessment": "Nameplate/source review supports proceeding to cable preparation and voltage/polarity checks. Actual load performance is not established.",
+  "cable_prepared": false,
+  "conductors_identified": false,
+  "output_voltage_measured": false,
+  "output_polarity_verified": false,
+  "loaded_test_performed": false,
+  "motion_enabled": false,
+  "firmware_changed": false
+}

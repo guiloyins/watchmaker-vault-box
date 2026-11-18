@@ -1,0 +1,13 @@
+set(sources vault_device.cpp vault_service.cpp vault_storage.cpp)
+if(COMMAND idf_component_register)
+    idf_component_register(SRCS ${sources} INCLUDE_DIRS include REQUIRES vault_protocol vault_display)
+    set(vault_device_target ${COMPONENT_LIB})
+else()
+    add_library(vault_device STATIC ${sources})
+    target_include_directories(vault_device PUBLIC include)
+    target_link_libraries(vault_device PUBLIC vault_protocol vault_display)
+    set(vault_device_target vault_device)
+endif()
+
+target_compile_features(${vault_device_target} PUBLIC cxx_std_17)
+target_compile_options(${vault_device_target} PRIVATE -fno-exceptions -fno-rtti)

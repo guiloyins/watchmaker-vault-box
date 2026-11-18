@@ -1,0 +1,55 @@
+{
+  "recorded_at": "2026-11-13T22:38:11.015891+00:00",
+  "server_tests": {
+    "distinct_passed": 200,
+    "pure": 51,
+    "integration": 149,
+    "failures": 0,
+    "log": "unattended-server-final-regression.log"
+  },
+  "frozen_files_unchanged": 13,
+  "same_firmware_sources_across_a_b": 59,
+  "normal_b": {
+    "manifest_sha256": "b66a9121d237404d27315d5ef8344bb48a22612eb301ea2390eaa512686619f4",
+    "flashed": true,
+    "nvs_preserved": true,
+    "display_updates": 60,
+    "final_state": "paused maze, A4, board60; no release requested",
+    "usb_observation": {
+      "polls": 45,
+      "valid_statuses": 45,
+      "failed_polls": 0,
+      "expected_service_state": true,
+      "distinct_boot_ids": 1,
+      "distinct_bindings": 1,
+      "unbound_statuses": 0,
+      "same_boot_observed": true,
+      "stable_binding_observed": true
+    },
+    "server_close_events_during_usb_window": [],
+    "server_close_log": ".cache/m3-hardware-server-freshness.log",
+    "load": "cyd-b-normal-display-load-02.json",
+    "usb": "cyd-b-normal-load-status-02.json"
+  },
+  "normal_a": {
+    "manifest_sha256": "75fea92ab2caaa0944230d8b734d0195033ce3a3538cd94563e57f135da25d4a",
+    "compiled": true,
+    "flashed": false,
+    "reason": "Only B enumerates USB data; A continues running its previously verified image"
+  },
+  "limits": [
+    "No new physical touch or visual observation",
+    "Diagnostic-image heap measurements do not establish normal-image WSS headroom",
+    "Repeated disconnects during compilation and earlier gameplay losses remain a separate open reliability investigation",
+    "M3 remains partial; M4 not started"
+  ],
+  "shared_contract_copies_identical": 4,
+  "local_documentation_links_resolved": 248,
+  "subsequent_cyd_a_installation": {
+    "recorded_at": "2026-11-13T22:58:09.045600+00:00",
+    "flashed": true,
+    "build_and_flash_record": "cyd-a-current-normal-build.json",
+    "runtime_record": "cyd-a-current-normal-usb.json",
+    "note": "Supersedes the unflashed state at the original unattended checkpoint; calibration startup user-confirmed."
+  }
+}

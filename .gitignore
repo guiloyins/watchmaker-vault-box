@@ -23,6 +23,10 @@ server/priv/static/assets/
 server/priv/static/cache_manifest.json
 node_modules/
 firmware/build/
+firmware/build-host*/
+firmware/apps/**/managed_components/
+*.operation.json
+*-op.json
 firmware/**/build/
 firmware/**/sdkconfig.old
 *.bin
@@ -34,3 +38,4 @@ tools/browser/playwright-report/
 tools/browser/.auth/
 __pycache__/
 *.pyc
+.codex-attachments/

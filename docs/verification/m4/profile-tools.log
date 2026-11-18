@@ -1,0 +1,11 @@
+...Detected ESP32 02:00:00:00:00:01, 4MB flash on /dev/explicit
+.......Detected ESP32 02:00:00:00:00:01, 4MB flash on /dev/explicit
+Initializing default NVS at 0x9000, length 0x17000
+.Detected ESP32 02:00:00:00:00:01, 4MB flash on /dev/explicit
+Detected ESP32 02:00:00:00:00:01, 4MB flash on /dev/explicit
+Initializing default NVS at 0x9000, length 0x17000
+.......
+----------------------------------------------------------------------
+Ran 18 tests in 0.506s
+
+OK

@@ -66,6 +66,25 @@ defmodule Vault.BoxLink do
       else: Adapter.query(s.runtime, s.box.binding_generation, command, context)
   end
 
+  def feedback(s, fields) do
+    actor = s.actors[s.box.actor_id].actor
+
+    message =
+      Map.merge(fields, %{
+        "v" => 1,
+        "type" => "box_feedback",
+        "connection_id" => actor.connection_id,
+        "box_boot_id" => actor.boot_id,
+        "session_id" => s.checkpoint.session_id
+      })
+
+    VaultWeb.DeviceSocket.offer_feedback(
+      s.actors[s.box.actor_id].delivery,
+      {:vault_box, actor.actor_id, actor.binding_generation, message, nil,
+       System.monotonic_time(:millisecond) + 100}
+    )
+  end
+
   def ack(s, seq) do
     if external?(s), do: :ok, else: Adapter.ack_status(s.runtime, s.box.binding_generation, seq)
   end

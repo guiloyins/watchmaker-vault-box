@@ -1,0 +1,87 @@
+{
+  "profile_version": 1,
+  "verified": false,
+  "test_only": true,
+  "target": "esp32",
+  "reserved_gpio": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "memory": {
+    "flash_mb": 4,
+    "flash_mode": "dio",
+    "flash_freq_mhz": 40,
+    "psram": false,
+    "table_offset": 32768
+  },
+  "serial": {
+    "backend": "uart",
+    "uart": 0,
+    "tx": 1,
+    "rx": 3
+  },
+  "display": {
+    "driver": "st7789",
+    "spi": {
+      "host": 2,
+      "sclk": 18,
+      "mosi": 23,
+      "miso": null,
+      "cs": 5,
+      "hz": 20000000
+    },
+    "dc": 19,
+    "reset": null,
+    "backlight": 21,
+    "backlight_active_high": true,
+    "width": 240,
+    "height": 320,
+    "swap_xy": false,
+    "mirror_x": false,
+    "mirror_y": false,
+    "invert_colors": false,
+    "bgr": false
+  },
+  "touch": {
+    "driver": "xpt2046",
+    "spi": {
+      "host": 3,
+      "sclk": 14,
+      "mosi": 13,
+      "miso": 12,
+      "cs": 15,
+      "hz": 1000000
+    },
+    "irq": null
+  },
+  "actuator": null,
+  "partitions": [
+    {
+      "name": "nvs",
+      "type": "data",
+      "subtype": "nvs",
+      "offset": 36864,
+      "size": 94208
+    },
+    {
+      "name": "factory",
+      "type": "app",
+      "subtype": "factory",
+      "offset": 131072,
+      "size": 3145728
+    }
+  ],
+  "profile_id": "test-cyd",
+  "app": "cyd",
+  "evidence": {
+    "observed": [],
+    "documented_candidate": [],
+    "sources": [],
+    "pin_sources": {},
+    "unresolved": []
+  }
+}

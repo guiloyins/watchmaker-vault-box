@@ -1,0 +1,122 @@
+{
+  "recorded_at": "2026-11-13T21:34:51.905646+00:00",
+  "status": "resumed mixed Browser A / CYD B game solved with one completed simulated release",
+  "installed_image_manifest_sha256": "a5849abcf545e42c116a0abfd7570ac73c8029d79eca4839290e6a4313b82dd1",
+  "firmware_transport_changes_since_initial_B_install": false,
+  "user_reports": {
+    "solved": "is solved now",
+    "clarification": "I held longer or pressed again"
+  },
+  "maze_evidence": "cyd-b-mixed-monitored-moves.json",
+  "physical_b_swipes_accepted": 5,
+  "seal_selection": "MOON user-confirmed and host-acknowledged",
+  "observer_evidence": "cyd-b-seal-early-release-observer.json",
+  "observer_interval_ms": 100,
+  "first_shared_hold_observed_ms": 26475,
+  "solved_observed_ms": 28423,
+  "motion_complete_observed_ms": 29556,
+  "early_release_result": "Not verified: initial user report suggested clear but observer saw qualification and solved; user clarified longer hold or another press. No release-detection fault is established.",
+  "release_before": {
+    "observed_at": "2026-11-13T19:51:40.742625+00:00",
+    "session": "session_3e0d2cb2f81edd4bd777f91cdae31b13",
+    "round": 1,
+    "phase": "seal",
+    "paused": false,
+    "command_id": null,
+    "release_intents": 0,
+    "dispatch_claimed": null,
+    "dispatch_retired": null,
+    "simulator_session_entries": 0,
+    "simulator_matching_entries": 0,
+    "simulator_accepted": 0,
+    "simulator_completed": 0,
+    "simulator_errors": 0,
+    "simulator_conflicted": null,
+    "release_status": null,
+    "motor_active": null,
+    "latch_position": null,
+    "position_basis": null,
+    "command_confirmation": null
+  },
+  "release_after": {
+    "observed_at": "2026-11-13T19:53:50.025361+00:00",
+    "session": "session_3e0d2cb2f81edd4bd777f91cdae31b13",
+    "round": 1,
+    "phase": "solved",
+    "paused": false,
+    "command_id": "command_8812e1a680d09b6ba160264ca3641436",
+    "release_intents": 1,
+    "dispatch_claimed": true,
+    "dispatch_retired": false,
+    "simulator_session_entries": 1,
+    "simulator_matching_entries": 1,
+    "simulator_accepted": 1,
+    "simulator_completed": 1,
+    "simulator_errors": 0,
+    "simulator_conflicted": false,
+    "release_status": "motion_complete",
+    "motor_active": false,
+    "latch_position": "unknown",
+    "position_basis": "unverified",
+    "command_confirmation": null
+  },
+  "post_solved_usb": {
+    "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "code": "ok",
+    "data": {
+      "active_local_record_id": null,
+      "active_motion_operation_id": null,
+      "binding": {
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "connection_id": "conn_e0f1806ade9566828ea54b49352cbee7",
+        "current_session_id": "session_3e0d2cb2f81edd4bd777f91cdae31b13"
+      },
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "clear_operation_id": null,
+      "device_id": "cyd_b",
+      "journal_count": 0,
+      "motion_frozen": false,
+      "motor_active": false,
+      "outputs_disabled": true,
+      "position": {
+        "latch_position": "unknown",
+        "position_basis": "unverified"
+      },
+      "preparation_operation_id": null,
+      "readiness": {
+        "arm_id": null,
+        "armed_session_id": null,
+        "calibration_valid": false,
+        "start_verified": false
+      },
+      "service_epoch": 2,
+      "service_inhibited": false,
+      "service_revision": 6,
+      "storage_fault": null,
+      "storage_version": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": null,
+    "request_id": "cf97c93e45367aaa16402a31cf352eda",
+    "service_revision": 6,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "socket_close_diagnostics": {
+    "during_monitored_maze_and_seal": "No close observed; motion complete at 2026-11-13 14:53:01.509 EST and readonly store verification at 14:53:50 EST",
+    "subsequent_failures": [
+      "14:54:43.790 EST transport_closed generation19",
+      "14:54:49.064 EST transport_closed generation21"
+    ],
+    "meaning": "TCP ended without a received peer close frame or logged server policy close; cannot yet attribute device close, link failure, or local transport failure"
+  },
+  "limitations": [
+    "Round crossed an unexpected CYD disconnect and a deliberate server restart; clean uninterrupted full round remains pending.",
+    "Original recurring connection cause unresolved; later transport closure recurred after solve.",
+    "Early-release, broader negative gestures and interruption tests remain open.",
+    "Under-load WS/WSS resource and bank checks remain pending.",
+    "Simulated motion does not establish physical latch movement or position.",
+    "Offline wording source fix is tested but not flashed."
+  ]
+}

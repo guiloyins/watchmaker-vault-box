@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Vault.Init do
   use Mix.Task
 
-  @shortdoc "Initializes the guarded local simulated deployment"
+  @shortdoc "Initializes the guarded local deployment"
 
   @impl true
   def run(args) do

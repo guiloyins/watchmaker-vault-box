@@ -1,0 +1,12 @@
+set(sources vault_display.cpp touch_state.cpp self_test.cpp diagnostics.cpp)
+if(COMMAND idf_component_register)
+    idf_component_register(SRCS ${sources} INCLUDE_DIRS include)
+    set(vault_display_target ${COMPONENT_LIB})
+else()
+    add_library(vault_display STATIC ${sources})
+    target_include_directories(vault_display PUBLIC include)
+    set(vault_display_target vault_display)
+endif()
+
+target_compile_features(${vault_display_target} PUBLIC cxx_std_17)
+target_compile_options(${vault_display_target} PRIVATE -fno-exceptions -fno-rtti)

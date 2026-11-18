@@ -2,7 +2,9 @@ defmodule VaultWeb.DeviceSocket do
   @moduledoc false
   @behaviour WebSock
 
-  alias Vault.{Games, Protocol, Updates}
+  require Logger
+
+  alias Vault.{DeviceTimingDiagnostics, Games, Protocol, Updates}
   alias Vault.Controllers.{Actor, Context, Input}
   alias Vault.Protocol.CommandWindow
 
@@ -14,6 +16,7 @@ defmodule VaultWeb.DeviceSocket do
   @snapshot_fields ~w(session_id round_id puzzle_revision state_revision phase paused pause_reasons
                        required_roles peers box projection role control_epoch maze seal hold board_version)a
   @roles %{"a" => :a, "b" => :b, "c" => :c, "d" => :d}
+  @role_bits [a: 1, b: 2, c: 4, d: 8]
   @moves %{"up" => :up, "down" => :down, "left" => :left, "right" => :right}
   @runes %{"star" => :star, "moon" => :moon, "sun" => :sun, "wave" => :wave}
   @report_fields ~w(connection_id box_boot_id session_id status_seq command_id command_session_id
@@ -29,7 +32,7 @@ defmodule VaultWeb.DeviceSocket do
   defmodule Delivery do
     @moduledoc false
     @enforce_keys [:pid, :counter]
-    defstruct @enforce_keys
+    defstruct @enforce_keys ++ [:feedback]
   end
 
   defstruct [
@@ -48,6 +51,7 @@ defmodule VaultWeb.DeviceSocket do
     :snapshot_timer,
     :snapshot_at,
     :token_at,
+    timing_diagnostics: false,
     last_revision: -1,
     tokens: @burst
   ]
@@ -72,6 +76,28 @@ defmodule VaultWeb.DeviceSocket do
     end
   end
 
+  # The GameSession is the sole producer. Replacing the slot cannot fill the
+  # queue reserved for a challenge, arm, release, or query.
+  def offer_feedback(%Delivery{pid: pid, feedback: slot} = delivery, payload)
+      when is_reference(slot) do
+    cond do
+      :ets.insert_new(slot, {:latest, payload}) ->
+        Kernel.send(pid, {:vault_device_feedback, slot})
+
+      :ets.update_element(slot, :latest, {2, payload}) ->
+        :ok
+
+      true ->
+        offer_feedback(delivery, payload)
+    end
+
+    :ok
+  rescue
+    ArgumentError -> :ok
+  end
+
+  def offer_feedback(_, _), do: :ok
+
   @impl true
   def init(registration) do
     now = now_ms()
@@ -84,7 +110,8 @@ defmodule VaultWeb.DeviceSocket do
        hello_deadline: now + @hello_ms,
        hello_timer: timer,
        commands: CommandWindow.new(),
-       token_at: now
+       token_at: now,
+       timing_diagnostics: DeviceTimingDiagnostics.enabled?()
      }}
   end
 
@@ -157,17 +184,36 @@ defmodule VaultWeb.DeviceSocket do
   def handle_info({:device_snapshot_flush, token}, %{snapshot_timer: {_, token}} = state),
     do: flush_snapshot(%{state | snapshot_timer: nil})
 
+  def handle_info({:vault_device_feedback, slot}, %{delivery: %{feedback: slot}} = state)
+      when is_reference(slot) do
+    case :ets.take(slot, :latest) do
+      [{:latest, {:vault_box, _, _, _, _, deadline} = event}] ->
+        if now_ms() < deadline, do: handle_delivery(event, state), else: {:ok, state}
+
+      [] ->
+        {:ok, state}
+    end
+  end
+
   def handle_info(_, state), do: {:ok, state}
 
   @impl true
-  def terminate(_reason, state) do
+  def terminate(reason, state) do
     :atomics.put(state.delivery.counter, 2, 2)
+    if reason != :normal, do: log_close(state, "terminated cause=#{termination_cause(reason)}")
 
     if state.actor && Process.alive?(state.game_pid),
       do: Games.disconnect(state.actor, state.registration.game_id, :disconnected)
 
     :ok
   end
+
+  defp termination_cause(:remote), do: :peer_close_frame
+  defp termination_cause({:error, :closed}), do: :transport_closed
+  defp termination_cause(:timeout), do: :transport_timeout
+  defp termination_cause(:shutdown), do: :server_shutdown
+  defp termination_cause({:error, _}), do: :adapter_error
+  defp termination_cause(_), do: :unknown
 
   defp handle_message(%{message: %{"type" => "hello"} = hello}, %{actor: nil} = state),
     do: hello(hello, state)
@@ -176,7 +222,11 @@ defmodule VaultWeb.DeviceSocket do
 
   defp handle_message(%{message: %{"connection_id" => id}} = decoded, %{actor: actor} = state)
        when actor.connection_id == id do
-    case Games.device_scope(actor, state.registration.game_id) do
+    started = DeviceTimingDiagnostics.start(state.timing_diagnostics)
+    result = Games.device_scope(actor, state.registration.game_id)
+    DeviceTimingDiagnostics.finish(:device_scope, started)
+
+    case result do
       {:ok, scope} -> route(decoded, scope, state)
       error -> authority_error(state, error)
     end
@@ -195,17 +245,25 @@ defmodule VaultWeb.DeviceSocket do
         close(state, 1008, "identity_mismatch")
 
       true ->
-        bind(state, game, principal, class, hello["boot_id"])
+        bind(state, game, principal, class, hello)
     end
   end
 
-  defp bind(state, game, principal, class, boot_id) do
+  defp bind(state, game, principal, class, hello) do
+    caps = hello["capabilities"]
+
+    state =
+      if class == :box and (caps["led_count"] > 0 or caps["buzzer"]),
+        do: put_in(state.delivery.feedback, :ets.new(:box_feedback, [:set, :public])),
+        else: state
+
     opts = %{
       source: if(class == :controller, do: :cyd, else: :box),
-      boot_id: boot_id,
+      boot_id: hello["boot_id"],
       owner_pid: self(),
       panel: nil,
-      device_delivery: state.delivery
+      device_delivery: state.delivery,
+      box_feedback: if(state.delivery.feedback, do: caps)
     }
 
     with {:ok, {actor, context, pid}} <- Games.bind_device(principal, game, opts) do
@@ -257,7 +315,11 @@ defmodule VaultWeb.DeviceSocket do
       press_id: if(input, do: input["press_id"])
     }
 
-    case Games.sample(state.actor, state.registration.game_id, sample) do
+    started = DeviceTimingDiagnostics.start(state.timing_diagnostics)
+    result = Games.sample(state.actor, state.registration.game_id, sample)
+    DeviceTimingDiagnostics.finish(:device_sample, started)
+
+    case result do
       {:ok, result} -> push(state, wire(state, "heartbeat_ack", Map.from_struct(result)))
       error -> authority_error(state, error)
     end
@@ -559,7 +621,7 @@ defmodule VaultWeb.DeviceSocket do
       cond do
         :atomics.get(state.delivery.counter, 2) == 1 -> close(state, 1013, "slow_consumer")
         deadline == nil or now_ms() < deadline -> {:push, {:text, bytes}, state}
-        message["type"] == "heartbeat_request" -> {:ok, state}
+        message["type"] in ["heartbeat_request", "box_feedback"] -> {:ok, state}
         true -> close(state, 1013, "delivery_expired")
       end
     else
@@ -637,11 +699,47 @@ defmodule VaultWeb.DeviceSocket do
   defp authority_error(state, {:error, %{code: :stale_session}}), do: session_reset(state)
 
   defp authority_error(%{game_pid: pid} = state, _) when is_pid(pid) do
-    if Process.alive?(pid), do: close(state, 1008, "binding_ended"), else: session_reset(state)
+    # A reset can commit after the preflight scope check and before the
+    # dispatched operation finds the old actor. Classify the close using the
+    # same authority, without executing the operation again or granting scope.
+    if Process.alive?(pid) and
+         not match?(
+           {:error, %{code: :stale_session}},
+           Games.device_scope(state.actor, state.registration.game_id)
+         ) and Process.alive?(pid),
+       do: close(state, 1008, "binding_ended"),
+       else: session_reset(state)
   end
 
   defp authority_error(state, _), do: close(state, 1008, "binding_ended")
   defp session_reset(state), do: close(state, 4003, "session_reset")
-  defp close(state, code, reason), do: {:stop, :normal, {code, reason}, state}
+
+  defp close(state, code, reason) do
+    log_close(state, "server close code=#{code} cause=#{reason}")
+    {:stop, :normal, {code, reason}, state}
+  end
+
+  defp log_close(state, event) do
+    if System.get_env("VAULT_DEVICE_SOCKET_DIAGNOSTICS") == "true" do
+      generation = if state.actor, do: state.actor.binding_generation, else: "unbound"
+      roles = state.registration.principal.allowed_roles
+
+      role_mask =
+        Enum.reduce(@role_bits, 0, fn {role, bit}, mask ->
+          if role in roles, do: mask + bit, else: mask
+        end)
+
+      now = now_ms()
+      # token_at starts at socket initialization and advances only on admission.
+      admission_age = max(now - state.token_at, 0)
+      socket_age = max(now - (state.hello_deadline - @hello_ms), 0)
+
+      Logger.warning(
+        "Device socket #{event} binding_generation=#{generation} role_mask=#{role_mask} " <>
+          "admission_age_ms=#{admission_age} tokens_after_admit=#{state.tokens} socket_age_ms=#{socket_age}"
+      )
+    end
+  end
+
   defp now_ms, do: System.monotonic_time(:millisecond)
 end

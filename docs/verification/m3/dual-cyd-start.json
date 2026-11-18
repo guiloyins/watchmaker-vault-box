@@ -1,0 +1,16 @@
+{
+  "recorded_at": "2026-11-13T23:08:24.208Z",
+  "phase": "maze",
+  "paused": false,
+  "cell": 12,
+  "board": 0,
+  "controllers_ready": true,
+  "roles": {
+    "a": "physical CYD A / fresh / released",
+    "b": "physical CYD B / fresh / released"
+  },
+  "box": "simulated / armed",
+  "release": "not_requested",
+  "setup": "passed",
+  "physical_moves_verified": 0
+}

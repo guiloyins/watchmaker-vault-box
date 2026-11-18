@@ -1,0 +1,31 @@
+[1/11] Building C object components/vault_json/CMakeFiles/vault_json.dir/__/__/third_party/yyjson/yyjson.c.o
+[2/11] Linking CXX static library components/vault_json/libvault_json.a
+[3/11] Linking CXX executable tests/touch_test
+[4/11] Linking CXX executable tests/json_test
+[5/11] Linking CXX executable tests/protocol_test
+[6/11] Linking CXX executable tests/device_test
+[7/11] Linking CXX executable tests/display_test
+[8/11] Linking CXX executable tests/transport_test
+[9/11] Linking CXX executable tests/json_conformance_runner
+[10/11] Linking CXX executable tests/service_test
+[11/11] Linking CXX executable tests/controller_runner
+Internal ctest changing into directory: /workspace/watchmaker_vault/firmware/build/arena-native
+Test project /workspace/watchmaker_vault/firmware/build/arena-native
+    Start 1: json
+1/7 Test #1: json .............................   Passed    0.50 sec
+    Start 2: protocol
+2/7 Test #2: protocol .........................   Passed    0.48 sec
+    Start 3: device
+3/7 Test #3: device ...........................   Passed    0.54 sec
+    Start 4: touch
+4/7 Test #4: touch ............................   Passed    0.43 sec
+    Start 5: display
+5/7 Test #5: display ..........................   Passed    0.45 sec
+    Start 6: transport
+6/7 Test #6: transport ........................   Passed    0.43 sec
+    Start 7: service
+7/7 Test #7: service ..........................   Passed    0.52 sec
+
+100% tests passed, 0 tests failed out of 7
+
+Total Test time (real) =   3.35 sec

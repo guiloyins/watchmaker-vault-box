@@ -1,0 +1,8 @@
+Internal ctest changing into directory: /workspace/watchmaker_vault/firmware/build-host-m4
+Test project /workspace/watchmaker_vault/firmware/build-host-m4
+    Start 15: paged_storage
+1/1 Test #15: paged_storage ....................   Passed    0.35 sec
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.36 sec

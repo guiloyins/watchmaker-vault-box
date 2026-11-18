@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
-"""Compare production Elixir wire acceptance, allowlists and bytes with an independent oracle."""
+"""Check production wire decoders and encoders against the independent oracle."""
 
+from argparse import ArgumentParser
 from base64 import b64decode, b64encode
 from collections import Counter
 from hashlib import sha256
@@ -22,6 +23,10 @@ except metadata.PackageNotFoundError as exc:
 
 from json_cases import cases
 from wire_oracle import Oracle, WireError, WIRE_LIMITS, comparison
+
+
+def reject_encoded_decimal(_token):
+    raise ValueError("wire encoder emitted a non-integer number spelling")
 
 
 def check_case(case, observed, oracle):
@@ -49,6 +54,7 @@ def check_case(case, observed, oracle):
     try:
         observed_comparison = b64decode(observed["comparison"], validate=True)
         encoded = b64decode(observed["encoded"], validate=True)
+        json.loads(encoded, parse_float=reject_encoded_decimal)
         reencoded = oracle.parse(encoded, case.direction)
     except (ValueError, WireError) as exc:
         return f"independent oracle rejected production encode output ({exc})"
@@ -61,45 +67,95 @@ def check_case(case, observed, oracle):
     return None
 
 
-def main():
-    schema_bytes = (ROOT / "contracts/protocol-v1.schema.json").read_bytes()
-    fixtures = json.loads((ROOT / "contracts/fixtures/protocol-examples.json").read_bytes())
-    corpus = cases(fixtures)
-    oracle = Oracle(json.loads(schema_bytes))
-    feed = b"".join(case.direction.encode() + b"\t" + b64encode(case.raw) + b"\n" for case in corpus)
-    env = {name: value for name, value in os.environ.items() if not name.startswith("VAULT_")}
-    env.update({"MIX_ENV": "test", "MIX_HOME": str(ROOT / ".cache/mix"), "HEX_HOME": str(ROOT / ".cache/hex")})
-    process = subprocess.run(
-        ["mix", "run", "--no-start", str(ROOT / "tools/conformance/elixir_runner.exs")],
-        cwd=ROOT / "server", env=env, input=feed, capture_output=True, timeout=120
-    )
+def native_observations(executable, corpus):
+    feed = b"".join(case.direction.encode() + b"\t" + case.raw.hex().encode() + b"\n"
+                    for case in corpus)
+    process = subprocess.run([executable], input=feed, capture_output=True, timeout=120)
     if process.returncode:
-        print("Production wire runner failed; no conformance check is claimed.", file=sys.stderr)
         sys.stderr.buffer.write(process.stderr)
-        return 1
+        raise ValueError("native wire runner failed")
+    observations = []
+    for line in process.stdout.splitlines():
+        fields = line.split(b"\t")
+        if len(fields) == 2 and fields[0] == b"error":
+            observations.append({"error": fields[1].decode()})
+        elif len(fields) == 3 and fields[0] == b"ok":
+            encoded = bytes.fromhex(fields[1].decode())
+            observed_comparison = bytes.fromhex(fields[2].decode())
+            observations.append({"message": json.loads(encoded),
+                                 "encoded": b64encode(encoded),
+                                 "comparison": b64encode(observed_comparison)})
+        else:
+            raise ValueError("native wire runner returned an invalid observation")
+    if len(observations) != len(corpus):
+        raise ValueError("native wire runner returned an incorrect observation count")
+    return observations
 
-    lines = process.stdout.splitlines()
-    observations = [json.loads(line.removeprefix(b"VAULT_JSON ")) for line in lines
-                    if line.startswith(b"VAULT_JSON ")]
-    if len(observations) != len(corpus) or lines.count(b"VAULT_JSON_NO_START_OK") != 1:
-        print("Missing bounded production observations or no-start verification.", file=sys.stderr)
-        return 1
+
+def check_observations(label, corpus, observations, oracle):
     failures = 0
     for case, observed in zip(corpus, observations):
         failure = check_case(case, observed, oracle)
         if failure:
             if failures < 30:
-                print(f"{case.name}: {failure}", file=sys.stderr)
+                print(f"{label} {case.name}: {failure}", file=sys.stderr)
             failures += 1
     if failures:
-        print(f"Wire conformance failed: {failures}/{len(corpus)} cases.", file=sys.stderr)
+        print(f"{label} wire conformance failed ({failures}/{len(corpus)} cases).", file=sys.stderr)
+    return failures
+
+
+def main():
+    parser = ArgumentParser(description=__doc__)
+    parser.add_argument("--native", type=Path, metavar="RUNNER",
+                        help="also check the compiled firmware JSON conformance runner")
+    parser.add_argument("--native-only", action="store_true",
+                        help="check firmware independently of the Elixir runtime")
+    args = parser.parse_args()
+    if args.native_only and args.native is None:
+        parser.error("--native-only requires --native RUNNER")
+    schema_bytes = (ROOT / "contracts/protocol-v1.schema.json").read_bytes()
+    fixtures = json.loads((ROOT / "contracts/fixtures/protocol-examples.json").read_bytes())
+    corpus = cases(fixtures)
+    oracle = Oracle(json.loads(schema_bytes))
+    failures = 0
+    if not args.native_only:
+        feed = b"".join(case.direction.encode() + b"\t" + b64encode(case.raw) + b"\n" for case in corpus)
+        env = {name: value for name, value in os.environ.items() if not name.startswith("VAULT_")}
+        env.update({"MIX_ENV": "test", "MIX_HOME": str(ROOT / ".cache/mix"), "HEX_HOME": str(ROOT / ".cache/hex")})
+        process = subprocess.run(
+            ["mix", "run", "--no-start", str(ROOT / "tools/conformance/elixir_runner.exs")],
+            cwd=ROOT / "server", env=env, input=feed, capture_output=True, timeout=120
+        )
+        if process.returncode:
+            print("Production wire runner failed; no conformance check is claimed.", file=sys.stderr)
+            sys.stderr.buffer.write(process.stderr)
+            return 1
+
+        lines = process.stdout.splitlines()
+        observations = [json.loads(line.removeprefix(b"VAULT_JSON ")) for line in lines
+                        if line.startswith(b"VAULT_JSON ")]
+        if len(observations) != len(corpus) or lines.count(b"VAULT_JSON_NO_START_OK") != 1:
+            print("Missing bounded production observations or no-start verification.", file=sys.stderr)
+            return 1
+        failures += check_observations("Elixir", corpus, observations, oracle)
+    if args.native:
+        try:
+            native = native_observations(args.native.resolve(), corpus)
+        except (OSError, ValueError, subprocess.TimeoutExpired) as exc:
+            print(f"Native conformance runner failed ({exc}).", file=sys.stderr)
+            return 1
+        failures += check_observations("Native C++", corpus, native, oracle)
+    if failures:
         return 1
 
     totals = Counter(case.valid for case in corpus)
     print(f"Protocol schema SHA-256 {sha256(schema_bytes).hexdigest()}")
-    print(f"M2 wire oracle passed {len(corpus)} cases ({totals[True]} accepted, {totals[False]} rejected).")
+    scope = "M3 native" if args.native_only else "M2/M3 Elixir and native" if args.native else "M2"
+    print(f"{scope} wire oracle passed {len(corpus)} cases ({totals[True]} accepted, {totals[False]} rejected).")
     print("Normalized values, re-encoded envelopes and complete comparison bytes agree on all accepted cases.")
-    print("No-start runtime guard passed.")
+    if not args.native_only:
+        print("No-start runtime guard passed.")
     return 0
 
 

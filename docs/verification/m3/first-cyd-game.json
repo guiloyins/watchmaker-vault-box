@@ -1,0 +1,286 @@
+{
+  "recorded_at_utc": "2026-11-13T15:55:17.569Z",
+  "scope": "First physical CYD A plus Playwright browser B and the internal simulated box. Second CYD deferred.",
+  "firmware_evidence": "shared-memory-build.json",
+  "service_exit_revision": 5,
+  "preparation": {
+    "simulated_reference": "prepared",
+    "simulated_service": "exited",
+    "box": "Armed simulated box",
+    "browser_b": "claimed and fresh",
+    "cyd_a": "Physical role tap accepted; host shows CYD controller fresh",
+    "game_started": true,
+    "phase": "maze",
+    "initial_cell": "A4",
+    "initial_board_version": 0
+  },
+  "events": [
+    {
+      "recorded_at_utc": "2026-11-13T15:53:39.392Z",
+      "command": "snapshot",
+      "state": {
+        "phase": "lobby",
+        "paused": true,
+        "controllers_ready": false,
+        "box": "Ready to arm",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "none",
+            "owner": "Unassigned \u00b7 Awaiting controller",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          },
+          "b": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          }
+        },
+        "browser_b": "Controller"
+      }
+    },
+    {
+      "recorded_at_utc": "2026-11-13T15:54:20.969Z",
+      "command": "snapshot",
+      "state": {
+        "phase": "lobby",
+        "paused": true,
+        "controllers_ready": false,
+        "box": "Ready to arm",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "none",
+            "owner": "Unassigned \u00b7 Awaiting controller",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          },
+          "b": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          }
+        },
+        "browser_b": "Controller"
+      }
+    },
+    {
+      "recorded_at_utc": "2026-11-13T16:00:26.990Z",
+      "command": "snapshot",
+      "state": {
+        "phase": "lobby",
+        "paused": true,
+        "controllers_ready": true,
+        "box": "Ready to arm",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "cyd",
+            "owner": "CYD controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          },
+          "b": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          }
+        },
+        "browser_b": "Controller"
+      }
+    },
+    {
+      "recorded_at_utc": "2026-11-13T16:00:35.704Z",
+      "command": "arm",
+      "state": {
+        "phase": "lobby",
+        "paused": true,
+        "controllers_ready": true,
+        "box": "Armed",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "cyd",
+            "owner": "CYD controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          },
+          "b": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          }
+        },
+        "browser_b": "Controller"
+      }
+    },
+    {
+      "recorded_at_utc": "2026-11-13T16:00:55.605Z",
+      "command": "start",
+      "error": "ui_check_failed"
+    },
+    {
+      "recorded_at_utc": "2026-11-13T16:01:04.001Z",
+      "command": "snapshot",
+      "state": {
+        "phase": "lobby",
+        "paused": true,
+        "controllers_ready": true,
+        "box": "Armed",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "cyd",
+            "owner": "CYD controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          },
+          "b": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          }
+        },
+        "browser_b": "Controller"
+      }
+    },
+    {
+      "recorded_at_utc": "2026-11-13T16:02:04.203Z",
+      "command": "resume",
+      "phase": "lobby",
+      "paused": false
+    },
+    {
+      "recorded_at_utc": "2026-11-13T16:02:19.578Z",
+      "command": "start",
+      "state": {
+        "phase": "maze",
+        "paused": false,
+        "controllers_ready": true,
+        "box": "Armed",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "cyd",
+            "owner": "CYD controller \u00b7 Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          },
+          "b": {
+            "source": "browser",
+            "owner": "Browser controller \u00b7 Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": null
+          }
+        },
+        "browser_b": "Controller"
+      }
+    }
+  ],
+  "verification": "Role claim and starting position confirmed through host and browser B. Physical swipe acceptance pending.",
+  "swipe_usability": {
+    "status": "six-stroke vertical retest passed on diagnostic image; normal-image check pending",
+    "user_report": "Swipe hardly detected in either vertical direction; A4 to A3 and back required many tries. Currently A3.",
+    "observed_host_snapshot": {
+      "cell": 8,
+      "coordinate": "A3",
+      "board_version": 17,
+      "last_direction": "up",
+      "last_result": "moved"
+    },
+    "interpretation": "Accepted movement works, but unreliable gesture detection prevents acceptance. Version 17 counts accepted moves; individual attempt count is unknown.",
+    "next_check": "Temporary bounded raw pressure/coordinate/recognizer trace with thresholds unchanged.",
+    "diagnostic_capture": "cyd-a-touch-trace-swipes-01.json",
+    "captured_down_episodes": 14,
+    "observed_cancellation": "Every observed stroke crossed the 100 ms sample gap cutoff before stable lift; pressure and XY pairs valid",
+    "candidate_correction": "Four-strip maze feedback border; host LVGL rendering reduced94%, exact framebuffers preserved; target build in progress",
+    "last_host": {
+      "cell": 8,
+      "coordinate": "A3",
+      "board_version": 27,
+      "last_direction": "up",
+      "last_result": "moved"
+    },
+    "evidence": "swipe-settling-trace-build.json",
+    "user_retest": "All six alternating swipes worked once each",
+    "normal_image": "Restored, USB v1 four-open readback passed, further physical play pending"
+  }
+}

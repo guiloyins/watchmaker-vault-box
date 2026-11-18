@@ -1,0 +1,755 @@
+{
+  "recorded_at_utc": "2026-11-13T15:44:45.342163+00:00",
+  "manifest_sha256": "4b40926ee82bd69a111432a3169e37791598d6c7e9a372168217138ee4fb0075",
+  "manifest": {
+    "app": "cyd",
+    "flash_options": {
+      "flash_freq": "40m",
+      "flash_mode": "dio",
+      "flash_size": "4MB"
+    },
+    "flashable": true,
+    "images": [
+      {
+        "offset": 4096,
+        "path": "idf/bootloader/bootloader.bin",
+        "sha256": "2af3a84ae4ccd728ca70548468e7e3dab6512b08604f0742f6ba0b61cb739ed5",
+        "size": 18368
+      },
+      {
+        "offset": 32768,
+        "path": "idf/partition_table/partition-table.bin",
+        "sha256": "ac9f8b96998aaf942d3f08fe3983d71a80d978bb8f7e775207c021d1f871a2ca",
+        "size": 3072
+      },
+      {
+        "offset": 131072,
+        "path": "idf/watchmakers_vault_cyd.bin",
+        "sha256": "5d0df3aaddb287892ee8c8527b5f7783db1634e5847eeb2ac04b50e59a6a2d47",
+        "size": 1201872
+      }
+    ],
+    "managed_lock_sha256": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+    "manifest_version": 1,
+    "memory": {
+      "flash_freq_mhz": 40,
+      "flash_mb": 4,
+      "flash_mode": "dio",
+      "psram": false,
+      "table_offset": 32768
+    },
+    "metadata_sha256": {
+      "generated/board_config.cmake": "e0928d9031c17cc25869be82ed53334fb33a4110f260887f5a2c92970242c07d",
+      "generated/board_config.h": "4eac26ad1d55a4454c3c3a5eb948fb340fc5416c670f9a312022b5842e2c8472",
+      "generated/partitions.csv": "2d25c93e533feffa15665290204cf5ea0fd79f53d4872969415039008b600ed1",
+      "generated/profile-manifest.json": "465c42d9f3467847085ccaae946a897cb57ac6e1daae4b0f1168e7192d95a05b",
+      "generated/sdkconfig.board.defaults": "342401d0a653d8a584bad76bae408ff08c6e500a4b88129155c1b41e88320346",
+      "idf/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "idf/flasher_args.json": "dc735478d8ed8abaf53ca0cefdafd8def3c27f4f84960fb0a03a16a2e8cc82b5",
+      "idf/sdkconfig": "323b0246b100cd256bb110908d19cc47069a5d726dbe43dcd106b11ff8bea8de"
+    },
+    "partitions": [
+      {
+        "name": "nvs",
+        "offset": 36864,
+        "size": 94208,
+        "subtype": "nvs",
+        "type": "data"
+      },
+      {
+        "name": "factory",
+        "offset": 131072,
+        "size": 3145728,
+        "subtype": "factory",
+        "type": "app"
+      }
+    ],
+    "profile_file_sha256": "f0e875999f04e4366f0dec1dd776074235c5102da5b0e8f0bcc9849fe1037079",
+    "profile_id": "cyd-yellow-ili9341-unit-a-bgr",
+    "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+    "protocol_version": 1,
+    "source": {
+      "dirty": true,
+      "git_sha": "29c6497bed056869ab7f3be81e6d9b3c4b33e80a"
+    },
+    "source_sha256": {
+      "firmware/apps/cyd/CMakeLists.txt": "b1e1646a0fd4c5daa5a7eb2fbf08c437ba9fd70781b77c785aec8c7b26fe7f5c",
+      "firmware/apps/cyd/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "firmware/apps/cyd/main/CMakeLists.txt": "cf9d64e25b96dba7f7997dbbcafe608626646ca2c9ae45e6111ab299e378710d",
+      "firmware/apps/cyd/main/app_main.cpp": "50eef6f1d40eae7a406c1dc340e903398c6f91d03cfc2b31b56e6a1a734bc84a",
+      "firmware/apps/cyd/main/board_adapter.cpp": "a1c86bd1c94d945d8871face3e376727387c5eb1863a90d93a1574caf51ddf3f",
+      "firmware/apps/cyd/main/board_adapter.hpp": "71bd86d4d03471f15747ec64578cc4e9a78c0ca18d63d58d6c2e15dc840b1a58",
+      "firmware/apps/cyd/main/idf_component.yml": "0da0b72ff53570230ac7f249c66b27c42befad2d223446b58b2553491d392eec",
+      "firmware/apps/cyd/main/ili9341_2/LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+      "firmware/apps/cyd/main/ili9341_2/UPSTREAM.json": "a29d611fe600758ea031f530ae0c8d34886e6f5032fad1adc4c5ace36f9a99b5",
+      "firmware/apps/cyd/main/ili9341_2/panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442",
+      "firmware/apps/cyd/main/network_adapter.cpp": "afa4f454902ebf66e495db36d512b36bbb57b4bfe246d6cebc6bf2190f970a7e",
+      "firmware/apps/cyd/main/network_adapter.hpp": "86aadb5046fe46253e5df0435591bb5e16dcfb6f65bd84cd314f8df5db39bbcb",
+      "firmware/apps/cyd/main/nvs_adapter.cpp": "1f6a6696db084c18398e1469e4a047ba79a38c7fd6e94c46fa3b75a239e0e1b3",
+      "firmware/apps/cyd/main/nvs_adapter.hpp": "7ac780e2f61d8d21b28f5040ae24217f3331fffff9ea75a641c16eaee8af9fc5",
+      "firmware/apps/cyd/sdkconfig.defaults": "e0856928519a1f3cf98c09ae185e4345f6e0761f9b2f5d56b199fd381f94e738",
+      "firmware/components/vault_device/CMakeLists.txt": "e968bd7f3befda1a430b2202c77db86a0fed826c8111bea326dea3a08de724ec",
+      "firmware/components/vault_device/include/vault_device.hpp": "98915a273c18fd1990b02e60e5a018f10f8178439b04ff774261cb80c81b1c8a",
+      "firmware/components/vault_device/include/vault_service.hpp": "0a70faa553a2387a796a54258e1b6cc3c3b154936a42843922306b7b19848f1b",
+      "firmware/components/vault_device/include/vault_storage.hpp": "e00b23e6a07129b1db04b6c21c1e311865706f7caa94c057993fbe2564f7803a",
+      "firmware/components/vault_device/service_fields.hpp": "1b446f1263e66062d1ea3b590ecc5c17460906b63cf7622f598e77d70a060071",
+      "firmware/components/vault_device/vault_device.cpp": "4dd4e30526d3e8d70e2e7c95c51d363ee3d2b4f62de04d96ee75b6b28a833a4c",
+      "firmware/components/vault_device/vault_service.cpp": "1e0f8b0c692771d1e80877bf1c1c752fd50efa7f0b4e9c3c27695cc3985e1970",
+      "firmware/components/vault_device/vault_storage.cpp": "b58687052815c2b198332072809c0d3d0f123e1a5a1a1c268fa759160b662a1a",
+      "firmware/components/vault_display/CMakeLists.txt": "988392fc8e426bced587d735002b67635e0b0bba7405517544859f492121e693",
+      "firmware/components/vault_display/diagnostics.cpp": "8a9c2f459b5dc26a6e92441ccffa1f38da452cc6c1fab1874d856e81be158f77",
+      "firmware/components/vault_display/include/vault_display.hpp": "94b08f8afc541bd3d35368087fe8d9a36d765f463170337ad696086b6ebc3309",
+      "firmware/components/vault_display/self_test.cpp": "dbefb7fb90a9f96347754d976ecdb28e9e8dc44641e0e45d159c94e777dc1ec8",
+      "firmware/components/vault_display/touch_state.cpp": "298a76fd52098a7131c5a3188de4af0aea4bb83ce25ec266bab78809e9b59ab5",
+      "firmware/components/vault_display/vault_display.cpp": "4a4f9d6ce4cffac6c373c0dce71e5b2f1cfac3f468c90242c7df7510df3eee7f",
+      "firmware/components/vault_json/CMakeLists.txt": "69c8704456de7cb639eadb1ee3dc83540afa42f324d67be9b5bf7af93a74b968",
+      "firmware/components/vault_json/include/vault_json.hpp": "4cfa4c661a39f69775b02baf9529d1e5f49b4768b89955bcdd38505bd9495c16",
+      "firmware/components/vault_json/json_internal.hpp": "0a5d2ff0f791644dcb1e4176f2f1333513baecb71263750a76efb068573e8ca4",
+      "firmware/components/vault_json/json_number.cpp": "deea3fb35abfca7a00763849be005936dc3c2be20764a193a2becceac1d32751",
+      "firmware/components/vault_json/json_writer.cpp": "d9d9e18ffcdd195f09348b8a98910afc3268106757d00f8b4cd74af21ea8214b",
+      "firmware/components/vault_json/vault_json.cpp": "365dc5c6d2356e5dbebf9f4bd43fdc532ada4f834dab1347649b6af3ef7d0aae",
+      "firmware/components/vault_protocol/CMakeLists.txt": "55de5cd849e03a764d3dc5c59916e2b71d2fbcf11856151f49a5f2b59478cab9",
+      "firmware/components/vault_protocol/idf_component.yml": "f5c656d0abd53860ca5adb202e6e2a1edf7780ed0512404cd4a3d9b3e1fc2be1",
+      "firmware/components/vault_protocol/include/vault_protocol.hpp": "c327a326d2f8ea6f65edec23afb206bc52ac329901058b8bde0d96f7705ec418",
+      "firmware/components/vault_protocol/vault_protocol.cpp": "94e820a452e52068dd12f9d7a48ed2dcb372df1d46b1a134a3b6a1765d39bec5",
+      "firmware/components/vault_transport/CMakeLists.txt": "ad233e6511dd0eebaf45547a43b1a9b1a2ff6c6170566679b78c622df97e4b32",
+      "firmware/components/vault_transport/idf_component.yml": "f19bd8f93a767d8d05ff0ffeba314e022e19d8277c9a339ede853919f4b6a36a",
+      "firmware/components/vault_transport/include/vault_transport.hpp": "f2901015716ed036d0332807e3d83855599e35f2eeea151b24e9c26a0ff586b1",
+      "firmware/components/vault_transport/vault_transport.cpp": "291bbc4168422458b4e09e0bb20b86c47fe4eb19bc3b4f5a9a19104fe327962c",
+      "firmware/third_party/esp_websocket_client/CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+      "firmware/third_party/esp_websocket_client/Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+      "firmware/third_party/esp_websocket_client/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "firmware/third_party/esp_websocket_client/UPSTREAM.json": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+      "firmware/third_party/esp_websocket_client/esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+      "firmware/third_party/esp_websocket_client/idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+      "firmware/third_party/esp_websocket_client/include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa",
+      "firmware/third_party/esp_websocket_client/no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7",
+      "firmware/third_party/yyjson/LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+      "firmware/third_party/yyjson/UPSTREAM.json": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+      "firmware/third_party/yyjson/fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a",
+      "firmware/third_party/yyjson/yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+      "firmware/third_party/yyjson/yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+    },
+    "target": "esp32",
+    "test_only": false,
+    "toolchain": {
+      "cmake": "cmake version 3.30.2",
+      "compiler": {
+        "sha256": "fcdd657c002c92a3f28e1c947c5acbfbd1085e182ff9ab49b241f21f870671d3",
+        "version": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+      },
+      "esp_idf": "ESP-IDF v6.0.0",
+      "esp_idf_version_cmake_sha256": "3e812348ccd61b318c8f035623d94cb5d8c100ca03ac9ddb6ef937306c0a3616",
+      "esptool": "5.6.0",
+      "ninja": "1.13.2",
+      "python": "Python 3.11.7"
+    },
+    "vendor_provenance": {
+      "esp_websocket_client": {
+        "component": "components/esp_websocket_client",
+        "files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        },
+        "license": "Apache-2.0",
+        "patches": {
+          "no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7"
+        },
+        "provenance_sha256": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+        "release": "websocket-v1.8.0",
+        "repository": "https://github.com/espressif/esp-protocols",
+        "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+        "upstream_files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        }
+      },
+      "yyjson": {
+        "files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        },
+        "license": "MIT",
+        "patches": {
+          "fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a"
+        },
+        "provenance_sha256": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+        "release": "0.13.0",
+        "repository": "https://github.com/ibireme/yyjson",
+        "revision": "6447536015f3d600f3d65323b10976103b337ca7",
+        "upstream_files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        }
+      }
+    },
+    "verified_unit_macs": [
+      "02:00:00:00:fe:02"
+    ]
+  },
+  "source_files_matched": 56,
+  "app_image_bytes": 1201872,
+  "static_dram_span_before_bytes": 126664,
+  "static_dram_span_after_bytes": 83280,
+  "static_dram_saved_bytes": 43384,
+  "native_sanitizer_suites_passed": 7,
+  "native_oracle_cases": 2210,
+  "previous_physical_heap_minimum_bytes": 2992,
+  "physical_status": "Idle trustedLANWS heap and measured main/network stack reserves pass; calibration survives update reboot per user. Actual service exit succeeded revision5 with currentbinding and calibrated-neutral gate. Physical gameplay, loaded/WSS/fault/power and second CYD checks pending.",
+  "installation": {
+    "completed_at_utc": "2026-11-13T15:47:33.423009+00:00",
+    "exit_code": 0,
+    "verified_images": 3,
+    "nvs_initialization_requested": false,
+    "log_sha256": "85d7cde9cc6db466cfdc0f0a30016f6fab86eb1ad6986b639aeec32818664167",
+    "port": "/dev/cu.example-usb",
+    "unit_mac": "02:00:00:00:fe:02",
+    "postflash_readback": {
+      "started_at_utc": "2026-11-13T15:46:56.825097+00:00",
+      "samples": [
+        {
+          "elapsed_seconds": 0.165,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "c507a093988d7fd028885d36696079b7",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        },
+        {
+          "elapsed_seconds": 5.147,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "5314338afb1ba15d2f68be3bd409e224",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        },
+        {
+          "elapsed_seconds": 10.133,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "3e556e7fac32eed9899f60f176a68f18",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        },
+        {
+          "elapsed_seconds": 15.127,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "7b6403af35dd2050978698c6ad164353",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        },
+        {
+          "elapsed_seconds": 20.116,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "5b2240e60f256202204a43ddcb11a235",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        },
+        {
+          "elapsed_seconds": 25.148,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "ed5f239dcf59b466048557b3b176f0ba",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        },
+        {
+          "elapsed_seconds": 30.129,
+          "result": {
+            "sv": 1,
+            "type": "result",
+            "request_id": "fab1a89ca4664f0579f19a7f3bb761e8",
+            "device_id": "cyd_a",
+            "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+            "operation_id": null,
+            "service_revision": 4,
+            "status": "ok",
+            "code": "ok",
+            "data": {
+              "storage_version": 1,
+              "service_revision": 4,
+              "service_epoch": 1,
+              "device_id": "cyd_a",
+              "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+              "binding": {
+                "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+                "connection_id": "conn_d7909a933a25fc28897b3bb3ef682968",
+                "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+              },
+              "service_inhibited": true,
+              "motion_frozen": false,
+              "motor_active": false,
+              "outputs_disabled": true,
+              "active_motion_operation_id": null,
+              "preparation_operation_id": null,
+              "readiness": {
+                "arm_id": null,
+                "armed_session_id": null,
+                "calibration_valid": false,
+                "start_verified": false
+              },
+              "position": {
+                "latch_position": "unknown",
+                "position_basis": "unverified"
+              },
+              "journal_count": 0,
+              "active_local_record_id": null,
+              "clear_operation_id": null,
+              "storage_fault": null
+            }
+          }
+        }
+      ],
+      "provisioning": {
+        "sv": 1,
+        "type": "result",
+        "request_id": "6deab0d577d0e900c7cf07a443833610",
+        "device_id": "cyd_a",
+        "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+        "operation_id": null,
+        "service_revision": 4,
+        "status": "ok",
+        "code": "ok",
+        "data": {
+          "configured": true,
+          "device_id": "cyd_a",
+          "device_class": "controller",
+          "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+          "provisioning_operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+          "reboot_required": false
+        }
+      },
+      "receipts": {
+        "provision": {
+          "sv": 1,
+          "type": "result",
+          "request_id": "ce788d6c9c7fc5b8a200d2fdd269ba37",
+          "device_id": "cyd_a",
+          "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+          "operation_id": null,
+          "service_revision": 4,
+          "status": "ok",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "storage_version": 1,
+              "operation_id": "svc_0000000000000001_4b8bfd02aa0af509aafa899a7f5fa916",
+              "expected_revision": 0,
+              "resulting_revision": 1,
+              "command": "provision.set",
+              "decision": {
+                "status": "ok",
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000001_4b8bfd02aa0af509aafa899a7f5fa916",
+                  "resulting_revision": 1
+                }
+              },
+              "completion": null
+            }
+          }
+        },
+        "reboot": {
+          "sv": 1,
+          "type": "result",
+          "request_id": "49f24756f5fa5473663419ba8fe8dad1",
+          "device_id": "cyd_a",
+          "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+          "operation_id": null,
+          "service_revision": 4,
+          "status": "ok",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "storage_version": 1,
+              "operation_id": "svc_0000000000000002_1c434c7285ddefd55c15885898cb56fb",
+              "expected_revision": 1,
+              "resulting_revision": 2,
+              "command": "reboot",
+              "decision": {
+                "status": "ok",
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000002_1c434c7285ddefd55c15885898cb56fb",
+                  "resulting_revision": 2,
+                  "reboot_required": true
+                }
+              },
+              "completion": null
+            }
+          }
+        },
+        "bgr-provision": {
+          "sv": 1,
+          "type": "result",
+          "request_id": "89d763e7330e58ff44234e2ae276db7a",
+          "device_id": "cyd_a",
+          "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+          "operation_id": null,
+          "service_revision": 4,
+          "status": "ok",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "storage_version": 1,
+              "operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+              "expected_revision": 2,
+              "resulting_revision": 3,
+              "command": "provision.set",
+              "decision": {
+                "status": "ok",
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+                  "resulting_revision": 3
+                }
+              },
+              "completion": null
+            }
+          }
+        },
+        "bgr-reboot": {
+          "sv": 1,
+          "type": "result",
+          "request_id": "2ef5bda058744a76d3dbcf420f7b72b0",
+          "device_id": "cyd_a",
+          "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+          "operation_id": null,
+          "service_revision": 4,
+          "status": "ok",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "storage_version": 1,
+              "operation_id": "svc_0000000000000004_2129b22c5795a4169616eee9ccff0b06",
+              "expected_revision": 3,
+              "resulting_revision": 4,
+              "command": "reboot",
+              "decision": {
+                "status": "ok",
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000004_2129b22c5795a4169616eee9ccff0b06",
+                  "resulting_revision": 4,
+                  "reboot_required": true
+                }
+              },
+              "completion": null
+            }
+          }
+        }
+      },
+      "finished_at_utc": "2026-11-13T15:47:27.503774+00:00",
+      "all_four_receipts_unchanged": true
+    }
+  },
+  "frozen_contract_files_unchanged": 13,
+  "actual_secret_matches_in_git_visible_files": 0,
+  "physical_resources": {
+    "recorded_at_utc": "2026-11-13T15:52:22.780763+00:00",
+    "source": "User-transcribed diagnostics after memory repair, before gameplay",
+    "mode": "trusted-LAN WS, USB service inhibited, calibrated idle display",
+    "free_internal_heap_bytes": 63196,
+    "minimum_free_internal_heap_bytes": 48784,
+    "largest_internal_block_bytes": 61448,
+    "main_stack_free_bytes": 3664,
+    "main_stack_capacity_bytes": 8192,
+    "main_stack_percent_calculated": 44.73,
+    "network_stack_free_bytes": 3720,
+    "network_stack_capacity_bytes": 6144,
+    "network_stack_percent_calculated": 60.55,
+    "user_reported_network_percent": 68,
+    "percentage_note": "Raw3720/6144 gives60.55percent, not reported68; use raw byte readings.",
+    "minimum_heap_pass": true,
+    "measured_stack_reserve_pass": true,
+    "calibration_reboot_persistence": "User confirmed direct DIAGNOSTICS without repeating targets."
+  },
+  "first_game_service_exit": {
+    "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+    "code": "ok",
+    "data": {
+      "exited": true,
+      "operation_id": "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865",
+      "resulting_revision": 5,
+      "service_epoch": 1
+    },
+    "device_id": "cyd_a",
+    "operation_id": "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865",
+    "request_id": "a5cbead27dadcaa19f2655db1bfdc757",
+    "service_revision": 5,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "first_game_service_exit_readback": {
+    "box_boot_id": "boot_0dfd5f8b3ebda95190f8ce6fd805202d",
+    "code": "ok",
+    "data": {
+      "receipt": {
+        "command": "service.exit",
+        "completion": null,
+        "decision": {
+          "code": "ok",
+          "data": {
+            "exited": true,
+            "operation_id": "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865",
+            "resulting_revision": 5,
+            "service_epoch": 1
+          },
+          "status": "ok"
+        },
+        "expected_revision": 4,
+        "operation_id": "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865",
+        "resulting_revision": 5,
+        "storage_version": 1
+      }
+    },
+    "device_id": "cyd_a",
+    "operation_id": null,
+    "request_id": "6a528b4e2b26ebe815aa4c5977e3885b",
+    "service_revision": 5,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  }
+}

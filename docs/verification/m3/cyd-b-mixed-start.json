@@ -1,0 +1,120 @@
+{
+  "recorded_at": "2026-11-13T19:30:49.479Z",
+  "user_role_claim_report": "Yes, Player B / lobby",
+  "claim": [
+    {
+      "command": "snapshot",
+      "state": {
+        "phase": "lobby",
+        "paused": false,
+        "controllers_ready": true,
+        "box": "Ready to arm",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "browser",
+            "owner": "Browser controller · Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          },
+          "b": {
+            "source": "cyd",
+            "owner": "CYD controller · Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          }
+        },
+        "browser_a": "Controller"
+      }
+    }
+  ],
+  "arm_and_start": [
+    {
+      "command": "arm",
+      "state": {
+        "phase": "lobby",
+        "paused": false,
+        "controllers_ready": true,
+        "box": "Armed",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "browser",
+            "owner": "Browser controller · Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          },
+          "b": {
+            "source": "cyd",
+            "owner": "CYD controller · Fresh",
+            "cell": null,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          }
+        },
+        "browser_a": "Controller"
+      }
+    },
+    {
+      "command": "start",
+      "state": {
+        "phase": "maze",
+        "paused": false,
+        "controllers_ready": true,
+        "box": "Armed",
+        "release": "not_requested",
+        "terminals": {
+          "a": {
+            "source": "browser",
+            "owner": "Browser controller · Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          },
+          "b": {
+            "source": "cyd",
+            "owner": "CYD controller · Fresh",
+            "cell": 12,
+            "board": 0,
+            "selected": null,
+            "held": false,
+            "hold_ms": null,
+            "hold_qualified": false,
+            "last_direction": null,
+            "last_result": "rune_selected"
+          }
+        },
+        "browser_a": "Controller"
+      }
+    }
+  ],
+  "status": "Started fresh normal-image mixed round at A4; negative gestures pending"
+}

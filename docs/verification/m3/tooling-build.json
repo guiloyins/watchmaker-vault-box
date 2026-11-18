@@ -1,0 +1,142 @@
+{
+  "app": "cyd",
+  "build_manifest": "firmware/build/cyd/test-cyd/3d7d1ffeb48b1d72b2451c575e4817275ac64d43396b1dee9574c6334aab0a15/build-manifest.json",
+  "build_manifest_sha256": "7f7cbc7353116abd63be200ed8b407b57c64c76716d1470a192da8db2aa574ec",
+  "command": "tools/fw-build --app cyd --board test-cyd --compile-only",
+  "compile_exit_code": 0,
+  "compile_only_flash_refusal_exit_code": 2,
+  "flash_options": {
+    "flash_freq": "40m",
+    "flash_mode": "dio",
+    "flash_size": "4MB"
+  },
+  "flashable": false,
+  "images": [
+    {
+      "offset": 4096,
+      "path": "idf/bootloader/bootloader.bin",
+      "sha256": "67b32a1130aee2e4ca8fe6cda425cf1b4edad10742c638d8ded2b1e627e2aabd",
+      "size": 18368
+    },
+    {
+      "offset": 32768,
+      "path": "idf/partition_table/partition-table.bin",
+      "sha256": "ac9f8b96998aaf942d3f08fe3983d71a80d978bb8f7e775207c021d1f871a2ca",
+      "size": 3072
+    },
+    {
+      "offset": 131072,
+      "path": "idf/watchmakers_vault_cyd.bin",
+      "sha256": "f10398b41591e2bffa8154c395696bfc9aefef300cf415999c087543d2fee6e3",
+      "size": 1360816
+    }
+  ],
+  "managed_lock_sha256": "a33d8eeea1add8f552dba495245da2f9d7d660c57b61d3184662eecb61233881",
+  "manifest_version": 1,
+  "memory": {
+    "flash_freq_mhz": 40,
+    "flash_mb": 4,
+    "flash_mode": "dio",
+    "psram": false,
+    "table_offset": 32768
+  },
+  "metadata_sha256": {
+    "generated/board_config.cmake": "e0928d9031c17cc25869be82ed53334fb33a4110f260887f5a2c92970242c07d",
+    "generated/board_config.h": "50f3b927833bee960016e1aa0f526637090f8bd4009e5ae6b549983baa14cd3d",
+    "generated/partitions.csv": "2d25c93e533feffa15665290204cf5ea0fd79f53d4872969415039008b600ed1",
+    "generated/profile-manifest.json": "9eef32e696077ee65b30f4bf82c4db23f508fa6a722c8d21edc6a5851fd6966b",
+    "generated/sdkconfig.board.defaults": "625666be8febc22d73324542431f4093046990b7893e7ae522b6511fc02c9507",
+    "idf/dependencies.lock": "a33d8eeea1add8f552dba495245da2f9d7d660c57b61d3184662eecb61233881",
+    "idf/flasher_args.json": "dc735478d8ed8abaf53ca0cefdafd8def3c27f4f84960fb0a03a16a2e8cc82b5",
+    "idf/sdkconfig": "7423acfb8fd030904af16964f684bcfef7e67124156d992a68cee5c5b5f28446"
+  },
+  "partitions": [
+    {
+      "name": "nvs",
+      "offset": 36864,
+      "size": 94208,
+      "subtype": "nvs",
+      "type": "data"
+    },
+    {
+      "name": "factory",
+      "offset": 131072,
+      "size": 3145728,
+      "subtype": "factory",
+      "type": "app"
+    }
+  ],
+  "profile_file_sha256": "8454606204504c51629af18ad3dfcd7150bd1b1dd16fb0c529810fd05618a765",
+  "profile_id": "test-cyd",
+  "profile_sha256": "3d7d1ffeb48b1d72b2451c575e4817275ac64d43396b1dee9574c6334aab0a15",
+  "protocol_version": 1,
+  "source": {
+    "dirty": true,
+    "git_sha": "29c6497bed056869ab7f3be81e6d9b3c4b33e80a"
+  },
+  "static_memory_bytes": {
+    "dram": {
+      "region": 180736,
+      "used": 125515
+    },
+    "iram": {
+      "region": 131072,
+      "used": 97875
+    }
+  },
+  "target": "esp32",
+  "test_only": true,
+  "toolchain": {
+    "cmake": "cmake version 3.30.2",
+    "compiler": {
+      "sha256": "fcdd657c002c92a3f28e1c947c5acbfbd1085e182ff9ab49b241f21f870671d3",
+      "version": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+    },
+    "esp_idf": "ESP-IDF v6.0.0",
+    "esp_idf_version_cmake_sha256": "3e812348ccd61b318c8f035623d94cb5d8c100ca03ac9ddb6ef937306c0a3616",
+    "esptool": "5.6.0",
+    "ninja": "1.13.2",
+    "python": "Python 3.11.7"
+  },
+  "vendor_provenance": {
+    "esp_websocket_client": {
+      "component": "components/esp_websocket_client",
+      "files": {
+        "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+        "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+        "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+        "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+      },
+      "license": "Apache-2.0",
+      "patches": {
+        "no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7"
+      },
+      "provenance_sha256": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+      "release": "websocket-v1.8.0",
+      "repository": "https://github.com/espressif/esp-protocols",
+      "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+      "upstream_files": {
+        "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+        "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+        "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+        "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+        "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+      }
+    },
+    "yyjson": {
+      "files": {
+        "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+        "yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+        "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+      },
+      "license": "MIT",
+      "provenance_sha256": "50975649812a904e1428b022cf2944b501bc3a4ab5cd57005848c911e0fee880",
+      "release": "0.13.0",
+      "repository": "https://github.com/ibireme/yyjson",
+      "revision": "6447536015f3d600f3d65323b10976103b337ca7"
+    }
+  }
+}

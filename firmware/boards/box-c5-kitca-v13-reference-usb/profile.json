@@ -1,0 +1,116 @@
+{
+  "profile_version": 1,
+  "profile_id": "box-c5-kitca-v13-reference-usb",
+  "app": "box",
+  "verified": false,
+  "test_only": false,
+  "target": "esp32c5",
+  "reserved_gpio": [
+    2,
+    3,
+    7,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    25,
+    26,
+    27,
+    28
+  ],
+  "memory": {
+    "flash_mb": 4,
+    "flash_mode": "dio",
+    "flash_freq_mhz": 40,
+    "psram": false,
+    "table_offset": 32768
+  },
+  "serial": {
+    "backend": "usb_cdc",
+    "uart": null,
+    "tx": null,
+    "rx": null
+  },
+  "display": null,
+  "touch": null,
+  "actuator": {
+    "coils": [
+      8,
+      9,
+      10,
+      23
+    ],
+    "active_high": true,
+    "sequence_id": "half-step-8-v1",
+    "led": 6,
+    "home": null,
+    "electrical_verified": false,
+    "led_count": 8,
+    "led_max_brightness": 16,
+    "led_color_order": "grb",
+    "led_interface_verified": false,
+    "setup_knob": {
+      "gpio": 1,
+      "input_max_mv": 3300,
+      "verified": false
+    }
+  },
+  "partitions": [
+    {
+      "name": "nvs",
+      "type": "data",
+      "subtype": "nvs",
+      "offset": 36864,
+      "size": 1011712
+    },
+    {
+      "name": "factory",
+      "type": "app",
+      "subtype": "factory",
+      "offset": 1048576,
+      "size": 3145728
+    }
+  ],
+  "evidence": {
+    "observed": [
+      "ROM identifies exact unit 02:00:00:00:fe:03 as ESP32-C5HF4 v1.0, 4 MiB flash, no embedded PSRAM and native USB-Serial/JTAG.",
+      "Home Sensing records match this MAC and establish working native USB with 4 MiB DIO/40 MHz flash settings.",
+      "User reports ESP32-C5-KitC-A V1.3; supplied front photograph and seller V1.3 rear photograph agree on the selected exposed pins.",
+      "Verified scope is USB-only bring-up with all external peripherals and external power disconnected. Coil pins initialize low; electrical motion, LED and ADC remain disabled."
+    ],
+    "documented_candidate": [
+      "GPIO8,9,10,23 are future driver IN1..IN4 assignments; physical phase order, voltage and reset behavior remain unmeasured.",
+      "GPIO6 is reserved for future LED data and GPIO1/ADC1_CH0 for the setup knob. Both interfaces remain disabled pending electrical evidence.",
+      "No endpoint sensor is installed or claimed. Carrier power isolation, supply/load behavior and mechanical calibration remain separate acceptance gates.",
+      "Keep this bring-up profile unprovisioned. Install the electrically reviewed successor with the same partition layout, preserving NVS, before initial provisioning."
+    ],
+    "sources": [
+      "docs/hardware/c5-identification.md",
+      "docs/hardware/c5-identification.json",
+      "docs/hardware/c5-csi-source-review.md",
+      "docs/hardware/c5-seller-profile-review.md",
+      "docs/verification/m4/c5-seller-pinout.jpg",
+      "https://www.amazon.com/dp/B0GYWC1XLW",
+      "https://m.media-amazon.com/images/I/716-rDb2urL._AC_SL1500_.jpg",
+      "https://atta.szlcsc.com/upload/public/pdf/source/20251016/AE26C73F5F73E1BD024C1C95B3A92329.pdf",
+      "https://documentation.espressif.com/esp32-c5_datasheet_en.pdf"
+    ],
+    "pin_sources": {
+      "coil_0": "docs/hardware/c5-seller-profile-review.md: GPIO8, left header row 9, module pad 10; inactive low only",
+      "coil_1": "docs/hardware/c5-seller-profile-review.md: GPIO9, left header row 10, module pad 11; inactive low only",
+      "coil_2": "docs/hardware/c5-seller-profile-review.md: GPIO10, left header row 11, module pad 12; inactive low only",
+      "coil_3": "docs/hardware/c5-seller-profile-review.md: GPIO23, right header row 5, module pad 21; inactive low only",
+      "led": "docs/hardware/c5-seller-profile-review.md: GPIO6, left header row 7, module pad 8; interface disabled",
+      "setup_knob": "docs/hardware/c5-seller-profile-review.md: GPIO1/ADC1_CH0, left header row 6, module pad 7; ADC disabled"
+    },
+    "unresolved": []
+  }
+}

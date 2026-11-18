@@ -1,0 +1,4 @@
+Protocol schema SHA-256 ea4499a4a5b75b0f10b2c4e4c1c8d9606202c1fefd8c0c49cbfb6ef277159712
+M2/M3 Elixir and native wire oracle passed 2210 cases (166 accepted, 2044 rejected).
+Normalized values, re-encoded envelopes and complete comparison bytes agree on all accepted cases.
+No-start runtime guard passed.

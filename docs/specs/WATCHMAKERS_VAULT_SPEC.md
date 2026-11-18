@@ -15,7 +15,7 @@ The project should demonstrate clear Elixir process ownership, message handling,
 ### 1.1 Required MVP
 
 - Two roles, A and B, one shared maze, one final seal and one prize box.
-- Two physical yellow CYDs, subject to confirming the second unit matches the observed PCB/USB layout and verifying their board profile; the unidentified ESP32-S3 pair remains an alternative.
+- Two physical yellow CYDs, reported by the user as the same version and subject to individual verified profiles and bench checks; the unidentified ESP32-S3 pair remains an alternative.
 - One ESP32-C5 box controller, the photographed 28BYJ-48 5V stepper and identified ULN2003AN driver board, with electrical compatibility and wiring still to verify.
 - Elixir/Phoenix on a laptop, normal Wi-Fi, local SQLite persistence and no external service requirement.
 - LiveView host console plus independent participant pages. Either role can use its CYD or an explicitly assigned browser controller.
@@ -39,14 +39,14 @@ Four-player play, procedural mazes, a second maze, the flashing-code opener, cam
 
 | Item | Evidence available | Planned use or verification |
 | --- | --- | --- |
-| 2 classic ESP32 CYDs | One supplied photo set identifies ESP32-2432S028, Micro-USB plus USB-C, CH340C and front marking TPM408-2.8 | Baseline player pair; second-unit match, exact revision, LCD/touch, pins, flash and PSRAM remain unverified. |
+| 2 classic ESP32 CYDs | One supplied photo set identifies ESP32-2432S028, Micro-USB plus USB-C, CH340C and front marking TPM408-2.8 | Baseline player pair; matching version is user-reported. M3 ROM-identified the first unit (02:00:00:00:fe:02, ESP32-D0WD-V3, 4 MiB) and uses its historically working ILI9341/XPT2046 map with PSRAM disabled. Its initial write is verified; LCD/touch acceptance and second-unit identification remain pending. See the [current audit](../hardware/board-audit.md). |
 | 2 ESP32-S3 CYDs | User inventory; exact PCB models unrecorded | Alternative matching pair if vendor support is stronger. |
 | 3 ESP32-C5 boards | User inventory; advertised with an external antenna | One box controller; exact development-board model/revision, power input, dimensions, connector and pins remain unresolved. |
 | ESP32-S3 camera board | User inventory | Unused in MVP. |
 | 28BYJ-48 stepper | Photo label reads 5V DC | Latch cam, calibrated on the actual mechanism. |
-| ULN2003AN driver board | ULN2003AN marking and TI logo confirmed in supplied update; IN1–IN4 populated, five-pin socket, four LEDs, −/+ and 5–12 V supply markings; jumper fitted | Verify module wiring, jumper function, input compatibility and actual coil current before outputs. The motor remains 5 V. |
+| ULN2003AN driver board | ULN2003AN/TI, actual photos and user-confirmed Freenove kit provenance; kit C tutorial pp. 199–200 documents IN1–IN4→A–D, motor socket and fitted VCC–PWR link ([C5 wiring guide](../hardware/freenove-kit-wiring.md)) | Check completed wiring, actual input compatibility and coil/load behavior before acceptance. Jumper topology is documented; motor remains 5 V. |
 | Freenove 8 RGB LED Module | Printed name, eight pixels and IN/OUT S/V/G labels confirmed in supplied update; Freenove documents the WS2812 family, 3.5–5.5 V supply and GRB example order | Plan 5 V feedback with verified data levels and color order; exact LED silicon revision is unconfirmed. |
-| Samsung EP-TA20JWE | Supplied label states 5 V / 2 A or 9 V / 1.67 A | Selected box supply in normal 5 V USB mode; no 9 V trigger. Voltage and combined load are untested. |
+| Armstrong 56220; Samsung EP-TA20JWE alternative | Armstrong: user reports 5 V DC / 3.1 A total; photo/vendor confirm 2.1 A and 1 A USB ports. Samsung: supplied label states 5 V / 2 A or 9 V / 1.67 A | Armstrong is the current bench candidate, with adapted USB cable proposed; use normal 5 V, no 9 V trigger. Actual output, cable and combined load remain untested. |
 | Separate terminal USB power banks | Each CYD uses its own bank; photographed brand is Clutch | Exact Clutch model, output, capacity and connector are unreadable; confirm ratings and test each CYD/bank combination. |
 | Sounder/speakers/audio board | Visible in photos; exact types unverified | Optional sound feedback; start with the simplest verified sounder. |
 | Existing red/blue plunger switches and larger colored pushbuttons | Supplied inventory; momentary/latching behavior and contact pairs untested | Optional lid contact only after testing and mounting verification; not latch-position evidence or a version 1 protocol addition. |
@@ -94,14 +94,14 @@ The host introduces A and B, assigns controllers and starts when both players an
 
 The board is 4 × 4. Columns A–D run left to right; rows 1–4 run top to bottom. Both screens use the same orientation. Cells use zero-based row-major indices for the protocol: `cell = row_index * 4 + column_index`. The shared key begins at A4 (`12`), and the exit is D1 (`3`).
 
-| Role | Buttons controlled | Information visible | Cooperation required |
+| Role | Directions controlled | Information visible | Cooperation required |
 | --- | --- | --- | --- |
 | A | Up and Down | Internal vertical wall segments, which block left/right travel | A tells B which horizontal moves are open. |
 | B | Left and Right | Internal horizontal wall segments, which block up/down travel | B tells A which vertical moves are open. |
 
 Each role sees every boundary of its known orientation: a solid segment for a wall and a clear gap for an opening. Boundaries of the other orientation are dotted to mean unknown. Draw exterior boundaries as solid for everyone. Do not render unknown boundaries as open. Both players see the current key position, destination and coordinates.
 
-Each accepted down-press attempts one cell of movement. Held direction controls do not repeat. A move requires the correct role, active ownership, current session/round/puzzle, unpaused maze phase and the board version that the player observed. Validate its allowed axis, bounds and wall passage on the server. Reject blocked moves without changing position or `board_version`; show a short “Wall” response. Reject an out-of-date board with “Board changed; try again” and the new projection. Do not automatically retry the player’s old choice from a new cell.
+Each accepted browser button down-press or completed CYD swipe attempts one cell of movement. Held contacts do not repeat. CYD swipes emit only after stable lift; browser buttons retain their down-press behavior. A move requires the correct role, active ownership, current session/round/puzzle, unpaused maze phase and the board version that the player observed. Validate its allowed axis, bounds and wall passage on the server. Reject blocked moves without changing position or `board_version`; show a short “Wall” response. Reject an out-of-date board with “Board changed; try again” and the new projection. Do not automatically retry the player’s old choice from a new cell.
 
 ### 3.3 Golden maze
 
@@ -193,7 +193,7 @@ The device logical canvas is **240 × 320 portrait**, scaled or letterboxed to a
 | Connecting | Vault title, device identity, connection/provisioning status; no active game controls. |
 | Unclaimed | Authorized role choices and Claim action; show occupied roles without permitting theft. |
 | Lobby | Role A/B, control responsibility, partner status, “Waiting for host.” |
-| Maze | 28 px header; compact role instruction; 192 × 192 maze with 48 px cells; two 96 × 44 direction buttons; short status/footer. Use margins within the 240 px width. |
+| Maze | Compact header and role instruction; 192 × 192 maze with 48 px cells; swipe up/down on A or left/right on B across the maze area; short status/footer. Use margins within the 240 px width. |
 | Seal | Role/header; two-line partner clue; 2 × 2 rune selector with 44 px or larger targets; shared progress bar; full-width HOLD SEAL control at least 52 px high; short status. |
 | Paused | Retain the underlying map/selection; clear pressed highlights; overlay reason and “Release controls; waiting to resume.” |
 | Solved | “Puzzle solved” plus actual release state: requested, accepted, motion completed, confirmed released or needs inspection. |
@@ -201,11 +201,11 @@ The device logical canvas is **240 × 320 portrait**, scaled or letterboxed to a
 
 The exact pixel allocations may be adjusted after rendering on the chosen display, but no screen may depend on scrolling during play. When space is tight, keep the maze and touch targets large and shorten explanatory copy. Use a 4 × 4 grid component shared by both player roles.
 
-Pointer/touch down gives immediate local pressed feedback. Accepted movement changes the key only after server acknowledgement/snapshot. A 120–180 ms transition is optional. Invalid/stale moves get brief text feedback without shaking the whole screen or blocking later inputs.
+Stable touch down gives local pressed feedback. The key changes position only when a current server projection shows an accepted move. A 120–180 ms transition is optional. Invalid/stale moves get brief text feedback without shaking the whole screen or blocking later inputs. The Phoenix player and host controls keep their direction buttons and keyboard shortcuts.
 
 ### 4.3 Phoenix host console
 
-The host view has three main areas: a terminal A panel, a shared vault/status panel and a terminal B panel. On small browser windows, stack these vertically. Each terminal panel uses the same layout, icons, coordinates and game state as its physical CYD.
+The host view has three main areas: a terminal A panel, a shared vault/status panel and a terminal B panel. On small browser windows, stack these vertically. Each terminal panel mirrors the CYD's accepted role projection and uses matching role, maze coordinates and clue labels. Browser control retains the direction buttons and keyboard shortcuts.
 
 Above the panels show stage, paused/recovery reason, elapsed active time and controller assignments. Below them show a bounded recent-actions list. The central vault panel represents the eight-LED ring, latch command progress and measured or unknown physical state. Animation illustrates reported state; it must not invent lid opening.
 
@@ -485,7 +485,9 @@ Prefer `esp_lcd` plus the verified touch driver and `esp_lvgl_port` where compat
 
 Provide calibration and a self-test screen with corner/center targets, crosshair coordinates, orientation markers and color blocks. Persist calibration with a version and profile hash. If the profile changes, invalidate incompatible calibration rather than reusing unexplained coordinates.
 
-Poll touch at an initial 20 ms interval. Establish an up/down state machine with measured debounce, modest boundary hysteresis and one active contact. Use 30 ms stable transitions as the initial bench setting, then record any hardware-specific adjustment. A discrete direction/rune control emits once on the accepted down transition and requires release before another command; no auto-repeat. Sliding a held contact across other controls must not generate additional taps. A hold control starts only inside its hit target and ends on lift, cancellation or leaving its allowed area. Loss of valid touch samples clears the press; a driver error is not “still pressed.”
+Poll touch at an initial 20 ms interval. Use one active contact, an initial 30 ms stable down and 50 ms stable lift, and record any hardware-specific adjustment. In the maze, A swipes up/down and B swipes left/right. A swipe starts in the maze area, travels at least 24 logical pixels and keeps its permitted axis dominant by at least 1.5:1. A diagonal stroke, forbidden direction or reversal cancels that contact. A valid swipe emits one move on stable lift; holding or sliding generates no additional moves. A rune tap starts and ends within the same target and emits one selection on stable lift. HOLD SEAL starts on stable down inside its separate target and ends on lift, cancellation or leaving its allowed area. Driver errors or a lost sample stream clear the press immediately on detection. Swipe and rune gestures use the existing discrete move and rune commands.
+
+During initial maze-contact settling, exactly one raw released sample may restart the candidate if it was not yet confirmed, had no established swipe direction, and returns inside the maze in less than 50 ms with the same allowed-move mask. Discard its previous origin and time; require a new continuous 30 ms down interval, at least 24 pixels of new travel, and the normal stable lift. Repeated release samples, interrupted confirmed contacts, driver loss, a 100 ms sample gap and context changes still cancel; this adjustment does not apply to role taps, runes or HOLD SEAL.
 
 Clear input on disconnect, role loss, control-epoch change, stage/context change and UI replacement. Require an observed neutral interval before rearming. Continue sending the neutral heartbeat when a role remains claimed. Display a local pressed highlight promptly, but show game progress from authoritative snapshots/results. Include visible connecting, unclaimed, playing, paused/offline and error states; do not leave an apparently interactive frozen board on screen.
 
@@ -513,11 +515,11 @@ Verify the actual C5 antenna connector before selecting accessories. Keep the an
 
 ### Box power and LED interface
 
-Use the selected **Samsung EP-TA20JWE** in normal **5 V / 2 A USB mode**. Its alternative 9 V / 1.67 A rating is not the build voltage; do not add a fast-charge trigger. Keep the adapter outside the box and verify voltage at the chosen breakout/distribution point before connecting electronics. The selected rating is not a completed load test.
+The current bench candidate is **Armstrong 56220**, with user-reported **5 V DC / 3.1 A total** and photographed/vendor-confirmed **2.1 A / 1 A USB ports**. Use the 2.1 A port for the motor branch; keep C5 on Mac USB for first service tests. After setup, its normal USB input can use the 1 A port with the Mac disconnected, subject to actual loaded verification. The earlier **Samsung EP-TA20JWE** remains an alternative at normal **5 V / 2 A**; its 9 V rating is not the build voltage. Keep the charger closed and outside the box, bring only low-voltage wiring inside, and verify cable output/polarity and secure terminations before connecting electronics. An adapted spare USB-A cable may replace the proposed breakout; it is not yet prepared or measured. Nameplate ratings do not establish load acceptance. [Current supply plan](../hardware/power-and-wiring.md#armstrong-56220-and-spare-usb-cable--18-november)
 
 Plan parallel branches to the C5's documented power input, ULN2003 motor supply and LED module, with common ground. Verify the C5's source arrangement before connecting a computer for service; do not join independently powered 5 V sources without documented isolation. Check startup and simultaneous Wi-Fi, LEDs and motor load with the actual cables.
 
-The identified ULN2003AN board's 5–12 V marking does not change the motor's **5 V** requirement. Verify its fitted jumper's circuit function rather than treating it as a voltage selector. Verify module wiring, coil sequence/current and input compatibility. Motor power passes through the driver; GPIOs provide phase control only. Keep motor and LED current out of the C5's 3.3 V regulator. [H6, H7]
+The identified ULN2003AN board's 5–12 V marking does not change the motor's **5 V** requirement. The supplied Freenove kit diagram identifies the fitted jumper as the **VCC–PWR motor-supply link**, not a voltage selector. Use the [C5-adapted connector table](../hardware/freenove-kit-wiring.md) and check the completed wiring, actual direction/current and input behavior. Motor power passes through the driver; GPIOs provide phase control only. Keep motor and LED current out of the C5's 3.3 V regulator. [H6, H7]
 
 For the Freenove eight-pixel WS2812 module, use **IN S** for data, **IN V** for planned 5 V and **IN G** for common ground; **OUT S/V/G** is unused with one module. The supplied update cites a 3.5–5.5 V module range and GRB example order; verify actual color order. Plan a suitable **3.3 V-to-5 V data buffer** unless the exact LED input specification establishes adequate margin for direct C5 signaling. A one-time successful direct connection is not level verification. The planning allowance of 8 × 60 mA = 0.48 A at maximum white is not measured consumption; verify the complete load budget and keep brightness bounded. A low commissioning brightness is not a measured current limit.
 
@@ -526,6 +528,8 @@ Each terminal uses its own USB power bank. The pictured **Clutch** model, output
 Identify active/passive buzzer operation before choosing PWM or simple switching. Keep light/sound patterns bounded in brightness and duration. Map existing semantic feedback modes to local effects; remote messages must not specify arbitrary GPIO writes. Missing cosmetic drivers must not block the protocol or motor test. The success animation means the puzzle was solved, not that the latch or lid reached a physical state. Hardware-source details and provenance are recorded in [the supplied update](WATCHMAKERS_VAULT_HARDWARE_UPDATE.md#11-source-and-evidence-notes).
 
 ### Stepper calibration, homing and truthful status
+
+Rafa selected a potentiometer as a setup knob on 14 November 2026. During local maintenance it may propose bounded latch adjustments; explicit jog admission and explicit saving remain required. Gameplay ignores it. It is an adjustment input, not a latch or lid sensor. The optional `inspect/setup_knob` shape and existing motion/calibration operations are defined in [LOCAL_SERVICE_V1.md](LOCAL_SERVICE_V1.md); ADC wiring is gated by the verified C5 profile.
 
 The 28BYJ-48/ULN2003 arrangement counts commanded steps; it does not measure actual shaft position. Calibrate coil order, direction, stepping sequence, release travel and speed on the assembled mechanism. Do not assume an exact gear ratio or treat nominal steps-per-revolution as measured latch travel. [H6]
 

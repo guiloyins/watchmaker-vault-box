@@ -1,0 +1,28 @@
+{
+  "started_at": "2026-11-13T17:44:07.609Z",
+  "reason": "stop",
+  "records": [
+    {
+      "elapsed_ms": 4,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    }
+  ]
+}

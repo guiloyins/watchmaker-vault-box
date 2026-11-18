@@ -1,0 +1,12 @@
+if(COMMAND idf_component_register)
+    idf_component_register(SRCS vault_protocol.cpp INCLUDE_DIRS include REQUIRES vault_json)
+    set(vault_protocol_target ${COMPONENT_LIB})
+else()
+    add_library(vault_protocol STATIC vault_protocol.cpp)
+    target_include_directories(vault_protocol PUBLIC include)
+    target_link_libraries(vault_protocol PUBLIC vault_json)
+    set(vault_protocol_target vault_protocol)
+endif()
+
+target_compile_features(${vault_protocol_target} PUBLIC cxx_std_17)
+target_compile_options(${vault_protocol_target} PRIVATE -fno-exceptions -fno-rtti)

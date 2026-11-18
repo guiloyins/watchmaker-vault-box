@@ -1,0 +1,245 @@
+{
+  "recorded_at": "2026-11-13T22:35:35.505584+00:00",
+  "manifest_sha256": "75fea92ab2caaa0944230d8b734d0195033ce3a3538cd94563e57f135da25d4a",
+  "manifest": {
+    "app": "cyd",
+    "flash_options": {
+      "flash_freq": "40m",
+      "flash_mode": "dio",
+      "flash_size": "4MB"
+    },
+    "flashable": true,
+    "images": [
+      {
+        "offset": 4096,
+        "path": "idf/bootloader/bootloader.bin",
+        "sha256": "f086f5fe0f83168a97089bf7a685b46de1e4306ab48e1cec7093f75b9051de65",
+        "size": 18368
+      },
+      {
+        "offset": 32768,
+        "path": "idf/partition_table/partition-table.bin",
+        "sha256": "ac9f8b96998aaf942d3f08fe3983d71a80d978bb8f7e775207c021d1f871a2ca",
+        "size": 3072
+      },
+      {
+        "offset": 131072,
+        "path": "idf/watchmakers_vault_cyd.bin",
+        "sha256": "c45b19f054829597ad45f70c390eb8ce2a6295f181dc98e15ddc9c63f352666d",
+        "size": 1203696
+      }
+    ],
+    "managed_lock_sha256": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+    "manifest_version": 1,
+    "memory": {
+      "flash_freq_mhz": 40,
+      "flash_mb": 4,
+      "flash_mode": "dio",
+      "psram": false,
+      "table_offset": 32768
+    },
+    "metadata_sha256": {
+      "generated/board_config.cmake": "e0928d9031c17cc25869be82ed53334fb33a4110f260887f5a2c92970242c07d",
+      "generated/board_config.h": "4eac26ad1d55a4454c3c3a5eb948fb340fc5416c670f9a312022b5842e2c8472",
+      "generated/partitions.csv": "2d25c93e533feffa15665290204cf5ea0fd79f53d4872969415039008b600ed1",
+      "generated/profile-manifest.json": "465c42d9f3467847085ccaae946a897cb57ac6e1daae4b0f1168e7192d95a05b",
+      "generated/sdkconfig.board.defaults": "342401d0a653d8a584bad76bae408ff08c6e500a4b88129155c1b41e88320346",
+      "idf/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "idf/flasher_args.json": "dc735478d8ed8abaf53ca0cefdafd8def3c27f4f84960fb0a03a16a2e8cc82b5",
+      "idf/sdkconfig": "323b0246b100cd256bb110908d19cc47069a5d726dbe43dcd106b11ff8bea8de"
+    },
+    "partitions": [
+      {
+        "name": "nvs",
+        "offset": 36864,
+        "size": 94208,
+        "subtype": "nvs",
+        "type": "data"
+      },
+      {
+        "name": "factory",
+        "offset": 131072,
+        "size": 3145728,
+        "subtype": "factory",
+        "type": "app"
+      }
+    ],
+    "profile_file_sha256": "f0e875999f04e4366f0dec1dd776074235c5102da5b0e8f0bcc9849fe1037079",
+    "profile_id": "cyd-yellow-ili9341-unit-a-bgr",
+    "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+    "protocol_version": 1,
+    "source": {
+      "dirty": true,
+      "git_sha": "29c6497bed056869ab7f3be81e6d9b3c4b33e80a"
+    },
+    "source_sha256": {
+      "firmware/apps/cyd/CMakeLists.txt": "b1e1646a0fd4c5daa5a7eb2fbf08c437ba9fd70781b77c785aec8c7b26fe7f5c",
+      "firmware/apps/cyd/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "firmware/apps/cyd/main/CMakeLists.txt": "cf9d64e25b96dba7f7997dbbcafe608626646ca2c9ae45e6111ab299e378710d",
+      "firmware/apps/cyd/main/app_main.cpp": "4cad52c90bd87fd9427cc68c75e800a4f64ba63015b8992498aa2d8ab2ce3eec",
+      "firmware/apps/cyd/main/board_adapter.cpp": "cce2ca4094b2927bad38dad185a2195a2f43dd7f007d8eaec46624113a02f672",
+      "firmware/apps/cyd/main/board_adapter.hpp": "faaca8b33bf65df4aa629d0c59a528d409b9601695b1473316797e1d5373b526",
+      "firmware/apps/cyd/main/idf_component.yml": "0da0b72ff53570230ac7f249c66b27c42befad2d223446b58b2553491d392eec",
+      "firmware/apps/cyd/main/ili9341_2/LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+      "firmware/apps/cyd/main/ili9341_2/UPSTREAM.json": "a29d611fe600758ea031f530ae0c8d34886e6f5032fad1adc4c5ace36f9a99b5",
+      "firmware/apps/cyd/main/ili9341_2/panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442",
+      "firmware/apps/cyd/main/network_adapter.cpp": "cf52d7cb8e99898414b5460de84cacf0e625547c2893f633cd366a0363288a41",
+      "firmware/apps/cyd/main/network_adapter.hpp": "ad9017247c46ad5211fa8e1898beea74adcf708300212131f51e5420e1826785",
+      "firmware/apps/cyd/main/network_diagnostics.hpp": "3b3340d2bf55220147ee114c9a045b90ac24ebfff5c28cb650144667661fb23f",
+      "firmware/apps/cyd/main/nvs_adapter.cpp": "1f6a6696db084c18398e1469e4a047ba79a38c7fd6e94c46fa3b75a239e0e1b3",
+      "firmware/apps/cyd/main/nvs_adapter.hpp": "7ac780e2f61d8d21b28f5040ae24217f3331fffff9ea75a641c16eaee8af9fc5",
+      "firmware/apps/cyd/main/touch_trace_config.hpp": "3e46828d92650dbc766497e4e971273534a0ab6e8f2f64c7cd05a4746ca44b20",
+      "firmware/apps/cyd/sdkconfig.defaults": "e0856928519a1f3cf98c09ae185e4345f6e0761f9b2f5d56b199fd381f94e738",
+      "firmware/components/vault_device/CMakeLists.txt": "e968bd7f3befda1a430b2202c77db86a0fed826c8111bea326dea3a08de724ec",
+      "firmware/components/vault_device/include/vault_device.hpp": "9f70f295b7cd9a33e907efc4dd43c60804af5abcb27ff0f09da062abb0a954e9",
+      "firmware/components/vault_device/include/vault_service.hpp": "0a70faa553a2387a796a54258e1b6cc3c3b154936a42843922306b7b19848f1b",
+      "firmware/components/vault_device/include/vault_storage.hpp": "e00b23e6a07129b1db04b6c21c1e311865706f7caa94c057993fbe2564f7803a",
+      "firmware/components/vault_device/service_fields.hpp": "1b446f1263e66062d1ea3b590ecc5c17460906b63cf7622f598e77d70a060071",
+      "firmware/components/vault_device/vault_device.cpp": "ae21b7727cd0a0ff995561fa25e1e8e592ea31abceff81d670bca1098f91f0d6",
+      "firmware/components/vault_device/vault_service.cpp": "1e0f8b0c692771d1e80877bf1c1c752fd50efa7f0b4e9c3c27695cc3985e1970",
+      "firmware/components/vault_device/vault_storage.cpp": "b58687052815c2b198332072809c0d3d0f123e1a5a1a1c268fa759160b662a1a",
+      "firmware/components/vault_display/CMakeLists.txt": "988392fc8e426bced587d735002b67635e0b0bba7405517544859f492121e693",
+      "firmware/components/vault_display/diagnostics.cpp": "b212d5ca194d9f15712e6c6bab00a2a3b0cc640b4055831495d6e0c08ec88e8d",
+      "firmware/components/vault_display/include/vault_display.hpp": "86fee02a5f05eb3774c0bcec56dedcd92cf984d75a838aa71c8f52d1070863d8",
+      "firmware/components/vault_display/self_test.cpp": "dbefb7fb90a9f96347754d976ecdb28e9e8dc44641e0e45d159c94e777dc1ec8",
+      "firmware/components/vault_display/touch_state.cpp": "965bc90ae6f8bc9f8e76b6171f695cac3b24f084b437b0b8c8e678fb963b2218",
+      "firmware/components/vault_display/vault_display.cpp": "fa2ce498223dadf3cc3872e82f4126255daeef36d3e54ace8f26012306be29d1",
+      "firmware/components/vault_json/CMakeLists.txt": "69c8704456de7cb639eadb1ee3dc83540afa42f324d67be9b5bf7af93a74b968",
+      "firmware/components/vault_json/include/vault_json.hpp": "4cfa4c661a39f69775b02baf9529d1e5f49b4768b89955bcdd38505bd9495c16",
+      "firmware/components/vault_json/json_internal.hpp": "0a5d2ff0f791644dcb1e4176f2f1333513baecb71263750a76efb068573e8ca4",
+      "firmware/components/vault_json/json_number.cpp": "deea3fb35abfca7a00763849be005936dc3c2be20764a193a2becceac1d32751",
+      "firmware/components/vault_json/json_writer.cpp": "d9d9e18ffcdd195f09348b8a98910afc3268106757d00f8b4cd74af21ea8214b",
+      "firmware/components/vault_json/vault_json.cpp": "365dc5c6d2356e5dbebf9f4bd43fdc532ada4f834dab1347649b6af3ef7d0aae",
+      "firmware/components/vault_protocol/CMakeLists.txt": "55de5cd849e03a764d3dc5c59916e2b71d2fbcf11856151f49a5f2b59478cab9",
+      "firmware/components/vault_protocol/idf_component.yml": "f5c656d0abd53860ca5adb202e6e2a1edf7780ed0512404cd4a3d9b3e1fc2be1",
+      "firmware/components/vault_protocol/include/vault_protocol.hpp": "c327a326d2f8ea6f65edec23afb206bc52ac329901058b8bde0d96f7705ec418",
+      "firmware/components/vault_protocol/vault_protocol.cpp": "94e820a452e52068dd12f9d7a48ed2dcb372df1d46b1a134a3b6a1765d39bec5",
+      "firmware/components/vault_transport/CMakeLists.txt": "ad233e6511dd0eebaf45547a43b1a9b1a2ff6c6170566679b78c622df97e4b32",
+      "firmware/components/vault_transport/idf_component.yml": "f19bd8f93a767d8d05ff0ffeba314e022e19d8277c9a339ede853919f4b6a36a",
+      "firmware/components/vault_transport/include/vault_transport.hpp": "f2901015716ed036d0332807e3d83855599e35f2eeea151b24e9c26a0ff586b1",
+      "firmware/components/vault_transport/vault_transport.cpp": "291bbc4168422458b4e09e0bb20b86c47fe4eb19bc3b4f5a9a19104fe327962c",
+      "firmware/third_party/esp_websocket_client/CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+      "firmware/third_party/esp_websocket_client/Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+      "firmware/third_party/esp_websocket_client/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "firmware/third_party/esp_websocket_client/UPSTREAM.json": "4d06e54aca121ef95647c22a05816d3e04abfa1b745e99ef7d5f4020c332cd62",
+      "firmware/third_party/esp_websocket_client/esp_websocket_client.c": "35db0370e55bbd3fa173facbd6c0f5feb95ca3f34cd282bd2a2b9c7512b1bfd5",
+      "firmware/third_party/esp_websocket_client/idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+      "firmware/third_party/esp_websocket_client/include/esp_websocket_client.h": "04598de0b67a21ff2247339c73f342b58cac3ebfc42542c7d3d144a98e3cc599",
+      "firmware/third_party/esp_websocket_client/no-redirects.patch": "79fcc260b330c91f96fe0bb1f25f6cde0f531365dec446ed4e8fed04064cbdcb",
+      "firmware/third_party/esp_websocket_client/send-phase-diagnostics.patch": "6add52b6e04eccaf8f73c347a54ab57d2206de3b8823ffa2f90af8caf23393d9",
+      "firmware/third_party/yyjson/LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+      "firmware/third_party/yyjson/UPSTREAM.json": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+      "firmware/third_party/yyjson/fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a",
+      "firmware/third_party/yyjson/yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+      "firmware/third_party/yyjson/yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+    },
+    "target": "esp32",
+    "test_only": false,
+    "toolchain": {
+      "cmake": "cmake version 3.30.2",
+      "compiler": {
+        "sha256": "fcdd657c002c92a3f28e1c947c5acbfbd1085e182ff9ab49b241f21f870671d3",
+        "version": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+      },
+      "esp_idf": "ESP-IDF v6.0.0",
+      "esp_idf_version_cmake_sha256": "3e812348ccd61b318c8f035623d94cb5d8c100ca03ac9ddb6ef937306c0a3616",
+      "esptool": "5.6.0",
+      "ninja": "1.13.2",
+      "python": "Python 3.11.7"
+    },
+    "vendor_provenance": {
+      "esp_websocket_client": {
+        "component": "components/esp_websocket_client",
+        "files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "35db0370e55bbd3fa173facbd6c0f5feb95ca3f34cd282bd2a2b9c7512b1bfd5",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "04598de0b67a21ff2247339c73f342b58cac3ebfc42542c7d3d144a98e3cc599"
+        },
+        "license": "Apache-2.0",
+        "patches": {
+          "no-redirects.patch": "79fcc260b330c91f96fe0bb1f25f6cde0f531365dec446ed4e8fed04064cbdcb",
+          "send-phase-diagnostics.patch": "6add52b6e04eccaf8f73c347a54ab57d2206de3b8823ffa2f90af8caf23393d9"
+        },
+        "provenance_sha256": "4d06e54aca121ef95647c22a05816d3e04abfa1b745e99ef7d5f4020c332cd62",
+        "release": "websocket-v1.8.0",
+        "repository": "https://github.com/espressif/esp-protocols",
+        "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+        "upstream_files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        }
+      },
+      "yyjson": {
+        "files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        },
+        "license": "MIT",
+        "patches": {
+          "fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a"
+        },
+        "provenance_sha256": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+        "release": "0.13.0",
+        "repository": "https://github.com/ibireme/yyjson",
+        "revision": "6447536015f3d600f3d65323b10976103b337ca7",
+        "upstream_files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        }
+      }
+    },
+    "verified_unit_macs": [
+      "02:00:00:00:fe:02"
+    ]
+  },
+  "source_files_verified": 59,
+  "image_files_verified": 3,
+  "metadata_files_verified": 8,
+  "compile_command": "tools/fw-build --app cyd --board cyd-yellow-ili9341-unit-a-bgr",
+  "mode": "normal firmware; both debug flags false",
+  "artifact_checks": {
+    "normal_name_present": true,
+    "debug_names_and_commands_absent": true,
+    "diagnostic_sdk_report_symbol_absent": true,
+    "normal_sdk_send_symbol_present": true
+  },
+  "linked_elf_sha256": "4d6db0b9c4ba9d0b82f871d66e751da8fbe39692683d5db7e70504017cb75d90",
+  "source_differences_vs_restored_normal_cyd_b": [],
+  "build_log": ".cache/m3-cyd-a-current-normal-build.log",
+  "flash": {
+    "result": "passed",
+    "recorded_at": "2026-11-13T22:56:54.396954+00:00",
+    "port": "/dev/cu.example-usb",
+    "verified_unit_mac": "02:00:00:00:fe:02",
+    "image_hash_verifications": 3,
+    "initialize_nvs": false,
+    "nvs_erase_overlap": false,
+    "erased_ranges_exclusive_end": [
+      [
+        4096,
+        24576
+      ],
+      [
+        32768,
+        36864
+      ],
+      [
+        131072,
+        1335296
+      ]
+    ],
+    "log": ".cache/m3-cyd-a-current-normal-flash.log",
+    "log_sha256": "582739f4cf3fd20b16f29bf2b73e4a1ba7d32cbc874556e680a2e10824fce2d6"
+  },
+  "acceptance": "Compiled and hash-verified flash on exact CYD A with NVS preserved. Four USB reads retained provisioning/profile, service-exit receipt, revision 5 and one live binding with no fault. Rafa confirmed startup without calibration targets. New gameplay acceptance remains separate.",
+  "runtime_verification": "cyd-a-current-normal-usb.json"
+}

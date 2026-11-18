@@ -1,0 +1,15 @@
+{
+  "input": "docs/verification/m3/cyd-a-seal-trace-v2-hold-01.json",
+  "complete": true,
+  "sequence_gaps": 1,
+  "samples": 1321,
+  "elapsed_ms": 29973,
+  "maxima": {
+    "dt": 91,
+    "touch_read_ms": 14,
+    "max_draw_ms": 52,
+    "max_network_ms": 21
+  },
+  "cancellations": [],
+  "limitation": "Only cancellations observed after the first row are listed; timestamps are poll start and timings are owner-loop stage measurements."
+}

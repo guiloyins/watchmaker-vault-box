@@ -1,0 +1,321 @@
+{
+  "recorded_at": "2026-11-13T19:09:41.558808+00:00",
+  "unit_mac": "02:00:00:00:fe:01",
+  "port": "/dev/cu.example-usb",
+  "wifi_source": "User-authorized local Guilo settings; values omitted",
+  "mode": "Trusted-LAN development WS; WSS acceptance pending",
+  "factory_reads": [
+    {
+      "box_boot_id": "boot_bed869430681f924969e821a0e3fa5b2",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": null,
+        "box_boot_id": "boot_bed869430681f924969e821a0e3fa5b2",
+        "clear_operation_id": null,
+        "device_id": "factory_02000000fe01",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 1,
+        "service_inhibited": true,
+        "service_revision": 0,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "factory_02000000fe01",
+      "operation_id": null,
+      "request_id": "7a67e5b913a44658355e75090a647693",
+      "service_revision": 0,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    },
+    {
+      "box_boot_id": "boot_bed869430681f924969e821a0e3fa5b2",
+      "code": "ok",
+      "data": {
+        "active_local_record_id": null,
+        "active_motion_operation_id": null,
+        "binding": null,
+        "box_boot_id": "boot_bed869430681f924969e821a0e3fa5b2",
+        "clear_operation_id": null,
+        "device_id": "factory_02000000fe01",
+        "journal_count": 0,
+        "motion_frozen": false,
+        "motor_active": false,
+        "outputs_disabled": true,
+        "position": {
+          "latch_position": "unknown",
+          "position_basis": "unverified"
+        },
+        "preparation_operation_id": null,
+        "readiness": {
+          "arm_id": null,
+          "armed_session_id": null,
+          "calibration_valid": false,
+          "start_verified": false
+        },
+        "service_epoch": 1,
+        "service_inhibited": true,
+        "service_revision": 0,
+        "storage_fault": null,
+        "storage_version": 1
+      },
+      "device_id": "factory_02000000fe01",
+      "operation_id": null,
+      "request_id": "ec211dcf038b6d1c7c97324b2d268b5e",
+      "service_revision": 0,
+      "status": "ok",
+      "sv": 1,
+      "type": "result"
+    }
+  ],
+  "provision_result": {
+    "box_boot_id": "boot_bed869430681f924969e821a0e3fa5b2",
+    "code": "ok",
+    "data": {
+      "operation_id": "svc_0000000000000001_ece54bd3233d80eb4663e24731e3b0fb",
+      "resulting_revision": 1
+    },
+    "device_id": "factory_02000000fe01",
+    "operation_id": "svc_0000000000000001_ece54bd3233d80eb4663e24731e3b0fb",
+    "request_id": "867a63ec5c4a1453f2ea3d3b2c6b4cd2",
+    "service_revision": 1,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "reboot_result": {
+    "box_boot_id": "boot_bed869430681f924969e821a0e3fa5b2",
+    "code": "ok",
+    "data": {
+      "operation_id": "svc_0000000000000002_84dbd77491236a98e36527f593e92c2e",
+      "reboot_required": true,
+      "resulting_revision": 2
+    },
+    "device_id": "factory_02000000fe01",
+    "operation_id": "svc_0000000000000002_84dbd77491236a98e36527f593e92c2e",
+    "request_id": "2e2b1f9853877379c6cc8277d6717361",
+    "service_revision": 2,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "readback": [
+    {
+      "command": [
+        "inspect",
+        "--section",
+        "status"
+      ],
+      "reply": {
+        "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": {
+            "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+            "connection_id": "conn_9a6d6421d0ecf30ca348a10c393f907c",
+            "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+          },
+          "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+          "clear_operation_id": null,
+          "device_id": "cyd_b",
+          "journal_count": 0,
+          "motion_frozen": false,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": true,
+          "service_revision": 2,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "cyd_b",
+        "operation_id": null,
+        "request_id": "291816202290f8b7836200989765dc8c",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "inspect",
+        "--section",
+        "provisioning"
+      ],
+      "reply": {
+        "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+        "code": "ok",
+        "data": {
+          "configured": true,
+          "device_class": "controller",
+          "device_id": "cyd_b",
+          "profile_sha256": "789e32ace8116fab55704c7fce938a91b44b3e075472daefc09243a91617f16e",
+          "provisioning_operation_id": "svc_0000000000000001_ece54bd3233d80eb4663e24731e3b0fb",
+          "reboot_required": false
+        },
+        "device_id": "cyd_b",
+        "operation_id": null,
+        "request_id": "227605315e55697077a02a531c8766da",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "operation-get",
+        "--operation-id",
+        "svc_0000000000000001_ece54bd3233d80eb4663e24731e3b0fb"
+      ],
+      "reply": {
+        "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+        "code": "ok",
+        "data": {
+          "receipt": {
+            "command": "provision.set",
+            "completion": null,
+            "decision": {
+              "code": "ok",
+              "data": {
+                "operation_id": "svc_0000000000000001_ece54bd3233d80eb4663e24731e3b0fb",
+                "resulting_revision": 1
+              },
+              "status": "ok"
+            },
+            "expected_revision": 0,
+            "operation_id": "svc_0000000000000001_ece54bd3233d80eb4663e24731e3b0fb",
+            "resulting_revision": 1,
+            "storage_version": 1
+          }
+        },
+        "device_id": "cyd_b",
+        "operation_id": null,
+        "request_id": "7ea81e2aeef8aa19f6d3ccdcec5f0ac0",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "operation-get",
+        "--operation-id",
+        "svc_0000000000000002_84dbd77491236a98e36527f593e92c2e"
+      ],
+      "reply": {
+        "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+        "code": "ok",
+        "data": {
+          "receipt": {
+            "command": "reboot",
+            "completion": null,
+            "decision": {
+              "code": "ok",
+              "data": {
+                "operation_id": "svc_0000000000000002_84dbd77491236a98e36527f593e92c2e",
+                "reboot_required": true,
+                "resulting_revision": 2
+              },
+              "status": "ok"
+            },
+            "expected_revision": 1,
+            "operation_id": "svc_0000000000000002_84dbd77491236a98e36527f593e92c2e",
+            "resulting_revision": 2,
+            "storage_version": 1
+          }
+        },
+        "device_id": "cyd_b",
+        "operation_id": null,
+        "request_id": "671c630e61c74952f371d3c3992a03c0",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "inspect",
+        "--section",
+        "status"
+      ],
+      "reply": {
+        "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": {
+            "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+            "connection_id": "conn_9a6d6421d0ecf30ca348a10c393f907c",
+            "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+          },
+          "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+          "clear_operation_id": null,
+          "device_id": "cyd_b",
+          "journal_count": 0,
+          "motion_frozen": false,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": true,
+          "service_revision": 2,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "cyd_b",
+        "operation_id": null,
+        "request_id": "dea36f42faf52449e8884e90b82ea83e",
+        "service_revision": 2,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    }
+  ],
+  "all_checks_passed": true,
+  "service_exit": "pending calibration and user neutral contact"
+}

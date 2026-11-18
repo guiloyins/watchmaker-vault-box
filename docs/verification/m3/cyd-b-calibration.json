@@ -1,0 +1,235 @@
+{
+  "recorded_at": "2026-11-13T19:22:14.875223+00:00",
+  "user_report": "DIAGNOSTICS appears; all colors match",
+  "five_targets_completed": "user confirmed diagnostics after prescribed TL/TR/BR/BL/center sequence",
+  "rgbw_labels_match": "user confirmed",
+  "portrait_readability": "User confirmed upright; full DIAGNOSTICS heading fits",
+  "reboot_persistence": "User confirmed direct DIAGNOSTICS without calibration targets after explicit revision-3 reboot",
+  "resource_readings": {
+    "source": "user transcription from CYD B DIAGNOSTICS",
+    "recorded_at": "2026-11-13T19:23:19.242797+00:00",
+    "context": "idle display, calibrated, service-inhibited live trusted-LAN WS on recorded boot",
+    "free_heap_bytes": 63388,
+    "minimum_heap_bytes": 45646,
+    "largest_block_bytes": 59392,
+    "main_stack_free_bytes": 3712,
+    "main_stack_capacity_bytes": 8192,
+    "main_stack_free_percent": 45.3125,
+    "network_stack_free_bytes": 3712,
+    "network_stack_capacity_bytes": 6144,
+    "network_stack_free_percent": 60.416666666666664,
+    "minimum_heap_threshold_bytes": 32768,
+    "minimum_stack_free_percent": 25,
+    "idle_budget_result": "passed based on reported readings",
+    "limitations": "Operator transcription; active gameplay/reconnect/WSS/other SDK tasks and power acceptance pending"
+  },
+  "same_boot_status_after_calibration": {
+    "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+    "code": "ok",
+    "data": {
+      "active_local_record_id": null,
+      "active_motion_operation_id": null,
+      "binding": {
+        "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+        "connection_id": "conn_f1dcc503f653c86644385b7463f4fb5e",
+        "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+      },
+      "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+      "clear_operation_id": null,
+      "device_id": "cyd_b",
+      "journal_count": 0,
+      "motion_frozen": false,
+      "motor_active": false,
+      "outputs_disabled": true,
+      "position": {
+        "latch_position": "unknown",
+        "position_basis": "unverified"
+      },
+      "preparation_operation_id": null,
+      "readiness": {
+        "arm_id": null,
+        "armed_session_id": null,
+        "calibration_valid": false,
+        "start_verified": false
+      },
+      "service_epoch": 1,
+      "service_inhibited": true,
+      "service_revision": 2,
+      "storage_fault": null,
+      "storage_version": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": null,
+    "request_id": "d4f3784964754d98206ba9588a489b45",
+    "service_revision": 2,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "service_exit": "Passed: revision 4, durable receipt acknowledged and same-boot status confirms input enabled",
+  "persistence_reboot_result": {
+    "box_boot_id": "boot_b3b7f5ff02d2b24af2f48e27225a621d",
+    "code": "ok",
+    "data": {
+      "operation_id": "svc_0000000000000003_7216a14c1be41c11d7ad268fa8b77783",
+      "reboot_required": true,
+      "resulting_revision": 3
+    },
+    "device_id": "cyd_b",
+    "operation_id": "svc_0000000000000003_7216a14c1be41c11d7ad268fa8b77783",
+    "request_id": "b37c0b58a518a1d73e42bfdab2a2f4ad",
+    "service_revision": 3,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "post_reboot_status": {
+    "box_boot_id": "boot_7d4b6c13df715e4ab88334a0c74ca621",
+    "code": "ok",
+    "data": {
+      "active_local_record_id": null,
+      "active_motion_operation_id": null,
+      "binding": {
+        "box_boot_id": "boot_7d4b6c13df715e4ab88334a0c74ca621",
+        "connection_id": "conn_51173fc234f2fdbea447db0bb493d187",
+        "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+      },
+      "box_boot_id": "boot_7d4b6c13df715e4ab88334a0c74ca621",
+      "clear_operation_id": null,
+      "device_id": "cyd_b",
+      "journal_count": 0,
+      "motion_frozen": false,
+      "motor_active": false,
+      "outputs_disabled": true,
+      "position": {
+        "latch_position": "unknown",
+        "position_basis": "unverified"
+      },
+      "preparation_operation_id": null,
+      "readiness": {
+        "arm_id": null,
+        "armed_session_id": null,
+        "calibration_valid": false,
+        "start_verified": false
+      },
+      "service_epoch": 1,
+      "service_inhibited": true,
+      "service_revision": 3,
+      "storage_fault": null,
+      "storage_version": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": null,
+    "request_id": "8e7fcf778cd0ee277ed7bad3aa1a8079",
+    "service_revision": 3,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "post_reboot_user_report": "Yes, direct diagnostics; upright and heading fits",
+  "post_reboot_confirmation_recorded_at": "2026-11-13T19:27:56.756870+00:00",
+  "pre_exit_status": {
+    "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "code": "ok",
+    "data": {
+      "active_local_record_id": null,
+      "active_motion_operation_id": null,
+      "binding": {
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "connection_id": "conn_692b5136ada3ab59b52c0bcfda6e11ca",
+        "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+      },
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "clear_operation_id": null,
+      "device_id": "cyd_b",
+      "journal_count": 0,
+      "motion_frozen": false,
+      "motor_active": false,
+      "outputs_disabled": true,
+      "position": {
+        "latch_position": "unknown",
+        "position_basis": "unverified"
+      },
+      "preparation_operation_id": null,
+      "readiness": {
+        "arm_id": null,
+        "armed_session_id": null,
+        "calibration_valid": false,
+        "start_verified": false
+      },
+      "service_epoch": 1,
+      "service_inhibited": true,
+      "service_revision": 3,
+      "storage_fault": null,
+      "storage_version": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": null,
+    "request_id": "569fc5935249b283f77f4eb7f68c28f9",
+    "service_revision": 3,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "pre_exit_boot_note": "Boot ID differs from first post-reboot inspection; cause unobserved. Two current separate USB reads preserved the same boot and live binding, service revision 3 and no storage fault.",
+  "service_exit_result": {
+    "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "code": "ok",
+    "data": {
+      "exited": true,
+      "operation_id": "svc_0000000000000004_41e17548559e20ee2047728c1cd466fe",
+      "resulting_revision": 4,
+      "service_epoch": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": "svc_0000000000000004_41e17548559e20ee2047728c1cd466fe",
+    "request_id": "15b4f11161f4c2de1332a298766fe77e",
+    "service_revision": 4,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  },
+  "post_exit_status": {
+    "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+    "code": "ok",
+    "data": {
+      "active_local_record_id": null,
+      "active_motion_operation_id": null,
+      "binding": {
+        "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+        "connection_id": "conn_692b5136ada3ab59b52c0bcfda6e11ca",
+        "current_session_id": "session_71770b51009b8031527fd4c642cbf318"
+      },
+      "box_boot_id": "boot_019750477087405f8a4be0043601f3d1",
+      "clear_operation_id": null,
+      "device_id": "cyd_b",
+      "journal_count": 0,
+      "motion_frozen": false,
+      "motor_active": false,
+      "outputs_disabled": true,
+      "position": {
+        "latch_position": "unknown",
+        "position_basis": "unverified"
+      },
+      "preparation_operation_id": null,
+      "readiness": {
+        "arm_id": null,
+        "armed_session_id": null,
+        "calibration_valid": false,
+        "start_verified": false
+      },
+      "service_epoch": 1,
+      "service_inhibited": false,
+      "service_revision": 4,
+      "storage_fault": null,
+      "storage_version": 1
+    },
+    "device_id": "cyd_b",
+    "operation_id": null,
+    "request_id": "792d966dbefc8d32ba1465ad1b132012",
+    "service_revision": 4,
+    "status": "ok",
+    "sv": 1,
+    "type": "result"
+  }
+}

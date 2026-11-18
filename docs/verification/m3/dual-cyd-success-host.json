@@ -1,0 +1,30 @@
+{
+  "recorded_at": "2026-11-14T02:06:39.283Z",
+  "phase": "solved",
+  "paused": false,
+  "controllers_ready": true,
+  "box": "Setup required",
+  "release": "motion_complete",
+  "roles": {
+    "a": {
+      "cell": null,
+      "board": 16,
+      "owner_source": "cyd",
+      "owner_freshness": "fresh",
+      "selected": null,
+      "held": false,
+      "hold_ms": null,
+      "qualified": false
+    },
+    "b": {
+      "cell": null,
+      "board": 16,
+      "owner_source": "cyd",
+      "owner_freshness": "fresh",
+      "selected": null,
+      "held": false,
+      "hold_ms": null,
+      "qualified": false
+    }
+  }
+}

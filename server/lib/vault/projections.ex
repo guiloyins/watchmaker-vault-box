@@ -44,7 +44,9 @@ defmodule Vault.Projections do
           simulated_service_ready:
             Map.get(session.box, :transport) == :external or
               Map.get(session.box, :service_ready, false),
-          external_box: Application.get_env(:vault, :simulator_transport, :internal) == :external,
+          external_box:
+            not base.box.simulated or
+              Application.get_env(:vault, :simulator_transport, :internal) == :external,
           controllers_ready: Map.get(session, :controllers_ready, false),
           assignments: session.owners,
           diagnostics: session.diagnostics,
@@ -68,16 +70,18 @@ defmodule Vault.Projections do
   def box(session) do
     report = session.box.report || %{}
     release = session.release
+    release_status = if release, do: release.status, else: :not_requested
 
     %{
       connected: session.box.connected,
       simulated: session.record.game.box_mode == "simulated",
       command_id: if(release, do: release.command_id, else: nil),
-      release_status: if(release, do: release.status, else: :not_requested),
+      release_status: release_status,
       motor_active: Map.get(report, :motor_active, false),
       latch_position: Map.get(report, :latch_position, :unknown),
       position_basis: Map.get(report, :position_basis, :unverified),
-      command_confirmation: if(release, do: Map.get(release, :command_confirmation), else: nil),
+      command_confirmation:
+        if(release_status == :position_confirmed, do: Map.get(release, :command_confirmation)),
       readiness:
         Map.get(report, :readiness, %{
           arm_id: nil,
@@ -116,7 +120,8 @@ defmodule Vault.Projections do
         source: actor.source,
         owner: actor.role != nil and session.owners[actor.role] == actor.actor_id,
         fresh: fresh?(binding, now_ms),
-        subject_id: actor.principal.subject_id
+        subject_id: actor.principal.subject_id,
+        allowed_roles: actor.principal.allowed_roles
       }
     end)
     |> Enum.sort_by(& &1.actor_id)

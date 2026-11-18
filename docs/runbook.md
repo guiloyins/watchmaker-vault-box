@@ -1,6 +1,8 @@
 # Watchmaker’s Vault operator runbook
 
-The browser game supports an internal simulated mechanism or a separately running raw-protocol simulator. A completed simulated stroke reports modeled motion. Physical position, lid state, and hardware operation require their own evidence.
+For CYD firmware, use the [firmware guide](../firmware/README.md) and [device-specific bring-up procedure](hardware/cyd-bringup.md). CYD maze movement uses one permitted-direction swipe per contact; browser movement still uses buttons. USB provisioning and controller service exit follow [LOCAL_SERVICE_V1](specs/LOCAL_SERVICE_V1.md). Physical terminal acceptance is separate from the native/software checks.
+
+The browser game supports an internal simulated mechanism, a separately running raw-protocol simulator, or a separately initialized physical-box deployment. A completed simulated stroke reports modeled motion. Physical position, lid state, and hardware operation require their own evidence.
 
 ## Set up and start
 
@@ -38,6 +40,8 @@ The default HTTP listener is loopback. For a deliberate trusted-LAN demonstratio
 6. After a known terminal result and an idle mechanism, select **Reset puzzle**. This creates a new round without a release, relock, or automatic arm. Reclaim both roles and prepare, exit service, and arm again before the next game.
 
 ## Stop and replace the host key
+
+For a physical-box deployment, use the [USB stop/readback and physical rotation procedure](hardware/box-service.md#replace-the-host-key-with-the-physical-box-stopped). The simulator stop command below applies to simulated deployments only. Physical rotation requires fresh matching USB evidence and explicit operator attestation while the mechanism remains stopped; the offline command does not authenticate hardware.
 
 When host access is available, pause and disarm an unsolved game before stopping the server. Stop `mix phx.server` and wait for the process to exit. Stop all other Vault VMs and credential tasks that use this directory.
 
@@ -106,6 +110,12 @@ The console accepts bounded local service JSON requests, such as `{"command":"in
 The client starts only its transport/storage dependencies under `mix run --no-start`. Its own runtime, database worker and watchdog remain independent of the socket owner and server. `box-runtime.owner` prevents a second box process or credential maintenance from opening that journal. EOF closes the socket/runtime and waits for the store worker before removing the owning marker. A crash may retain the marker; remove it only after confirming all processes for that box database have stopped. Stop both server and external box before backing up the manifest, protected keys, both SQLite databases and any sidecars together. Do not copy a live database file alone.
 
 For additional controllers, stop both processes and use `mix vault.device.add --id ID --class controller --roles a --output PATH` from `server/`. Existing independent registrations support `--rotate` with a new protected output file. These tasks acquire both ownership guards. Reserved simulator identities come from initialization.
+
+## Run with the physical box
+
+Initialize a separate owner-only deployment with `VAULT_BOX_MODE=physical` and `VAULT_BOX_DEVICE_ID` set to the exact registered box identity. `mix vault.init` creates its protected `box.key` and binds that mode/ID in the deployment manifest. It starts no simulator and creates no simulator journal. An existing simulated deployment cannot be converted by changing environment variables.
+
+Follow [physical registration, provisioning and startup](hardware/box-service.md#register-provision-and-reboot), using the same deployment settings throughout. The protected provision file carries the device key; never place it in a command argument or public log. The board must first have a verified unit-bound profile and the required electrical/mechanical evidence. Use USB calibration/reference and deliberate service exit before host Arm. A puzzle reset or reconnect never relocks or moves the mechanism. M4's current physical acceptance remains open; see [verification status](verification/m4/README.md).
 
 ## LAN and WSS
 

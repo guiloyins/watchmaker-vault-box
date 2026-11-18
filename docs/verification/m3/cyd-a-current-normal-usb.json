@@ -1,0 +1,185 @@
+{
+  "recorded_at": "2026-11-13T22:56:58.151863+00:00",
+  "purpose": "CYD A current normal firmware after flash; four independent USB opens",
+  "port": "/dev/cu.example-usb",
+  "records": [
+    {
+      "command": [
+        "inspect",
+        "--section",
+        "status"
+      ],
+      "reply": {
+        "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": {
+            "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+            "connection_id": "conn_ffbaa013acd0af5f8d70e0a9f4d7bcef",
+            "current_session_id": "session_fa8850bfdddede9e68eadd1efa2a85cc"
+          },
+          "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+          "clear_operation_id": null,
+          "device_id": "cyd_a",
+          "journal_count": 0,
+          "motion_frozen": false,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": false,
+          "service_revision": 5,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "cyd_a",
+        "operation_id": null,
+        "request_id": "f8ea100e56f50256776aa42d64391f39",
+        "service_revision": 5,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "inspect",
+        "--section",
+        "provisioning"
+      ],
+      "reply": {
+        "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+        "code": "ok",
+        "data": {
+          "configured": true,
+          "device_class": "controller",
+          "device_id": "cyd_a",
+          "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+          "provisioning_operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+          "reboot_required": false
+        },
+        "device_id": "cyd_a",
+        "operation_id": null,
+        "request_id": "bab30bcd34c503d66f3a2a47debf3244",
+        "service_revision": 5,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "operation-get",
+        "--operation-id",
+        "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865"
+      ],
+      "reply": {
+        "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+        "code": "ok",
+        "data": {
+          "receipt": {
+            "command": "service.exit",
+            "completion": null,
+            "decision": {
+              "code": "ok",
+              "data": {
+                "exited": true,
+                "operation_id": "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865",
+                "resulting_revision": 5,
+                "service_epoch": 1
+              },
+              "status": "ok"
+            },
+            "expected_revision": 4,
+            "operation_id": "svc_0000000000000005_ce9f65662c7f5de604178c12a4ca5865",
+            "resulting_revision": 5,
+            "storage_version": 1
+          }
+        },
+        "device_id": "cyd_a",
+        "operation_id": null,
+        "request_id": "cab8bfa730e5803d39c9f3c22c430125",
+        "service_revision": 5,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    },
+    {
+      "command": [
+        "inspect",
+        "--section",
+        "status"
+      ],
+      "reply": {
+        "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": {
+            "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+            "connection_id": "conn_ffbaa013acd0af5f8d70e0a9f4d7bcef",
+            "current_session_id": "session_fa8850bfdddede9e68eadd1efa2a85cc"
+          },
+          "box_boot_id": "boot_1b182dcf125f5e58d4a11bffe296d5e2",
+          "clear_operation_id": null,
+          "device_id": "cyd_a",
+          "journal_count": 0,
+          "motion_frozen": false,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": false,
+          "service_revision": 5,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "cyd_a",
+        "operation_id": null,
+        "request_id": "b6d773175d805e4739ccb08e6b54fdee",
+        "service_revision": 5,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      }
+    }
+  ],
+  "all_checks_passed": true,
+  "same_boot_across_reads": true,
+  "binding_present_across_status_reads": true,
+  "same_binding_across_status_reads": true,
+  "calibration": "Flash left the NVS range untouched; Rafa confirmed direct role chooser/game startup without calibration targets.",
+  "preflash_boot_id": "boot_c4bd7a353221ca0abb188a8d0553cdfc",
+  "new_boot_after_flash": true,
+  "operator_confirmation": {
+    "recorded_at": "2026-11-13T22:58:09.045600+00:00",
+    "reported_by": "Rafa",
+    "reply": "Yes, role chooser or game; no calibration",
+    "calibration_targets_repeated": false,
+    "scope": "Startup restored saved touch calibration; new swipe, hold and complete-game acceptance are separate"
+  }
+}

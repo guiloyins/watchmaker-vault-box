@@ -1,0 +1,186 @@
+{
+  "started_at": "2026-11-13T19:52:31.953Z",
+  "reason": "stop",
+  "records": [
+    {
+      "elapsed_ms": 5,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "browser",
+          "owner_freshness": "fresh",
+          "selected": "star",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 3412,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "browser",
+          "owner_freshness": "fresh",
+          "selected": "star",
+          "held": true,
+          "hold_ms": 0,
+          "qualified": false
+        },
+        "b": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": "moon",
+          "held": false,
+          "hold_ms": 0,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 26475,
+      "phase": "seal",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Armed",
+      "release": "not_requested",
+      "roles": {
+        "a": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "browser",
+          "owner_freshness": "fresh",
+          "selected": "star",
+          "held": true,
+          "hold_ms": 3,
+          "qualified": false
+        },
+        "b": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": "moon",
+          "held": true,
+          "hold_ms": 3,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 28423,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": false,
+      "box": "Armed",
+      "release": "pending",
+      "roles": {
+        "a": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "browser",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 28525,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Setup required",
+      "release": "accepted",
+      "roles": {
+        "a": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "browser",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "elapsed_ms": 29556,
+      "phase": "solved",
+      "paused": false,
+      "controllers_ready": true,
+      "box": "Setup required",
+      "release": "motion_complete",
+      "roles": {
+        "a": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "browser",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        },
+        "b": {
+          "cell": null,
+          "board": 12,
+          "owner_source": "cyd",
+          "owner_freshness": "fresh",
+          "selected": null,
+          "held": false,
+          "hold_ms": null,
+          "qualified": false
+        }
+      }
+    }
+  ]
+}

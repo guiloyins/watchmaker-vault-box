@@ -1,0 +1,411 @@
+{
+  "build": {
+    "app_partition_spare_bytes": 1781152,
+    "command": [
+      "tools/fw-build",
+      "--app",
+      "cyd",
+      "--board",
+      "cyd-yellow-ili9341-unit-a"
+    ],
+    "display": {
+      "esp_bsp_component_path": "components/lcd/esp_lcd_ili9341",
+      "esp_bsp_revision": "93460b932beba7022a8a4ec4186e0d6b7533d05f",
+      "linked_constructor": "esp_lcd_new_panel_ili9341",
+      "panel_init_provenance": {
+        "adaptation": "Alternate ILI9341_2 register values transcribed to esp_lcd_ili9341; the profile supplies MADCTL color order and panel orientation, and Board sends display-on after initialization. The local license copy trims trailing whitespace.",
+        "files": {
+          "LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+          "panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442"
+        },
+        "release": "V2.5.43",
+        "repository": "https://github.com/Bodmer/TFT_eSPI",
+        "revision": "6ae4c97c5a07bd64fce8993e9cfa95d9a81e7c81",
+        "upstream_files": {
+          "TFT_Drivers/ILI9341_Init.h": "bab700ac6b5de0490613ae280fac5e2c07b811404733e69b20b4777ff98ff1eb",
+          "license.txt": "f79bffc86315004815e4e7f11a23e757de0f25793022e6020938e2db1a495a9d"
+        }
+      },
+      "panel_init_provenance_file": "firmware/apps/cyd/main/ili9341_2/UPSTREAM.json"
+    },
+    "elf": {
+      "bytes": 15762604,
+      "path": "firmware/build/cyd/cyd-yellow-ili9341-unit-a/cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa/idf/watchmakers_vault_cyd.elf",
+      "sha256": "f2a3b36d7a5d85c3d1c64a4dcd712d18fddd106a755b7229249275f9019e299e"
+    },
+    "fresh_isolated_build": true,
+    "integrity": {
+      "additional_current_source_files": [],
+      "changed_source_files": [],
+      "current_source_lock_matches_generated_lock": true,
+      "manifest_validator": "tools/firmware/build_manifest.py::validate_flash_manifest",
+      "matching_current_source_files": 55,
+      "matching_image_artifacts": 3,
+      "matching_metadata_artifacts": 8,
+      "missing_source_files": [],
+      "recorded_source_files": 55,
+      "validation": "passed without serial access"
+    },
+    "managed_dependencies": {
+      "atanisoft/esp_lcd_touch_xpt2046": {
+        "component_hash": "7e6381b67b6e487379118368b8e91624dc87036ef5734818de1db9eb35697998",
+        "version": "1.0.6"
+      },
+      "espressif/cmake_utilities": {
+        "component_hash": "351350613ceafba240b761b4ea991e0f231ac7a9f59a9ee901f751bddc0bb18f",
+        "version": "0.5.3"
+      },
+      "espressif/esp_lcd_ili9341": {
+        "component_hash": "840387ee0c90a473e43fdc75570f77c52f06423aa331d95479bde8b418c43547",
+        "version": "2.1.0"
+      },
+      "espressif/esp_lcd_touch": {
+        "component_hash": "3f85a7d95af876f1a6ecca8eb90a81614890d0f03a038390804e5a77e2caf862",
+        "version": "1.2.1"
+      },
+      "idf": {
+        "version": "6.0.0"
+      },
+      "lvgl/lvgl": {
+        "component_hash": "096c69af22eaf8a2b721e3913da91918c5e6bf1a762a113ec01f401aa61337a0",
+        "version": "9.2.2"
+      }
+    },
+    "manifest": {
+      "app": "cyd",
+      "flash_options": {
+        "flash_freq": "40m",
+        "flash_mode": "dio",
+        "flash_size": "4MB"
+      },
+      "flashable": true,
+      "images": [
+        {
+          "offset": 4096,
+          "path": "idf/bootloader/bootloader.bin",
+          "sha256": "1a6a3159f7ccc7965077e449d0b68ea50c4caa188a3583f8ebd58a26b82a60c8",
+          "size": 18368
+        },
+        {
+          "offset": 32768,
+          "path": "idf/partition_table/partition-table.bin",
+          "sha256": "ac9f8b96998aaf942d3f08fe3983d71a80d978bb8f7e775207c021d1f871a2ca",
+          "size": 3072
+        },
+        {
+          "offset": 131072,
+          "path": "idf/watchmakers_vault_cyd.bin",
+          "sha256": "088876da3730fae295768faad58afa1ddc7578a4ce054f23c5c902be41434ca0",
+          "size": 1364576
+        }
+      ],
+      "managed_lock_sha256": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "manifest_version": 1,
+      "memory": {
+        "flash_freq_mhz": 40,
+        "flash_mb": 4,
+        "flash_mode": "dio",
+        "psram": false,
+        "table_offset": 32768
+      },
+      "metadata_sha256": {
+        "generated/board_config.cmake": "e0928d9031c17cc25869be82ed53334fb33a4110f260887f5a2c92970242c07d",
+        "generated/board_config.h": "e30d06a0b4c06c1eea4d1d95d0e17b6c0ab6e9ec75153d1a73cbf27137b796f1",
+        "generated/partitions.csv": "2d25c93e533feffa15665290204cf5ea0fd79f53d4872969415039008b600ed1",
+        "generated/profile-manifest.json": "a1bcd8005b8f3030d35c808eb1964c5e844177cbf2109ccf1e226eced206ae50",
+        "generated/sdkconfig.board.defaults": "a49a62ab7267a696bb70ca704081f21ae1267edc5d8f84809ec477c9aebe7287",
+        "idf/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+        "idf/flasher_args.json": "dc735478d8ed8abaf53ca0cefdafd8def3c27f4f84960fb0a03a16a2e8cc82b5",
+        "idf/sdkconfig": "07147f5a93631d113525fd3d5b3cd5b936f23d77383c66bd6e1eb083612f87c8"
+      },
+      "partitions": [
+        {
+          "name": "nvs",
+          "offset": 36864,
+          "size": 94208,
+          "subtype": "nvs",
+          "type": "data"
+        },
+        {
+          "name": "factory",
+          "offset": 131072,
+          "size": 3145728,
+          "subtype": "factory",
+          "type": "app"
+        }
+      ],
+      "profile_file_sha256": "032993a9dde159f23133219c956ba3942b2d866ecd84cfbda125c7aa8f33affd",
+      "profile_id": "cyd-yellow-ili9341-unit-a",
+      "profile_sha256": "cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa",
+      "protocol_version": 1,
+      "source": {
+        "dirty": true,
+        "git_sha": "29c6497bed056869ab7f3be81e6d9b3c4b33e80a"
+      },
+      "source_sha256": {
+        "firmware/apps/cyd/CMakeLists.txt": "b1e1646a0fd4c5daa5a7eb2fbf08c437ba9fd70781b77c785aec8c7b26fe7f5c",
+        "firmware/apps/cyd/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+        "firmware/apps/cyd/main/CMakeLists.txt": "cf9d64e25b96dba7f7997dbbcafe608626646ca2c9ae45e6111ab299e378710d",
+        "firmware/apps/cyd/main/app_main.cpp": "67fbdd80b03f41848e443ecfbc7c2568f8e8ec1c4e17b05c20f84dd0f6ab83e2",
+        "firmware/apps/cyd/main/board_adapter.cpp": "d1cb497a49ab8f354803a57de7eb805439f06ddf68dddbaa554b2db8f140d03f",
+        "firmware/apps/cyd/main/board_adapter.hpp": "72132dc92139ce9e72d54886675ddf006db6a2aef2c88774e135c369210c9579",
+        "firmware/apps/cyd/main/idf_component.yml": "0da0b72ff53570230ac7f249c66b27c42befad2d223446b58b2553491d392eec",
+        "firmware/apps/cyd/main/ili9341_2/LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+        "firmware/apps/cyd/main/ili9341_2/UPSTREAM.json": "a29d611fe600758ea031f530ae0c8d34886e6f5032fad1adc4c5ace36f9a99b5",
+        "firmware/apps/cyd/main/ili9341_2/panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442",
+        "firmware/apps/cyd/main/network_adapter.cpp": "dc035fcf5c663d156f570a064e21e06b1aa0ee608062af2922cce9c8c5e7311e",
+        "firmware/apps/cyd/main/network_adapter.hpp": "b316407941e87c2d9751240087109abc914c2c9faec7fcb63c8c30138487e7dc",
+        "firmware/apps/cyd/main/nvs_adapter.cpp": "f199f0cc5a5c63e5bbd4d17f796b03f66879cdd9ddfadefb54f37f59be513b47",
+        "firmware/apps/cyd/main/nvs_adapter.hpp": "bec1564a748cf1bb2d7708e37adfa6b1ae8c97c33d9da9457e24f936553b41c7",
+        "firmware/apps/cyd/sdkconfig.defaults": "ab76107f1ad4b4abb0472b32417a718bc12477cc5efd2d1bb870d33f794f9da3",
+        "firmware/components/vault_device/CMakeLists.txt": "e968bd7f3befda1a430b2202c77db86a0fed826c8111bea326dea3a08de724ec",
+        "firmware/components/vault_device/include/vault_device.hpp": "98915a273c18fd1990b02e60e5a018f10f8178439b04ff774261cb80c81b1c8a",
+        "firmware/components/vault_device/include/vault_service.hpp": "7fa13db6273987c33fabd1ddaa72b6094932df4f2125b621520343c75137526f",
+        "firmware/components/vault_device/include/vault_storage.hpp": "e00b23e6a07129b1db04b6c21c1e311865706f7caa94c057993fbe2564f7803a",
+        "firmware/components/vault_device/service_fields.hpp": "1b446f1263e66062d1ea3b590ecc5c17460906b63cf7622f598e77d70a060071",
+        "firmware/components/vault_device/vault_device.cpp": "4dd4e30526d3e8d70e2e7c95c51d363ee3d2b4f62de04d96ee75b6b28a833a4c",
+        "firmware/components/vault_device/vault_service.cpp": "5dbda55c661849baddb7a5caad5e6c1fdafcbaf5bd45b0ed26175098cf255b2c",
+        "firmware/components/vault_device/vault_storage.cpp": "b58687052815c2b198332072809c0d3d0f123e1a5a1a1c268fa759160b662a1a",
+        "firmware/components/vault_display/CMakeLists.txt": "988392fc8e426bced587d735002b67635e0b0bba7405517544859f492121e693",
+        "firmware/components/vault_display/diagnostics.cpp": "ca70098b5effe4817607fef411a55d0dbd88b90b11241894e0d79ca236dcb55a",
+        "firmware/components/vault_display/include/vault_display.hpp": "301e738e59ef559d7f311bed97306994dacd7dafc5ffcb2c90a6a472802685e5",
+        "firmware/components/vault_display/self_test.cpp": "a9c0bbf59d7466d84d300fd90fd84e5595ef94d24bc610700e826e11bd2653ea",
+        "firmware/components/vault_display/touch_state.cpp": "298a76fd52098a7131c5a3188de4af0aea4bb83ce25ec266bab78809e9b59ab5",
+        "firmware/components/vault_display/vault_display.cpp": "4a4f9d6ce4cffac6c373c0dce71e5b2f1cfac3f468c90242c7df7510df3eee7f",
+        "firmware/components/vault_json/CMakeLists.txt": "fabddd72b4696bdb6f32a299d96492be7f0e9d0c3cc398a7d703692f8fb51fbf",
+        "firmware/components/vault_json/include/vault_json.hpp": "e523274cd470e44e7e98eb2f91fc0743bd70bd271e3382b54c71c526d51795aa",
+        "firmware/components/vault_json/json_internal.hpp": "0a5d2ff0f791644dcb1e4176f2f1333513baecb71263750a76efb068573e8ca4",
+        "firmware/components/vault_json/json_number.cpp": "deea3fb35abfca7a00763849be005936dc3c2be20764a193a2becceac1d32751",
+        "firmware/components/vault_json/json_writer.cpp": "d9d9e18ffcdd195f09348b8a98910afc3268106757d00f8b4cd74af21ea8214b",
+        "firmware/components/vault_json/vault_json.cpp": "dd980560184c20f35577f9dec04c68574cb7b248294906b6b302f7111ec00a03",
+        "firmware/components/vault_protocol/CMakeLists.txt": "55de5cd849e03a764d3dc5c59916e2b71d2fbcf11856151f49a5f2b59478cab9",
+        "firmware/components/vault_protocol/idf_component.yml": "f5c656d0abd53860ca5adb202e6e2a1edf7780ed0512404cd4a3d9b3e1fc2be1",
+        "firmware/components/vault_protocol/include/vault_protocol.hpp": "c327a326d2f8ea6f65edec23afb206bc52ac329901058b8bde0d96f7705ec418",
+        "firmware/components/vault_protocol/vault_protocol.cpp": "94e820a452e52068dd12f9d7a48ed2dcb372df1d46b1a134a3b6a1765d39bec5",
+        "firmware/components/vault_transport/CMakeLists.txt": "ad233e6511dd0eebaf45547a43b1a9b1a2ff6c6170566679b78c622df97e4b32",
+        "firmware/components/vault_transport/idf_component.yml": "f19bd8f93a767d8d05ff0ffeba314e022e19d8277c9a339ede853919f4b6a36a",
+        "firmware/components/vault_transport/include/vault_transport.hpp": "d63b4c5a14dd4e8c79acdeb6d644edcabd78e3cc7b0d018d86c0556788401905",
+        "firmware/components/vault_transport/vault_transport.cpp": "f5541b8e2f9c1dddf7ef9e52120fddb4e5042a9db84974c35b726c7aed294b0b",
+        "firmware/third_party/esp_websocket_client/CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+        "firmware/third_party/esp_websocket_client/Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+        "firmware/third_party/esp_websocket_client/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "firmware/third_party/esp_websocket_client/UPSTREAM.json": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+        "firmware/third_party/esp_websocket_client/esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+        "firmware/third_party/esp_websocket_client/idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+        "firmware/third_party/esp_websocket_client/include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa",
+        "firmware/third_party/esp_websocket_client/no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7",
+        "firmware/third_party/yyjson/LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+        "firmware/third_party/yyjson/UPSTREAM.json": "50975649812a904e1428b022cf2944b501bc3a4ab5cd57005848c911e0fee880",
+        "firmware/third_party/yyjson/yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+        "firmware/third_party/yyjson/yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+      },
+      "target": "esp32",
+      "test_only": false,
+      "toolchain": {
+        "cmake": "cmake version 3.30.2",
+        "compiler": {
+          "sha256": "fcdd657c002c92a3f28e1c947c5acbfbd1085e182ff9ab49b241f21f870671d3",
+          "version": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+        },
+        "esp_idf": "ESP-IDF v6.0.0",
+        "esp_idf_version_cmake_sha256": "3e812348ccd61b318c8f035623d94cb5d8c100ca03ac9ddb6ef937306c0a3616",
+        "esptool": "5.6.0",
+        "ninja": "1.13.2",
+        "python": "Python 3.11.7"
+      },
+      "vendor_provenance": {
+        "esp_websocket_client": {
+          "component": "components/esp_websocket_client",
+          "files": {
+            "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+            "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+            "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+            "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+            "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+          },
+          "license": "Apache-2.0",
+          "patches": {
+            "no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7"
+          },
+          "provenance_sha256": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+          "release": "websocket-v1.8.0",
+          "repository": "https://github.com/espressif/esp-protocols",
+          "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+          "upstream_files": {
+            "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+            "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+            "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+            "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+            "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+          }
+        },
+        "yyjson": {
+          "files": {
+            "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+            "yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+            "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+          },
+          "license": "MIT",
+          "provenance_sha256": "50975649812a904e1428b022cf2944b501bc3a4ab5cd57005848c911e0fee880",
+          "release": "0.13.0",
+          "repository": "https://github.com/ibireme/yyjson",
+          "revision": "6447536015f3d600f3d65323b10976103b337ca7"
+        }
+      },
+      "verified_unit_macs": [
+        "02:00:00:00:fe:02"
+      ]
+    },
+    "manifest_artifact": {
+      "bytes": 11002,
+      "modified_at": "2026-11-12T22:17:56-05:00",
+      "path": "firmware/build/cyd/cyd-yellow-ili9341-unit-a/cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa/build-manifest.json",
+      "sha256": "08b77a2bb9f38bc0898205e87ec265e0f53b1c2fb02424b2c3986832214b0ad3"
+    },
+    "map": {
+      "bytes": 11371312,
+      "path": "firmware/build/cyd/cyd-yellow-ili9341-unit-a/cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa/idf/watchmakers_vault_cyd.map",
+      "sha256": "2e5e5927b2f4ad8628a62b83b88d14f5372b943f0bd2688fa79bd3905bcde1d9"
+    },
+    "profile": {
+      "bytes": 3944,
+      "path": "firmware/boards/cyd-yellow-ili9341-unit-a/profile.json",
+      "sha256": "032993a9dde159f23133219c956ba3942b2d866ecd84cfbda125c7aa8f33affd"
+    }
+  },
+  "evidence_version": 1,
+  "flash": {
+    "base_mac": "02:00:00:00:fe:02",
+    "command": [
+      "tools/fw-flash",
+      "--manifest",
+      "firmware/build/cyd/cyd-yellow-ili9341-unit-a/cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa/build-manifest.json",
+      "--port",
+      "/dev/cu.example-usb",
+      "--initialize-nvs",
+      "--backup-record",
+      "data/m3-hardware-backups/02000000fe02.backup-record.json"
+    ],
+    "completed_at": "2026-11-12T22:24:44-05:00",
+    "flash_bytes_detected": 4194304,
+    "image_hash_verifications_in_log": 3,
+    "initialized_nvs": {
+      "bytes": 94208,
+      "offset": 36864
+    },
+    "log": {
+      "bytes": 154298,
+      "path": ".cache/m3-cyd-a-flash.log",
+      "sha256": "7ec59f18a7c38d35ed74607e60e1107c694e2eeb51309a5f7993f49fb6a6986a"
+    },
+    "port": "/dev/cu.example-usb",
+    "preinstall_backup_evidence": "docs/hardware/cyd-a-identification.json",
+    "reset_reported": "RTS",
+    "wrapper_exit_status_reported_by_operator": 0
+  },
+  "memory": {
+    "configured_runtime_allocations_bytes": {
+      "internal_8bit_json_parser_pool": 98560,
+      "lcd_dma_partial_buffer_count": 2,
+      "lcd_dma_partial_buffer_each": 9600,
+      "main_task_stack": 8192,
+      "network_worker_task_stack": 6144,
+      "uart_rx_ring": 8192,
+      "websocket_task_stack": 6144
+    },
+    "runtime_headroom_verified_by_this_record": false,
+    "runtime_requirement": {
+      "minimum_internal_free_heap_bytes": 32768,
+      "minimum_task_stack_headroom_percent": 25,
+      "record_largest_internal_free_block": true
+    },
+    "selected_static_objects": {
+      "board_device": {
+        "bytes": 8360,
+        "section": ".dram0.data"
+      },
+      "device_storage": {
+        "bytes": 2944,
+        "section": ".dram0.bss"
+      },
+      "hooks": {
+        "bytes": 2080,
+        "section": ".dram0.data"
+      },
+      "json_input": {
+        "bytes": 8196,
+        "section": ".dram0.bss"
+      },
+      "json_keys": {
+        "bytes": 6556,
+        "section": ".dram0.bss"
+      },
+      "network": {
+        "bytes": 27064,
+        "section": ".dram0.data"
+      },
+      "service_storage": {
+        "bytes": 25752,
+        "section": ".dram0.bss"
+      },
+      "storage": {
+        "bytes": 8236,
+        "section": ".dram0.data"
+      }
+    },
+    "static_linker_regions": {
+      "dram0_0_seg": {
+        "end_exclusive": "0x3ffdc200",
+        "length_bytes": 180736,
+        "origin": "0x3ffb0000",
+        "remaining_linker_region_bytes": 55128,
+        "used_address_span_bytes": 125608,
+        "used_end_exclusive": "0x3ffceaa8",
+        "used_end_symbol": "_heap_low_start"
+      },
+      "iram0_0_seg": {
+        "end_exclusive": "0x400a0000",
+        "length_bytes": 131072,
+        "origin": "0x40080000",
+        "remaining_linker_region_bytes": 33196,
+        "used_address_span_bytes": 97876,
+        "used_end_exclusive": "0x40097e54",
+        "used_end_symbol": "_iram_end"
+      }
+    },
+    "static_sections": {
+      ".dram0.bss": {
+        "bytes": 62968,
+        "origin": "0x3ffbf4b0"
+      },
+      ".dram0.data": {
+        "bytes": 62635,
+        "origin": "0x3ffb0000"
+      },
+      ".flash.rodata": {
+        "bytes": 139888,
+        "origin": "0x3f400120"
+      },
+      ".flash.text": {
+        "bytes": 1063770,
+        "origin": "0x400d0020"
+      },
+      ".iram0.text": {
+        "bytes": 96847,
+        "origin": "0x40080404"
+      },
+      ".iram0.vectors": {
+        "bytes": 1028,
+        "origin": "0x40080000"
+      }
+    }
+  },
+  "runtime_scope": {
+    "acceptance_checklist": "docs/verification/m3/physical-checklist.md",
+    "postflash_boot_evidence": "docs/hardware/cyd-a-identification.md",
+    "stage": "first installation with factory-default NVS"
+  },
+  "verified_at": "2026-11-12T22:32:58-05:00"
+}

@@ -1,0 +1,270 @@
+{
+  "record_version": 1,
+  "device_label": "CYD B",
+  "observed_from": "2026-11-12T22:09:19-05:00",
+  "observed_through": "2026-11-13T13:54:15-05:00",
+  "user_report": {
+    "second_yellow_unit_same_version": true,
+    "second_unit_connected": true,
+    "known_working_cable_moved_to_second_unit": true
+  },
+  "serial_enumeration": {
+    "observed_at": "2026-11-13T13:54:15-05:00",
+    "method": "pyserial3.5 then explicit ROM read",
+    "device": "USB Serial",
+    "vid_pid": "1a86:7523",
+    "usb_location": "20-2.1",
+    "selected_port": "/dev/cu.example-usb",
+    "note": "Same port path after cable move; ROM MAC establishes distinct CYD B, not filename"
+  },
+  "historical_comparison": {
+    "source": "CYD-AITamagochi/docs/10-sd-card-sprite-engine-plan.md",
+    "historical_label": "CYD A",
+    "expected_other_guilo_unit_base_mac": "02:00:00:00:fe:01",
+    "exact_mac_match_observed": true
+  },
+  "rom_identification": {
+    "outcome": "read_only_identity_observed",
+    "executed": true,
+    "exit_code": 0,
+    "esptool_version": "5.6.0",
+    "command": ".cache/idf-python/bin/python -m esptool --chip auto --port /dev/cu.example-usb --baud 115200 --before default-reset --after hard-reset --no-stub --connect-attempts 3 flash-id",
+    "observed_at": "2026-11-13T13:54:15-05:00",
+    "base_mac": "02:00:00:00:fe:01",
+    "derived_factory_id": "factory_02000000fe01",
+    "target": "esp32",
+    "chip": "ESP32-D0WD-V3",
+    "chip_revision": "v3.1",
+    "crystal_frequency_mhz": 40,
+    "flash_manufacturer_id": "0x5e",
+    "flash_device_id": "0x4016",
+    "flash_capacity_bytes": 4194304,
+    "flash_strap_voltage_v": 3.3,
+    "flash_written": false,
+    "stub_uploaded": false,
+    "reset_reported": true
+  },
+  "existing_flash_backup": {
+    "started_at": "2026-11-13T13:57:18-05:00",
+    "finished_at": "2026-11-13T14:03:40-05:00",
+    "port": "/dev/cu.example-usb",
+    "mac": "02:00:00:00:fe:01",
+    "chip": "ESP32-D0WD-V3 (revision v3.1)",
+    "raw_flash_id": "0x16405e",
+    "bytes": 4194304,
+    "sha256": "050d51b580d6e03c3baae030678b72cbefc07fd05e0109d6ad54a544ac729573",
+    "backup": "data/m3-hardware-backups/02000000fe01.bin",
+    "status": "verified complete",
+    "record": "data/m3-hardware-backups/02000000fe01.backup-record.json",
+    "read_only": true,
+    "ram_stub": true,
+    "transfer_md5_verified_by_esptool": true,
+    "file_mode": "0600",
+    "parent_mode": "0700",
+    "failed_faster_attempt": {
+      "baud": 460800,
+      "result": "incomplete read rejected, no backup image published, no flash write"
+    },
+    "successful_read_baud": 115200
+  },
+  "vault_profile": {
+    "profile_id": "cyd-yellow-ili9341-unit-b-bgr",
+    "profile_sha256": "789e32ace8116fab55704c7fce938a91b44b3e075472daefc09243a91617f16e",
+    "preflash_configuration_verified": true,
+    "physical_driver_self_test_verified": false
+  },
+  "latest_pyserial_check": {
+    "observed_at_utc": "2026-11-13T03:52:14.268411+00:00",
+    "wch_ports_detected": [
+      "/dev/cu.example-usb"
+    ]
+  },
+  "november_13_reconnect_inventory": {
+    "observed_at": "2026-11-13T08:28:48-05:00",
+    "user_report": "Both CYDs reconnected; the first shows the calibration screen.",
+    "wch_bridge_count": 1,
+    "known_cyd_a_port": "/dev/cu.example-usb",
+    "usb_vid_pid": "1a86:7523",
+    "pyserial_usb_location": "20-2.1",
+    "ioreg_usb_location": "0x14210000",
+    "macos_serial_driver": "com.apple.DriverKit-AppleUSBCHCOM",
+    "other_nearby_usb_device": {
+      "vid_pid": "1908:0226",
+      "ioreg_usb_location": "0x14240000",
+      "driver_class": "IOUSBMassStorageInterfaceNub"
+    },
+    "second_usb_serial_port": null,
+    "opened_any_port": false
+  },
+  "prior_serial_enumeration": {
+    "method": "pyserial 3.5 list_ports and macOS IORegistry IOUSB plane",
+    "wch_ports_detected": [
+      "/dev/cu.example-usb"
+    ],
+    "known_wch_port_owner": "CYD A",
+    "selected_port": null
+  },
+  "prior_rom_identification": {
+    "outcome": "blocked_no_second_usb_serial_endpoint",
+    "executed": false,
+    "base_mac": null,
+    "chip": null,
+    "flash_capacity_bytes": null
+  },
+  "existing_flash_layout": {
+    "partition_table_md5_verified": true,
+    "old_partitions": [
+      {
+        "name": "nvs",
+        "type": 1,
+        "subtype": 2,
+        "offset": "0x9000",
+        "size": "0x5000",
+        "flags": 0
+      },
+      {
+        "name": "otadata",
+        "type": 1,
+        "subtype": 0,
+        "offset": "0xe000",
+        "size": "0x2000",
+        "flags": 0
+      },
+      {
+        "name": "app0",
+        "type": 0,
+        "subtype": 16,
+        "offset": "0x10000",
+        "size": "0x300000",
+        "flags": 0
+      },
+      {
+        "name": "spiffs",
+        "type": 1,
+        "subtype": 130,
+        "offset": "0x310000",
+        "size": "0xe0000",
+        "flags": 0
+      },
+      {
+        "name": "coredump",
+        "type": 1,
+        "subtype": 3,
+        "offset": "0x3f0000",
+        "size": "0x10000",
+        "flags": 0
+      }
+    ],
+    "new_nvs_region": {
+      "offset": "0x9000",
+      "size": "0x17000",
+      "pages": [
+        {
+          "offset": "0x9000",
+          "erased": false
+        },
+        {
+          "offset": "0xa000",
+          "erased": false
+        },
+        {
+          "offset": "0xb000",
+          "erased": false
+        },
+        {
+          "offset": "0xc000",
+          "erased": false
+        },
+        {
+          "offset": "0xd000",
+          "erased": true
+        },
+        {
+          "offset": "0xe000",
+          "erased": false
+        },
+        {
+          "offset": "0xf000",
+          "erased": false
+        },
+        {
+          "offset": "0x10000",
+          "erased": false
+        },
+        {
+          "offset": "0x11000",
+          "erased": false
+        },
+        {
+          "offset": "0x12000",
+          "erased": false
+        },
+        {
+          "offset": "0x13000",
+          "erased": false
+        },
+        {
+          "offset": "0x14000",
+          "erased": false
+        },
+        {
+          "offset": "0x15000",
+          "erased": false
+        },
+        {
+          "offset": "0x16000",
+          "erased": false
+        },
+        {
+          "offset": "0x17000",
+          "erased": false
+        },
+        {
+          "offset": "0x18000",
+          "erased": false
+        },
+        {
+          "offset": "0x19000",
+          "erased": false
+        },
+        {
+          "offset": "0x1a000",
+          "erased": false
+        },
+        {
+          "offset": "0x1b000",
+          "erased": false
+        },
+        {
+          "offset": "0x1c000",
+          "erased": false
+        },
+        {
+          "offset": "0x1d000",
+          "erased": false
+        },
+        {
+          "offset": "0x1e000",
+          "erased": false
+        },
+        {
+          "offset": "0x1f000",
+          "erased": false
+        }
+      ]
+    }
+  },
+  "first_vault_installation": {
+    "status": "passed",
+    "build_evidence": "docs/verification/m3/cyd-b-build.json",
+    "initial_nvs_range": [
+      "0x9000",
+      "0x20000"
+    ],
+    "verified_image_hashes": 3,
+    "identity_after_provision": "cyd_b",
+    "service_revision": 2,
+    "live_network_binding": true,
+    "physical_acceptance": "pending"
+  }
+}

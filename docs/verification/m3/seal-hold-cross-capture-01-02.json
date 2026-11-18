@@ -1,0 +1,25 @@
+{
+  "captures": [
+    "cyd-a-seal-trace-v2-hold-01.json",
+    "cyd-a-seal-trace-v2-hold-02.json"
+  ],
+  "user_report": "I believe it held for 15 sec",
+  "host_held_interval_ms": 18465,
+  "capture_gap_ms": 23670,
+  "last_before_gap": {
+    "ms": 109871,
+    "status": 1,
+    "hold_bits": 31,
+    "hold_cancel_count": 0,
+    "hold_cancel_reason": 0
+  },
+  "first_after_gap": {
+    "ms": 133541,
+    "status": 0,
+    "hold_bits": 9,
+    "hold_cancel_count": 1,
+    "hold_cancel_reason": 10
+  },
+  "finding": "One local press deadline expiry was retained across the gap. Neither capture includes the cancellation transition; user perceived a sustained hold, but this is not accepted proof of intentional lift.",
+  "acceptance": "unresolved; uninterrupted follow-up capture required"
+}

@@ -26,6 +26,7 @@ root = System.get_env("VAULT_DATA_DIR", default_root)
 config :vault,
   test_mode: config_env() == :test,
   box_mode: mode,
+  box_device_id: System.get_env("VAULT_BOX_DEVICE_ID"),
   simulator_transport:
     (case System.get_env("VAULT_SIMULATOR_TRANSPORT", "internal") do
        "internal" -> :internal

@@ -1,0 +1,1 @@
+{"started_at":"2026-11-13T23:37:19.060Z","recorded_at":"2026-11-13T23:37:21.087Z","stage":"complete","steps":["cyd_a_reclaimed_fresh","cyd_b_reclaimed_fresh","simulated_box_armed","maze_resumed_both_fresh"],"phase":"maze","paused":false,"cell":12,"board":0,"controllers_ready":true,"roles":{"a":"physical CYD A fresh","b":"physical CYD B fresh"},"release":"not_requested"}

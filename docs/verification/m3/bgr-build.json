@@ -1,0 +1,396 @@
+{
+  "recorded_at_utc": "2026-11-13T13:54:25.494710+00:00",
+  "manifest_sha256": "bd282cd5f5b95ecd36d0cbfd492009e97a10910c06e0eb6d18645165217f4976",
+  "manifest": {
+    "app": "cyd",
+    "flash_options": {
+      "flash_freq": "40m",
+      "flash_mode": "dio",
+      "flash_size": "4MB"
+    },
+    "flashable": true,
+    "images": [
+      {
+        "offset": 4096,
+        "path": "idf/bootloader/bootloader.bin",
+        "sha256": "16c13b7af0c504e0fbd2dffeaea44708c04b82e8981f28c226fd7f4ce39ac21b",
+        "size": 18368
+      },
+      {
+        "offset": 32768,
+        "path": "idf/partition_table/partition-table.bin",
+        "sha256": "ac9f8b96998aaf942d3f08fe3983d71a80d978bb8f7e775207c021d1f871a2ca",
+        "size": 3072
+      },
+      {
+        "offset": 131072,
+        "path": "idf/watchmakers_vault_cyd.bin",
+        "sha256": "21cabc4182f8e348aab29af2f15bfe106267fd7e120f7dcc7cfa92c19149ff65",
+        "size": 1322816
+      }
+    ],
+    "managed_lock_sha256": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+    "manifest_version": 1,
+    "memory": {
+      "flash_freq_mhz": 40,
+      "flash_mb": 4,
+      "flash_mode": "dio",
+      "psram": false,
+      "table_offset": 32768
+    },
+    "metadata_sha256": {
+      "generated/board_config.cmake": "e0928d9031c17cc25869be82ed53334fb33a4110f260887f5a2c92970242c07d",
+      "generated/board_config.h": "4eac26ad1d55a4454c3c3a5eb948fb340fc5416c670f9a312022b5842e2c8472",
+      "generated/partitions.csv": "2d25c93e533feffa15665290204cf5ea0fd79f53d4872969415039008b600ed1",
+      "generated/profile-manifest.json": "19711f3d0c3c3bf89588ee46a6d39adac09407b239c0b861a8d2ed5f81a33d22",
+      "generated/sdkconfig.board.defaults": "342401d0a653d8a584bad76bae408ff08c6e500a4b88129155c1b41e88320346",
+      "idf/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "idf/flasher_args.json": "dc735478d8ed8abaf53ca0cefdafd8def3c27f4f84960fb0a03a16a2e8cc82b5",
+      "idf/sdkconfig": "1524fce1ba3cae762a24ad8632e9166d2b179995f9a6b419f5e9ee625dbda8f7"
+    },
+    "partitions": [
+      {
+        "name": "nvs",
+        "offset": 36864,
+        "size": 94208,
+        "subtype": "nvs",
+        "type": "data"
+      },
+      {
+        "name": "factory",
+        "offset": 131072,
+        "size": 3145728,
+        "subtype": "factory",
+        "type": "app"
+      }
+    ],
+    "profile_file_sha256": "f0e875999f04e4366f0dec1dd776074235c5102da5b0e8f0bcc9849fe1037079",
+    "profile_id": "cyd-yellow-ili9341-unit-a-bgr",
+    "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+    "protocol_version": 1,
+    "source": {
+      "dirty": true,
+      "git_sha": "29c6497bed056869ab7f3be81e6d9b3c4b33e80a"
+    },
+    "source_sha256": {
+      "firmware/apps/cyd/CMakeLists.txt": "b1e1646a0fd4c5daa5a7eb2fbf08c437ba9fd70781b77c785aec8c7b26fe7f5c",
+      "firmware/apps/cyd/dependencies.lock": "bacb1c4d42bc0c4e2baaa91f1165a8c6f06888a7d097ba0e099ffc1811137d87",
+      "firmware/apps/cyd/main/CMakeLists.txt": "cf9d64e25b96dba7f7997dbbcafe608626646ca2c9ae45e6111ab299e378710d",
+      "firmware/apps/cyd/main/app_main.cpp": "4c65ead0e4b96a89212a296090832a57d69d322fa6e9a925bd8e47d9486eda23",
+      "firmware/apps/cyd/main/board_adapter.cpp": "96bf68c33c5f4e86b736d99de59a979c487b46f0f982412516fd289739f0b8f4",
+      "firmware/apps/cyd/main/board_adapter.hpp": "b688d464a95e44d94eb12184d90574fc88dbdfd78a8fde55803b64d6322f4749",
+      "firmware/apps/cyd/main/idf_component.yml": "0da0b72ff53570230ac7f249c66b27c42befad2d223446b58b2553491d392eec",
+      "firmware/apps/cyd/main/ili9341_2/LICENSE": "cbbf43f6bcbc56d8cfa315dc235996b698fc240acf480e105dbda4ea1728a2b0",
+      "firmware/apps/cyd/main/ili9341_2/UPSTREAM.json": "a29d611fe600758ea031f530ae0c8d34886e6f5032fad1adc4c5ace36f9a99b5",
+      "firmware/apps/cyd/main/ili9341_2/panel_init.hpp": "61f406d60e46f965e303de0e3929df690747d223f222049bcb507cd44f464442",
+      "firmware/apps/cyd/main/network_adapter.cpp": "c0a241183a867a231446045875b9b3768669dccd64e6828fce5fbd33e5d03094",
+      "firmware/apps/cyd/main/network_adapter.hpp": "31aa93279d0f95f4a7eba34a9d8130ba088c153aa88bd89c2a66291190e92442",
+      "firmware/apps/cyd/main/nvs_adapter.cpp": "f199f0cc5a5c63e5bbd4d17f796b03f66879cdd9ddfadefb54f37f59be513b47",
+      "firmware/apps/cyd/main/nvs_adapter.hpp": "bec1564a748cf1bb2d7708e37adfa6b1ae8c97c33d9da9457e24f936553b41c7",
+      "firmware/apps/cyd/sdkconfig.defaults": "00ff4d15dc427aea10cb444b0d5e09580d617f60a9648565c8b3b3881aacf08c",
+      "firmware/components/vault_device/CMakeLists.txt": "e968bd7f3befda1a430b2202c77db86a0fed826c8111bea326dea3a08de724ec",
+      "firmware/components/vault_device/include/vault_device.hpp": "98915a273c18fd1990b02e60e5a018f10f8178439b04ff774261cb80c81b1c8a",
+      "firmware/components/vault_device/include/vault_service.hpp": "7641e1c161e044c4dc7cbeb2e0b7727265bcd3c9a8c5bd715c6b9b2dedac57f2",
+      "firmware/components/vault_device/include/vault_storage.hpp": "e00b23e6a07129b1db04b6c21c1e311865706f7caa94c057993fbe2564f7803a",
+      "firmware/components/vault_device/service_fields.hpp": "1b446f1263e66062d1ea3b590ecc5c17460906b63cf7622f598e77d70a060071",
+      "firmware/components/vault_device/vault_device.cpp": "4dd4e30526d3e8d70e2e7c95c51d363ee3d2b4f62de04d96ee75b6b28a833a4c",
+      "firmware/components/vault_device/vault_service.cpp": "9e40f7ae7f1eb0cc85c9ca83a838f2354389a46e3e191c8e42330483e0b29393",
+      "firmware/components/vault_device/vault_storage.cpp": "b58687052815c2b198332072809c0d3d0f123e1a5a1a1c268fa759160b662a1a",
+      "firmware/components/vault_display/CMakeLists.txt": "988392fc8e426bced587d735002b67635e0b0bba7405517544859f492121e693",
+      "firmware/components/vault_display/diagnostics.cpp": "8a9c2f459b5dc26a6e92441ccffa1f38da452cc6c1fab1874d856e81be158f77",
+      "firmware/components/vault_display/include/vault_display.hpp": "df217043174f016e5d3b7c25654b6be7f21b241843f412f1d81fce4a350f1aa7",
+      "firmware/components/vault_display/self_test.cpp": "8b1e4e1f2d494a585b9ebb34a0292a58305d34ac0c1f23284c2d23a2088081ae",
+      "firmware/components/vault_display/touch_state.cpp": "298a76fd52098a7131c5a3188de4af0aea4bb83ce25ec266bab78809e9b59ab5",
+      "firmware/components/vault_display/vault_display.cpp": "4a4f9d6ce4cffac6c373c0dce71e5b2f1cfac3f468c90242c7df7510df3eee7f",
+      "firmware/components/vault_json/CMakeLists.txt": "69c8704456de7cb639eadb1ee3dc83540afa42f324d67be9b5bf7af93a74b968",
+      "firmware/components/vault_json/include/vault_json.hpp": "f9fe8cad34f3aa22b3892d191cb0ab7e72d5a6ac4cdde78c17250d5f5a2769f1",
+      "firmware/components/vault_json/json_internal.hpp": "0a5d2ff0f791644dcb1e4176f2f1333513baecb71263750a76efb068573e8ca4",
+      "firmware/components/vault_json/json_number.cpp": "deea3fb35abfca7a00763849be005936dc3c2be20764a193a2becceac1d32751",
+      "firmware/components/vault_json/json_writer.cpp": "d9d9e18ffcdd195f09348b8a98910afc3268106757d00f8b4cd74af21ea8214b",
+      "firmware/components/vault_json/vault_json.cpp": "5042fd60ecfe558a2f5e6b1376ca79b87663f378b2e59153f6638d29f3e53fd0",
+      "firmware/components/vault_protocol/CMakeLists.txt": "55de5cd849e03a764d3dc5c59916e2b71d2fbcf11856151f49a5f2b59478cab9",
+      "firmware/components/vault_protocol/idf_component.yml": "f5c656d0abd53860ca5adb202e6e2a1edf7780ed0512404cd4a3d9b3e1fc2be1",
+      "firmware/components/vault_protocol/include/vault_protocol.hpp": "c327a326d2f8ea6f65edec23afb206bc52ac329901058b8bde0d96f7705ec418",
+      "firmware/components/vault_protocol/vault_protocol.cpp": "94e820a452e52068dd12f9d7a48ed2dcb372df1d46b1a134a3b6a1765d39bec5",
+      "firmware/components/vault_transport/CMakeLists.txt": "ad233e6511dd0eebaf45547a43b1a9b1a2ff6c6170566679b78c622df97e4b32",
+      "firmware/components/vault_transport/idf_component.yml": "f19bd8f93a767d8d05ff0ffeba314e022e19d8277c9a339ede853919f4b6a36a",
+      "firmware/components/vault_transport/include/vault_transport.hpp": "d63b4c5a14dd4e8c79acdeb6d644edcabd78e3cc7b0d018d86c0556788401905",
+      "firmware/components/vault_transport/vault_transport.cpp": "f5541b8e2f9c1dddf7ef9e52120fddb4e5042a9db84974c35b726c7aed294b0b",
+      "firmware/third_party/esp_websocket_client/CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+      "firmware/third_party/esp_websocket_client/Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+      "firmware/third_party/esp_websocket_client/LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "firmware/third_party/esp_websocket_client/UPSTREAM.json": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+      "firmware/third_party/esp_websocket_client/esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+      "firmware/third_party/esp_websocket_client/idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+      "firmware/third_party/esp_websocket_client/include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa",
+      "firmware/third_party/esp_websocket_client/no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7",
+      "firmware/third_party/yyjson/LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+      "firmware/third_party/yyjson/UPSTREAM.json": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+      "firmware/third_party/yyjson/fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a",
+      "firmware/third_party/yyjson/yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+      "firmware/third_party/yyjson/yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+    },
+    "target": "esp32",
+    "test_only": false,
+    "toolchain": {
+      "cmake": "cmake version 3.30.2",
+      "compiler": {
+        "sha256": "fcdd657c002c92a3f28e1c947c5acbfbd1085e182ff9ab49b241f21f870671d3",
+        "version": "xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20251204) 15.2.0"
+      },
+      "esp_idf": "ESP-IDF v6.0.0",
+      "esp_idf_version_cmake_sha256": "3e812348ccd61b318c8f035623d94cb5d8c100ca03ac9ddb6ef937306c0a3616",
+      "esptool": "5.6.0",
+      "ninja": "1.13.2",
+      "python": "Python 3.11.7"
+    },
+    "vendor_provenance": {
+      "esp_websocket_client": {
+        "component": "components/esp_websocket_client",
+        "files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "4f550cdb7db5ddd01bbff3fad3279d3f6f96196423e0f0669a177c6588dab806",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        },
+        "license": "Apache-2.0",
+        "patches": {
+          "no-redirects.patch": "71d32b2317094723efa13eac253cc61bcc38950b6280d7a5ce8fcaf44aa506b7"
+        },
+        "provenance_sha256": "2699b47256493fa8b40ee7c9ac93ddfa256e3929193fad96c1e5f85ddf9d7379",
+        "release": "websocket-v1.8.0",
+        "repository": "https://github.com/espressif/esp-protocols",
+        "revision": "70bf122fc8bc74622dcf7e15233b5b2af9088df5",
+        "upstream_files": {
+          "CMakeLists.txt": "2d26aec8d9f48972e451b7d74c4f2295cd8acd8494e4a33219af6325daf81399",
+          "Kconfig": "b56c434dfbc1958090e26ca86a11f6909894cf77d33a28b26a6d5eb8787e5651",
+          "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+          "esp_websocket_client.c": "18041ec37d3456bc1ecb3275a78c3ae64679f57f049b5b05af169ef6b1857c77",
+          "idf_component.yml": "0d557ddf7854668dbce7e349de51bc17c31465dd8f40d6269e0cecfc5ccef48e",
+          "include/esp_websocket_client.h": "382fdce725ff80c15172e2850dcb41702a655857bed76fff7ac4e9c811311cfa"
+        }
+      },
+      "yyjson": {
+        "files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "2a1512620c0a6e167eb26db3b8221c47bd154ea946082d69b508fdcffcb16525",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        },
+        "license": "MIT",
+        "patches": {
+          "fixed-reader-arena.patch": "f2f29121ecfe520f6f681689a7468b2870ae87435588c4823851334cc756c19a"
+        },
+        "provenance_sha256": "cbe0f90789f45977fe48eeffa0edf5a43a72e03078a406e06bd8ee08233e3cb6",
+        "release": "0.13.0",
+        "repository": "https://github.com/ibireme/yyjson",
+        "revision": "6447536015f3d600f3d65323b10976103b337ca7",
+        "upstream_files": {
+          "LICENSE": "45e384d3d52c73cba3a64d6e6c25d47cd738cd8a55c30629e3201046eda62947",
+          "yyjson.c": "d2d58ef0a3b2267862dc363832c4f3185fd375aea933d5d3419d1a940d6ece2e",
+          "yyjson.h": "ef803cda5c06b8962face6dfa39c3284b3bcf3e73f4d7317664690cc779679ca"
+        }
+      }
+    },
+    "verified_unit_macs": [
+      "02:00:00:00:fe:02"
+    ]
+  },
+  "source_files_matched": 56,
+  "predecessor_profile": "cf639e943fc9e18b87d104e8715cc63fe0e9291870ad6e9d109ee673226967aa",
+  "native_sanitizer_suites_passed": 7,
+  "python_profile_tests_passed": 18,
+  "python_serial_tests_passed": 16,
+  "physical_acceptance": "Installed/reprovisioned/reboot/readback passed; screen, calibration, game network and resource acceptance pending",
+  "installation": {
+    "completed_at_utc": "2026-11-13T13:58:08.083641+00:00",
+    "exit_code": 0,
+    "verified_images": 3,
+    "nvs_initialization_requested": false,
+    "log_sha256": "6011c15fa2135798f9191f1dcbbbfe91ca845904e59def22cbbf06d3bf313478",
+    "migration_and_reboot": "Successful at revisions3 and4",
+    "postreboot_readback": {
+      "status": {
+        "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+        "code": "ok",
+        "data": {
+          "active_local_record_id": null,
+          "active_motion_operation_id": null,
+          "binding": null,
+          "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+          "clear_operation_id": null,
+          "device_id": "cyd_a",
+          "journal_count": 0,
+          "motion_frozen": false,
+          "motor_active": false,
+          "outputs_disabled": true,
+          "position": {
+            "latch_position": "unknown",
+            "position_basis": "unverified"
+          },
+          "preparation_operation_id": null,
+          "readiness": {
+            "arm_id": null,
+            "armed_session_id": null,
+            "calibration_valid": false,
+            "start_verified": false
+          },
+          "service_epoch": 1,
+          "service_inhibited": true,
+          "service_revision": 4,
+          "storage_fault": null,
+          "storage_version": 1
+        },
+        "device_id": "cyd_a",
+        "operation_id": null,
+        "request_id": "b7ba92294a1c1494b89d66500aff700a",
+        "service_revision": 4,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "provisioning": {
+        "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+        "code": "ok",
+        "data": {
+          "configured": true,
+          "device_class": "controller",
+          "device_id": "cyd_a",
+          "profile_sha256": "434e962e7c231dc61d4ed62c2b99b920da8ef2239f99127bdfe18d5ccc43f811",
+          "provisioning_operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+          "reboot_required": false
+        },
+        "device_id": "cyd_a",
+        "operation_id": null,
+        "request_id": "c913e1a335f58f48749a944fd42c0571",
+        "service_revision": 4,
+        "status": "ok",
+        "sv": 1,
+        "type": "result"
+      },
+      "receipts": {
+        "provision": {
+          "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "command": "provision.set",
+              "completion": null,
+              "decision": {
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000001_4b8bfd02aa0af509aafa899a7f5fa916",
+                  "resulting_revision": 1
+                },
+                "status": "ok"
+              },
+              "expected_revision": 0,
+              "operation_id": "svc_0000000000000001_4b8bfd02aa0af509aafa899a7f5fa916",
+              "resulting_revision": 1,
+              "storage_version": 1
+            }
+          },
+          "device_id": "cyd_a",
+          "operation_id": null,
+          "request_id": "b145c344239dfa9ec4569de86dbc9c03",
+          "service_revision": 4,
+          "status": "ok",
+          "sv": 1,
+          "type": "result"
+        },
+        "reboot": {
+          "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "command": "reboot",
+              "completion": null,
+              "decision": {
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000002_1c434c7285ddefd55c15885898cb56fb",
+                  "reboot_required": true,
+                  "resulting_revision": 2
+                },
+                "status": "ok"
+              },
+              "expected_revision": 1,
+              "operation_id": "svc_0000000000000002_1c434c7285ddefd55c15885898cb56fb",
+              "resulting_revision": 2,
+              "storage_version": 1
+            }
+          },
+          "device_id": "cyd_a",
+          "operation_id": null,
+          "request_id": "ff08819260dc1953375993f2d6f8b285",
+          "service_revision": 4,
+          "status": "ok",
+          "sv": 1,
+          "type": "result"
+        },
+        "bgr-provision": {
+          "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "command": "provision.set",
+              "completion": null,
+              "decision": {
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+                  "resulting_revision": 3
+                },
+                "status": "ok"
+              },
+              "expected_revision": 2,
+              "operation_id": "svc_0000000000000003_f866740662940e77905a52289b935c20",
+              "resulting_revision": 3,
+              "storage_version": 1
+            }
+          },
+          "device_id": "cyd_a",
+          "operation_id": null,
+          "request_id": "554387c798133a14a3eab90b42b3bb94",
+          "service_revision": 4,
+          "status": "ok",
+          "sv": 1,
+          "type": "result"
+        },
+        "bgr-reboot": {
+          "box_boot_id": "boot_d0aff3fd28a8ff5041110d62c50d96c6",
+          "code": "ok",
+          "data": {
+            "receipt": {
+              "command": "reboot",
+              "completion": null,
+              "decision": {
+                "code": "ok",
+                "data": {
+                  "operation_id": "svc_0000000000000004_2129b22c5795a4169616eee9ccff0b06",
+                  "reboot_required": true,
+                  "resulting_revision": 4
+                },
+                "status": "ok"
+              },
+              "expected_revision": 3,
+              "operation_id": "svc_0000000000000004_2129b22c5795a4169616eee9ccff0b06",
+              "resulting_revision": 4,
+              "storage_version": 1
+            }
+          },
+          "device_id": "cyd_a",
+          "operation_id": null,
+          "request_id": "2b506a69323df20b723b71a7e5579fcb",
+          "service_revision": 4,
+          "status": "ok",
+          "sv": 1,
+          "type": "result"
+        }
+      }
+    },
+    "stable_boot_across_six_opens": true,
+    "all_four_receipts_match_protected_originals": true
+  }
+}

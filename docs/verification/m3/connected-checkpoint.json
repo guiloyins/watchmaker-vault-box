@@ -1,0 +1,20 @@
+{
+  "verified_at_utc": "2026-11-13T03:53:10.362327+00:00",
+  "build_manifest_sha256": "9e10a842ab3822c4298fd12ed6c717b82dee80e20d2c8d66e33fd60f635839ca",
+  "source_files_matched": 55,
+  "frozen_contract_files_unchanged": 13,
+  "configured_secret_matches_in_git_visible_files": 0,
+  "native_suites_passed": 7,
+  "profile_tooling_tests_passed": 16,
+  "serial_tests_passed": 12,
+  "physical_stage": "first unit flashed/provisioned/readback passed; network binding, screen/touch and second unit pending",
+  "observed_firmware_service_revision": 2,
+  "current_software_regression_evidence": [
+    "cyd-server-regression.log",
+    "browser-regression.log",
+    "json-conformance.log",
+    "native-diagnostics.log",
+    "tooling-profile-tests.log",
+    "tooling-serial-tests.log"
+  ]
+}
