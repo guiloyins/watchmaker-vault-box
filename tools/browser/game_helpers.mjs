@@ -48,15 +48,15 @@ export async function prepareTwoPlayers(vault) {
   return { host, a: a.page, b: b.page, contextA: a.context, contextB: b.context };
 }
 
-export async function followGoldenRoute({ a, b }, initialBoard = 0) {
+export async function followGoldenRoute({ a, b, controls = { a, b } }, initialBoard = 0) {
   const route = [
-    [a, "Up", 8], [b, "Right", 9], [a, "Up", 5], [b, "Left", 4],
-    [a, "Up", 0], [b, "Right", 1], [b, "Right", 2], [a, "Down", 6],
-    [a, "Down", 10], [b, "Right", 11], [a, "Up", 7], [a, "Up", null],
+    ["a", "Up", 8], ["b", "Right", 9], ["a", "Up", 5], ["b", "Left", 4],
+    ["a", "Up", 0], ["b", "Right", 1], ["b", "Right", 2], ["a", "Down", 6],
+    ["a", "Down", 10], ["b", "Right", 11], ["a", "Up", 7], ["a", "Up", null],
   ];
 
-  for (const [index, [page, direction, target]] of route.entries()) {
-    await page.getByRole("button", { name: direction, exact: true }).click();
+  for (const [index, [role, direction, target]] of route.entries()) {
+    await controls[role].getByRole("button", { name: direction, exact: true }).click();
     if (target !== null) {
       for (const observer of [a, b]) {
         await expect(maze(observer)).toHaveAttribute("data-position", String(target));

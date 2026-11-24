@@ -299,7 +299,7 @@ defmodule VaultWeb.HostLive do
             phx-click="sim_controller"
             phx-value-role={@role}
             phx-value-action="move"
-            phx-value-value={direction}
+            phx-value-direction={direction}
             phx-value-board={@panel.board_version}
           >
             {humanize(direction)}
@@ -312,11 +312,11 @@ defmodule VaultWeb.HostLive do
             phx-click="sim_controller"
             phx-value-role={@role}
             phx-value-action="select"
-            phx-value-value={rune}
+            phx-value-rune={rune}
           >
             {humanize(rune)}
           </button>
-          <button :if={@panel.phase == :seal} type="button" class="button quiet" phx-click="sim_controller" phx-value-role={@role} phx-value-action="hold" phx-value-value={if @peer.held, do: "false", else: "true"}>
+          <button :if={@panel.phase == :seal} type="button" class="button quiet" phx-click="sim_controller" phx-value-role={@role} phx-value-action="hold" phx-value-pressed={if @peer.held, do: "false", else: "true"}>
             {if @peer.held, do: "Release simulated press", else: "Press simulated seal"}
           </button>
         </div>
@@ -650,8 +650,9 @@ defmodule VaultWeb.HostLive do
   defp simulated_action("connect", _), do: {:ok, :connect}
   defp simulated_action("disconnect", _), do: {:ok, :disconnect}
 
-  defp simulated_action("move", %{"value" => value, "board" => board}) when is_binary(board) do
-    with {:ok, direction} <- Map.fetch(@directions, value),
+  defp simulated_action("move", %{"direction" => direction, "board" => board})
+       when is_binary(board) do
+    with {:ok, direction} <- Map.fetch(@directions, direction),
          true <- byte_size(board) in 1..16,
          {version, ""} <- Integer.parse(board),
          true <- Controllers.number?(version) do
@@ -659,12 +660,12 @@ defmodule VaultWeb.HostLive do
     end
   end
 
-  defp simulated_action("select", %{"value" => value}) do
-    with {:ok, rune} <- Map.fetch(@runes, value), do: {:ok, {:select_rune, rune}}
+  defp simulated_action("select", %{"rune" => rune}) do
+    with {:ok, rune} <- Map.fetch(@runes, rune), do: {:ok, {:select_rune, rune}}
   end
 
-  defp simulated_action("hold", %{"value" => value}) when value in ["true", "false"],
-    do: {:ok, {:hold, value == "true"}}
+  defp simulated_action("hold", %{"pressed" => pressed}) when pressed in ["true", "false"],
+    do: {:ok, {:hold, pressed == "true"}}
 
   defp simulated_action(_, _), do: :error
 

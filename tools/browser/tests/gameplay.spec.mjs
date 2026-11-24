@@ -1,7 +1,7 @@
 import { test, expect } from "../fixtures.mjs";
 import {
   chooseRunes, claim, followGoldenRoute, hostPhase, maze, neutralThenPointerHold,
-  prepareTwoPlayers, sharedProgress, terminal,
+  prepareBox, prepareTwoPlayers, sharedProgress, terminal,
 } from "../game_helpers.mjs";
 
 test("M1-01 isolated views reload into one game and the box is simulated", async ({ vault }) => {
@@ -53,6 +53,34 @@ test("M1-02 movement is accepted once per decision and wall/bounds preserve the 
   await followGoldenRoute(game, boardStart);
   await expect(hostPhase(host)).toHaveText("Final seal");
   expect((await vault.command("outcomes")).outcomes).toEqual([]);
+});
+
+test("M1-05 the host can solve a round with both simulated CYD controls", async ({ vault }) => {
+  const { page: host } = await vault.open("host");
+  const { page: a } = await vault.open("a");
+  const { page: b } = await vault.open("b");
+  const controls = { a: host.locator("#simulated-cyd-a"), b: host.locator("#simulated-cyd-b") };
+
+  for (const role of ["a", "b"]) {
+    await controls[role].locator("summary").click();
+    await controls[role].getByRole("button", { name: "Connect simulated CYD", exact: true }).click();
+    await expect(terminal(host, role).locator("[data-mirror-role]"))
+      .toHaveAttribute("data-owner-source", "cyd");
+  }
+
+  await prepareBox(host);
+  await host.getByRole("button", { name: "Start game" }).click();
+  await followGoldenRoute({ a, b, controls });
+  await controls.a.getByRole("button", { name: "Star", exact: true }).click();
+  await controls.b.getByRole("button", { name: "Moon", exact: true }).click();
+
+  for (const role of ["a", "b"]) {
+    await controls[role].getByRole("button", { name: "Press simulated seal" }).click();
+    await expect(controls[role].getByRole("button", { name: "Release simulated press" })).toBeVisible();
+  }
+
+  await expect(host.getByText("Simulated motion complete", { exact: true }).first()).toBeVisible();
+  expect((await vault.command("outcomes")).outcomes).toHaveLength(1);
 });
 
 test("M1-06 correct fresh overlap qualifies once and only the simulated mechanism moves", async ({ vault }) => {
